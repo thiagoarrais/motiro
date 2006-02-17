@@ -1,5 +1,10 @@
+$:.push File.expand_path(File.dirname(__FILE__) + '/..')
+$:.push File.expand_path(File.dirname(__FILE__) + '/../../app')
+
 require 'date'
 require 'test/unit'
+require 'stubs/svn_connection'
+require 'reporters/svn_reporter'
 
 class SubversionReporterTest < Test::Unit::TestCase
 
@@ -10,14 +15,14 @@ class SubversionReporterTest < Test::Unit::TestCase
         @svn_connection.log_append_line 'Criacao do trunk do projeto'
         @svn_connection.log_append_line '------------------------------------------------------------------------'
 
-        @reporter = SubversionReporter.new(svn_connection)
+        @reporter = SubversionReporter.new(@svn_connection)
     end
 
     def test_one_revision
         hl = @reporter.latest_headline
-        assert_equals('thiagoarrais', hl.author)
-        assert_equals(DateTime.new(2006, 02, 14, 15, 45, 13), hl.date)
-        assert_equals('Criacao do trunk do projeto', hl.title)
+        assert_equal 'thiagoarrais', hl.author
+        assert_equal DateTime.new(2006, 02, 14, 15, 45, 13), hl.date
+        assert_equal 'Criacao do trunk do projeto', hl.title
     end
 
 end
