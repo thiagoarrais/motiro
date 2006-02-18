@@ -1,0 +1,19 @@
+SITE_DIR = File.dirname(__FILE__)
+
+def mkdir(dirname)
+    `mkdir -p #{dirname}`
+end
+
+task :copy_source do
+    builddir = "#{SITE_DIR}/build"
+    mkdir builddir
+    #TODO remove this os dependency
+    `cp -r #{SITE_DIR}/src/* #{SITE_DIR}/build/`
+end
+
+task :rails_generate => :copy_source do
+    `rails -s #{SITE_DIR}/build`
+end
+
+task :default => :rails_generate
+
