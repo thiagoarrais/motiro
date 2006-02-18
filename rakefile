@@ -1,14 +1,12 @@
-SITE_DIR = File.dirname(__FILE__)
+require 'fileutils'
 
-def mkdir(dirname)
-    `mkdir -p #{dirname}`
-end
+SITE_DIR = File.dirname(__FILE__)
 
 task :copy_source do
     builddir = "#{SITE_DIR}/build"
-    mkdir builddir
+    mkdir_p builddir
     #TODO remove this os dependency
-    `cp -ru #{SITE_DIR}/src/* #{SITE_DIR}/build/`
+    `cp -ru #{SITE_DIR}/src/* #{builddir}`
 end
 
 task :rails_generate => :copy_source do
