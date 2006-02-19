@@ -80,4 +80,26 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'Criacao do trunk do projeto', hl1.title
     end
     
+    def test_comment_with_dashes
+        revText =  "------------------------------------------------------------------------\n"
+        revText += "r2 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+        revText += "\n"
+        revText += "Estou tentando enganar o SubversionReporter\n"
+        revText +=  "------------------------------------------------------------------------\n"
+        revText += "Isto aqui ainda é comentário da revisao 2\n"
+        @svn_connection.log_prefix_line revText
+
+        hls = @reporter.latest_headlines(2)
+        
+        hl2 = hls[0]
+        assert_equal 'gilbertogil', hl2.author
+        assert_equal DateTime.new(2006, 02, 17, 18, 7, 55), hl2.date
+        assert_equal 'Estou tentando enganar o SubversionReporter', hl2.title
+        
+        hl1 = hls[1]        
+        assert_equal 'thiagoarrais', hl1.author
+        assert_equal DateTime.new(2006, 02, 14, 15, 45, 13), hl1.date
+        assert_equal 'Criacao do trunk do projeto', hl1.title
+    end
+    
 end
