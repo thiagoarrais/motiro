@@ -17,21 +17,31 @@ class SubversionReporter
     end
 
     def latest_headline
-        return svn_parse_log(@connection.log, 1)
+        return latest_headlines(1).first
+    end
+    
+    def latest_headlines(num)
+        remain = @connection.log
+        hls = Array.new
+        num.times do
+            hl, remain = svn_parse_entry(remain)
+            hls.push hl
+        end
+        return hls
     end
     
 private
     
-    def svn_parse_log(text, num)
+    def svn_parse_entry(text)
         remain = /^-+\n/.match(text).post_match
         md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^\n]*\n/.match(remain)
         remain = md.post_match
         author = md[1]
         year, month, day, hour, min, sec = md[2..7].collect do |s| s.to_i end
         revDate = DateTime.new(year, month, day, hour, min, sec)
-        md = /^[^\n]*\n([^\r\n]*)/.match(remain)
+        md = /^[^\n]*\n([^\r\n]*)\n/.match(remain)
         title = md[1]
-        Headline.new(author, revDate, title)
+        return Headline.new(author, revDate, title), remain
     end
 
 end
