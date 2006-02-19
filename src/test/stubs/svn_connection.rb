@@ -10,4 +10,8 @@ class StubSVNConnection
         @log += text + "\n"
     end
     
+    def log_prefix_line(text)
+        @log = text + "\n" + @log
+    end
+
 end
