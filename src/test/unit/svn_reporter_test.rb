@@ -42,5 +42,18 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal DateTime.new(2006, 02, 19, 8, 50, 07), hls[1].date
         assert_equal 'Leitura de uma revisao SVN pronta', hls[1].title
     end
+    
+    def test_revision_with_empty_comment
+    end
+    
+    def test_revision_with_multiline_comment
+        @svn_connection.log_append_line 'r7 | thiagoarrais | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines'
+        @svn_connection.log_append_line ''
+        @svn_connection.log_append_line 'Correcao para a revisao anterior (r6)'
+        @svn_connection.log_append_line ''
+        @svn_connection.log_append_line 'Esqueci de colocar o svn_reporter. Foi mal!'
+        @svn_connection.log_append_line ''
+        @svn_connection.log_append_line '------------------------------------------------------------------------'
+    end
 
 end
