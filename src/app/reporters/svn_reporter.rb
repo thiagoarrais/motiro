@@ -1,9 +1,11 @@
+require 'date'
+
 class Headline
 
     attr_reader :author, :date, :title
 
-    def initialize(author)
-        @author = author
+    def initialize(author, date, title)
+        @author, @date, @title = author, date, title
     end
 
 end
@@ -22,9 +24,14 @@ private
     
     def svn_parse_log(text, num)
         remain = /^-+\n/.match(text).post_match
-        md = /^r\d+\s*\|\s*(\w+)\s*\|/.match(remain)
+        md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^\n]*\n/.match(remain)
+        remain = md.post_match
         author = md[1]
-        Headline.new(author)
+        year, month, day, hour, min, sec = md[2..7].collect do |s| s.to_i end
+        revDate = DateTime.new(year, month, day, hour, min, sec)
+        md = /^[^\n]*\n([^\r\n]*)/.match(remain)
+        title = md[1]
+        Headline.new(author, revDate, title)
     end
 
 end
