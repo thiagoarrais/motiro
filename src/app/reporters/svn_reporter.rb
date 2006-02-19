@@ -1,4 +1,5 @@
 require 'date'
+require 'reporters/svn_connection'
 
 class Headline
 
@@ -12,7 +13,7 @@ end
 
 class SubversionReporter
 
-    def initialize(connection)
+    def initialize(connection = SubversionConnection.new)
         @connection = connection
     end
 
