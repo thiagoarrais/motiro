@@ -1,10 +1,19 @@
+require 'core/runner'
+require 'reporters/svn_settings'
+
 class SubversionConnection
     
-    #TODO parametize the repo location
-    #TODO parametize the revision list size
+    def initialize
+        initialize(SubversionSettingsProvider.new, Runner.new)
+    end
 
+    def initialize(settings=SubversionSettingsProvider.new, runner=Runner.new)
+        @settings, @runner = settings, runner
+    end
+
+    #TODO parametize the revision list size
     def log
-        `svn log --limit=5 svn://svn.berlios.de/motiro`
+        @runner.run "svn log #{@settings.getRepoURL}"
     end
     
 end                                                           

@@ -1,5 +1,4 @@
-$:.push File.expand_path(File.dirname(__FILE__) + '/..')
-$:.push File.expand_path(File.dirname(__FILE__) + '/../../app')
+require File.expand_path(File.dirname(__FILE__) + '/../test_env')
 
 require 'date'
 require 'test/unit'
