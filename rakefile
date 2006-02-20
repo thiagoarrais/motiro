@@ -2,15 +2,34 @@ require 'fileutils'
 
 SITE_DIR = File.dirname(__FILE__)
 
+def cp_ru(src, dest)
+    if File.stat(src).directory? then
+        mkdir_p dest
+        Dir.foreach(src) do |file|
+            unless file == '.' || file == '..'
+                cp_ru "#{src}/#{file}", "#{dest}/#{file}"
+            end
+        end
+    elsif File.stat(src).file? then
+        unless uptodate?(dest, src)
+            copy_file(src, dest)
+        end
+    end
+end
+
 task :copy_source do
     builddir = "#{SITE_DIR}/build"
     mkdir_p builddir
-    #TODO remove this os dependency
-    `cp -ru #{SITE_DIR}/src/* #{builddir}`
+    cp_ru "#{SITE_DIR}/src", "#{builddir}"
 end
 
 task :rails_generate => :copy_source do
-    `rails -s #{SITE_DIR}/build`
+    #the purpose of this ARGV black magic is to pass command
+    #line arguments to the rails generate script
+    ARGV.slice(0, ARGV.length - 1)
+    ARGV.push('-s', File.expand_path("#{SITE_DIR}/build"))
+    require_gem 'rails'
+    load 'rails'
 end
 
 task :default => :rails_generate
