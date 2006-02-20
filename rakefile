@@ -12,7 +12,7 @@ def cp_ru(src, dest)
         end
     elsif File.stat(src).file? then
         unless uptodate?(dest, src)
-            copy_file(src, dest)
+            copy_file(src, dest) if File.stat(dest).writable?
         end
     end
 end
