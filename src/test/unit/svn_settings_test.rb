@@ -21,5 +21,8 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
         assert_equal 'svn://svn.berlios.de/motiro', url
         opener.verify
     end
+    
+    #TODO mal-formed yaml
+    #TODO file does not exist
 
 end
