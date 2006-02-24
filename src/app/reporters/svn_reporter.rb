@@ -1,15 +1,7 @@
 require 'date'
 require 'reporters/svn_connection'
 
-class Headline
-
-    attr_reader :author, :date, :title
-
-    def initialize(author, date, title)
-        @author, @date, @title = author, date, title
-    end
-
-end
+require 'models/headline'
 
 class SubversionReporter
 
@@ -46,7 +38,9 @@ private
         (numlines).times do
             remain = /\n/.match(remain).post_match
         end
-        return Headline.new(author, revDate, title), remain
+        return Headline.new(:author => author,
+                            :event_date => revDate,
+                            :title => title), remain
     end
 
 end
