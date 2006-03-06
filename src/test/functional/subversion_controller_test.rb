@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'subversion_controller'
+require 'report_controller'
 
 # Re-raise errors caught by the controller.
-class SubversionController; def rescue_action(e) raise e end; end
+class ReportController; def rescue_action(e) raise e end; end
 
-class SubversionControllerTest < Test::Unit::TestCase
+class ReportControllerTest < Test::Unit::TestCase
   def setup
-    @controller = SubversionController.new
+    @controller = ReportController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end

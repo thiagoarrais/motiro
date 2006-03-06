@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../test_env')
+require File.dirname(__FILE__) + '/../test_helper'
 
 require 'date'
 require 'test/unit'
@@ -85,7 +85,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         revText += "\n"
         revText += "Estou tentando enganar o SubversionReporter\n"
         revText +=  "------------------------------------------------------------------------\n"
-        revText += "Isto aqui ainda é comentário da revisao 2\n"
+        revText += "Isto aqui ainda ï¿½ comentï¿½rio da revisao 2\n"
         @svn_connection.log_prefix_line revText
 
         hls = @reporter.latest_headlines(2)
