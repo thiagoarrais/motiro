@@ -7,7 +7,7 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 development:
   adapter: mysql
-  database: build_development
+  database: motiro_development
   host: 127.0.0.1
   port: 3306
   username: motiro
