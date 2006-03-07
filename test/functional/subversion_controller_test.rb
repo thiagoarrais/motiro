@@ -21,4 +21,7 @@ class ReportControllerTest < Test::Unit::TestCase
     assert_not_nil assigns(:headlines)
     assert_equal 2, assigns(:headlines).size
   end
+  
+  #TODO what happens if there are no cached headlines?
+  
 end
