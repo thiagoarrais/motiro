@@ -3,6 +3,7 @@ require 'test/unit'
 require 'mocks/svn_reporter'
 require 'mocks/headline'
 
+require 'reporters/svn_driver'
 
 class SubversionDriverTest < Test::Unit::TestCase
     
