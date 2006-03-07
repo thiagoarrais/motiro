@@ -4,7 +4,10 @@ class HeadlineTest < Test::Unit::TestCase
   fixtures :headlines
 
   # Replace this with your real tests.
-  def test_truth
-    assert_kind_of Headline, headlines(:first)
+  def test_latest
+    hls = Headline.latest 1
+    hl = hls.first
+    
+    assert_equal 'gita', hl.title
   end
 end

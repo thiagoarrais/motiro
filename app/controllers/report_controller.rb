@@ -1,10 +1,10 @@
-require 'reporters/svn_reporter'
+require 'models/headline'
 
 class ReportController < ApplicationController
 
     def subversion
         reporter = SubversionReporter.new
-        @headlines = reporter.latest_headlines(5)
+        @headlines = Headline.latest 5
     end
 
 end

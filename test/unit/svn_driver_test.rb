@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
 require 'test/unit'
 
 require 'mocks/svn_reporter'
@@ -11,15 +13,13 @@ class SubversionDriverTest < Test::Unit::TestCase
         
         reporter = MockSubversionReporter.new
         driver = SubversionDriver.new(reporter)
-        headlines = Array.new
-        headlines.push MockHeadline.new
-        headlines.push MockHeadline.new
+        headlines = Array.new.fill MockHeadline.new, 5
         
         headlines.each do |hl|
             hl.expect_save
         end
         
-        reporter.expect_latest_headlines do
+        reporter.expect_latest_headlines(5) do
             headlines
         end
         
