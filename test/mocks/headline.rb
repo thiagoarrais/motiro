@@ -2,13 +2,11 @@ class MockHeadline
 
     include Test::Unit::Assertions
 
-    def expect_save(&action)
-        @action = action    
+    def expect_save
     end
     
     def save
         @save_called = true
-        action.call
     end
     
     def verify

@@ -11,7 +11,6 @@ class SubversionSettingsProvider
         @filesystem = fs
     end
 
-    #TODO parametize the repo location
     def getRepoURL
         file = @filesystem.open(File.expand_path(File.dirname(__FILE__) +
                                 '/../../config/report/subversion.yml'))

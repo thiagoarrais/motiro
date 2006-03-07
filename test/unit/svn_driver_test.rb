@@ -10,7 +10,7 @@ class SubversionDriverTest < Test::Unit::TestCase
     def test_records
         
         reporter = MockSubversionReporter.new
-        driver = SubversionDriver.new
+        driver = SubversionDriver.new(reporter)
         headlines = Array.new
         headlines.push MockHeadline.new
         headlines.push MockHeadline.new
@@ -25,12 +25,14 @@ class SubversionDriverTest < Test::Unit::TestCase
         
         driver.tick
         
+        reporter.verify
+
         headlines.each do |hl|
             hl.verify
         end
         
-        reporter.verify
-
     end
+    
+    #TODO test already cached headline
     
 end

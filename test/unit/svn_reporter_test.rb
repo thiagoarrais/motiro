@@ -101,4 +101,6 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'Criacao do trunk do projeto', hl1.title
     end
     
+    #TODO simulate a connection timeout
+    
 end
