@@ -59,7 +59,7 @@ What you need to do is:
 
      - motiro_development: for development and initial test purposes
      - motiro_test: for automatic testing purposes
-     - motiro_production: for real-life use
+     - motiro_production: for real-life usage
 
    You will need to make sure those databases are present and fully-acessible
    to the user motiro. The following script will do the trick. It is a
@@ -115,44 +115,61 @@ What you need to do is:
    % mysql -u motiro motiro_production < src/db/create.sql
 
    And that's it. Now, if you'd like, you can run the test suite to test your
-   installation. Maybe (if you're confident enough) you'd want to skip this
-   part and jump directly to step 4 to run the WEBrick web server and see the
-   whole thing running.
+   installation. This is a highly recommended practice because it verifies if
+   your system is capable of running the program. Maybe, if you're feeling
+   confident enough (I never am), you'd want to skip this part and jump directly
+   to step 4 to run the WEBrick web server and see the whole thing running.
 
 
 3. Run the test suite
 ------
 
    Motiro comes with a prepackaged test suite. This is the full test suite we
-   use during our development to make sure we don't slip out of the track. To run
-   it, just cd to the 'src' dir and say:
+   use during our development to make sure we don't slip out of the track. To
+   run it, just cd to where you unpacked Motiro and say:
 
    ----------------------------------------------------------------------------
-   % ruby test/unit/ts_all_suites.rb
-   Loaded suite test/unit/ts_all_suites
+   % rake test_units
+   (in /home/thiago/devel/motiro)
+   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
    Started
    ........
-   Finished in 0.188 seconds.
+   Finished in 0.088411 seconds.
 
    8 tests, 26 assertions, 0 failures, 0 errors
+   
+   % rake test_functional
+   (in /home/thiago/devel/motiro)
+   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
+   Started
+   .
+   Finished in 0.056199 seconds.
+
+   1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
 
+   You may also choose to trigger both unit and functional tests at once by
+   saying simlpy
+   
+   % rake
+
    If any test happens to fail, an error message will be printed and the last
-   line will report it. If there is any error when you run these tests, please
-   contact us on the development list, tell us which kind of system you are
-   trying to run Motiro on and from where did you get it. Do not forget to
-   append your bug report too.
+   line will report it. In case you are executing both functional and unit
+   tests, remember there will be two 'last lines'. If there is any error when
+   you run these tests, please contact us on the development list, tell us which
+   kind of system you are trying to run Motiro on and from where did you get it.
+   Do not forget to append your bug report too.
 
 4. Boot the server
 ------
 
-   To run Motiro within a WEBrick server (a pure Rails server), you'll just
+   To run Motiro within a WEBrick server (a pure Ruby server), you'll just
    need to run another Ruby script. You may also try to run Motiro on a variety
    of servers, like Apache and lighttpd. But, for the sake of brevity, this
    won't be covered here.
 
-   To run the script that boots the WEBrick server, just cd to the 'src' dir
-   and say:
+   To run the script that boots the WEBrick server, just cd to where you
+   unpacked Motiro and say:
 
    ----------------------------------------------------------------------------
    % ruby script/server
@@ -188,7 +205,7 @@ FURTHER INFO AND TROUBLESHOOTING
 ====
 
 If you experience any problems with Motiro, if you have any compliments or if
-you just wanna discuss it, please go to
+you just want to discuss it, please go to
 
 http://developer.berlios.de/mail/?group_id=5989
 

@@ -1,0 +1,225 @@
+Motiro é um portal para acompanhamento de projetos de software. Com ele os
+programadores podem obter uma vasta gama de informação sobre a situação do seu
+projeto em uma viagem sem escalas.
+
+Estas instruções aqui têm como objetivo lhe introduzir ao Motiro através da
+execução de um primeiro teste, para que você possa ver por si próprio o que ele
+pode te dar. Para utilização no mundo real, você muito provavelmente vai querer
+uma configuração diferente. Por favor, contate-nos na lista de desenvolvimento
+em português para maiores informações. A assinatura é grátis, disponível no
+endereço http://lists.berlios.de/mailman/listinfo/motiro-devel-pt_br
+
+FAZENDO A COISA RODAR
+=====
+
+Para ter seu portal Motiro rodando, você vai precisar de:
+
+1. MySQL 4.1 (versões 5.x não são cobertas e versões anteriores não foram
+   testadas)
+2. Ruby 1.8.2+ (qualquer versão posterior deve funcionar, versões anteriores
+   ainda não testadas)
+3. Rails 1.0.0 (qualquer versão posterior deve funcionar, versões anteriores
+   não testadas)
+
+Depois de verificar seus requisitos, o que você precisa fazer é:
+
+1. Baixar e desempacotar os arquivos de distribuição do Motiro
+------
+
+   Você provavelmente já fez isso para conseguir ler este texto.
+   
+   Para todos os outros casos, simplesmente escolha algum lugar dentro do seu
+   sistema e desempacote o conteúdo do arquivo, ou obtenha o código-fonte
+   mais atual do nosso repositório Subversion que fica em
+   svn://svn.berlios.de/motiro
+
+2. Configurar o banco de dados
+------
+
+   2.1. Conexão TCP
+
+   O Motiro utiliza um soquete TCP para se conectar ao servidor MySQL. É
+   necessário certificar-se que o servidor está ativo e escutando por conexões
+   na porta 3306 (a porta padrão para servidores MySQL). Se você não tiver
+   certeza, tente executar o comando:
+
+   % telnet localhost 3306
+
+   A saída deve ser parecida com
+
+   7
+    4.1.18-nt
+          xH?@cU]S,ó!?h3d{bUf~jv5A
+
+   Se não houver resposta, o seu servidor MySQL pode não estar ativo ou não
+   estar aceitando conexões TCP. O servidor MySQL ainda pode ser instruído a
+   aceitar apenas conexões da máquina local, se você achar que abrir esta porta
+   é uma brecha de segurança. Para maiores informações, por favor consulte o
+   manual do MySQL.
+
+   2.2. Criação das bases de dados
+
+   O Motiro utiliza um usuário de nome 'motiro' e senha vazia para autenticar-se
+   junto ao servidor MySQL. Pode ser necessário acessar três bases de dados
+   diferentes, dependendo do contexto de execução. Os nomes delas são:
+   
+     - motiro_development: para propósitos de desenvolvimento e testes iniciais
+     - motiro_test: para propósitos de testes automáticos
+     - motiro_production: para utilização no selvagem mundo real
+     
+   É preciso certificar-se que estas bases de dados existem e estão
+   completamente acessíveis para o usuário motiro. O script a seguir deve
+   resolver a bronca. É um script para interface de linha de comando que utiliza
+   o cliente mysql padrão, mas você pode usar qualquer ferramenta com a qual
+   sinta-se mais confortável (talvez uma com interface gráfica ou web). Só é
+   necessário cuidado para evitar erros de digitação nos nomes das bases de
+   dados e lembrar de dar todos os privilégios para o usuário motiro.
+     
+   Para usar o cliente mysql basta acioná-lo como root e dizer algo nessa linha:
+   
+   (as linhas que começam com '%' são comandos para meu shell e com 'mysql>' são
+   para o banco de dados MySQL, as demais são respostas do sistema)
+
+   ----------------------------------------------------------------------------
+   % mysql -u root -p
+   Enter password: ***********
+   Welcome to the MySQL monitor.  Commands end with ; or \g.
+   Your MySQL connection id is 13 to server version: 4.1.18-nt
+
+   Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+   mysql> create database motiro_development;
+   Query OK, 1 row affected (0.00 sec)
+
+   mysql> create database motiro_test;
+   Query OK, 1 row affected (0.00 sec)
+
+   mysql> create database motiro_production;
+   Query OK, 1 row affected (0.02 sec)
+
+   mysql> grant all on motiro_development.* to motiro;
+   Query OK, 0 rows affected (0.00 sec)
+
+   mysql> grant all on motiro_test.* to motiro;
+   Query OK, 0 rows affected (0.00 sec)
+
+   mysql> grant all on motiro_production.* to motiro;
+   Query OK, 0 rows affected (0.00 sec)
+
+   mysql> exit
+   Bye
+   ----------------------------------------------------------------------------
+
+   2.3. Preparação do esquema
+   
+   O último passo para a configuração das bases de dados é estruturar os
+   esquemas corretamente. Felizmente, o Motiro já vem com um script DDL
+   pré-cozido para este propósito. Você só precisa fazer com que o MySQL
+   execute-o.
+
+   % mysql -u motiro motiro_development < src/db/create.sql
+
+   % mysql -u motiro motiro_test < src/db/create.sql
+
+   % mysql -u motiro motiro_production < src/db/create.sql
+
+   E é isso. Agora, se você quiser, pode rodar a suíte de testes para testar sua
+   instalação. Esta é uma atitude altamente recomendada para verificar a
+   adequabilidade do programa ao seu sistema. Talvez, se estiver se sentindo
+   suficientemente confiante (eu nunca estou), você pode pular esta parte e ir
+   direto para o passo 4 e rodar o servidor web WEBrick para ver a coisa toda
+   funcionando.
+
+3. Rodar a suíte de testes
+------
+
+   Juntamente com o Motiro, você recebeu uma suíte de testes. Ela é a suíte
+   de testes completa que usamos durante o desenvolvimento para nos mantermos
+   nos trilhos. Para rodá-la, basta navegar para onde você desempacotou o Motiro
+   e pedir o seguinte:
+
+   ----------------------------------------------------------------------------
+   % rake test_units
+   (in /home/thiago/devel/motiro)
+   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
+   Started
+   ........
+   Finished in 0.088411 seconds.
+
+   8 tests, 26 assertions, 0 failures, 0 errors
+   
+   % rake test_functional
+   (in /home/thiago/devel/motiro)
+   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
+   Started
+   .
+   Finished in 0.056199 seconds.
+
+   1 tests, 1 assertions, 0 failures, 0 errors
+   ----------------------------------------------------------------------------
+
+   Você pode ainda resolver ativar os testes unitários e funcionais ao mesmo
+   tempo simplesmente dizendo:
+   
+   % rake
+   
+   Se acontecer de qualquer teste falhar, uma mensagem de erro será mostrada e
+   o relatório da última linha vai ser atualizado de acordo. Caso você esteja
+   executando os testes funcionais e unitários ao mesmo tempo, lembre-se que
+   haverão duas 'últimas linhas'. Se houver algum erro detectado por estes
+   testes, por favor contacte a lista de desenvolvedores, conte-nos em que tipo
+   de sistema você está tentando executar o Motiro e de onde pegou o programa.
+   Não se esqueça de incluir o seu relatório de defeito também.
+
+4. Iniciar o servidor
+------
+
+   Para rodar o Motiro em um servidor WEBrick (um servidor escrito totalmente em
+   Ruby), você só vai precisar rodar mais um script Ruby. Você também pode
+   tentar alojar o Motiro em uma variedade de servidores, como Apache e
+   lighttpd. Mas, pelo bem da brevidade, eles não serão cobertos aqui.
+
+   Para rodar o script que inicia o servidor WEBrick, basta navegar para onde o
+   Motiro foi desempacotado e dizer:
+
+   ----------------------------------------------------------------------------
+   % ruby script/server
+   => Booting WEBrick...
+   => Rails application started on http://0.0.0.0:3000
+   => Ctrl-C to shutdown server; call with --help for options
+   [2006-03-06 14:23:32] INFO  WEBrick 1.3.1
+   [2006-03-06 14:23:32] INFO  ruby 1.8.4 (2005-12-24) [i386-mswin32]
+   [2006-03-06 14:23:32] INFO  WEBrick::HTTPServer#start: pid=2096 port=3000
+   ----------------------------------------------------------------------------
+
+   Para finalmente ver o Motiro em ação, mire seu navegador favorito para
+   http://localhost:3000 e aí está.
+
+5. Configurar para seu projeto
+
+   O Motiro sai da caixa pré-configurado para seu próprio desenvolvimento porque
+   nós usamos ele para acompanharmos nosso próprio progresso, de verdade. Isto
+   pode ser satisfatório, se você estiver interessado em nos ver trabalhar.
+   Porém a maioria das pessoas quer acompanhar seu próprio projeto, sua própria
+   equipe.
+   
+   Para personalizar o Motiro para suas necessidades, é preciso editar os
+   arquivos de configuração dentro do diretório 'config/report'. Por exemplo,
+   suponha que queiramos estar antenados no desenvolvimento do framework Ruby
+   on Rails. Podemos instruir o Motiro a olhar para o repositório Subversion
+   deles com a mudança da linha 'repo' no arquivo 'subversion.yml' para:
+   
+   repo: http://dev.rubyonrails.org/svn/rails
+
+   Para maiores informações sobre como personalizar o Motiro, favor nos
+   contactar.
+
+MAIORES INFORMAÇÕES E RESOLUÇÃO DE PROBLEMAS
+====
+
+Se você tiver qualquer problema com o Motiro, se tiver algum elogio ou se quiser
+apenas discutí-lo, por favor visite
+
+http://developer.berlios.de/mail/?group_id=5989
+
+e escolha a lista de discussão mais adequada às suas necessidades.
