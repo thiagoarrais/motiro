@@ -1,16 +1,26 @@
-class MockHeadline
+require 'test/unit'
+
+require 'models/headline'
+
+class MockHeadline < Headline
 
     include Test::Unit::Assertions
 
+    def initialize
+        @expected_times_save_called = 0
+        @actual_times_save_called = 0
+    end
+
     def expect_save
+        @expected_times_save_called += 1
     end
     
     def save
-        @save_called = true
+        @actual_times_save_called += 1
     end
     
     def verify
-        assert @save_called
+        assert_equal @expected_times_save_called, @actual_times_save_called
     end
 
 end

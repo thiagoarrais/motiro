@@ -10,4 +10,5 @@ class HeadlineTest < Test::Unit::TestCase
     
     assert_equal 'gita', hl.title
   end
+  
 end
