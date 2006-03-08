@@ -11,9 +11,9 @@ class SubversionConnection
         @settings, @runner = settings, runner
     end
 
-    #TODO parametize the revision list size
     def log
-        @runner.run "svn log #{@settings.getRepoURL}"
+        @runner.run "svn log --limit=#{@settings.getPackageSize} " +
+                    "#{@settings.getRepoURL}"
     end
     
 end                                                           

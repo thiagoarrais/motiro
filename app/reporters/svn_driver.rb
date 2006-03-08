@@ -9,8 +9,7 @@ class SubversionDriver
     end
 
     def tick
-        #TODO need to parametrize the number of headlines
-        hls = @reporter.latest_headlines 5
+        hls = @reporter.latest_headlines
         
         hls.each do |hl|
             #TODO move this to the headline class itself

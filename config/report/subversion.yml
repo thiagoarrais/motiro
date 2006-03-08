@@ -1,2 +1,13 @@
+# repo
+#
+# Tells the reporter where to find your project's repository
+# Default: http://svn.berlios.de/svnroot/repos/motiro
 repo: http://svn.berlios.de/svnroot/repos/motiro
+
+# package_size
+#
+# Tells the reporter how many headlines to produce by run
+# It is also used as the number of latest headlines to be shown
+# Default: 5
+package_size: 5
 

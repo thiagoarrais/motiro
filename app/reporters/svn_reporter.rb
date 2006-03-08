@@ -10,15 +10,17 @@ class SubversionReporter
     end
 
     def latest_headline
-        return latest_headlines(1).first
+        return latest_headlines.first
     end
     
-    def latest_headlines(num)
+    def latest_headlines
         remain = @connection.log
         hls = Array.new
-        num.times do
+
+        hl = 0
+        until hl.nil? do
             hl, remain = svn_parse_entry(remain)
-            hls.push hl
+            hls.push hl unless hl.nil?
         end
         return hls
     end
@@ -26,21 +28,25 @@ class SubversionReporter
 private
     
     def svn_parse_entry(text)
-        remain = /^-+\n/.match(text).post_match
-        md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/.match(remain)
-        remain = md.post_match
-        author = md[1]
-        year, month, day, hour, min, sec = md[2..7].collect do |s| s.to_i end
-        numlines = md[8].to_i
-        revDate = DateTime.new(year, month, day, hour, min, sec)
-        md = /^[^\n]*\n([^\r\n]*)\n/.match(remain)
-        title = md[1]
-        (numlines).times do
-            remain = /\n/.match(remain).post_match
+        begin
+            remain = /^-+\n/.match(text).post_match
+            md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/.match(remain)
+            remain = md.post_match
+            author = md[1]
+            year, month, day, hour, min, sec = md[2..7].collect do |s| s.to_i end
+            numlines = md[8].to_i
+            revDate = DateTime.new(year, month, day, hour, min, sec)
+            md = /^[^\n]*\n([^\r\n]*)\n/.match(remain)
+            title = md[1]
+            (numlines).times do
+                remain = /\n/.match(remain).post_match
+            end
+            return Headline.new(:author => author,
+                                :event_date => revDate,
+                                :title => title), remain
+        rescue
+            return nil
         end
-        return Headline.new(:author => author,
-                            :event_date => revDate,
-                            :title => title), remain
     end
 
 end

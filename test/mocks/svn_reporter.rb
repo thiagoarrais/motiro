@@ -9,16 +9,14 @@ class MockSubversionReporter
         @expected_times_latest_headlines_called = 0
     end
 
-    def expect_latest_headlines(num, &action)
-        @expected_num = num
+    def expect_latest_headlines(&action)
         @action = action unless !block_given?
         @expected_times_latest_headlines_called += 1
     end
     
-    def latest_headlines(num)
+    def latest_headlines
         @actual_times_latest_headlines_called += 1
         @latest_headlines_called = true
-        assert_equal @expected_num, num
         @action.call
     end
     

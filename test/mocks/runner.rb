@@ -5,16 +5,17 @@ class MockRunner
 
     include Test::Unit::Assertions
 
-    def run(command)
-        @actual = command
+    def run(actual_command)
+        @run_called = true
+        assert_equal @expected_command, actual_command
     end
     
     def expect_run(command)
-        @expected = command
+        @expected_command = command
     end
     
     def verify
-        assert_equal @expected, @actual
+        assert @run_called
     end
-
+    
 end

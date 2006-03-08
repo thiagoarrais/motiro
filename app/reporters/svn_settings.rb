@@ -18,4 +18,11 @@ class SubversionSettingsProvider
         return confs['repo']
     end
     
+    def getPackageSize
+        file = @filesystem.open(File.expand_path(File.dirname(__FILE__) +
+                                '/../../config/report/subversion.yml'))
+        confs = YAML.load file
+        return confs['package_size'].to_i
+    end
+    
 end
