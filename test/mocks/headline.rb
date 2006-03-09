@@ -23,8 +23,8 @@ class MockHeadline < Headline
     end
     
     def save
-        super
         @actual_times_save_called += 1
+        super
     end
     
     def verify
