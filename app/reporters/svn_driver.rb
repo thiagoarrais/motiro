@@ -12,12 +12,7 @@ class SubversionDriver
         hls = @reporter.latest_headlines
         
         hls.each do |hl|
-            #TODO move this to the headline class itself
-            cached_lines = Headline.find(:all,
-                               :conditions => "author = '#{hl.author}' " +
-                                              "and title = '#{hl.title}'")
-                         
-            hl.save if (cached_lines.empty? || !cached_lines.collect do |line| hl.event_date == line.event_date end.include?(true) )
+            hl.save unless hl.cached?
         end
     end
 

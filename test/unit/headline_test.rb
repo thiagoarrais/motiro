@@ -17,5 +17,21 @@ class HeadlineTest < Test::Unit::TestCase
     
         assert_equal 'o dia em que a terra parou', hl.title
     end
-  
+    
+    def test_cached
+       headline = Headline.new(:author => 'raulseixas',
+                               :title => 'gita',
+                               :event_date => DateTime.new(2005, 1, 1))
+                               
+       assert headline.cached?
+    end
+    
+    def test_not_cached
+       headline = Headline.new(:author => 'chicobuarque',
+                               :title => 'a banda',
+                               :event_date => DateTime.new(1983, 1, 1))
+                               
+      assert ! headline.cached?
+    end
+    
 end
