@@ -8,7 +8,7 @@ class HeadlineTest < Test::Unit::TestCase
         
         assert_equal 'raulseixas', headline.author
         assert_equal 'gita', headline.title
-        assert_equal DateTime.new(2005, 1, 1), headline.event_date
+        assert_equal Time.local(2005, 1, 1), headline.event_date
     end
 
     def test_latest_one
@@ -21,7 +21,7 @@ class HeadlineTest < Test::Unit::TestCase
     def test_cached
        headline = Headline.new(:author => 'raulseixas',
                                :title => 'gita',
-                               :event_date => DateTime.new(2005, 1, 1))
+                               :event_date => Time.local(2005, 1, 1))
                                
        assert headline.cached?
     end
@@ -29,9 +29,22 @@ class HeadlineTest < Test::Unit::TestCase
     def test_not_cached
        headline = Headline.new(:author => 'chicobuarque',
                                :title => 'a banda',
-                               :event_date => DateTime.new(1983, 1, 1))
+                               :event_date => Time.local(1983, 1, 1))
                                
       assert ! headline.cached?
+    end
+    
+    def test_record_time
+       headline = Headline.new(:author => 'thiagoarrais',
+                               :title => 'fiz besteira',
+                               :event_date => Time.local(1983, 1, 1, 00, 15, 12))
+                               
+       headline.save
+       
+       headline = Headline.find(:first,
+                                :conditions => "author = 'thiagoarrais' and title = 'fiz besteira'")
+                                
+       assert_equal Time.local(1983, 1, 1, 00, 15, 12), headline.event_date
     end
     
 end

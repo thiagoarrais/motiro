@@ -10,7 +10,7 @@ class MockHeadline < Headline
 
     def initialize
         super(:author => 'unknown',
-              :event_date => DateTime.new(2006 + @@obj_count, 3, 8),
+              :event_date => Time.local(2006 + @@obj_count, 3, 8),
               :title => 'untitled')
         @expected_times_save_called = 0
         @actual_times_save_called = 0
