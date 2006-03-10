@@ -9,10 +9,10 @@
     <p><h1>Últimas notícias do Subversion</h1></p>
     <% @headlines.each do |headline|%>
     <p>
-      <%= headline.title %><br/>
+      <%= h(headline.title) %><br/>
       <font size="-1">
-        <i><%= headline.author %></i>
-        <%= headline.event_date %>
+        <i><%= h(headline.author) %></i>
+        <%= h(headline.event_date) %>
       </font>
       <hr/>
     </p>
