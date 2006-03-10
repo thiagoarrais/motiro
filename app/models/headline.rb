@@ -1,3 +1,18 @@
+require 'date'
+
+class Time
+    def to_t
+        self
+    end 
+end
+
+class DateTime
+    def to_t
+        Time.local(self.year, self.month, self.day,
+                   self.hour, self.min, self.sec)
+    end
+end
+
 class Headline < ActiveRecord::Base
 
     def self.latest(num)
@@ -12,7 +27,7 @@ class Headline < ActiveRecord::Base
                                           "and title = '#{self.title}'")
             
         question_results = cached_lines.collect do |line|
-            self.event_date == line.event_date
+            self.event_date.to_t == line.event_date.to_t
         end                         
 
         return !(cached_lines.empty? || !question_results.include?(true) )

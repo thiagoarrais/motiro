@@ -47,4 +47,13 @@ class HeadlineTest < Test::Unit::TestCase
        assert_equal Time.local(1983, 1, 1, 00, 15, 12), headline.event_date
     end
     
+    def test_cache_with_date_time
+       aHeadline = Headline.new(:author => 'thiagoarrais',
+                               :title => 'fiz besteira',
+                               :event_date => DateTime.new(1983, 1, 1, 00, 15, 12))
+       aHeadline.save
+       
+       assert aHeadline.cached?
+    end
+    
 end
