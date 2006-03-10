@@ -33,16 +33,15 @@ private
             md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/.match(remain)
             remain = md.post_match
             author = md[1]
-            year, month, day, hour, min, sec = md[2..7].collect do |s| s.to_i end
+            date_components = md[2..7].collect do |s| s.to_i end
             numlines = md[8].to_i
-            revDate = DateTime.new(year, month, day, hour, min, sec)
             md = /^[^\n]*\n([^\r\n]*)\n/.match(remain)
             title = md[1]
             (numlines).times do
                 remain = /\n/.match(remain).post_match
             end
             return Headline.new(:author => author,
-                                :event_date => revDate,
+                                :event_date => date_components,
                                 :title => title), remain
         rescue
             return nil
