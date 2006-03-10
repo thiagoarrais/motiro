@@ -10,7 +10,7 @@ class MockSubversionReporter
     end
 
     def expect_latest_headlines(&action)
-        @action = action unless !block_given?
+        @action = action if block_given?
         @expected_times_latest_headlines_called += 1
     end
     
