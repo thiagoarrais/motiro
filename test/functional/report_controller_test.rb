@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'report_controller'
 
+require 'mocks/headline'
 require 'stubs/svn_settings'
 
 class Class
@@ -27,7 +28,7 @@ class ReportControllerTest < Test::Unit::TestCase
     end
     
     def test_fetches_headlines_from_cache
-      get :show, {:format => 'show'}
+      get :show, {:format => 'html_fragment'}
       assert_response :success
       assert_not_nil assigns(:headlines)
       assert_equal 2, assigns(:headlines).size
@@ -36,14 +37,15 @@ class ReportControllerTest < Test::Unit::TestCase
     def test_reads_package_size
         settings = StubConnectionSettingsProvider.new(
                        :package_size => 6)
+        @controller = ReportController.new(settings)
 
         def Headline.latest(num)
             assert_equal 6, num
             ReportControllerTest.append_to_log 'latest'
+            return Array.new.fill MockHeadline.new, 6
         end
 
-        controller = ReportController.new(settings)
-        controller.subversion
+        get :show, {:format => 'html_fragment'}
         
         assert_equal 'latest', @@log
     end

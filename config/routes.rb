@@ -8,12 +8,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'report/:reporter',
               :controller => 'report',
               :action => 'show',
-              :format => 'show'
+              :format => 'html_fragment'
   
   map.connect 'feed/:reporter',
               :controller => 'report',
               :action => 'show',
-              :format => 'feed'
+              :format => 'rss'
 
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'

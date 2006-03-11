@@ -9,15 +9,11 @@ class ReportController < ApplicationController
         @reporters = { 'subversion' => SubversionReporter.new }
     end
 
-    def subversion
-        reporter = @reporters
-        @headlines = Headline.latest @settings.getPackageSize
-    end
-    
     def show
         reporter = @reporters[params[:reporter]]
+        format = params[:format] || 'html_fragment'
         @headlines = Headline.latest @settings.getPackageSize
-        render(:action => params[:format])
+        render(:action => format)
     end
     
 end
