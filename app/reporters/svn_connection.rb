@@ -1,4 +1,4 @@
-require 'core/runner'
+require 'ports/runner'
 require 'reporters/svn_settings'
 
 class SubversionConnection

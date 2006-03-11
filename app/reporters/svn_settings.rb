@@ -1,6 +1,6 @@
 require 'yaml'
 
-require 'core/filesystem'
+require 'ports/filesystem'
 
 class SubversionSettingsProvider
     

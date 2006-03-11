@@ -1,18 +1,18 @@
 require 'models/headline'
 
-require 'reporters/svn_settings'
+require 'core/chief_editor'
 
 class ReportController < ApplicationController
 
-    def initialize(settings=SubversionSettingsProvider.new)
-        @settings = settings
-        @reporters = { 'subversion' => SubversionReporter.new }
+    def initialize
+        @chief_editor = ChiefEditor.new
     end
 
     def show
-        reporter = @reporters[params[:reporter]]
+        reporter = params[:reporter]
         format = params[:format] || 'html_fragment'
-        @headlines = Headline.latest @settings.getPackageSize
+        
+        @headlines = @chief_editor.latest_news_from reporter
         render(:action => format)
     end
     
