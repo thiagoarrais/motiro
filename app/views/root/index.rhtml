@@ -32,7 +32,9 @@
       </p>
     </div>
     <div id="svn">
-      <%= render_component(:controller => 'report', :action =>  'subversion') %>
+      <%= render_component(:controller => 'report',
+                           :action =>  'show',
+                           :reporter => 'subversion') %>
     </div>
   </body>
 </html>

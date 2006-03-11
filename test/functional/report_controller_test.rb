@@ -26,9 +26,8 @@ class ReportControllerTest < Test::Unit::TestCase
       @response   = ActionController::TestResponse.new
     end
     
-    # Replace this with your real tests.
     def test_fetches_headlines_from_cache
-      get :subversion
+      get :show, {:format => 'show'}
       assert_response :success
       assert_not_nil assigns(:headlines)
       assert_equal 2, assigns(:headlines).size
