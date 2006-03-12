@@ -34,7 +34,7 @@ class ChiefEditorTest < Test::Unit::TestCase
         def Headline.latest(num)
             assert_equal 6, num
             ChiefEditorTest.append_to_log('latest')
-            return Array.new.fill MockHeadline.new, 6
+            return Array.new.fill(MockHeadline.new, 6)
         end
         
         chief_editor.latest_news_from 'subversion'
