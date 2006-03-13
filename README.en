@@ -18,6 +18,8 @@ To get your own Motiro portal up and running, you will need the following:
    yet tested)
 3. Rails 1.0.0 (should work with posterior versions, previous versions not
    tested)
+4. Subversion client (svn) for the Subversion reporter (the only one currently
+   available)
 
 What you need to do is:
 
@@ -43,7 +45,7 @@ What you need to do is:
 
    7
     4.1.18-nt
-          xH?@cU]S,ó!?h3d{bUf~jv5A
+          xH?@cU]S,ï¿½!?h3d{bUf~jv5A
 
    You may need to setup your MySQL server to accept TCP connections, if you
    are sure the server is running and it doesn't respond to the above command.
@@ -160,7 +162,27 @@ What you need to do is:
    kind of system you are trying to run Motiro on and from where did you get it.
    Do not forget to append your bug report too.
 
-4. Boot the server
+5. Start the job scheduler
+------
+
+   Motiro uses a separate program responsable for automatically fetching the
+   news. This program is run as a Rails Cron job. Rails Cron is a job
+   scheduler similar to the `cron' program, much common in Unix systems,
+   specially written for use with Rails. 
+   
+   To start the scheduler, you can use the 'cron_start' rake task. To stop it,
+   try 'cron_stop'.
+
+   % rake cron_start
+   % rake cron_stop
+   
+   On Windows systems, the job scheduler can be started with the command line
+
+   % ruby script\runner 'RailsCron.start'
+   
+   and stopped by pressing Ctrl-C.
+   
+5. Boot the server
 ------
 
    To run Motiro within a WEBrick server (a pure Ruby server), you'll just
@@ -184,7 +206,7 @@ What you need to do is:
    In order to finally see Motiro in action, point your favorite browser to
    http://localhost:3000 and you're done.
 
-5. Configure to your project
+6. Configure to your project
 
    Motiro comes pre-configured to its own development needs because we actually
    use it to keep track of our own progress. This may be satisfactory, if you

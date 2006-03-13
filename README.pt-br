@@ -20,6 +20,8 @@ Para ter seu portal Motiro rodando, você vai precisar de:
    ainda não testadas)
 3. Rails 1.0.0 (qualquer versão posterior deve funcionar, versões anteriores
    não testadas)
+4. Cliente Subversion (svn) para o reporter Subversion (que é o único
+   disponível nesta versão do Motiro :-)
 
 Depois de verificar seus requisitos, o que você precisa fazer é:
 
@@ -171,7 +173,27 @@ Depois de verificar seus requisitos, o que você precisa fazer é:
    de sistema você está tentando executar o Motiro e de onde pegou o programa.
    Não se esqueça de incluir o seu relatório de defeito também.
 
-4. Iniciar o servidor
+4. Iniciar o agendador
+-----
+
+   O Motiro usa um programa separado responsável por buscar periodicamente por
+   novas notícias. Este programa é executado como uma tarefa (job) pelo Rails
+   Cron. Ele é um agendador de tarefas parecido com o programa `cron', comum em
+   sistemas Unix, escrito especialmente para o uso com Rails.
+   
+   Para iniciar o agendador, basta utilizar a tarefa rake 'cron_start'. Para
+   pará-lo, há a tarefa 'cron_stop'.
+   
+   % rake cron_start
+   % rake cron_stop
+   
+   Em sistemas Windows, o agendador pode ser iniciado com a linha de comando
+   
+   % ruby script\runner 'RailsCron.start'
+   
+   e derrubado pressionando Ctrl-C.
+   
+5. Iniciar o servidor
 ------
 
    Para rodar o Motiro em um servidor WEBrick (um servidor escrito totalmente em
@@ -195,7 +217,8 @@ Depois de verificar seus requisitos, o que você precisa fazer é:
    Para finalmente ver o Motiro em ação, mire seu navegador favorito para
    http://localhost:3000 e aí está.
 
-5. Configurar para seu projeto
+6. Configurar para seu projeto
+------
 
    O Motiro sai da caixa pré-configurado para seu próprio desenvolvimento porque
    nós usamos ele para acompanharmos nosso próprio progresso, de verdade. Isto
