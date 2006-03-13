@@ -52,3 +52,5 @@ end
 
 # Include your application configuration below
 require_dependency 'ports/ticker'
+
+require 'core/version'

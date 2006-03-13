@@ -8,3 +8,10 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+require(File.join(File.dirname(__FILE__), 'app', 'core', 'version'))
+
+task :dist_tarball => [:test_units, :test_functional] do
+    parentdir = File.expand_path(File.dirname(__FILE__) + '/..')
+    `tar cvzf motiro-#{MOTIRO_VERSION}.tar.gz  .`
+end
