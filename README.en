@@ -28,7 +28,9 @@ What you need to do is:
 
    You probably already did it to read this. Just choose anyplace inside your
    system and unpack the contents of the archive, or get the latest source from
-   our Subversion repository at svn://svn.berlios.de/motiro
+   our Subversion repository at svn://svn.berlios.de/motiro But keep in mind
+   that the repository is a 'live' version, updated with our latest revisions
+   and may present errors at some times.
 
 2. Setup the database
 ------
@@ -156,7 +158,7 @@ What you need to do is:
    % rake
 
    If any test happens to fail, an error message will be printed and the last
-   line will report it. In case you are executing both functional and unit
+   line will report it. In case you are executingtemporariamente both functional and unit
    tests, remember there will be two 'last lines'. If there is any error when
    you run these tests, please contact us on the development list, tell us which
    kind of system you are trying to run Motiro on and from where did you get it.
@@ -207,6 +209,7 @@ What you need to do is:
    http://localhost:3000 and you're done.
 
 6. Configure to your project
+------
 
    Motiro comes pre-configured to its own development needs because we actually
    use it to keep track of our own progress. This may be satisfactory, if you
