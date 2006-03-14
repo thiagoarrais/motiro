@@ -1,4 +1,12 @@
-<p><h1>Últimas notícias do Subversion</h1></p>
+<p>
+  <h1>Últimas notícias do Subversion</h1>
+  <%= link_to ( image_tag('rss.gif', :border => 0),
+                { :controller => 'report',
+                  :action => 'show',
+                  :reporter => 'subversion',
+                  :format => 'rss' } )
+  %>
+</p>
 <% @headlines.each do |headline|%>
   <p>
     <%= h(headline.title) %><br/>
