@@ -1,0 +1,24 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+
+xml.rss 'version' => '2.0' do
+    xml.channel do
+    	xml.title "Motiro | Subversion"
+    	xml.link server_url_for :controller => 'root', :action => 'index'
+    	xml.language 'en'
+    	xml.description 'null'
+    	xml.generator 'Motiro'
+    	xml.pubDate Time.now
+    	xml.ttl '60'
+    	@headlines.each do |headline|
+    	    xml.item do
+    	    	xml.title h(headline.title)
+    	        xml.link server_url_for :controller => 'root', :action => 'index'
+    	        xml.description 'null'
+    	        xml.pubDate h(headline.event_date)
+    	        xml.author h(headline.author)
+    	        xml.guid
+    	    end
+    	end
+    end
+end
+  
