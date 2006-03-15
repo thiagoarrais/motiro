@@ -6,7 +6,7 @@ class MockFileSystem
 
     def expect_open(filename, &action)
         @expected = filename
-        @action = action
+        @action = action if block_given?
     end
     
     def open(filename)

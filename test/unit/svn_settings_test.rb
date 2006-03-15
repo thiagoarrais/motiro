@@ -8,10 +8,10 @@ require 'reporters/svn_settings'
 class SubversionSettingsProviderTest < Test::Unit::TestCase
 
     def setup
-        expected_file_name = File.expand_path(File.dirname(__FILE__) +
+        @expected_file_name = File.expand_path(File.dirname(__FILE__) +
                              '../../../config/report/subversion.yml')
         @opener = MockFileSystem.new
-        @opener.expect_open(expected_file_name) do
+        @opener.expect_open(@expected_file_name) do
             StringIO.new( "repo: svn://svn.berlios.de/motiro\n" +
                           "package_size: 8")
         end
@@ -25,6 +25,23 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
     
     def test_fetches_package_size
         assert_equal 8, @provider.getPackageSize
+        @opener.verify
+    end
+    
+    def test_dynamically_fetches_parameters
+        assert_equal 'svn://svn.berlios.de/motiro', @provider.getRepoURL
+        @opener.verify
+        
+        @opener.expect_open(@expected_file_name) do
+            StringIO.new( "repo: http://svn.berlios.de/svnroot/repos/motiro\n" +
+                          "package_size: 5")
+        end
+        
+        @opener.expect_open(@expected_file_name)
+        
+        assert_equal 'http://svn.berlios.de/svnroot/repos/motiro', @provider.getRepoURL
+        assert_equal 5, @provider.getPackageSize
+        
         @opener.verify
     end
     
