@@ -15,11 +15,9 @@ package_size: 5
 #
 # The number of minutes to wait before sending the reporters out to update the
 # local news base. The reporters can potentially use external resources like
-# network and disk.
+# network and disk, so please exercise wisdom when setting the interval.
+#
 # Set to 0 to send them out everytime a request arrives and to not record
 # anything locally (useful for testing and debugging)
-#
-# Note: The current version only differentiates betweeen zero (go out with
-# every request) and non-zero, using a default interval of 10 minutes
 update_interval: 10
 

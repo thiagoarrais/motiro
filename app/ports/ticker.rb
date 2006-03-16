@@ -1,12 +1,18 @@
 require 'reporters/svn_driver'
+require 'reporters/svn_settings'
 
 class Ticker < ActiveRecord::Base
-   background :tick_drivers, :every => 10.minute
-   
-   @@svnDriver = SubversionDriver.new
 
-   def self.tick_drivers
-       @@svnDriver.tick
-   end
+    interval = SubversionSettingsProvider.new.getUpdateInterval
+
+    if interval != 0 then
+        background :tick_drivers, :every => interval.minute
+    end
    
+    @@svnDriver = SubversionDriver.new
+
+    def self.tick_drivers
+        @@svnDriver.tick
+    end
+
 end
