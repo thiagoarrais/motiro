@@ -3,9 +3,12 @@ require 'reporters/svn_connection'
 
 require 'models/headline'
 
-class SubversionReporter
+require 'core/reporter'
+
+class SubversionReporter < MotiroReporter
 
     def initialize(connection = SubversionConnection.new)
+        super('subversion')
         @connection = connection
     end
 

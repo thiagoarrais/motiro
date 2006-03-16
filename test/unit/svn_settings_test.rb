@@ -13,7 +13,8 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
         @opener = MockFileSystem.new
         @opener.expect_open(@expected_file_name) do
             StringIO.new( "repo: svn://svn.berlios.de/motiro\n" +
-                          "package_size: 8")
+                          "package_size: 8\n" +
+                          "update_interval: 10")
         end
         @provider = SubversionSettingsProvider.new(@opener)
     end
@@ -25,6 +26,11 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
     
     def test_fetches_package_size
         assert_equal 8, @provider.getPackageSize
+        @opener.verify
+    end
+    
+    def test_fectches_update_interval
+        assert_equal 10, @provider.getUpdateInterval
         @opener.verify
     end
     

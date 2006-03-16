@@ -121,6 +121,10 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'Criacao do trunk do projeto', hls[2].title
     end
     
+    def test_name
+        assert_equal 'subversion', @reporter.name
+    end
+    
     #TODO simulate a connection timeout
     
 end

@@ -1,10 +1,13 @@
 require 'test/unit'
 
-class MockSubversionReporter
+require 'core/reporter'
+
+class MockSubversionReporter < MotiroReporter
 
     include Test::Unit::Assertions
 
     def initialize
+        super('subversion')
         @actual_times_latest_headlines_called = 0
         @expected_times_latest_headlines_called = 0
     end
@@ -16,12 +19,10 @@ class MockSubversionReporter
     
     def latest_headlines
         @actual_times_latest_headlines_called += 1
-        @latest_headlines_called = true
         @action.call
     end
     
     def verify
-        assert @latest_headlines_called
         assert_equal @expected_times_latest_headlines_called,
                @actual_times_latest_headlines_called
     end

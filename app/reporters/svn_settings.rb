@@ -19,6 +19,10 @@ class SubversionSettingsProvider
         return load_confs['package_size'].to_i
     end
     
+    def getUpdateInterval
+        return load_confs['update_interval'].to_i
+    end
+    
 private
     def load_confs
         file = @filesystem.open(File.expand_path(File.dirname(__FILE__) +
