@@ -2,23 +2,23 @@ class Headline < ActiveRecord::Base
 
     def self.latest(num)
         find(:all,
-             :order => 'event_date DESC',
+             :order => 'happened_at DESC',
              :limit => num)
     end
     
-    def event_date=(date_components)
+    def happened_at=(date_components)
         year, month, day, hour, min, sec = date_components
-        self[:event_date] = Time.local(year, month, day, hour, min, sec)
+        self[:happened_at] = Time.local(year, month, day, hour, min, sec)
     end
     
     def cached?
         cached_lines = Headline.find(:all,
                            :conditions => ["author = ? " +
                                            "and title = ?" +
-                                           "and event_date =?",
+                                           "and happened_at =?",
                                            self.author,
                                            self.title,
-                                           self.event_date])
+                                           self.happened_at])
             
         return ! cached_lines.empty?
     end

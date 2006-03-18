@@ -44,7 +44,7 @@ private
                 remain = /\n/.match(remain).post_match
             end
             return Headline.new(:author => author,
-                                :event_date => date_components,
+                                :happened_at => date_components,
                                 :title => title), remain
         rescue
             return nil

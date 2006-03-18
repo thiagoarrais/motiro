@@ -20,7 +20,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_one_revision
         hl = @reporter.latest_headline
         assert_equal 'thiagoarrais', hl.author
-        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl.event_date
+        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl.happened_at
         assert_equal 'Criacao do trunk do projeto', hl.title
     end
     
@@ -34,11 +34,11 @@ class SubversionReporterTest < Test::Unit::TestCase
         hls = @reporter.latest_headlines
 
         assert_equal 'thiagoarrais', hls[0].author
-        assert_equal Time.local(2006, 02, 19, 8, 50, 07), hls[0].event_date
+        assert_equal Time.local(2006, 02, 19, 8, 50, 07), hls[0].happened_at
         assert_equal 'Leitura de uma revisao SVN pronta', hls[0].title
 
         assert_equal 'thiagoarrais', hls[1].author
-        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hls[1].event_date
+        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hls[1].happened_at
         assert_equal 'Criacao do trunk do projeto', hls[1].title
     end
     
@@ -52,7 +52,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         hl = @reporter.latest_headline
         
         assert_equal 'thiagoarrais', hl.author
-        assert_equal Time.local(2006, 02, 19, 9, 13, 7), hl.event_date
+        assert_equal Time.local(2006, 02, 19, 9, 13, 7), hl.happened_at
         assert_equal '', hl.title
     end
     
@@ -69,12 +69,12 @@ class SubversionReporterTest < Test::Unit::TestCase
         
         hl7 = hls[0]
         assert_equal 'gilbertogil', hl7.author
-        assert_equal Time.local(2006, 02, 17, 18, 7, 55), hl7.event_date
+        assert_equal Time.local(2006, 02, 17, 18, 7, 55), hl7.happened_at
         assert_equal 'Correcao para a revisao anterior (r6)', hl7.title
         
         hl1 = hls[1]        
         assert_equal 'thiagoarrais', hl1.author
-        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl1.event_date
+        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl1.happened_at
         assert_equal 'Criacao do trunk do projeto', hl1.title
     end
     
@@ -91,12 +91,12 @@ class SubversionReporterTest < Test::Unit::TestCase
         
         hl2 = hls[0]
         assert_equal 'gilbertogil', hl2.author
-        assert_equal Time.local(2006, 02, 17, 18, 7, 55), hl2.event_date
+        assert_equal Time.local(2006, 02, 17, 18, 7, 55), hl2.happened_at
         assert_equal 'Estou tentando enganar o SubversionReporter', hl2.title
         
         hl1 = hls[1]        
         assert_equal 'thiagoarrais', hl1.author
-        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl1.event_date
+        assert_equal Time.local(2006, 02, 14, 15, 45, 13), hl1.happened_at
         assert_equal 'Criacao do trunk do projeto', hl1.title
     end
     

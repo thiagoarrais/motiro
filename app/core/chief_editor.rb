@@ -22,7 +22,7 @@ class ChiefEditor
             reporter = @reporters[reporter_name]
             return reporter.latest_headlines
         else 
-            return Headline.latest @settings.getPackageSize
+            return Headline.latest(@settings.getPackageSize)
         end
     end
     
