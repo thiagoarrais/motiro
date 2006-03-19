@@ -1,0 +1,39 @@
+51c51
+<           #puts "about to push #{commandString} onto the out queue"
+---
+>           puts "about to push #{commandString} onto the out queue"
+54c54
+<             #puts "Waiting for next reply/request"
+---
+>             puts "Waiting for next reply/request"
+73c73
+< 
+---
+>     
+129a130
+>         sleep 1.5
+175a177,179
+>       if system('firefox --version > /dev/null')
+>         return FirefoxBrowserLauncher
+>       end
+196a201,220
+>   
+>   class FirefoxBrowserLauncher
+>     def launch(url)
+>       fork do
+>         exec "firefox " + url.gsub(/&/, '\\\&')
+>       end
+>     end
+>     
+>     def close
+>       ps = `ps xo pid,args | grep firefox-bin`
+>       pid = nil
+>       ps.each_line do |l|
+>         unless /\/bin\/sh/.match(l)
+>           md = /(\d+)\s+\//.match(l)
+>           pid = md[1].to_i unless md.nil?
+>         end
+>       end
+>       puts Process.kill('SIGTERM', pid)
+>     end
+>   end
