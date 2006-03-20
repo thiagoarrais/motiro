@@ -10,6 +10,8 @@ class SubversionReporterTest < Test::Unit::TestCase
         @svn_connection = StubSVNConnection.new
         @svn_connection.log_append_line '------------------------------------------------------------------------'
         @svn_connection.log_append_line 'r1 | thiagoarrais | 2006-02-14 15:45:13 -0400 (Ter, 14 Fev 2006) | 1 line'
+        @svn_connection.log_append_line 'Caminhos mudados:'
+        @svn_connection.log_append_line '   A /trunk'
         @svn_connection.log_append_line ''
         @svn_connection.log_append_line 'Criacao do trunk do projeto'
         @svn_connection.log_append_line '------------------------------------------------------------------------'
@@ -27,6 +29,9 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_more_revisions
         revText =  "------------------------------------------------------------------------\n"
         revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   M /trunk/src/app/reporters/svn_reporter.rb\n"
+        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
         revText += "\n"
         revText += "Leitura de uma revisao SVN pronta"
         @svn_connection.log_prefix_line revText
@@ -45,6 +50,8 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_revision_with_empty_comment
         revText =  "------------------------------------------------------------------------\n"
         revText += "r15 | thiagoarrais | 2006-02-19 09:13:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
         revText += "\n"
         revText += ""
         @svn_connection.log_prefix_line revText
@@ -59,6 +66,10 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_revision_with_multiline_comment
         revText =  "------------------------------------------------------------------------\n"
         revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   A /trunk/src/app\n"
+        revText += "   A /trunk/src/app/reporters\n"
+        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
         revText += "\n"
         revText += "Correcao para a revisao anterior (r6)\n"
         revText += "\n"
@@ -81,10 +92,12 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_comment_with_dashes
         revText =  "------------------------------------------------------------------------\n"
         revText += "r2 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
         revText += "\n"
         revText += "Estou tentando enganar o SubversionReporter\n"
         revText +=  "------------------------------------------------------------------------\n"
-        revText += "Isto aqui ainda � coment�rio da revisao 2\n"
+        revText += "Isto aqui ainda é comentário da revisao 2\n"
         @svn_connection.log_prefix_line revText
 
         hls = @reporter.latest_headlines
@@ -103,10 +116,17 @@ class SubversionReporterTest < Test::Unit::TestCase
     def test_collect_all_available_headlines
         revText =  "------------------------------------------------------------------------\n"
         revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   M /trunk/src/app/reporters/svn_reporter.rb\n"
+        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
         revText += "\n"
         revText += "Leitura de uma revisao SVN pronta\n"
-        revText +=  "------------------------------------------------------------------------\n"
+        revText =  "------------------------------------------------------------------------\n"
         revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   A /trunk/src/app\n"
+        revText += "   A /trunk/src/app/reporters\n"
+        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
         revText += "\n"
         revText += "Correcao para a revisao anterior (r6)\n"
         revText += "\n"
