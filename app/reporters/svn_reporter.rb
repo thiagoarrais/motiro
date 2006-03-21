@@ -38,7 +38,11 @@ private
             author = md[1]
             date_components = md[2..7].collect do |s| s.to_i end
             numlines = md[8].to_i
-            md = /^[^\n]*\n([^\r\n]*)\n/.match(remain)
+            while(! md = remain.match(/^\n/)) do
+                remain = remain.match(/\n/).post_match
+            end
+            remain = md.post_match
+            md = /^([^\r\n]*)\n/.match(remain)
             title = md[1]
             (numlines).times do
                 remain = /\n/.match(remain).post_match

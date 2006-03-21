@@ -12,7 +12,7 @@ class SubversionConnection
     end
 
     def log
-        @runner.run "svn log --limit=#{@settings.getPackageSize} " +
+        @runner.run "svn log -v --limit=#{@settings.getPackageSize} " +
                     "#{@settings.getRepoURL}"
     end
     

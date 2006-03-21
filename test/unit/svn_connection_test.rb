@@ -16,7 +16,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
         runner = MockRunner.new
         connection = SubversionConnection.new(settings, runner)
         
-        runner.expect_run 'svn log --limit=5 svn://svn.berlios.de/motiro'
+        runner.expect_run 'svn log -v --limit=5 svn://svn.berlios.de/motiro'
 
         connection.log
         
@@ -31,7 +31,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
         runner = MockRunner.new
         connection = SubversionConnection.new(settings, runner)
         
-        runner.expect_run 'svn log --limit=3 http://svn.fake.domain.org/fake_repo'
+        runner.expect_run 'svn log -v --limit=3 http://svn.fake.domain.org/fake_repo'
         
         connection.log
         

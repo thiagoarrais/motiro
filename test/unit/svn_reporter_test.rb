@@ -121,7 +121,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
         revText += "\n"
         revText += "Leitura de uma revisao SVN pronta\n"
-        revText =  "------------------------------------------------------------------------\n"
+        revText +=  "------------------------------------------------------------------------\n"
         revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
         revText += "Caminhos mudados:\n"
         revText += "   A /trunk/src/app\n"
