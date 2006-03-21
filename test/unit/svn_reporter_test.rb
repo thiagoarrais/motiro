@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 require 'test/unit'
 require 'stubs/svn_connection'
 require 'reporters/svn_reporter'
+# require 'models/svn_change'
 
 class SubversionReporterTest < Test::Unit::TestCase
 
@@ -141,6 +142,28 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'Criacao do trunk do projeto', hls[2].title
     end
     
+    def test_record_full_comment
+        revText =  "------------------------------------------------------------------------\n"
+        revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+        revText += "Caminhos mudados:\n"
+        revText += "   A /trunk/src/app\n"
+        revText += "   A /trunk/src/app/reporters\n"
+        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
+        revText += "\n"
+        revText += "Correcao para a revisao anterior (r6)\n"
+        revText += "\n"
+        revText += "Esqueci de colocar o svn_reporter. Foi mal!\n"
+        @svn_connection.log_prefix_line revText
+
+        hls = @reporter.latest_headlines
+        
+        expectedComment  = "Correcao para a revisao anterior (r6)\n"
+        expectedComment += "\n"
+        expectedComment += "Esqueci de colocar o svn_reporter. Foi mal!\n"
+
+        assert_equal(expectedComment, hls[0].description)
+    end
+
     def test_name
         assert_equal 'subversion', @reporter.name
     end

@@ -76,7 +76,10 @@ private
         md = /^([^\r\n]*)\n/.match(text)
         theHeadline.title = md[1]
         
-        remain = consume_until('-+', text)
+        md = /\n-+\n/.match(text)
+        theHeadline.description = md.pre_match
+        
+        remain = md[0] + md.post_match
 
         return theHeadline, remain
     end
