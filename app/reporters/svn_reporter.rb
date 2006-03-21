@@ -32,27 +32,65 @@ private
     
     def svn_parse_entry(text)
         begin
-            remain = /^-+\n/.match(text).post_match
-            md = /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/.match(remain)
-            remain = md.post_match
-            author = md[1]
-            date_components = md[2..7].collect do |s| s.to_i end
-            numlines = md[8].to_i
-            while(! md = remain.match(/^\n/)) do
-                remain = remain.match(/\n/).post_match
-            end
-            remain = md.post_match
-            md = /^([^\r\n]*)\n/.match(remain)
-            title = md[1]
-            (numlines).times do
-                remain = /\n/.match(remain).post_match
-            end
-            return Headline.new(:author => author,
-                                :happened_at => date_components,
-                                :title => title), remain
+            result = Headline.new
+            
+            result, remain = consume_dashes(result, text)
+            result, remain = parse_header(result, remain)
+            result, remain = parse_changed_resources(result, remain)
+            result, remain = parse_description(result, remain)
+
+            return result, remain
         rescue
             return nil
         end
     end
+    
+    def consume_dashes(theHeadline, text)
+        remain = /^-+\n/.match(text).post_match
+        return theHeadline, remain
+    end
+    
+    def parse_header(theHeadline, text)
+        md = text.match /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/
+        remain = md.post_match
+        
+        theHeadline.author = md[1]
+        theHeadline.happened_at = md[2..7].collect do |s| s.to_i end
+        
+        return theHeadline, remain
+    end
+    
+    def parse_changed_resources(theHeadline, text)
+        remain = text
+    
+        while(! md = remain.match(/^\n/)) do
+            remain = remain.match(/\n/).post_match
+        end
 
+        remain = md.post_match
+        
+        return theHeadline, remain
+    end
+    
+    def parse_description(theHeadline, text)
+        md = /^([^\r\n]*)\n/.match(text)
+        theHeadline.title = md[1]
+        
+        remain = consume_until('-+', text)
+
+        return theHeadline, remain
+    end
+    
+    # consumes lines until a line matching the given regexp is found
+    def consume_until(regexp, text)
+        theRegexp = Regexp.new("^#{regexp}\n")
+        remain = text
+        
+        while(!remain.match(theRegexp)) do
+            remain = remain.match(/\n/.post_match)
+        end
+        
+        return remain
+    end
+    
 end
