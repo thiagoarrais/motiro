@@ -11,6 +11,11 @@ class Headline < ActiveRecord::Base
         self[:happened_at] = Time.local(year, month, day, hour, min, sec)
     end
     
+    # Saves the headline locally, if it isn't already cached
+    def cache
+        self.save unless self.cached?
+    end
+
     def cached?
         cached_lines = Headline.find(:all,
                            :conditions => ["author = ? " +

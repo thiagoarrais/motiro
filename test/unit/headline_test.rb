@@ -1,5 +1,23 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+# A kind of headline that doesn't have real save method, but a
+# fake one that only records the number of times the method got called
+class FakeSaveHeadline < Headline
+
+    def initialize(params)
+        super(params)
+    end
+
+    def times_save_called
+        @times_save_called || 0
+    end
+
+    def save
+        @times_save_called = (@save_times_called || 0) + 1
+    end
+    
+end
+
 class HeadlineTest < Test::Unit::TestCase
     fixtures :headlines
 
@@ -49,11 +67,34 @@ class HeadlineTest < Test::Unit::TestCase
     
     def test_cache_with_date_time
        aHeadline = Headline.new(:author => 'thiagoarrais',
-                               :title => 'fiz besteira',
-                               :happened_at => [1983, 1, 1, 00, 15, 12])
+                                :title => 'fiz besteira',
+                                :happened_at => [1983, 1, 1, 00, 15, 12])
        aHeadline.save
        
        assert aHeadline.cached?
+    end
+    
+    
+
+    def test_cache_new
+        aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
+                                        :title => 'this is a new headline',
+                                        :happened_at => [1983, 1, 1, 00, 15, 12])
+                               
+        aHeadline.cache
+        
+        assert(1, aHeadline.times_save_called)
+    end
+    
+    def test_cache_already_recorded
+        aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
+                                         :title => 'we will try to cache this headline twice',
+                                         :happened_at => [1983, 8, 8, 07, 15, 12])
+        
+        aHeadline.cache
+        aHeadline.cache
+        
+        assert(1, aHeadline.times_save_called)
     end
     
 end

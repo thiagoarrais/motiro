@@ -12,7 +12,7 @@ class SubversionDriver
         hls = @reporter.latest_headlines
         
         hls.each do |hl|
-            hl.save unless hl.cached?
+            hl.cache
         end
     end
 
