@@ -30,11 +30,4 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
         assertTextPresent 'Últimas notícias do Subversion'
     end
     
-    def test_report_rss
-        open('/feed/subversion')
-        assertText('//rss/channel/title', 'Motiro - Subversion')
-        assertElementPresent '//rss/channel/description'
-        assertText '//rss/channel/generator', 'Motiro'
-    end
-    
 end

@@ -39,6 +39,23 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertTextPresent commit_msg
     end
     
+    def test_report_rss
+        commit_title = 'Created my project'
+        commit_msg = "#{commit_title}\n" +
+                     "\n"
+                     "This revision creates a brand new directory where we \n" +
+                     "will keep or project files"
+        
+        @repo.mkdir('myproject', commit_msg)
+
+        open('/feed/subversion')
+        assertText('//rss/channel/title', 'Motiro - Subversion')
+        assertElementPresent '//rss/channel/description'
+        assertText '//rss/channel/generator', 'Motiro'
+        assertText '//rss/channel/item/title', commit_title
+        assertText('//rss/channel/item/description', commit_msg)
+    end
+    
     def teardown
         super
         @repo.destroy

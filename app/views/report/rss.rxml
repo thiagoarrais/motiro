@@ -15,7 +15,7 @@ xml.rss 'version' => '2.0' do
     	        xml.link(server_url_for(:controller => 'report',
     	                                :action => 'show',
     	                                :id => headline.id))
-    	        xml.description 'null'
+    	        xml.description(headline.description)
     	        xml.pubDate h(headline.happened_at)
     	        xml.author h(headline.author)
     	        xml.guid
