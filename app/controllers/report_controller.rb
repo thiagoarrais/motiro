@@ -9,11 +9,18 @@ class ReportController < ApplicationController
     end
 
     def show
-        reporter = params[:reporter]
-        format = params[:format] || 'html_fragment'
+        if params[:id]
+            id = params[:id]
+            @headline = Headline.find(id)
+            
+            render(:action => 'detail')
+        else
+            reporter = params[:reporter]
+            format = params[:format] || 'html_fragment'
         
-        @headlines = @chief_editor.latest_news_from reporter
-        render(:action => format)
+            @headlines = @chief_editor.latest_news_from reporter
+            render(:action => format)
+        end
     end
     
 end

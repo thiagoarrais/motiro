@@ -9,7 +9,11 @@
 </p>
 <% @headlines.each do |headline|%>
   <p>
-    <%= h(headline.title) %><br/>
+    <%= link_to( h(headline.title),
+                 { :controller => 'report',
+                   :action => 'show',
+                   :id => headline.id } )%>
+    <br/>
     <font size="-1">
       <i><%= h(headline.author) %></i>
       <%= h(headline.happened_at) %>

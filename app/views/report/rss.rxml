@@ -12,7 +12,9 @@ xml.rss 'version' => '2.0' do
     	@headlines.each do |headline|
     	    xml.item do
     	    	xml.title h(headline.title)
-    	        xml.link(server_url_for :controller => 'root', :action => 'index')
+    	        xml.link(server_url_for(:controller => 'report',
+    	                                :action => 'show',
+    	                                :id => headline.id))
     	        xml.description 'null'
     	        xml.pubDate h(headline.happened_at)
     	        xml.author h(headline.author)
