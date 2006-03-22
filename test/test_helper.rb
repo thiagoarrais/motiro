@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 
 $:.push File.expand_path(File.dirname(__FILE__))
+$:.push File.expand_path(File.dirname(__FILE__) + '/lib')
 $:.push File.expand_path(File.dirname(__FILE__) + '/../app')
 
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
