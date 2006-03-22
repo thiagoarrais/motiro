@@ -12,7 +12,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
                      "deploy our project from source code"
         dir_name = 'myproject'
         
-        svn_command("mkdir #{@repo_url}/#{dir_name}", commit_msg)
+        @repo.mkdir(dir_name, commit_msg)
 
         open '/report/subversion'
         assertTextPresent commit_title
