@@ -1,23 +1,3 @@
-# repo
-#
-# Tells the reporter where to find your project's repository
-# Default: http://svn.berlios.de/svnroot/repos/motiro
-repo: http://svn.berlios.de/svnroot/repos/motiro
-
-# package_size
-#
-# Tells the reporter how many headlines to produce by run
-# It is also used as the number of latest headlines to be shown
-# Default: 5
+repo: svn://localhost:36906/myproject
+update_interval: 0
 package_size: 5
-
-# update_interval
-#
-# The number of minutes to wait before sending the reporters out to update the
-# local news base. The reporters can potentially use external resources like
-# network and disk, so please exercise wisdom when setting the interval.
-#
-# Set to 0 to send them out everytime a request arrives and to not record
-# anything locally (useful for testing and debugging)
-update_interval: 10
-

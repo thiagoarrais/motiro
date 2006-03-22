@@ -7,6 +7,7 @@ class LocalSubversionRepository
 
     attr_reader :url
     attr_reader :wc_dir
+    attr_reader :username
 
     def initialize
         @username = 'motiro'
