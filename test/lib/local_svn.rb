@@ -6,26 +6,51 @@ include FileUtils
 class LocalSubversionRepository
 
     attr_reader :url
+    attr_reader :wc_dir
 
     def initialize
         @username = 'motiro'
         @password = 'motiro-pass'
 
-        repo_dir = create_repo
+        @root_dir = find_root_dir
+        repo_dir = create_repo(@root_dir)
         authorize_anon_read(repo_dir, @username, @password)
         @url = start_server(repo_dir)
+        @wc_dir = create_working_copy(@root_dir, @url)        
+        @valid = true
     end
     
     def destroy
-        kill_server
-        rm_rf(@svn_dir)
+        if @valid
+            @valid = false
+            kill_server
+            rm_rf(@root_dir)
+        end
+    end
+    
+    def mkdir(dirname, comment=nil)
+        if comment.nil? then
+            svn_command("mkdir #{self.wc_dir}/#{dirname}")
+        else
+            svn_command("mkdir #{self.url}/#{dirname}", comment)
+        end
+    end
+    
+    def commit(comment)
+        svn_command("commit #{self.wc_dir}", comment)
     end
 
 private
-    def create_repo
-        tmpdir = ENV['TEMP']
-        @svn_dir =  find_free_dir_under tmpdir
-        repo_dir =  "#{@svn_dir}/repo"
+
+    def svn_command(command, comment=nil)
+        line = "svn #{command} --username #{@username} --password #{@password}"
+        line += " -m '#{comment}'" unless comment.nil?
+        line += " > /dev/null 2>&1"
+        system(line)
+    end
+
+    def create_repo(root_dir)
+        repo_dir =  "#{root_dir}/repo"
 
         mkdir_p(repo_dir) 
 
@@ -34,9 +59,19 @@ private
         return repo_dir
     end
     
-    def find_free_dir_under(parent_dir)
+    def create_working_copy(root_dir, repo_url)
+       wc_dir = find_free_dir_under(root_dir, 'wc')
+       svn_command("checkout #{repo_url} #{wc_dir}")
+       return wc_dir
+    end
+    
+    def find_root_dir
+        tmpdir = ENV['TEMP']
+        return find_free_dir_under(tmpdir, 'svn')
+    end
+
+    def find_free_dir_under(parent_dir, prefix)
         contents = Dir.entries(parent_dir)
-        prefix = 'svn'
         suffix = ''
         if (contents.include?(prefix))
             suffix = 1
