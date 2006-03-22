@@ -34,7 +34,7 @@
     <div id="svn">
       <%= render_component(:controller => 'report',
                            :action =>  'show',
-                           :reporter => 'subversion') %>
+                           :params => {:reporter => 'subversion'}) %>
     </div>
   <hr/>
   <font size="-2" color="#909090">Motiro versão <%= MOTIRO_VERSION %></font>

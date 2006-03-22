@@ -32,6 +32,16 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertText "//rss/channel/item/author", @username
     end
     
+    def test_show_subversion_on_main_page_when_in_development_mode
+        commit_msg = 'Created another project'
+
+        svn_command("mkdir #{@repo_url}/myproject", commit_msg)
+        
+        open '/'
+        assertTextPresent 'Últimas notícias do Subversion'
+        assertTextPresent commit_msg
+    end
+    
     def teardown
         super
         kill_server
