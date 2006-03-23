@@ -27,7 +27,10 @@ class ChiefEditor
     end
     
     def article_for_headline(hid)
-        return Headline.find(hid)
+        headline = Headline.find(hid)
+        reporter = @reporters[headline.reported_by]
+
+        return reporter.article_for(headline.rid)
     end
     
     # Adds the given reporter to the set of reporters employed by the editor

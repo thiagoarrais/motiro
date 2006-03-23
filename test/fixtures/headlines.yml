@@ -5,6 +5,8 @@ gita:
   author: raulseixas
   title: gita
   happened_at: 2005-01-01 00:00:00
+  reported_by: subversion
+  rid: r12
   description: gita
                
                This is the CD reissue of the 1974 album and second solo release
@@ -17,11 +19,15 @@ dia_em_que_a_terra_parou:
   author: raulseixas
   title: o dia em que a terra parou
   happened_at: 2036-02-01 00:00:00
+  reported_by: subversion
+  rid: r16
 
 svn_demo_headline:
   id: 3
   author: james
   title: This is a subversion revision comment
   happened_at: 2006-03-23 11:10:04
+  reported_by: subversion
+  rid: r32
     
 

@@ -4,9 +4,13 @@ create table headlines (
 	author varchar(40) not null,
 	title varchar(100) not null,
 	happened_at timestamp not null,
+	reported_by varchar(40) not null,
+    -- An id that identifies the revision to the reporter
+	rid varchar(40) not null,
 	description text,
 	primary key (id)
 );
+drop table if exists articles;
 create table articles (
 	id int not null auto_increment,
 	headline_id int not null,

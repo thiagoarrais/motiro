@@ -23,9 +23,17 @@ class SubversionReporter < MotiroReporter
         hl = 0
         until hl.nil? do
             hl, remain = svn_parse_entry(remain)
-            hls.push hl unless hl.nil?
+            unless hl.nil?
+                hl.reported_by = self.name
+                hls.push hl
+            end
         end
         return hls
+    end
+    
+    def article_for(rid)
+        revision_id = rid.match(/^r(.+)/)[1]
+        @connection.log(revision_id)
     end
     
 private
@@ -51,11 +59,12 @@ private
     end
     
     def parse_header(theHeadline, text)
-        md = text.match /^r\d+\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/
+        md = text.match /^(r\d+)\s*\|\s*(\w+)\s*\|\s(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)[^|]*\|\s*(\d+)\s*[^\n]*\n/
         remain = md.post_match
         
-        theHeadline.author = md[1]
-        theHeadline.happened_at = md[2..7].collect do |s| s.to_i end
+        theHeadline.rid = md[1]
+        theHeadline.author = md[2]
+        theHeadline.happened_at = md[3..8].collect do |s| s.to_i end
         
         return theHeadline, remain
     end

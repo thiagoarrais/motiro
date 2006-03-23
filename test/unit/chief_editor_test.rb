@@ -1,5 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'rubygems'
+
+require 'flexmock'
+
 require 'core/chief_editor'
 
 require 'stubs/svn_settings'
@@ -20,6 +24,8 @@ class Headline
 end                
 
 class ChiefEditorTest < Test::Unit::TestCase
+
+    fixtures :headlines, :articles
 
     @@log = ''
 
@@ -80,6 +86,29 @@ class ChiefEditorTest < Test::Unit::TestCase
         chief_editor.latest_news_from 'subversion'
         
         reporter.verify
+    end
+    
+    def test_askes_reporter_for_article_in_development_mode
+        FlexMock.use do |reporter|
+            settings = StubConnectionSettingsProvider.new(
+                       :update_interval => 0)
+    
+            svn_demo_headline = headlines('svn_demo_headline')
+            svn_demo_article = articles('svn_demo_article')
+
+            reporter.should_receive(:name).
+                returns('subversion')
+
+            reporter.should_receive(:article_for).with(svn_demo_headline.rid).
+                returns(svn_demo_article).
+                once
+
+            chief_editor = ChiefEditor.new(settings)
+            
+            chief_editor.employ reporter
+        
+            chief_editor.article_for_headline(svn_demo_headline.id)
+        end
     end
     
     #TODO should signal when the reporter is not registered

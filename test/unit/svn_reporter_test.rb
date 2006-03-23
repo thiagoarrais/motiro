@@ -168,6 +168,20 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'subversion', @reporter.name
     end
     
+    def test_sets_reported_by_field
+        hls = @reporter.latest_headlines
+        headline = hls[0]
+        
+        assert_equal @reporter.name, headline.reported_by
+    end
+    
+    def test_sets_rid_field
+        hls = @reporter.latest_headlines
+        headline = hls[0]
+        
+        assert_equal 'r1', headline.rid
+    end
+    
     #TODO simulate a connection timeout
     
 end
