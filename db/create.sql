@@ -7,3 +7,10 @@ create table headlines (
 	description text,
 	primary key (id)
 );
+create table articles (
+	id int not null auto_increment,
+	headline_id int not null,
+	description text,
+	constraint fk_article_headline foreign key (headline_id) references headlines(id),
+	primary key (id)
+);

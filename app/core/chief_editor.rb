@@ -26,6 +26,10 @@ class ChiefEditor
         end
     end
     
+    def article_for_headline(hid)
+        return Headline.find(hid)
+    end
+    
     # Adds the given reporter to the set of reporters employed by the editor
     def employ(reporter)
         @reporters.update(reporter.name => reporter)

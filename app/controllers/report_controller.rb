@@ -4,14 +4,14 @@ require 'core/chief_editor'
 
 class ReportController < ApplicationController
 
-    def initialize
-        @chief_editor = ChiefEditor.new
+    def initialize(chief_editor=ChiefEditor.new)
+        @chief_editor = chief_editor
     end
 
     def show
         if params[:id]
             id = params[:id]
-            @headline = Headline.find(id)
+            @article = @chief_editor.article_for_headline(id.to_i)
             
             render(:action => 'detail')
         else

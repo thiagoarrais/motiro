@@ -1,0 +1,8 @@
+svn_demo_article:
+    id: 1
+    headline_id: 3
+    description: This is a subversion revision comment
+                 
+                 The comment is a multiline comment that indicates the purpose
+                 of the revision.
+
