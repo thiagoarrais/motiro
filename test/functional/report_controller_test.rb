@@ -13,8 +13,6 @@ class ReportController; def rescue_action(e) raise e end; end
 
 class ReportControllerTest < Test::Unit::TestCase
 
-    self.use_instantiated_fixtures  = true
-
     fixtures :headlines, :articles
     
     def setup
@@ -27,7 +25,7 @@ class ReportControllerTest < Test::Unit::TestCase
         get :show, {:format => 'html_fragment'}
         assert_response :success
         assert_not_nil assigns(:headlines)
-        assert_equal @headlines.size, assigns(:headlines).size
+        assert_equal Headline.count, assigns(:headlines).size
     end
     
     def test_fetches_individual_article_based_on_headline_id
