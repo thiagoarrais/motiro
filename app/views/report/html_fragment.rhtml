@@ -12,7 +12,8 @@
     <%= link_to( h(headline.title),
                  { :controller => 'report',
                    :action => 'show',
-                   :id => headline.id } )%>
+                   :reporter => 'subversion',
+                   :id => headline.rid } )%>
     <br/>
     <font size="-1">
       <i><%= h(headline.author) %></i>

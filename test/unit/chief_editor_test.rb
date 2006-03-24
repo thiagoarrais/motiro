@@ -107,7 +107,36 @@ class ChiefEditorTest < Test::Unit::TestCase
             
             chief_editor.employ reporter
         
-            chief_editor.article_for_headline(svn_demo_headline.id)
+            chief_editor.article_for_headline(svn_demo_headline.reported_by,
+                                              svn_demo_headline.rid)
+        end
+    end
+    
+    def test_fetches_cached_headlines_in_production_mode
+        FlexMock.use do |reporter|
+            settings = StubConnectionSettingsProvider.new(
+                       :update_interval => 8)
+    
+            svn_demo_headline = headlines('svn_demo_headline')
+            svn_demo_article = articles('svn_demo_article')
+
+            reporter.should_receive(:name).
+                returns('subversion')
+
+            reporter.should_receive(:article_for).
+                never
+
+            chief_editor = ChiefEditor.new(settings)
+            
+            chief_editor.employ reporter
+            
+            article = chief_editor.article_for_headline(
+                          svn_demo_headline.reported_by,
+                          svn_demo_headline.rid)
+            
+            reporter.mock_verify
+        
+            assert_equal svn_demo_article.description, article.description
         end
     end
     

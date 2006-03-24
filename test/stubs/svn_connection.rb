@@ -1,7 +1,5 @@
 class StubSVNConnection
 
-    attr_reader :log
-
     def initialize
         @log = ''
     end
@@ -12,6 +10,10 @@ class StubSVNConnection
     
     def log_prefix_line(text)
         @log = text + "\n" + @log
+    end
+    
+    def log(rev_id=nil?)
+        return @log
     end
 
 end

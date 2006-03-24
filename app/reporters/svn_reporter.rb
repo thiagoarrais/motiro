@@ -33,7 +33,12 @@ class SubversionReporter < MotiroReporter
     
     def article_for(rid)
         revision_id = rid.match(/^r(.+)/)[1]
-        @connection.log(revision_id)
+        
+        output = @connection.log(revision_id)
+        
+        result_headline, remain = svn_parse_entry(output)
+
+        return result_headline.article
     end
     
 private
@@ -86,7 +91,8 @@ private
         theHeadline.title = md[1]
         
         md = /\n-+\n/.match(text)
-        theHeadline.description = md.pre_match
+        theHeadline.article = Article.new
+        theHeadline.article.description = md.pre_match
         
         remain = md[0] + md.post_match
 

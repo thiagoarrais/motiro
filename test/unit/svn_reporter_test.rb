@@ -161,7 +161,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         expectedComment += "\n"
         expectedComment += "Esqueci de colocar o svn_reporter. Foi mal!\n"
 
-        assert_equal(expectedComment, hls[0].description)
+        assert_equal(expectedComment, hls[0].article.description)
     end
 
     def test_name
@@ -175,11 +175,21 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal @reporter.name, headline.reported_by
     end
     
-    def test_sets_rid_field
+    def test_retrieves_article_from_revision_id
+        hls = @reporter.latest_headlines
+        headline = hls[0]
+
+        article = @reporter.article_for(headline.rid)
+
+        assert_not_nil article
+        assert_equal 'Criacao do trunk do projeto', article.description
+    end
+    
+    def test_fills_headline_with_article
         hls = @reporter.latest_headlines
         headline = hls[0]
         
-        assert_equal 'r1', headline.rid
+        assert_equal 'Criacao do trunk do projeto', headline.article.description
     end
     
     #TODO simulate a connection timeout

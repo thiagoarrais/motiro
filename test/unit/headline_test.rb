@@ -1,5 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'rubygems'
+
+require 'flexmock'
+
 # A kind of headline that doesn't have real save method, but a
 # fake one that only records the number of times the method got called
 class FakeSaveHeadline < Headline
@@ -19,7 +23,7 @@ class FakeSaveHeadline < Headline
 end
 
 class HeadlineTest < Test::Unit::TestCase
-    fixtures :headlines
+    fixtures :headlines, :articles
 
     def test_create
         headline = Headline.find(1)
@@ -95,6 +99,15 @@ class HeadlineTest < Test::Unit::TestCase
         aHeadline.cache
         
         assert(1, aHeadline.times_save_called)
+    end
+    
+    def test_retrieves_corresponding_article
+        svn_demo_headline = headlines('svn_demo_headline')
+        svn_demo_article = articles('svn_demo_article')
+        aHeadline = Headline.find(svn_demo_headline.id)
+        
+        article = aHeadline.article
+        assert_equal svn_demo_article.description, article.description
     end
     
 end

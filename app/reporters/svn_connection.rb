@@ -11,9 +11,15 @@ class SubversionConnection
         @settings, @runner = settings, runner
     end
 
-    def log
-        @runner.run "svn log -v --limit=#{@settings.getPackageSize} " +
-                    "#{@settings.getRepoURL}"
+    def log(rev_id=nil)
+        command = "svn log #{@settings.getRepoURL} -v "
+        if rev_id.nil? 
+            command += "--limit=#{@settings.getPackageSize}"
+        else
+            command += "-r#{rev_id.to_s}"
+        end
+        
+        @runner.run command
     end
     
 end                                                           

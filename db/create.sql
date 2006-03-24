@@ -7,7 +7,6 @@ create table headlines (
 	reported_by varchar(40) not null,
     -- An id that identifies the revision to the reporter
 	rid varchar(40) not null,
-	description text,
 	primary key (id)
 );
 drop table if exists articles;

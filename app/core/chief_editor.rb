@@ -26,11 +26,21 @@ class ChiefEditor
         end
     end
     
-    def article_for_headline(hid)
-        headline = Headline.find(hid)
-        reporter = @reporters[headline.reported_by]
+    def article_for_headline(reporter_name, rid)
+        if (@settings.getUpdateInterval == 0) then
+            # we're in development mode
+            # every request should be routed directly to the reporter
+            reporter = @reporters[reporter_name]
 
-        return reporter.article_for(headline.rid)
+            return reporter.article_for(rid)
+        else 
+            headline=  Headline.find(:first,
+                                     :conditions => ["reported_by = ? " +
+                                                     "and rid = ?",
+                                                     reporter_name,
+                                                     rid])
+            return headline.article
+        end
     end
     
     # Adds the given reporter to the set of reporters employed by the editor

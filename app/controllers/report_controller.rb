@@ -9,13 +9,14 @@ class ReportController < ApplicationController
     end
 
     def show
+        reporter = params[:reporter]
+
         if params[:id]
             id = params[:id]
-            @article = @chief_editor.article_for_headline(id.to_i)
+            @article = @chief_editor.article_for_headline(reporter, id)
             
             render(:action => 'detail')
         else
-            reporter = params[:reporter]
             format = params[:format] || 'html_fragment'
         
             @headlines = @chief_editor.latest_news_from reporter

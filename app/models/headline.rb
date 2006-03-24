@@ -1,5 +1,7 @@
 class Headline < ActiveRecord::Base
 
+    has_one :article
+
     def self.latest(num)
         find(:all,
              :order => 'happened_at DESC',
@@ -27,5 +29,5 @@ class Headline < ActiveRecord::Base
             
         return ! cached_lines.empty?
     end
-
+    
 end
