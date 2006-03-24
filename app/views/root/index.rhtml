@@ -6,7 +6,10 @@
     <title>Motiro: Bem-vindo</title>
   </head>
   <body>
-    <div id="description">
+      <% if @flash[:notice] -%>
+        <div id="notice"><%= @flash[:notice] %></div>
+      <% end -%>
+      <div id="description">
       <h1>Motiro</h1>
       <p>
         Seja bem-vindo! Esta é a página principal do projeto Motiro.

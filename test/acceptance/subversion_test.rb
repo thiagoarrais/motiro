@@ -78,6 +78,16 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         # TODO assert that details of adding a file is showing the file contents
         # TODO assert that details of altering a file shows the diff output
     end
+    
+    def test_showing_invalid_rid_shows_nice_error_message
+        commit_msg = 'Creating the project root'
+        
+        @repo.mkdir('projectroot', commit_msg)
+        
+        open '/report/show/r104?reporter=subversion'
+        assertTitle "Motiro: Bem-vindo"
+        assertText "//div[@id='notice']", "Não foi possível encontrar o artigo r104 do repórter Subversion"
+    end
 
     def teardown
         super

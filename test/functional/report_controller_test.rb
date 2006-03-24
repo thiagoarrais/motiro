@@ -48,6 +48,12 @@ class ReportControllerTest < Test::Unit::TestCase
             get :show, {:reporter => 'subversion', :id => 3}
         end
     end
+    
+    def test_calling_show_with_invalid_rid_redirects_to_index
+            get :show, { :reporter => 'subversion', :id => 'r300' }
+            assert_equal 'Não foi possível encontrar o artigo r300 do repórter Subversion', flash[:notice]
+            assert_redirected_to :controller => 'root', :action => 'index'
+    end
 
   #TODO what happens if there are no cached headlines?
   #TODO more headlines registered than the package size
