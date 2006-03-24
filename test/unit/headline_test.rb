@@ -110,4 +110,25 @@ class HeadlineTest < Test::Unit::TestCase
         assert_equal svn_demo_article.description, article.description
     end
     
+    def test_saving_also_saves_article_inside
+        aHeadline = Headline.new(:author => 'thiagoarrais',
+                                 :title => 'this is the headline title',
+                                 :reported_by => 'subversion',
+                                 :happened_at => [1983, 1, 1, 02, 15, 12],
+                                 :rid => 'r47')
+                                
+        full_comment = "this is the headline title\n" +
+                       "\n"  +
+                       "this is the full comment"
+
+        aHeadline.article = Article.new(:description => full_comment)
+       
+        aHeadline.save
+       
+        article = Article.find(:first,
+                              :conditions => ["description = ?",
+                                              full_comment]) 
+        assert_not_nil article
+    end
+    
 end
