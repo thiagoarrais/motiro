@@ -70,11 +70,7 @@ class CachedEditorStrategy
     end    
     
     def article_for_headline(reporter_name, rid)
-        headline=  Headline.find(:first,
-                                 :conditions => ["reported_by = ? " +
-                                                 "and rid = ?",
-                                                 reporter_name,
-                                                 rid])
+        headline =  Headline.find_with_reporter_and_rid(reporter_name, rid)
         return headline.article
     end
 

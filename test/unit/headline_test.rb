@@ -131,4 +131,13 @@ class HeadlineTest < Test::Unit::TestCase
         assert_not_nil article
     end
     
+    def test_search_by_reporter_name_and_rid
+        svn_demo_headline = headlines('svn_demo_headline')
+        aHeadline = Headline.find_with_reporter_and_rid(svn_demo_headline.reported_by,
+                                                        svn_demo_headline.rid)
+        
+        assert_not_nil aHeadline
+        assert_equal svn_demo_headline, aHeadline
+    end
+    
 end

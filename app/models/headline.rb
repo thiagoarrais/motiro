@@ -8,6 +8,13 @@ class Headline < ActiveRecord::Base
              :limit => num)
     end
     
+    def self.find_with_reporter_and_rid(reporter_name, rid)
+        find(:first,
+             :conditions => ["reported_by = ? and rid = ?",
+                             reporter_name, rid])        
+    end    
+
+
     def happened_at=(date_components)
         year, month, day, hour, min, sec = date_components
         self[:happened_at] = Time.local(year, month, day, hour, min, sec)
