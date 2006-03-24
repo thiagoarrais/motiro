@@ -76,13 +76,27 @@ private
     
     def parse_changed_resources(theHeadline, text)
         remain = text
+        
+        # TODO move this to the Headline class
+        theHeadline.article = Article.new
+        changes = theHeadline.article.changes
+
+        # skip the first line with the title 'Changed resources' (or something
+        # like this)
+        remain = remain.match(/\n/).post_match
+        
+        md = remain.match(/^\n/)
+        resources = md.pre_match
+        remain = md.post_match
     
-        while(! md = remain.match(/^\n/)) do
-            remain = remain.match(/\n/).post_match
+        while('' != resources) do
+            md = resources.match(/\n/)
+            resources = md.post_match
+            
+            summary = md.pre_match
+            changes.push(Change.new(:summary => summary))
         end
 
-        remain = md.post_match
-        
         return theHeadline, remain
     end
     
@@ -91,7 +105,6 @@ private
         theHeadline.title = md[1]
         
         md = /\n-+\n/.match(text)
-        theHeadline.article = Article.new
         theHeadline.article.description = md.pre_match
         
         remain = md[0] + md.post_match

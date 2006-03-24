@@ -17,3 +17,11 @@ create table articles (
 	constraint fk_article_headline foreign key (headline_id) references headlines(id),
 	primary key (id)
 );
+drop table if exists changes;
+create table changes (
+	id int not null auto_increment,
+	article_id int not null,
+	summary text,
+	constraint fk_change_article foreign key (article_id) references articles(id),
+	primary key (id)
+);

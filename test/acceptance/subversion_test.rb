@@ -72,8 +72,8 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertElementPresent "//div[@id='description']"
         assertTextPresent commit_msg
         
-        # assertElementPresent "//div[@id='summary']"
-        # assertTextPresent "Adicionado #{dir_name}"
+        assertElementPresent "//div[@id='summary']"
+        assertTextPresent "A /#{dir_name}"
         
         # TODO assert that details of adding a file is showing the file contents
         # TODO assert that details of altering a file shows the diff output

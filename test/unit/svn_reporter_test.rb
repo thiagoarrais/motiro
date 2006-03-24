@@ -189,9 +189,17 @@ class SubversionReporterTest < Test::Unit::TestCase
         hls = @reporter.latest_headlines
         headline = hls[0]
         
-        assert_equal 'Criacao do trunk do projeto', headline.article.description
+        article = headline.article
+        assert_not_nil article
+        
+        changes = article.changes
+        assert_not_nil changes
+        assert_equal 1, changes.size
+        
+        assert_equal 'Criacao do trunk do projeto', article.description
+        assert_equal '   A /trunk', changes[0].summary
     end
     
-    #TODO simulate a connection timeout
+    #TODO simulate a connection timeout on live and cached modes
     
 end
