@@ -1,0 +1,8 @@
+#notice {
+    border: 2px solid red;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    background-color: red;
+    font: bold smaller sans-serif;
+    color: #ffffff;
+}
