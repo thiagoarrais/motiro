@@ -27,6 +27,10 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         clickAndWait "//img[@src='/images/rss.gif']"
         assertText "//rss/channel/item/title", commit_msg
         assertText "//rss/channel/item/author", @repo.username
+        
+        storeText "//rss/channel/item/link", 'link'
+        open '${link}'
+        assert_title 'Motiro - Subversion - Revisão r1'
     end
     
     def test_show_subversion_on_main_page_when_in_development_mode

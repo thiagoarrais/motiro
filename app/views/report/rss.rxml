@@ -13,8 +13,9 @@ xml.rss 'version' => '2.0' do
     	    xml.item do
     	    	xml.title h(headline.title)
     	        xml.link(server_url_for(:controller => 'report',
-    	                                :action => 'show',
-    	                                :id => headline.id))
+                                        :action => 'show',
+                                        :reporter => 'subversion',
+                                        :id => headline.rid))
     	        xml.description(headline.article.description)
     	        xml.pubDate h(headline.happened_at)
     	        xml.author h(headline.author)
