@@ -1,6 +1,11 @@
 class Headline < ActiveRecord::Base
 
     has_one :article
+    
+    def initialize(params={})
+        super(params)
+        self.article = Article.new
+    end
 
     def self.latest(num)
         find(:all,

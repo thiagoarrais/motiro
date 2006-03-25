@@ -77,8 +77,6 @@ private
     def parse_changed_resources(theHeadline, text)
         remain = text
         
-        # TODO move this to the Headline class
-        theHeadline.article = Article.new
         changes = theHeadline.article.changes
 
         # skip the first line with the title 'Changed resources' (or something

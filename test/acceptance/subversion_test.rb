@@ -69,6 +69,9 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         open '/report/subversion'
         assertTextPresent commit_title
         clickAndWait "//a[text() = \"#{commit_title}\"]"
+
+        assertTitle "Motiro - Subversion - Revisão r1"
+        assertElementPresent "//h1[text() = 'Revisão r1']"
         assertElementPresent "//div[@id='description']"
         assertTextPresent commit_msg
         
