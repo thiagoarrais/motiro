@@ -200,6 +200,52 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal '   A /trunk', changes[0].summary
     end
     
+    def test_records_diff_output
+        FlexMock.use do |connection|
+            revision_log =  "------------------------------------------------------------------------\n"
+            revision_log += "r105 | gilbertogil | 2006-03-24 15:03:06 -0400 (Sex, 24 Mar 2006) | 7 lines\n"
+            revision_log += "Caminhos mudados:\n"
+            revision_log += "   A /trunk/app/models/change.rb\n"
+            revision_log += "\n"
+            revision_log += "Agora mostrando resumo das modificacoes de cada revisao\n"
+            revision_log += "\n"
+            revision_log += "Alem de mostrar o comentario completo, o detalhamento agora mostra os\n"
+            revision_log += "nomes dos recursos que foram alterados com a revisao. A partir desta\n"
+            revision_log += "revisao, o Motiro ja deve mostrar uma lista de recursos alterados abaixo\n"
+            revision_log += "desta mensagem.\n"
+            revision_log += "\n"
+            revision_log =  "------------------------------------------------------------------------\n"
+            
+            expected_diff += "@@ -0,0 +1,7 @@\n"
+            expected_diff += "+class Change < ActiveRecord::Base\n"
+            expected_diff += "+\n"
+            expected_diff += "+    def to_s\n"
+            expected_diff += "+        return summary\n"
+            expected_diff += "+    end\n"
+            expected_diff += "+\n"
+            expected_diff += "+end\n"
+
+            revision_diff  = "Index: app/models/change.rb\n"
+            revision_diff += "===================================================================\n"
+            revision_diff += "--- app/models/change.rb        (revision 0)\n"
+            revision_diff += "+++ app/models/change.rb        (revision 105)\n"
+            revision_diff += expected_diff
+
+            connection.should_receive(:log).
+                returns(revision_log)
+            connection.should_receive(:diff).with(105)
+                returns(revision_diff)
+                
+            @reporter = SubversionReporter.new(connection)
+
+            hls = @reporter.latest_headlines
+            change = hls[0].article.changes[0]
+            
+            assert_equal 'A /trunk/app/models/change.rb', change.summary
+            assert_equal expected_diff, change.diff
+        end
+    end
+    
     #TODO simulate a connection timeout on live and cached modes
     
 end

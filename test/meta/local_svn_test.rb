@@ -9,38 +9,51 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     end
 
     def test_readable_to_anonymous
-        pio = IO.popen("svn ls #{@repo.url} 2>&1")
-        assert_equal '', pio.read # no error message
+        assert_equal '', execute("svn ls #{@repo.url}") # no error message
     end
     
     def test_create_and_destroy
         @repo.destroy
         
-        pio = IO.popen("svn ls #{@repo.url} 2>&1")
-        assert '' != pio.read # some error message
+        assert '' != execute("svn ls #{@repo.url}") # some error message
     end
     
     def test_make_remote_dir
         @repo.mkdir('testdir', 'directory for tests created')
 
-        pio = IO.popen("svn ls #{@repo.url} 2>&1")
-        assert "testdir/\n" == pio.read # some error message
+        assert "testdir/\n" == execute("svn ls #{@repo.url}")
     end
     
     def test_make_local_dir
         @repo.mkdir('not_yet_commited_dir')
         
-        pio = IO.popen("svn ls #{@repo.url} 2>&1")
-        assert '' == pio.read
+        assert '' == execute("svn ls #{@repo.url}")
         
         @repo.commit('created a new dir')
         
-        pio = IO.popen("svn ls #{@repo.url} 2>&1")
-        assert "not_yet_commited_dir/\n" == pio.read # some error message
+        assert_equal "not_yet_commited_dir/\n", execute("svn ls #{@repo.url}")
+    end
+    
+    def test_add_file
+        @repo.add_file('local_file.txt', "the file is stored locally until\n" +
+                                         "I choose to commit it")
+
+        assert '' == execute("svn ls #{@repo.url}")
+        
+        @repo.commit('added a file')
+        
+        assert_equal "local_file.txt\n", execute("svn ls #{@repo.url}")
     end
     
     def teardown
         @repo.destroy
+    end
+    
+private
+
+    def execute(command_line)
+        pio = IO.popen("#{command_line} 2>&1")
+        return pio.read
     end
     
 end

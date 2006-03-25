@@ -37,6 +37,14 @@ class LocalSubversionRepository
         end
     end
     
+    def add_file(filename, contents)
+        absolute_file = "#{self.wc_dir}/#{filename}"
+        file = File.open(absolute_file, 'w')
+        file << contents
+        file.close
+        svn_command("add #{absolute_file}")
+    end
+    
     def commit(comment)
         svn_command("commit #{self.wc_dir}", comment)
     end
@@ -44,8 +52,10 @@ class LocalSubversionRepository
 private
 
     def svn_command(command, comment=nil)
-        line = "svn #{command} --username #{@username} --password #{@password}"
-        line += " -m '#{comment}'" unless comment.nil?
+        line = "svn #{command}"
+        unless comment.nil?
+            line += " --username #{@username} --password #{@password} -m '#{comment}'"
+        end
         line += " > /dev/null 2>&1"
         system(line)
     end
