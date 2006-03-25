@@ -54,10 +54,9 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
 
         open('/feed/subversion')
         assertText('//rss/channel/title', 'Motiro - Subversion')
-        assertElementPresent '//rss/channel/description'
         assertText '//rss/channel/generator', 'Motiro'
         assertText '//rss/channel/item/title', commit_title
-        assertText('//rss/channel/item/description', commit_msg)
+        assertText('//rss/channel/item/description', "regexp:#{commit_msg}")
     end
     
     def test_records_revision_description
