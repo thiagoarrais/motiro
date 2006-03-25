@@ -1,3 +1,4 @@
+<% if ! @partial then %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -7,6 +8,7 @@
   </head>
   <body>
     <h1>Revisão <%= @revision_id -%></h1>
+<% end %>
     <div id="description">
       <pre>
 <%= h(@article.description) %>
@@ -17,6 +19,8 @@
 <%= h(@article.summary) %>
       </pre>
     </div>
+<% if !@partial then %>
   </body>
 </html>
+<% end %>
     

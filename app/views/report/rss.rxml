@@ -5,7 +5,6 @@ xml.rss 'version' => '2.0' do
     	xml.title "Motiro - Subversion"
     	xml.link server_url_for(:controller => 'root', :action => 'index')
     	xml.language 'en'
-    	xml.description 'null'
     	xml.generator 'Motiro'
     	xml.pubDate Time.now
     	xml.ttl '60'
@@ -16,7 +15,12 @@ xml.rss 'version' => '2.0' do
                                         :action => 'show',
                                         :reporter => 'subversion',
                                         :id => headline.rid))
-    	        xml.description(headline.article.description)
+                txt = render_component(:controller => 'report',
+                                 :action => 'show',
+                                 :id => headline.rid,
+                                 :params => { :reporter => 'subversion',
+                                              :context => 'partial' })
+    	        xml.description(txt)
     	        xml.pubDate h(headline.happened_at)
     	        xml.author h(headline.author)
     	        xml.guid
