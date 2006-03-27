@@ -127,7 +127,7 @@ DIFF_END
         @svn_log += "\n"
         @svn_log += "Criacao do trunk do projeto\n"
         @svn_log += "------------------------------------------------------------------------\n"
-        @svn_diff = "Index: a\nb\nc\nd\ne\nf\ng"
+        @svn_diff = ''
         
         @svn_connection = FlexMock.new('svn connection')
         @svn_connection.mock_handle(:log) do

@@ -20,6 +20,19 @@
       </pre>
     </div>
 <% if !@partial then %>
+    <% n = 1
+       article.changes.each do |change|
+           change_name = "change#{n}"
+           n += 1
+       %>
+      <div id="<%= change_name -%>">
+        <a name="<%= change_name ->" />
+        <h2>Alterações em <%= change.resource_name -%></h2>
+        <pre>
+<%= change.diff -%>
+        </pre>
+      </div>
+    <% end%>
   </body>
 </html>
 <% end %>
