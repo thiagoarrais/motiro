@@ -15,7 +15,52 @@ class SubversionReporterTest < Test::Unit::TestCase
     revText +=  "------------------------------------------------------------------------\n"
     revText += "Isto aqui ainda é comentário da revisao 2\n\n"
     @@R2 = revText    
+    
+    revText  = "------------------------------------------------------------------------\n"
+    revText += "r6 | thiagoarrais | 2006-02-17 12:22:25 -0300 (Sex, 17 Fev 2006) | 1 line\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   A /trunk/src/test/stubs/svn_connection.rb\n"
+    revText += "   A /trunk/src/test/unit/headline_test.rb\n"
+    revText += "\n"
+    revText += "Teste do reporter SVN agora falhando decentemente (ao inves de explodir)\n"
+    @@R6 = revText
+    
+    diff_text = <<DIFF_END
+Index: src/test/unit/headline_test.rb
+===================================================================
+--- src/test/unit/headline_test.rb      (revisão 0)
++++ src/test/unit/headline_test.rb      (revisão 6)
+@@ -0,0 +1,10 @@
++require File.dirname(__FILE__) + '/../test_helper'
++
++class HeadlineTest < Test::Unit::TestCase
++  fixtures :headlines
++
++  # Replace this with your real tests.
++  def test_truth
++    assert_kind_of Headline, headlines(:first)
++  end
++end
+Index: src/test/stubs/svn_connection.rb
+===================================================================
+--- src/test/stubs/svn_connection.rb    (revisão 0)
++++ src/test/stubs/svn_connection.rb    (revisão 6)
+@@ -0,0 +1,11 @@
++class StubSVNConnection
++
++    def initialize
++        @log = ''
++    end
++
++    def log_append_line(text)
++        @log += text + '\n'
++    end
++
++end
+DIFF_END
 
+    @@R6diff = diff_text
+    
     revText =  "------------------------------------------------------------------------\n"
     revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
     revText += "Caminhos mudados:\n"
@@ -236,9 +281,52 @@ class SubversionReporterTest < Test::Unit::TestCase
 
         assert_equal '   A /trunk/app/models/change.rb', change.summary
         assert_equal expected_diff, change.diff
-        
+
         # TODO directory nodes
         # TODO only directory diff (no diff output)
+    end
+    
+    def test_records_multiple_files_diff
+        @svn_log = @@R6 + "-------------\n"
+        @svn_diff = @@R6diff
+        
+        expected_diff_for_connection  = <<DIFF_END
+@@ -0,0 +1,11 @@
++class StubSVNConnection
++
++    def initialize
++        @log = ''
++    end
++
++    def log_append_line(text)
++        @log += text + '\n'
++    end
++
++end
+DIFF_END
+
+        expected_diff_for_headline = <<DIFF_END
+@@ -0,0 +1,10 @@
++require File.dirname(__FILE__) + '/../test_helper'
++
++class HeadlineTest < Test::Unit::TestCase
++  fixtures :headlines
++
++  # Replace this with your real tests.
++  def test_truth
++    assert_kind_of Headline, headlines(:first)
++  end
++end
+DIFF_END
+        
+        hls = @reporter.latest_headlines
+        changes = hls[0].article.changes
+        
+        assert_equal '   A /trunk/src/test/stubs/svn_connection.rb', changes[0].summary
+        assert_equal expected_diff_for_connection, changes[0].diff
+        
+        assert_equal '   A /trunk/src/test/unit/headline_test.rb', changes[1].summary
+        assert_equal expected_diff_for_headline, changes[1].diff
     end
     
     #TODO simulate a connection timeout on live and cached modes

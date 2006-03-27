@@ -54,6 +54,19 @@ class SubversionConnectionTest < Test::Unit::TestCase
         end
     end
     
+    def test_diff
+        FlexMock.use do |runner|
+            settings = StubConnectionSettingsProvider.new
+
+            runner.should_receive(:run).
+                with('svn diff http://svn.fake.domain.org/fake_repo -r14:15')
+                
+            connection = SubversionConnection.new(settings, runner)
+            
+            connection.diff(15)
+        end
+    end
+    
     # TODO what happens if we ask for an inexistent revision
     
 end

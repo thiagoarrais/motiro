@@ -71,13 +71,25 @@ private
     def svn_capture_diff(headline)
         revision_id = headline.rid.match(/\d+/)[0]
         diff_output = @connection.diff(revision_id)
-        headline.article.changes[0].diff = svn_parse_diffs(diff_output)[0].diff
+        article_changes = headline.article.changes
+        diff_changes = svn_parse_diffs(diff_output)
+        
+        article_changes.each do |article_change|
+            pair = diff_changes.find do |diff_change|
+                article_change.summary.include?(diff_change.summary)
+            end
+            unless pair.nil?
+                article_change.diff = pair.diff
+            end            
+        end
+        
         return headline
     end
     
     def svn_parse_diffs(text)
         result = Array.new
         remain = text
+        
         while(/Index:/.match(remain)) do
             resource, diff, remain = svn_parse_diff(remain)
             change = Change.new(:summary => resource, :diff => diff)
@@ -89,11 +101,23 @@ private
     
     def svn_parse_diff(text)
         remain = text
+        md = text.match(/Index: ([^\n]+)$/)
+        resource = md[1]
+        remain = md.post_match
+
         1.upto 4 do
             remain = /\n/.match(remain).post_match
         end
+        
+        if (md = remain.match(/^Index:/))
+            diff = md.pre_match
+            remain = md[0] + md.post_match
+        else
+            diff = remain
+            remain = ''
+        end
 
-        return nil, remain, ''  
+        return resource, diff, remain  
     end
     
     def consume_dashes(theHeadline, text)

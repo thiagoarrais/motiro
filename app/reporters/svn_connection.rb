@@ -22,4 +22,10 @@ class SubversionConnection
         @runner.run command
     end
     
+    def diff(rev_id)
+        command = "svn diff #{@settings.getRepoURL} -r#{rev_id - 1}:#{rev_id}"
+
+        @runner.run command
+    end
+    
 end                                                           
