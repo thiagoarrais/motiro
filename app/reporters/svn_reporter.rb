@@ -18,11 +18,12 @@ class SubversionReporter < MotiroReporter
     
     def latest_headlines
         remain = @connection.log
+        
         hls = Array.new
 
         hl = 0
         until hl.nil? do
-            hl, remain = svn_parse_entry(remain)
+            hl, remain = build_headline_from(remain)
             unless hl.nil?
                 hl.reported_by = self.name
                 hls.push hl
@@ -43,6 +44,15 @@ class SubversionReporter < MotiroReporter
     
 private
     
+    def build_headline_from(text)
+        headline, remain = svn_parse_entry(text)
+        # TODO ugly! refactor this somehow
+        unless headline.nil?
+            headline = svn_capture_diff(headline)
+        end
+        return headline, remain
+    end
+
     def svn_parse_entry(text)
         begin
             result = Headline.new
@@ -56,6 +66,34 @@ private
         rescue
             return nil
         end
+    end
+    
+    def svn_capture_diff(headline)
+        revision_id = headline.rid.match(/\d+/)[0]
+        diff_output = @connection.diff(revision_id)
+        headline.article.changes[0].diff = svn_parse_diffs(diff_output)[0].diff
+        return headline
+    end
+    
+    def svn_parse_diffs(text)
+        result = Array.new
+        remain = text
+        while(/Index:/.match(remain)) do
+            resource, diff, remain = svn_parse_diff(remain)
+            change = Change.new(:summary => resource, :diff => diff)
+            result << change
+        end
+        
+        return result
+    end
+    
+    def svn_parse_diff(text)
+        remain = text
+        1.upto 4 do
+            remain = /\n/.match(remain).post_match
+        end
+
+        return nil, remain, ''  
     end
     
     def consume_dashes(theHeadline, text)

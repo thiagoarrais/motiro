@@ -1,21 +1,97 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 require 'test/unit'
-require 'stubs/svn_connection'
 require 'reporters/svn_reporter'
 # require 'models/svn_change'
 
 class SubversionReporterTest < Test::Unit::TestCase
 
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r2 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
+    revText += "\n"
+    revText += "Estou tentando enganar o SubversionReporter\n"
+    revText +=  "------------------------------------------------------------------------\n"
+    revText += "Isto aqui ainda é comentário da revisao 2\n\n"
+    @@R2 = revText    
+
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   A /trunk/src/app\n"
+    revText += "   A /trunk/src/app/reporters\n"
+    revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
+    revText += "\n"
+    revText += "Correcao para a revisao anterior (r6)\n"
+    revText += "\n"
+    revText += "Esqueci de colocar o svn_reporter. Foi mal!\n\n"
+    @@R7 = revText    
+
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   M /trunk/src/app/reporters/svn_reporter.rb\n"
+    revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
+    revText += "\n"
+    revText += "Leitura de uma revisao SVN pronta\n"
+    @@R13 = revText
+
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r15 | thiagoarrais | 2006-02-19 09:13:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
+    revText += "\n"
+    revText += "\n"
+    @@R15 = revText
+    
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r105 | gilbertogil | 2006-03-24 15:03:06 -0400 (Sex, 24 Mar 2006) | 7 lines\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   A /trunk/app/models/change.rb\n"
+    revText += "\n"
+    revText += "Agora mostrando resumo das modificacoes de cada revisao\n"
+    revText += "\n"
+    revText += "Alem de mostrar o comentario completo, o detalhamento agora mostra os\n"
+    revText += "nomes dos recursos que foram alterados com a revisao. A partir desta\n"
+    revText += "revisao, o Motiro ja deve mostrar uma lista de recursos alterados abaixo\n"
+    revText += "desta mensagem.\n"
+    revText += "\n"
+    revText += "------------------------------------------------------------------------\n"
+    @@R105 = revText
+
+    diff_text  = "Index: app/models/change.rb\n"
+    diff_text += "===================================================================\n"
+    diff_text += "--- app/models/change.rb        (revision 0)\n"
+    diff_text += "+++ app/models/change.rb        (revision 105)\n"
+    diff_text += "@@ -0,0 +1,7 @@\n"
+    diff_text += "+class Change < ActiveRecord::Base\n"
+    diff_text += "+\n"
+    diff_text += "+    def to_s\n"
+    diff_text += "+        return summary\n"
+    diff_text += "+    end\n"
+    diff_text += "+\n"
+    diff_text += "+end"
+    @@R105diff = diff_text
+
     def setup
-        @svn_connection = StubSVNConnection.new
-        @svn_connection.log_append_line '------------------------------------------------------------------------'
-        @svn_connection.log_append_line 'r1 | thiagoarrais | 2006-02-14 15:45:13 -0400 (Ter, 14 Fev 2006) | 1 line'
-        @svn_connection.log_append_line 'Caminhos mudados:'
-        @svn_connection.log_append_line '   A /trunk'
-        @svn_connection.log_append_line ''
-        @svn_connection.log_append_line 'Criacao do trunk do projeto'
-        @svn_connection.log_append_line '------------------------------------------------------------------------'
+        @svn_log  = "------------------------------------------------------------------------\n"
+        @svn_log += "r1 | thiagoarrais | 2006-02-14 15:45:13 -0400 (Ter, 14 Fev 2006) | 1 line\n"
+        @svn_log += "Caminhos mudados:\n"
+        @svn_log += "   A /trunk\n"
+        @svn_log += "\n"
+        @svn_log += "Criacao do trunk do projeto\n"
+        @svn_log += "------------------------------------------------------------------------\n"
+        @svn_diff = "Index: a\nb\nc\nd\ne\nf\ng"
+        
+        @svn_connection = FlexMock.new('svn connection')
+        @svn_connection.mock_handle(:log) do
+            @svn_log
+        end
+
+        @svn_connection.mock_handle(:diff) do
+            @svn_diff
+        end
 
         @reporter = SubversionReporter.new(@svn_connection)
     end
@@ -28,14 +104,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_more_revisions
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   M /trunk/src/app/reporters/svn_reporter.rb\n"
-        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
-        revText += "\n"
-        revText += "Leitura de uma revisao SVN pronta"
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R13 + @svn_log
 
         hls = @reporter.latest_headlines
 
@@ -49,13 +118,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_revision_with_empty_comment
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r15 | thiagoarrais | 2006-02-19 09:13:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
-        revText += "\n"
-        revText += ""
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R15 + @svn_log
 
         hl = @reporter.latest_headline
         
@@ -65,17 +128,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_revision_with_multiline_comment
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   A /trunk/src/app\n"
-        revText += "   A /trunk/src/app/reporters\n"
-        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
-        revText += "\n"
-        revText += "Correcao para a revisao anterior (r6)\n"
-        revText += "\n"
-        revText += "Esqueci de colocar o svn_reporter. Foi mal!\n"
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R7 + @svn_log
         
         hls = @reporter.latest_headlines
         
@@ -91,15 +144,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_comment_with_dashes
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r2 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
-        revText += "\n"
-        revText += "Estou tentando enganar o SubversionReporter\n"
-        revText +=  "------------------------------------------------------------------------\n"
-        revText += "Isto aqui ainda é comentário da revisao 2\n"
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R2 + @svn_log
 
         hls = @reporter.latest_headlines
         
@@ -115,24 +160,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_collect_all_available_headlines
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   M /trunk/src/app/reporters/svn_reporter.rb\n"
-        revText += "   M /trunk/src/test/unit/svn_reporter_test.rb\n"
-        revText += "\n"
-        revText += "Leitura de uma revisao SVN pronta\n"
-        revText +=  "------------------------------------------------------------------------\n"
-        revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   A /trunk/src/app\n"
-        revText += "   A /trunk/src/app/reporters\n"
-        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
-        revText += "\n"
-        revText += "Correcao para a revisao anterior (r6)\n"
-        revText += "\n"
-        revText += "Esqueci de colocar o svn_reporter. Foi mal!\n"
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R13 + @@R7 + @svn_log
         
         hls = @reporter.latest_headlines
         assert_equal 3, hls.size
@@ -143,17 +171,7 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_record_full_comment
-        revText =  "------------------------------------------------------------------------\n"
-        revText += "r7 | gilbertogil | 2006-02-17 18:07:55 -0400 (Sex, 17 Fev 2006) | 4 lines\n"
-        revText += "Caminhos mudados:\n"
-        revText += "   A /trunk/src/app\n"
-        revText += "   A /trunk/src/app/reporters\n"
-        revText += "   A /trunk/src/app/reporters/svn_reporter.rb\n"
-        revText += "\n"
-        revText += "Correcao para a revisao anterior (r6)\n"
-        revText += "\n"
-        revText += "Esqueci de colocar o svn_reporter. Foi mal!\n"
-        @svn_connection.log_prefix_line revText
+        @svn_log = @@R7 + @svn_log
 
         hls = @reporter.latest_headlines
         
@@ -201,49 +219,26 @@ class SubversionReporterTest < Test::Unit::TestCase
     end
     
     def test_records_diff_output
-        FlexMock.use do |connection|
-            revision_log =  "------------------------------------------------------------------------\n"
-            revision_log += "r105 | gilbertogil | 2006-03-24 15:03:06 -0400 (Sex, 24 Mar 2006) | 7 lines\n"
-            revision_log += "Caminhos mudados:\n"
-            revision_log += "   A /trunk/app/models/change.rb\n"
-            revision_log += "\n"
-            revision_log += "Agora mostrando resumo das modificacoes de cada revisao\n"
-            revision_log += "\n"
-            revision_log += "Alem de mostrar o comentario completo, o detalhamento agora mostra os\n"
-            revision_log += "nomes dos recursos que foram alterados com a revisao. A partir desta\n"
-            revision_log += "revisao, o Motiro ja deve mostrar uma lista de recursos alterados abaixo\n"
-            revision_log += "desta mensagem.\n"
-            revision_log += "\n"
-            revision_log =  "------------------------------------------------------------------------\n"
-            
-            expected_diff += "@@ -0,0 +1,7 @@\n"
-            expected_diff += "+class Change < ActiveRecord::Base\n"
-            expected_diff += "+\n"
-            expected_diff += "+    def to_s\n"
-            expected_diff += "+        return summary\n"
-            expected_diff += "+    end\n"
-            expected_diff += "+\n"
-            expected_diff += "+end\n"
+        @svn_log = @@R105 + @svn_log
+        @svn_diff = @@R105diff
 
-            revision_diff  = "Index: app/models/change.rb\n"
-            revision_diff += "===================================================================\n"
-            revision_diff += "--- app/models/change.rb        (revision 0)\n"
-            revision_diff += "+++ app/models/change.rb        (revision 105)\n"
-            revision_diff += expected_diff
+        expected_diff  = "@@ -0,0 +1,7 @@\n"
+        expected_diff += "+class Change < ActiveRecord::Base\n"
+        expected_diff += "+\n"
+        expected_diff += "+    def to_s\n"
+        expected_diff += "+        return summary\n"
+        expected_diff += "+    end\n"
+        expected_diff += "+\n"
+        expected_diff += "+end"
 
-            connection.should_receive(:log).
-                returns(revision_log)
-            connection.should_receive(:diff).with(105)
-                returns(revision_diff)
-                
-            @reporter = SubversionReporter.new(connection)
+        hls = @reporter.latest_headlines
+        change = hls[0].article.changes[0]
 
-            hls = @reporter.latest_headlines
-            change = hls[0].article.changes[0]
-            
-            assert_equal 'A /trunk/app/models/change.rb', change.summary
-            assert_equal expected_diff, change.diff
-        end
+        assert_equal '   A /trunk/app/models/change.rb', change.summary
+        assert_equal expected_diff, change.diff
+        
+        # TODO directory nodes
+        # TODO only directory diff (no diff output)
     end
     
     #TODO simulate a connection timeout on live and cached modes

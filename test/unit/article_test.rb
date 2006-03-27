@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticleTest < Test::Unit::TestCase
 
-    fixtures :articles, :changes
+    fixtures :headlines, :articles, :changes
 
     def test_summarizes_all_changes
         svn_demo_article = articles('svn_demo_article')
@@ -13,8 +13,10 @@ class ArticleTest < Test::Unit::TestCase
         assert_equal fst_change.summary + "\n" +
                      snd_change.summary + "\n" +
                      trd_change.summary, svn_demo_article.summary
-        
     end
-
+    
+    def teardown
+        super
+    end
     
 end

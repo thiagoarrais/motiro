@@ -23,7 +23,7 @@ class FakeSaveHeadline < Headline
 end
 
 class HeadlineTest < Test::Unit::TestCase
-    fixtures :headlines, :articles
+    fixtures :headlines, :articles, :changes
 
     def test_create
         headline = Headline.find(1)
@@ -41,8 +41,9 @@ class HeadlineTest < Test::Unit::TestCase
     end
     
     def test_cached
-       headline = Headline.new(:author => 'raulseixas',
-                               :title => 'gita',
+       gita_headline = headlines('gita')
+       headline = Headline.new(:author => gita_headline.author,
+                               :title => gita_headline.title,
                                :happened_at => [2005, 1, 1])
                                
        assert headline.cached?

@@ -25,7 +25,7 @@ end
 
 class ChiefEditorTest < Test::Unit::TestCase
 
-    fixtures :headlines, :articles
+    fixtures :headlines, :articles, :changes
 
     @@log = ''
 

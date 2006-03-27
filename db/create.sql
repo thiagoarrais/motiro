@@ -1,3 +1,5 @@
+drop table if exists changes;
+drop table if exists articles;
 drop table if exists headlines;
 create table headlines (
 	id int not null auto_increment,
@@ -9,7 +11,6 @@ create table headlines (
 	rid varchar(40) not null,
 	primary key (id)
 );
-drop table if exists articles;
 create table articles (
 	id int not null auto_increment,
 	headline_id int not null,
@@ -17,11 +18,11 @@ create table articles (
 	constraint fk_article_headline foreign key (headline_id) references headlines(id),
 	primary key (id)
 );
-drop table if exists changes;
 create table changes (
 	id int not null auto_increment,
 	article_id int not null,
-	summary text,
+	summary text not null,
+	diff text,
 	constraint fk_change_article foreign key (article_id) references articles(id),
 	primary key (id)
 );
