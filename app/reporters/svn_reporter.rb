@@ -37,7 +37,7 @@ class SubversionReporter < MotiroReporter
         
         output = @connection.log(revision_id)
         
-        result_headline, remain = svn_parse_entry(output)
+        result_headline, remain = build_headline_from(output)
 
         return result_headline.article
     end

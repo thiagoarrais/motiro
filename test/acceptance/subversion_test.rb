@@ -114,6 +114,8 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertTitle "Motiro: Bem-vindo"
         assertText "//div[@id='notice']", "Não foi possível encontrar o artigo r104 do repórter Subversion"
     end
+    
+    # TODO do not show the change diff section for directories
 
     def teardown
         super
@@ -126,7 +128,7 @@ private
     def switch_to_development_mode
         cp("#{app_root}/config/report/subversion.yml", "#{app_root}/config/report/subversion.yml.bak")
         config_file = File.open("#{app_root}/config/report/subversion.yml", 'w')
-        config_file << "repo: #{@repo.url}/myproject\n" <<
+        config_file << "repo: #{@repo.url}\n" <<
                        "update_interval: 0\n" <<
                        "package_size: 5\n"
         config_file.close

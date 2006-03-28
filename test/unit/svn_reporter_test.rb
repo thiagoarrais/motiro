@@ -329,6 +329,27 @@ DIFF_END
         assert_equal expected_diff_for_headline, changes[1].diff
     end
     
+    def test_method_article_for_record_diff_output
+        @svn_log = @@R105
+        @svn_diff = @@R105diff
+
+        expected_diff  = "@@ -0,0 +1,7 @@\n"
+        expected_diff += "+class Change < ActiveRecord::Base\n"
+        expected_diff += "+\n"
+        expected_diff += "+    def to_s\n"
+        expected_diff += "+        return summary\n"
+        expected_diff += "+    end\n"
+        expected_diff += "+\n"
+        expected_diff += "+end"
+
+        article = @reporter.article_for('r105')
+        change = article.changes[0]
+
+        assert_equal '   A /trunk/app/models/change.rb', change.summary
+        assert_equal expected_diff, change.diff
+
+    end
+    
     #TODO simulate a connection timeout on live and cached modes
     
 end
