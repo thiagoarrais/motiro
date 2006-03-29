@@ -5,6 +5,7 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Motiro - Subversion - Revisão <%= @revision_id -%></title>
+    <%= stylesheet_link_tag "motiro", :media => "all" %>
   </head>
   <body>
     <h1>Revisão <%= @revision_id -%></h1>
@@ -15,20 +16,19 @@
       </pre>
     </div>
     <div id="summary">
-      <pre>
-        <% n = 1
-           @article.changes.each do |change| %>
-<a href="#change<%= n -%>"><%= h(change.summary.strip) -%></a>
-        <% n += 1
-           end %>
-      </pre>
+        <% n = 0
+           @article.changes.each do |change| 
+               n += 1
+               unless change.diff.nil? -%><a href="#change<%= n -%>"><% end -%><%= h(change.summary.strip) -%><%- unless change.diff.nil? -%></a><% end -%>
+             <br/>
+        <% end %>
     </div>
 <% if !@partial then %>
-    <% n = 1
+    <% n = 0
        @article.changes.each do |change|
-           change_name = "change#{n}"
            n += 1
-       %>
+           unless change.diff.nil?
+               change_name = "change#{n}" -%>
       <div id="<%= change_name -%>">
         <a name="<%= change_name -%>" />
         <h2>Alterações em <%= h(change.resource_name) -%></h2>
@@ -36,7 +36,8 @@
 <%= h(change.diff) -%>
         </pre>
       </div>
-    <% end%>
+    <%     end
+       end %>
   </body>
 </html>
 <% end %>

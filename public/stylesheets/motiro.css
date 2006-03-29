@@ -6,3 +6,7 @@
     font: bold smaller sans-serif;
     color: #ffffff;
 }
+
+#summary {
+    font: smaller courier;
+}

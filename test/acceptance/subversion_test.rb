@@ -115,8 +115,21 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertText "//div[@id='notice']", "Não foi possível encontrar o artigo r104 do repórter Subversion"
     end
     
-    # TODO do not show the change diff section for directories
-
+    def test_do_not_show_diff_section_when_adding_directories
+        commit_title = 'Creating the projecto trunk'        
+        
+        @repo.mkdir('trunk', commit_title)
+        
+        open '/report/subversion'
+        clickAndWait "//a[text() = '#{commit_title}']"
+        
+        assertElementNotPresent "//a"
+        assertTextNotPresent "Alterações em trunk"
+        
+    end
+    
+    # TODO what should be the behaviour when removing files?
+    
     def teardown
         super
         @repo.destroy
