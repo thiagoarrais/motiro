@@ -16,28 +16,15 @@
       </pre>
     </div>
     <div id="summary">
-        <% n = 0
-           @article.changes.each do |change| 
-               n += 1
-               unless change.diff.nil? -%><a href="#change<%= n -%>"><% end -%><%= h(change.summary.strip) -%><%- unless change.diff.nil? -%></a><% end -%>
-             <br/>
+        <% @article.changes.each do |change| %>
+               <%= change.render_summary -%>
+               <br/>
         <% end %>
     </div>
 <% if !@partial then %>
-    <% n = 0
-       @article.changes.each do |change|
-           n += 1
-           unless change.diff.nil?
-               change_name = "change#{n}" -%>
-      <div id="<%= change_name -%>">
-        <a name="<%= change_name -%>" />
-        <h2>Alterações em <%= h(change.resource_name) -%></h2>
-        <pre>
-<%= h(change.diff) -%>
-        </pre>
-      </div>
-    <%     end
-       end %>
+    <% @article.changes.each do |change| %>
+        <%= change.render_diff %>
+    <% end %>
   </body>
 </html>
 <% end %>

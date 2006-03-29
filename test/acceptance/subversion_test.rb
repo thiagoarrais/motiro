@@ -98,9 +98,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         open '/report/subversion'
         clickAndWait "//a[text() = '#{commit_title}']"
 
-        assertElementPresent "//a[text()='A /#{filename}'][@href='\#change1']"
-        assertElementPresent "//div[@id='change1']"
-        assertElementPresent "//div[@id='change1']/a[@name='change1']"
+        assertElementPresent "//a[text()='A /#{filename}']"
         assertElementPresent "//h2[text()='Alterações em a_file.txt']"
         assertTextPresent diff_output
     end    
