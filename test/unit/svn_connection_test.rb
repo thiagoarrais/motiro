@@ -67,6 +67,21 @@ class SubversionConnectionTest < Test::Unit::TestCase
         end
     end
     
+    def test_results_to_avoid_network_usage
+        FlexMock.use do |runner|
+            settings = StubConnectionSettingsProvider.new
+            expected_diff_output = 'diff output'
+            
+            runner.should_receive(:run).with_any_args.
+                once.
+                returns(expected_diff_output)
+                
+            connection = SubversionConnection.new(settings, runner)
+            assert_equal expected_diff_output, connection.diff(18)
+            assert_equal expected_diff_output, connection.diff(18)
+        end
+    end
+    
     # TODO what happens if we ask for an inexistent revision
     
 end

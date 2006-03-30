@@ -137,7 +137,7 @@ DIFF_END
         @svn_connection.mock_handle(:diff) do
             @svn_diff
         end
-
+        
         @reporter = SubversionReporter.new(@svn_connection)
     end
 
@@ -350,6 +350,11 @@ DIFF_END
 
     end
     
+    def teardown
+        @svn_connection.mock_verify
+    end
+    
+    #TODO test similar paths (see SubversionReporter#diff_for)
     #TODO simulate a connection timeout on live and cached modes
     
 end

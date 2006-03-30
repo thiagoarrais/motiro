@@ -45,15 +45,6 @@ class SubversionReporter < MotiroReporter
 private
     
     def build_headline_from(text)
-        headline, remain = svn_parse_entry(text)
-        # TODO ugly! refactor this somehow
-        unless headline.nil?
-            headline = svn_capture_diff(headline)
-        end
-        return headline, remain
-    end
-
-    def svn_parse_entry(text)
         begin
             result = Headline.new
             
@@ -66,58 +57,6 @@ private
         rescue
             return nil
         end
-    end
-    
-    def svn_capture_diff(headline)
-        revision_id = headline.rid.match(/\d+/)[0]
-        diff_output = @connection.diff(revision_id)
-        article_changes = headline.article.changes
-        diff_changes = svn_parse_diffs(diff_output)
-        
-        article_changes.each do |article_change|
-            pair = diff_changes.find do |diff_change|
-                article_change.summary.include?(diff_change.summary)
-            end
-            unless pair.nil?
-                article_change.diff = pair.diff
-            end            
-        end
-        
-        return headline
-    end
-    
-    def svn_parse_diffs(text)
-        result = Array.new
-        remain = text
-        
-        while(/Index:/.match(remain)) do
-            resource, diff, remain = svn_parse_diff(remain)
-            change = Change.new(:summary => resource, :diff => diff)
-            result << change
-        end
-        
-        return result
-    end
-    
-    def svn_parse_diff(text)
-        remain = text
-        md = text.match(/Index: ([^\n]+)$/)
-        resource = md[1]
-        remain = md.post_match
-
-        1.upto 4 do
-            remain = /\n/.match(remain).post_match
-        end
-        
-        if (md = remain.match(/^Index:/))
-            diff = md.pre_match
-            remain = md[0] + md.post_match
-        else
-            diff = remain
-            remain = ''
-        end
-
-        return resource, diff, remain  
     end
     
     def consume_dashes(theHeadline, text)
@@ -154,10 +93,49 @@ private
             resources = md.post_match
             
             summary = md.pre_match
-            changes.push(Change.new(:summary => summary))
+            resource_path = summary.match(/[^\s]+\z/)[0]
+#            puts ">>> parse changed resources: Procurando diffs para #{resource_path}"
+#            puts ">>> parse changed resources: #{theHeadline}, #{theHeadline.rid}"
+            diff = diff_for(resource_path, theHeadline.rid)
+            changes.push(Change.new(:summary => summary, :diff => diff))
         end
 
         return theHeadline, remain
+    end
+    
+    def diff_for(resource_path, revision_id)
+        revision_num = revision_id.to_s.match(/\d+/)[0]
+        
+        remain = @connection.diff(revision_num)
+        
+        while(md = remain.match(/^Index: ([^\n]+)$/)) do
+            remain = md.post_match
+            if resource_path.include?(md[1])
+                diff_text = md[0]
+                if (md = remain.match(/^Index:/))
+                    diff_text += md.pre_match
+                else
+                    diff_text += remain
+                end
+                return svn_parse_diff(diff_text)
+            end
+        end
+    end
+    
+    def svn_parse_diff(text)
+        remain = text
+        md = text.match(/Index: [^\n]+$/)
+        remain = md.post_match
+
+        1.upto 4 do
+            remain = /\n/.match(remain).post_match
+        end
+        
+        if (md = remain.match(/^Index:/))
+            return md.pre_match
+        else
+            return remain
+        end
     end
     
     def parse_description(theHeadline, text)
