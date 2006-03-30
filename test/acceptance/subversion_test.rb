@@ -137,6 +137,9 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
     end
     
     # TODO what should be the behaviour when removing files?
+    # TODO on recorded mode, when something bad happens (like a connection
+    #      timeout) during headline retrieval, the headlines are carved in
+    #      stone that way and can't be fixed
     
     def teardown
         super
