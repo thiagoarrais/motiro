@@ -1,5 +1,3 @@
-require File.dirname(__FILE__) + "/../../vendor/selenium/seletest"
-
 class MotiroAcceptanceTest < Test::Unit::TestCase
 
     # Update server_info with your host and port
