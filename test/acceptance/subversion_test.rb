@@ -80,15 +80,12 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         
         assertElementPresent "//div[@id='summary']"
         assertTextPresent "A /#{dir_name}"
-        
-        # TODO assert that details of adding a file is showing the file contents
-        # TODO assert that details of altering a file shows the diff output
     end
     
     def test_shows_diff_output_when_adding_file
         commit_title = 'I have added a file'
         filename = 'a_file.txt'
-        file_contents = 'These are the file contents'
+        file_contents = "These are the file contents\n"
         diff_output = "@@ -0,0 +1 @@\n" +
                       "+#{file_contents}"
 
@@ -101,7 +98,23 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertElementPresent "//a[text()='A /#{filename}']"
         assertElementPresent "//h2[text()='Alterações em a_file.txt']"
         assertTextPresent diff_output
-    end    
+    end
+    
+    def test_shows_diff_output_when_modifying_file
+        test_shows_diff_output_when_adding_file
+        diff_output = "@@ -1 +1 @@\n" +
+                      "-These are the file contents\n" +
+                      "+These are the modified file contents\n"
+        
+        commit_title = 'I have modified a file'
+        @repo.put_file('a_file.txt', "These are the modified file contents\n" )
+        @repo.commit(commit_title)
+        
+        open '/report/subversion'
+        clickAndWait "//a[text() = '#{commit_title}']"
+
+        assertTextPresent diff_output
+    end
     
     def test_showing_invalid_rid_shows_nice_error_message
         commit_msg = 'Creating the project root'

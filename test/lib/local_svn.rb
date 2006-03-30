@@ -38,11 +38,19 @@ class LocalSubversionRepository
     end
     
     def add_file(filename, contents)
+        put_file(filename, contents)
+    end
+    
+    def put_file(filename, contents)
         absolute_file = "#{self.wc_dir}/#{filename}"
+        existed = FileTest.exists? absolute_file
+
         file = File.open(absolute_file, 'w')
         file << contents
         file.close
-        svn_command("add #{absolute_file}")
+        if !existed
+            svn_command("add #{absolute_file}")
+        end
     end
     
     def commit(comment)

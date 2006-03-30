@@ -45,6 +45,33 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
         assert_equal "local_file.txt\n", execute("svn ls #{@repo.url}")
     end
     
+    def test_modify_file_with_put
+        @repo.put_file('local_file.txt', "this is line number 1\n" +
+                                         "this is line number 2\n") 
+
+        assert '' == execute("svn ls #{@repo.url}")
+        
+        @repo.commit('added a new file')
+        
+        assert_equal "local_file.txt\n", execute("svn ls #{@repo.url}")
+        
+        @repo.put_file('local_file.txt', "this is line number 1\n" +
+                                         "this is the new line number 2\n") 
+                                         
+        @repo.commit('added a new file')
+                                         
+        regexp = Regexp.new("Index: local_file.txt\n" +
+                     "===================================================================\n" +
+                     "--- local_file.txt\t\\([^1]+ 1\\)\n" +
+                     "\\+\\+\\+ local_file.txt\t\\([^2]+ 2\\)\n" +
+                     "@@ -1,2 \\+1,2 @@\n" +
+                     " this is line number 1\n" +
+                     "-this is line number 2\n" +
+                     "\\+this is the new line number 2")
+        assert_not_nil regexp.match(execute("svn diff -r1:2 #{@repo.url}"))
+                     
+    end
+    
     def teardown
         @repo.destroy
     end
