@@ -5,7 +5,6 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
         ['localhost', 3000]
     end
 
-
     def test_main_page
         open '/'
         assertTitle "Motiro: Bem-vindo"
@@ -25,7 +24,13 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
     def test_subversion_on_main
         open('/')
         assertElementPresent "//div[@id = 'svn']"
-        assertTextPresent 'Últimas notícias do Subversion'
+        assertText "//div[@id = 'svn']", 'regexp:Últimas notícias do Subversion'
+    end
+    
+    def test_events_on_main
+        open('/')
+        assertElementPresent "//div[@id = 'events']"
+        assertText "//div[@id = 'events']", 'regexp:Próximos eventos'
     end
     
 end
