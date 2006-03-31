@@ -40,6 +40,11 @@
                            :action =>  'show',
                            :params => {:reporter => 'subversion'}) %>
     </div>
+    <div class="channel" id="events">
+      <%= render_component(:controller => 'report',
+                           :action =>  'show',
+                           :params => {:reporter => 'events'}) %>
+    </div>
   <div id="footer">Motiro versão <%= MOTIRO_VERSION %></div>
   </body>
 </html>

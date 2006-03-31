@@ -29,7 +29,8 @@ class ReportController < ApplicationController
             format = params[:format] || 'html_fragment'
         
             @headlines = @chief_editor.latest_news_from reporter
-            render(:action => format)
+            # TODO need some serious refactoring here
+            render(:action => reporter + '_' + format)
         end
     end
     
