@@ -10,3 +10,18 @@
 #summary {
     font: smaller courier;
 }
+
+div.channel {
+    width: 48%;
+    float: left;
+    padding: 8px 16px 8px 0px;
+}
+
+#footer {
+    width: 40%;
+    padding-top: 4px;
+    border-top: solid medium gray;
+    font-size: x-small;
+    color: gray;
+    clear: left;
+}

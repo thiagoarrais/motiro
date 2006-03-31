@@ -35,12 +35,11 @@
         Junte-se ao mutirão!
       </p>
     </div>
-    <div id="svn">
+    <div class="channel" id="svn">
       <%= render_component(:controller => 'report',
                            :action =>  'show',
                            :params => {:reporter => 'subversion'}) %>
     </div>
-  <hr/>
-  <font size="-2" color="#909090">Motiro versão <%= MOTIRO_VERSION %></font>
+  <div id="footer">Motiro versão <%= MOTIRO_VERSION %></div>
   </body>
 </html>
