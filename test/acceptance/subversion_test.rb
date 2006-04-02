@@ -141,6 +141,13 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
     #      timeout) during headline retrieval, the headlines are carved in
     #      stone that way and can't be fixed
     
+    # TODO  copy and move files around
+    #       there seems to be a bug when copying files the diff summary looks
+    #       like this:  A /trunk/app/views/report/html_fragment.rhtml (from /trunk/app/views/report/subversion_html_fragment.rhtml:123)
+    #       and the change title will be something like 'Changes in subversion_html_fragment.rhtml:123)'
+    #       also the diff maybe incorrectly placed
+    #       see motiro's revision r124
+    
     def teardown
         super
         @repo.destroy
