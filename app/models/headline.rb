@@ -7,8 +7,9 @@ class Headline < ActiveRecord::Base
         self.article = Article.new
     end
 
-    def self.latest(num)
+    def self.latest(num, reporter)
         find(:all,
+             :conditions => ["reported_by = ?", reporter],
              :order => 'happened_at DESC',
              :limit => num)
     end

@@ -8,14 +8,10 @@ require 'core/reporter'
 class SubversionReporter < MotiroReporter
 
     def initialize(connection = SubversionConnection.new)
-        super('subversion')
+
         @connection = connection
     end
 
-    def latest_headline
-        return latest_headlines.first
-    end
-    
     def latest_headlines
         remain = @connection.log
         

@@ -22,10 +22,11 @@ class ReportControllerTest < Test::Unit::TestCase
     end
     
     def test_fetches_headlines_from_cache
-        get :show, {:format => 'html_fragment'}
+        get :show, {:reporter => 'events', :format => 'html_fragment'}
         assert_response :success
         assert_not_nil assigns(:headlines)
-        assert_equal Headline.count, assigns(:headlines).size
+        expected = Headline.find(:all, :conditions => "reported_by = 'events'")
+        assert_equal expected.size, assigns(:headlines).size
     end
     
     def test_fetches_individual_article_based_on_headline_rid

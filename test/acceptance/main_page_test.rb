@@ -27,10 +27,10 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
         assertText "//div[@id = 'svn']", 'regexp:Últimas notícias do Subversion'
     end
     
-    def test_events_on_main
-        open('/')
-        assertElementPresent "//div[@id = 'events']"
-        assertText "//div[@id = 'events']", 'regexp:Próximos eventos'
-    end
+#    def test_events_on_main
+#        open('/')
+#        assertElementPresent "//div[@id = 'events']"
+#        assertText "//div[@id = 'events']", 'regexp:Próximos eventos'
+#    end
     
 end

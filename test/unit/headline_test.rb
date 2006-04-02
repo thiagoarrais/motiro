@@ -1,9 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-require 'rubygems'
-
-require 'flexmock'
-
 # A kind of headline that doesn't have real save method, but a
 # fake one that only records the number of times the method got called
 class FakeSaveHeadline < Headline
@@ -34,7 +30,7 @@ class HeadlineTest < Test::Unit::TestCase
     end
 
     def test_latest_one
-        hls = Headline.latest 1
+        hls = Headline.latest(1, 'subversion')
         hl = hls.first
     
         assert_equal 'o dia em que a terra parou', hl.title

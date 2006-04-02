@@ -9,28 +9,29 @@ class ReportController < ApplicationController
     end
 
     def show
-        reporter = params[:reporter]
+        reporter_name = params[:reporter]
 
         if params[:id]
             id = params[:id]
             context = params[:context] || 'full'
             begin
                 @revision_id = id
-                @article = @chief_editor.article_for_headline(reporter, id)
+                @article = @chief_editor.article_for_headline(reporter_name, id)
                 @partial = context == 'partial'
                 
                 render(:action => 'detail')
             rescue
-                logger.error("Tried to access invalid headline #{id} from #{reporter}")
-                flash[:notice] = "Não foi possível encontrar o artigo #{id} do repórter #{reporter.capitalize}"
+                logger.error("Tried to access invalid headline #{id} from #{reporter_name}")
+                flash[:notice] = "Não foi possível encontrar o artigo #{id} do repórter #{reporter_name.capitalize}"
                 redirect_to(:controller => 'root', :action => 'index')
             end            
         else
             format = params[:format] || 'html_fragment'
-        
-            @headlines = @chief_editor.latest_news_from reporter
-            # TODO need some serious refactoring here
-            render(:action => reporter + '_' + format)
+            
+            @name = reporter_name
+            @title = @chief_editor.title_for reporter_name
+            @headlines = @chief_editor.latest_news_from reporter_name
+            render(:action => format)
         end
     end
     

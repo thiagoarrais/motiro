@@ -1,9 +1,9 @@
 <p>
-  <h1>Últimas notícias do Subversion</h1>
+  <h1><%= h(@title) %></h1>
   <%= link_to( image_tag('rss.gif', :border => 0),
                { :controller => 'report',
                  :action => 'show',
-                 :reporter => 'subversion',
+                 :reporter => @name,
                  :format => 'rss' } )
   %>
 </p>
@@ -12,7 +12,7 @@
     <%= link_to( h(headline.title),
                  { :controller => 'report',
                    :action => 'show',
-                   :reporter => 'subversion',
+                   :reporter => @name,
                    :id => headline.rid } )%>
     <br/>
     <font size="-1">

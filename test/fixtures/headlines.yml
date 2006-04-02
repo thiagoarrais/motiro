@@ -23,5 +23,18 @@ svn_demo_headline:
   happened_at: 2006-03-23 11:10:04
   reported_by: subversion
   rid: r32
+  
+release_event:
+  id: 4
+  author: bond
+  title: Next release planned for April, 26th
+  happened_at: 2006-04-26
+  reported_by: events
     
+meeting_event:
+  id: 5
+  author: motiro_maintainer
+  title: Planning meeting
+  happened_at: 2006-04-04
+  reported_by: events
 

@@ -7,7 +7,6 @@ class MockSubversionReporter < MotiroReporter
     include Test::Unit::Assertions
 
     def initialize
-        super('subversion')
         @actual_times_latest_headlines_called = 0
         @expected_times_latest_headlines_called = 0
     end

@@ -18,8 +18,8 @@ end
 class Headline
     @@old_latest = self.method(:latest)
 
-    def self.old_latest(num)
-        @@old_latest.call(num)        
+    def self.old_latest(num, reporter)
+        @@old_latest.call(num, reporter)        
     end
 end                
 
@@ -39,18 +39,18 @@ class ChiefEditorTest < Test::Unit::TestCase
 
         chief_editor = ChiefEditor.new(settings)
 
-        def Headline.latest(num)
+        def Headline.latest(num, reporter)
             assert_equal 6, num
             ChiefEditorTest.append_to_log('latest')
             return Array.new.fill(MockHeadline.new, 6)
         end
         
-        chief_editor.latest_news_from 'subversion'
+        chief_editor.latest_news_from 'mock_subversion'
         
         assert_equal 'latest', @@log
         
-        def Headline.latest(num)
-            old_latest(num)
+        def Headline.latest(num, reporter)
+            old_latest(num, reporter)
         end
     end
     
@@ -68,7 +68,7 @@ class ChiefEditorTest < Test::Unit::TestCase
             Array.new.fill(MockHeadline.new, 0, 3)
         end
         
-        chief_editor.latest_news_from 'subversion'
+        chief_editor.latest_news_from 'mock_subversion'
         
         reporter.verify
     end
@@ -83,7 +83,7 @@ class ChiefEditorTest < Test::Unit::TestCase
 
         chief_editor.employ reporter
         
-        chief_editor.latest_news_from 'subversion'
+        chief_editor.latest_news_from 'mock_subversion'
         
         reporter.verify
     end
@@ -138,6 +138,51 @@ class ChiefEditorTest < Test::Unit::TestCase
         
             assert_equal svn_demo_article.description, article.description
         end
+    end
+    
+    def test_fetches_reporter_title
+        FlexMock.use do |reporter|
+            settings = StubConnectionSettingsProvider.new
+            
+            reporter.should_receive(:name).
+                returns('mail_list')
+
+            title = 'Latest news from the mail list'
+
+            reporter.should_receive(:channel_title).
+                returns(title)
+                
+            chief_editor = ChiefEditor.new(settings)
+            chief_editor.employ reporter
+
+            assert_equal title, chief_editor.title_for('mail_list')
+        end
+    end
+    
+    def test_retrieves_headlines_from_correct_reporter_on_cached_mode
+        FlexMock.use('1', '2') do |events_reporter, subversion_reporter|
+            settings = StubConnectionSettingsProvider.new(
+                       :update_interval => 8)
+            
+            events_reporter.should_receive(:name).
+                returns('events')
+
+            subversion_reporter.should_receive(:name).
+                returns('subversion')
+
+            chief_editor = ChiefEditor.new(settings)
+            chief_editor.employ events_reporter
+            chief_editor.employ subversion_reporter
+            
+            events_news = chief_editor.latest_news_from 'events'
+            
+            assert_equal 2, events_news.size
+            
+            subversion_news = chief_editor.latest_news_from 'subversion'
+            
+            assert_equal 3, subversion_news.size
+        end
+        
     end
     
     #TODO should signal when the reporter is not registered

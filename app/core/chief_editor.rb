@@ -1,5 +1,6 @@
 require 'reporters/svn_settings'
 require 'reporters/svn_reporter'
+require 'reporters/events_reporter'
 require 'models/headline'
 
 # The ChiefEditor is the guy that makes all the reporters work
@@ -14,6 +15,7 @@ class ChiefEditor
         #     the reporter list at server startup time
         #     Or maybe the reporters can be 'require'd dinamically as needed
         self.employ(SubversionReporter.new)
+        self.employ(EventsReporter.new)
     end
 
     def latest_news_from(reporter_name)
@@ -22,6 +24,11 @@ class ChiefEditor
     
     def article_for_headline(reporter_name, rid)
         @strategy.article_for_headline(reporter_name, rid)
+    end
+    
+    def title_for(reporter_name)
+        reporter = @reporters[reporter_name]
+        return reporter.channel_title
     end
     
     # Adds the given reporter to the set of reporters employed by the editor
@@ -66,7 +73,7 @@ class CachedEditorStrategy
     end
 
     def latest_news_from(reporter_name)
-        return Headline.latest(@settings.getPackageSize)
+        return Headline.latest(@settings.getPackageSize, reporter_name)
     end    
     
     def article_for_headline(reporter_name, rid)
