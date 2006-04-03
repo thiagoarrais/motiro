@@ -1,17 +1,8 @@
-require 'fileutils'
-
-require 'local_svn'
-
-include FileUtils
+require 'acceptance/live_mode_test'
 
 class SubversionAcceptanceTest < Test::Unit::TestCase
 
-    def setup
-        super
-        @repo = LocalSubversionRepository.new
-        switch_to_development_mode
-    end
-
+    include LiveModeTestCase
 
     def test_short_headline
         commit_msg = 'Created my project'
@@ -147,31 +138,5 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
     #       and the change title will be something like 'Changes in subversion_html_fragment.rhtml:123)'
     #       also the diff maybe incorrectly placed
     #       see motiro's revision r124
-    
-    def teardown
-        super
-        @repo.destroy
-        switch_back_to_normal_mode
-    end
-    
-private
-
-    def switch_to_development_mode
-        cp("#{app_root}/config/report/subversion.yml", "#{app_root}/config/report/subversion.yml.bak")
-        config_file = File.open("#{app_root}/config/report/subversion.yml", 'w')
-        config_file << "repo: #{@repo.url}\n" <<
-                       "update_interval: 0\n" <<
-                       "package_size: 5\n"
-        config_file.close
-    end
-    
-    def switch_back_to_normal_mode
-        cp("#{app_root}/config/report/subversion.yml.bak", "#{app_root}/config/report/subversion.yml")
-        rm_f("#{app_root}/config/report/subversion.yml.bak")
-    end
-    
-    def app_root
-        return File.expand_path(File.dirname(__FILE__) + '/../..')
-    end
     
 end
