@@ -30,6 +30,7 @@ release_event:
   title: Next release planned for April, 26th
   happened_at: 2006-04-26
   reported_by: events
+  rid: e1
     
 meeting_event:
   id: 5
@@ -37,4 +38,5 @@ meeting_event:
   title: Planning meeting
   happened_at: 2006-04-04
   reported_by: events
+  rid: e2
 

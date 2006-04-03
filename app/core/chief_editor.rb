@@ -75,14 +75,18 @@ class CachedEditorStrategy
         @settings = settings
     end
 
-    def latest_news_from(reporter_name)
-        reporter = CacheReporter.new(reporter_name, @settings)
-        return reporter.latest_headlines
+    def latest_news_from(name)
+        return reporter_with(name).latest_headlines
     end    
     
-    def article_for_headline(reporter_name, rid)
-        headline =  Headline.find_with_reporter_and_rid(reporter_name, rid)
-        return headline.article
+    def article_for_headline(name, rid)
+        return reporter_with(name).article_for rid
+    end
+    
+private
+    
+    def reporter_with(name)
+        return CacheReporter.new(name, @settings)
     end
 
 end
