@@ -1,5 +1,9 @@
-require 'core/reporter'
+require 'core/cache_reporter'
 
-class EventsReporter < MotiroReporter
+class EventsReporter < CacheReporter
     title 'Próximos eventos'
+    
+    def initialize
+        super('events')
+    end
 end

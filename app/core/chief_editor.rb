@@ -3,6 +3,9 @@ require 'reporters/svn_reporter'
 require 'reporters/events_reporter'
 require 'models/headline'
 
+require 'core/cache_reporter'
+
+
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor
 
@@ -73,7 +76,8 @@ class CachedEditorStrategy
     end
 
     def latest_news_from(reporter_name)
-        return Headline.latest(@settings.getPackageSize, reporter_name)
+        reporter = CacheReporter.new(reporter_name, @settings)
+        return reporter.latest_headlines
     end    
     
     def article_for_headline(reporter_name, rid)
