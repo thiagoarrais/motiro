@@ -133,7 +133,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
     #      stone that way and can't be fixed
     
     def test_copy_file
-        @repo.add_file('file_number_one.txt', 'the content here will be copied to file_number_two')
+        @repo.add_file('file_number_one.txt', "the content here will be copied to file_number_two\n")
         @repo.commit('added first file')
         
         commit_title = 'files copied'
@@ -142,7 +142,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         open '/report/subversion'
         clickAndWait "//a[text() = '#{commit_title}']"
         assertTextPresent "Alterações em file_number_two.txt"
-        assertTextPresent "@@ -0,0 +1,2 @@\n+contents"
+        assertTextPresent "@@ -0,0 +1 @@\n+the content here will be copied to file_number_two"
     end
     
     # TODO  copy and move files around

@@ -17,8 +17,8 @@
     </div>
     <div id="summary">
         <% @article.changes.each do |change| %>
-               <%= change.render_summary -%>
-               <br/>
+            <%= change.render_summary -%>
+            <br/>
         <% end %>
     </div>
 <% if !@partial then %>

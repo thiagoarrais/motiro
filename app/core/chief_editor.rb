@@ -80,7 +80,7 @@ class CachedEditorStrategy
     end    
     
     def article_for_headline(name, rid)
-        return reporter_with(name).article_for rid
+        return reporter_with(name).article_for(rid)
     end
     
 private

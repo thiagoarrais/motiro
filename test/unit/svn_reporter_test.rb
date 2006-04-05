@@ -116,6 +116,83 @@ DIFF_END
     diff_text += "+\n"
     diff_text += "+end"
     @@R105diff = diff_text
+    
+    revText =  "------------------------------------------------------------------------\n"
+    revText += "r124 | thiagoarrais | 2006-04-02 12:47:35 -0300 (Dom, 02 Abr 2006) | 5 lines\n"
+    revText += "Caminhos mudados:\n"
+    revText += "   A /trunk/app/views/report/html_fragment.rhtml (de /trunk/app/views/report/subversion_html_fragment.rhtml:123)\n"
+    revText += "   D /trunk/app/views/report/subversion_html_fragment.rhtml\n"
+    revText += "\n"
+    revText += "Reporter de eventos e reestruturacao do codigo\n"
+    revText += "\n"
+    revText += "- Reporter de eventos ainda nao funciona ao vivo\n"
+    revText += "- Ainda nao ha detalhamento dos eventos\n"
+    revText += "\n"
+    revText += "------------------------------------------------------------------------\n"
+    @@R124 = revText
+    
+    @@R124diff = <<END
+Index: app/views/report/subversion_html_fragment.rhtml
+===================================================================
+--- app/views/report/subversion_html_fragment.rhtml     (revisão 123)
++++ app/views/report/subversion_html_fragment.rhtml     (revisão 124)
+@@ -1,24 +0,0 @@
+-<p>
+-  <h1>Ã<9A>ltimas notÃ­cias do Subversion</h1>
+-  <%= link_to( image_tag('rss.gif', :border => 0),
+-               { :controller => 'report',
+-                 :action => 'show',
+-                 :reporter => 'subversion',
+-                 :format => 'rss' } )
+-  %>
+-</p>
+-<% @headlines.each do |headline|%>
+-  <p>
+-    <%= link_to( h(headline.title),
+-                 { :controller => 'report',
+-                   :action => 'show',
+-                   :reporter => 'subversion',
+-                   :id => headline.rid } )%>
+-    <br/>
+-    <font size="-1">
+-      <i><%= h(headline.author) %></i>
+-      <%= h(headline.happened_at) %>
+-    </font>
+-    <hr/>
+-  </p>
+-<% end %>
+\ Sem nova-linha ao fim do arquivo
+Index: app/views/report/html_fragment.rhtml
+===================================================================
+--- app/views/report/html_fragment.rhtml        (revisão 0)
++++ app/views/report/html_fragment.rhtml        (revisão 124)
+@@ -0,0 +1,24 @@
++<p>
++  <h1><%= h(@title) %></h1>
++  <%= link_to( image_tag('rss.gif', :border => 0),
++               { :controller => 'report',
++                 :action => 'show',
++                 :reporter => @name,
++                 :format => 'rss' } )
++  %>
++</p>
++<% @headlines.each do |headline|%>
++  <p>
++    <%= link_to( h(headline.title),
++                 { :controller => 'report',
++                   :action => 'show',
++                   :reporter => @name,
++                   :id => headline.rid } )%>
++    <br/>
++    <font size="-1">
++      <i><%= h(headline.author) %></i>
++      <%= h(headline.happened_at) %>
++    </font>
++    <hr/>
++  </p>
++<% end %>
+\ Sem nova-linha ao fim do arquivo
+END
 
     def setup
         @svn_log  = "------------------------------------------------------------------------\n"
@@ -327,7 +404,7 @@ DIFF_END
         assert_equal expected_diff_for_headline, changes[1].diff
     end
     
-    def test_method_article_for_record_diff_output
+    def test_method_article_for_records_diff_output
         @svn_log = @@R105
         @svn_diff = @@R105diff
 
@@ -345,11 +422,46 @@ DIFF_END
 
         assert_equal '   A /trunk/app/models/change.rb', change.summary
         assert_equal expected_diff, change.diff
+    end
+    
+    def test_correctly_associates_resources_with_diff_when_moving
+        @svn_log = @@R124
+        @svn_diff = @@R124diff
+        
+        article = @reporter.article_for('r124')
+        change_for_html_fragment = find_in(article.changes) do |change|
+            Regexp.new('A /trunk/app/views/report/html_fragment.rhtml').
+                match(change.summary)
+        end
+        
+        assert_not_nil change_for_html_fragment
+        
+        change_for_svn_html_fragment = find_in(article.changes) do |change|
+            Regexp.new('D /trunk/app/views/report/subversion_html_fragment.rhtml').
+                match(change.summary)
+        end
+        
+        assert_not_nil change_for_svn_html_fragment
+        
+        assert_nil change_for_html_fragment.diff.match(/^-/)
+        assert_not_nil change_for_html_fragment.diff.match(/^\+/)
 
+        assert_nil change_for_svn_html_fragment.diff.match(/^\+/)
+        assert_not_nil change_for_svn_html_fragment.diff.match(/^-/)
     end
     
     def teardown
         @svn_connection.mock_verify
+    end
+ 
+private
+
+    def find_in(arr)
+        arr.each do |item| 
+            return item if yield(item)
+        end
+        
+        return nil
     end
     
     #TODO test similar paths (see SubversionReporter#diff_for)

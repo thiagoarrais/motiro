@@ -89,7 +89,7 @@ private
             resources = md.post_match
             
             summary = md.pre_match
-            resource_path = summary.match(/[^\s]+\z/)[0]
+            resource_path = summary.match(/\w [^\s]+/)[0]
 #            puts ">>> parse changed resources: Procurando diffs para #{resource_path}"
 #            puts ">>> parse changed resources: #{theHeadline}, #{theHeadline.rid}"
             diff = diff_for(resource_path, theHeadline.rid)

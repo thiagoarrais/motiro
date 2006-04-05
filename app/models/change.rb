@@ -28,16 +28,20 @@ class Change < ActiveRecord::Base
         end
     end
     
+    def qualified_resource_name
+        return summary.match(/\w ([^\s]+)/)[1]
+    end
+
+    def resource_name
+        return qualified_resource_name.split('/').last
+    end
+    
 private
 
     def has_diff?
         return ! (diff.nil? or diff.empty?)
     end
 
-    def resource_name
-        return summary.split('/').last
-    end
-    
     def ref
         return "change" + summary.hash.to_s
     end

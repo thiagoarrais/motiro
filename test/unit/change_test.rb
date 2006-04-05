@@ -71,5 +71,20 @@ class ChangeTest < Test::Unit::TestCase
         
         assert_equal summary_ref, diff_ref
     end
+    
+    def test_usual_qualified_resource_name
+        change = Change.new(:summary => 'A /a_file.txt')
+        assert_equal '/a_file.txt', change.qualified_resource_name
+    end
+    
+    def test_complex_qualified_resource_name
+        change = Change.new(:summary => 'A /subdir/fileC.txt (from /fileA.txt:2)')
+        assert_equal '/subdir/fileC.txt', change.qualified_resource_name
+    end
+    
+    def test_complex_resource_name
+        change = Change.new(:summary => 'A /subdir/fileC.txt (from /fileA.txt:2)')
+        assert_equal 'fileC.txt', change.resource_name
+    end
         
 end
