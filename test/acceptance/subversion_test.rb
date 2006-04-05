@@ -132,6 +132,19 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
     #      timeout) during headline retrieval, the headlines are carved in
     #      stone that way and can't be fixed
     
+    def test_copy_file
+        @repo.add_file('file_number_one.txt', 'the content here will be copied to file_number_two')
+        @repo.commit('added first file')
+        
+        commit_title = 'files copied'
+        @repo.copy('file_number_one.txt', 'file_number_two.txt', commit_title)
+        
+        open '/report/subversion'
+        clickAndWait "//a[text() = '#{commit_title}']"
+        assertTextPresent "Alterações em file_number_two.txt"
+        assertTextPresent "@@ -0,0 +1,2 @@\n+contents"
+    end
+    
     # TODO  copy and move files around
     #       there seems to be a bug when copying files the diff summary looks
     #       like this:  A /trunk/app/views/report/html_fragment.rhtml (from /trunk/app/views/report/subversion_html_fragment.rhtml:123)

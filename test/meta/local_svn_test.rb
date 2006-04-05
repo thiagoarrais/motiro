@@ -69,9 +69,19 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
                      "-this is line number 2\n" +
                      "\\+this is the new line number 2")
         assert_not_nil regexp.match(execute("svn diff -r1:2 #{@repo.url}"))
-                     
     end
     
+    def test_remote_copy
+        @repo.add_file('fileA.txt', 'contents')
+        @repo.commit('added file A')
+        
+        @repo.copy('fileA.txt', 'fileB.txt', 'copied file A to B')
+        
+        assert_equal "fileA.txt\nfileB.txt\n", execute("svn ls #{@repo.url}")
+        regexp = /A \/fileB.txt \(\w+ \/fileA.txt:1\)$/
+        assert_not_nil regexp.match(execute("svn log svn://localhost:36903 -vr2"))
+    end
+        
     def teardown
         @repo.destroy
     end

@@ -56,6 +56,10 @@ class LocalSubversionRepository
     def commit(comment)
         svn_command("commit #{self.wc_dir}", comment)
     end
+    
+    def copy(src, dest, comment)
+        svn_command("copy #{self.url}/#{src} #{self.url}/#{dest}", comment)
+    end
 
 private
 
