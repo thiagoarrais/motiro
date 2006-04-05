@@ -145,11 +145,20 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assertTextPresent "@@ -0,0 +1 @@\n+the content here will be copied to file_number_two"
     end
     
-    # TODO  copy and move files around
-    #       there seems to be a bug when copying files the diff summary looks
-    #       like this:  A /trunk/app/views/report/html_fragment.rhtml (from /trunk/app/views/report/subversion_html_fragment.rhtml:123)
-    #       and the change title will be something like 'Changes in subversion_html_fragment.rhtml:123)'
-    #       also the diff maybe incorrectly placed
-    #       see motiro's revision r124
-    
+    def test_move_file
+        @repo.add_file('file_number_one.txt', "this file will be renamed to file_number_two\n")
+        @repo.commit('added first file')
+        
+        commit_title = 'renamed file'
+        @repo.move('file_number_one.txt', 'file_number_two.txt', commit_title)
+        
+        open '/report/subversion'
+        clickAndWait "//a[text() = '#{commit_title}']"
+
+        assertTextPresent "Alterações em file_number_one.txt"
+        assertTextPresent "@@ -1 +0,0 @@\n-this file will be renamed to file_number_two"
+        assertTextPresent "Alterações em file_number_two.txt"
+        assertTextPresent "@@ -0,0 +1 @@\n+this file will be renamed to file_number_two"
+    end
+
 end

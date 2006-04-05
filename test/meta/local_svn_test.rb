@@ -79,7 +79,18 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
         
         assert_equal "fileA.txt\nfileB.txt\n", execute("svn ls #{@repo.url}")
         regexp = /A \/fileB.txt \(\w+ \/fileA.txt:1\)$/
-        assert_not_nil regexp.match(execute("svn log svn://localhost:36903 -vr2"))
+        assert_not_nil regexp.match(execute("svn log #{@repo.url} -vr2"))
+    end
+    
+    def test_remote_move
+        @repo.add_file('fileA.txt', 'contents')
+        @repo.commit('added file A')
+        
+        @repo.move('fileA.txt', 'fileC.txt', 'moved file A to C')
+        
+        assert_equal "fileC.txt\n", execute("svn ls #{@repo.url}")
+        regexp = /A \/fileC.txt \(\w+ \/fileA.txt:1\)$/
+        assert_not_nil regexp.match(execute("svn log #{@repo.url} -vr2"))
     end
         
     def teardown

@@ -61,6 +61,10 @@ class LocalSubversionRepository
         svn_command("copy #{self.url}/#{src} #{self.url}/#{dest}", comment)
     end
 
+    def move(src, dest, comment)
+        svn_command("move #{self.url}/#{src} #{self.url}/#{dest}", comment)
+    end
+
 private
 
     def svn_command(command, comment=nil)
