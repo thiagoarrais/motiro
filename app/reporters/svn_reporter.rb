@@ -1,9 +1,20 @@
+require 'rubygems'
+require 'xmlsimple'
+
 require 'date'
 require 'reporters/svn_connection'
 
 require 'models/headline'
 
 require 'core/reporter'
+
+class String
+    
+    def to_rev_num
+        self.match(/\d+/)[0]
+    end
+    
+end
 
 class SubversionReporter < MotiroReporter
 
@@ -93,14 +104,17 @@ private
 #            puts ">>> parse changed resources: Procurando diffs para #{resource_path}"
 #            puts ">>> parse changed resources: #{theHeadline}, #{theHeadline.rid}"
             diff = diff_for(resource_path, theHeadline.rid)
-            changes.push(Change.new(:summary => summary, :diff => diff))
+            kind = kind_of(resource_path, theHeadline.rid)
+            changes.push(Change.new(:summary => summary,
+                                    :resource_kind => kind,
+                                    :diff => diff))
         end
 
         return theHeadline, remain
     end
     
     def diff_for(resource_path, revision_id)
-        revision_num = revision_id.to_s.match(/\d+/)[0]
+        revision_num = revision_id.to_rev_num
         
         remain = @connection.diff(revision_num)
         
@@ -115,6 +129,19 @@ private
                 end
                 return svn_parse_diff(diff_text)
             end
+        end
+    end
+    
+    def kind_of(resource_path, revision_id)
+        revision_num = revision_id.to_rev_num
+        
+        begin
+            raw_info = @connection.info(resource_path, revision_num)
+            info = XmlSimple.xml_in(raw_info)
+    
+            return info['entry'].first['kind']
+        rescue
+            return nil
         end
     end
     

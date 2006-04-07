@@ -86,5 +86,37 @@ class ChangeTest < Test::Unit::TestCase
         change = Change.new(:summary => 'A /subdir/fileC.txt (from /fileA.txt:2)')
         assert_equal 'fileC.txt', change.resource_name
     end
+    
+    def test_file_not_filled
+        change = Change.new(:summary => 'A /subdir/fileC.txt',
+                            :resource_kind => 'file',
+                            :diff => nil)
+        
+        assert !change.filled?
+    end
+    
+    def test_file_filled
+        change = Change.new(:summary => 'A /subdir/fileC.txt',
+                            :resource_kind => 'file',
+                            :diff => '+file change')
+        
+        assert change.filled?
+    end
+
+    def test_directory_always_filled
+        change = Change.new(:summary => 'A /subdir',
+                            :resource_kind => 'dir',
+                            :diff => nil)
+        
+        assert change.filled?
+    end
+
+    def test_unknown_always_not_filled
+        change = Change.new(:summary => 'A /subdir/fileC.txt',
+                            :resource_kind => nil,
+                            :diff => '+file change')
+        
+        assert ! change.filled?
+    end    
         
 end

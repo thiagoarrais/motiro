@@ -32,4 +32,9 @@ class SubversionConnection
         return cached_result
     end
     
+    def info(path, rev_id)
+        command = "svn info -r#{rev_id} --xml #{@settings.getRepoURL}#{path}"
+        @runner.run(command)
+    end
+    
 end                                                           

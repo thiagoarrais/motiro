@@ -1,8 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-require 'rubygems'
-require 'flexmock'
-
 require 'test/unit'
 
 require 'reporters/svn_connection'
@@ -45,7 +42,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
         FlexMock.use do |runner|
             settings = StubConnectionSettingsProvider.new
 
-            runner.should_receive(:run).
+            runner.should_receive(:run).once.
                 with('svn log http://svn.fake.domain.org/fake_repo -v -r7')
                 
             connection = SubversionConnection.new(settings, runner)
@@ -58,7 +55,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
         FlexMock.use do |runner|
             settings = StubConnectionSettingsProvider.new
 
-            runner.should_receive(:run).
+            runner.should_receive(:run).once.
                 with('svn diff http://svn.fake.domain.org/fake_repo -r14:15')
                 
             connection = SubversionConnection.new(settings, runner)
@@ -67,7 +64,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
         end
     end
     
-    def test_results_to_avoid_network_usage
+    def test_cache_results_to_avoid_network_usage
         FlexMock.use do |runner|
             settings = StubConnectionSettingsProvider.new
             expected_diff_output = 'diff output'
@@ -79,6 +76,19 @@ class SubversionConnectionTest < Test::Unit::TestCase
             connection = SubversionConnection.new(settings, runner)
             assert_equal expected_diff_output, connection.diff(18)
             assert_equal expected_diff_output, connection.diff(18)
+        end
+    end
+    
+    def test_info
+        FlexMock.use do |runner|
+            settings = StubConnectionSettingsProvider.new
+
+            runner.should_receive(:run).once.
+                with('svn info -r18 --xml http://svn.fake.domain.org/fake_repo/trunk/file_a.txt')
+                
+            connection = SubversionConnection.new(settings, runner)
+            
+            connection.info('/trunk/file_a.txt', 18)
         end
     end
     

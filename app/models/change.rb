@@ -36,6 +36,11 @@ class Change < ActiveRecord::Base
         return qualified_resource_name.split('/').last
     end
     
+    def filled?
+        return !self.resource_kind.nil? &&
+                ('dir' == self.resource_kind || !self.diff.nil?)
+    end
+    
 private
 
     def has_diff?

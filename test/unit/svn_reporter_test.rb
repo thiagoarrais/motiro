@@ -14,6 +14,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         @svn_log += "Criacao do trunk do projeto\n"
         @svn_log += "------------------------------------------------------------------------\n"
         @svn_diff = ''
+        @svn_info = ''
         
         @svn_connection = FlexMock.new('svn connection')
         @svn_connection.mock_handle(:log) do
@@ -24,6 +25,9 @@ class SubversionReporterTest < Test::Unit::TestCase
             @svn_diff
         end
         
+        @svn_connection.mock_handle(:info) do
+            @svn_info
+        end
         @reporter = SubversionReporter.new(@svn_connection)
     end
 
@@ -236,6 +240,18 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_not_nil change_for_svn_html_fragment.diff.match(/^-/)
     end
     
+    def test_records_node_type
+        @svn_log = R10
+        @svn_diff = '' # simulate a connection timeout
+
+        @svn_info = R10INFO
+        
+        article = @reporter.article_for('r10')
+        
+        change = article.changes.first
+        assert_equal 'file', change.resource_kind
+    end
+
     def teardown
         @svn_connection.mock_verify
     end

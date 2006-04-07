@@ -78,6 +78,50 @@ DIFF_END
     revText += "Esqueci de colocar o svn_reporter. Foi mal!\n\n"
     R7 = revText    
 
+    R10DIFF = <<INFO_END
+Index: rakefile
+===================================================================
+--- rakefile    (revision 9)
++++ rakefile    (revision 10)
+@@ -1,14 +1,12 @@
++require 'fileutils'
++
+ SITE_DIR = File.dirname(__FILE__)
+
+ end
+INFO_END
+
+    R10INFO = <<END
+<?xml version="1.0" encoding="utf-8"?>
+<info>
+<entry
+   kind="file"
+   path="rakefile"
+   revision="10">
+<url>http://svn.berlios.de/svnroot/repos/motiro/trunk/rakefile</url>
+<repository>
+<root>http://svn.berlios.de/svnroot/repos/motiro</root>
+<uuid>31482026-630c-0410-91bb-adf60aae4351</uuid>
+</repository>
+<commit
+   revision="10">
+<author>thiagoarrais</author>
+<date>2006-02-18T00:34:19.987417Z</date>
+</commit>
+</entry>
+</info>
+END
+
+    R10 = <<INFO_END
+------------------------------------------------------------------------
+r10 | thiagoarrais | 2006-02-17 20:34:19 -0400 (Sex, 17 Fev 2006) | 1 line
+Changed paths:
+   M /trunk/rakefile
+
+Rakefile agora usando a biblioteca padrao onde possivel
+------------------------------------------------------------------------
+INFO_END
+
     revText =  "------------------------------------------------------------------------\n"
     revText += "r13 | thiagoarrais | 2006-02-19 08:50:07 -0400 (Dom, 19 Fev 2006) | 1 line\n"
     revText += "Caminhos mudados:\n"

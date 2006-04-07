@@ -22,6 +22,7 @@ create table changes (
 	id int not null auto_increment,
 	article_id int not null,
 	summary text not null,
+	resource_kind varchar(6),
 	diff text,
 	constraint fk_change_article foreign key (article_id) references articles(id),
 	primary key (id)
