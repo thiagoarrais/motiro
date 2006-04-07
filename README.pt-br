@@ -22,6 +22,10 @@ Para ter seu portal Motiro rodando, você vai precisar de:
    não testadas)
 4. Cliente Subversion (svn) para o repórter Subversion (que é o único repórter
    disponível nesta versão do Motiro :-)
+5. Xml-Simple 1.0.8 (qualquer versão posterior deve funcionar, versões
+   anteriores não testadas)
+6. FlexMock 0.1.7 para executar os testes (qualquer versão posterior deve
+   funcionar)
 
 Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 

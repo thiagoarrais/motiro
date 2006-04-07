@@ -20,7 +20,11 @@ To get your own Motiro portal up and running, you will need the following:
    tested)
 4. Subversion client (svn) for the Subversion reporter (the only one currently
    available)
-
+5. Xml-Simple 1.0.8 (should work with posterior versions, previous versions not
+   tested)
+6. FlexMock 0.1.7 if you want to run the tests (highly recommended) (should
+   work with posterior versions)
+   
 What you need to do is:
 
 1. Download and unpack the Motiro distribution files
