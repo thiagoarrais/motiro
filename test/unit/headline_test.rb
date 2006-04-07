@@ -37,10 +37,10 @@ class HeadlineTest < Test::Unit::TestCase
     end
     
     def test_cached
-       gita_headline = headlines('gita')
-       headline = Headline.new(:author => gita_headline.author,
-                               :title => gita_headline.title,
-                               :happened_at => [2005, 1, 1])
+       svn_demo_headline = headlines('svn_demo_headline')
+       headline = Headline.new(:author => svn_demo_headline.author,
+                               :title => svn_demo_headline.title,
+                               :happened_at => [2006, 03, 23, 11, 10, 04])
                                
        assert headline.cached?
     end
@@ -135,6 +135,79 @@ class HeadlineTest < Test::Unit::TestCase
         
         assert_not_nil aHeadline
         assert_equal svn_demo_headline, aHeadline
+    end
+    
+    def test_not_filled
+        fst_change, snd_change = FlexMock.new, FlexMock.new
+        
+        fst_change.should_receive(:filled?).
+            returns(true)
+        snd_change.should_receive(:filled?).
+            returns(false)
+            
+        a_headline = create_headline_with_changes(fst_change, snd_change)
+        
+        assert !a_headline.filled?
+        
+        [fst_change, snd_change].each do |m|
+            m.mock_verify
+        end
+    end
+    
+    def test_filled
+        change = FlexMock.new
+        
+        change.should_receive(:filled?).
+            returns(true)
+            
+        a_headline = create_headline_with_changes(change, change)
+        
+        assert a_headline.filled?
+        
+        change.mock_verify
+    end
+    
+    def test_recaches_failed
+        filled_change = Change.new(:summary => 'A /trunk/app/models/headline.rb',
+                                   :resource_kind => 'file',
+                                   :diff => '+change')
+        failed_change = Change.new(:summary => 'A /trunk/test/unit/headline_test.rb',
+                                   :resource_kind => 'file',
+                                   :diff => nil)
+
+        a_headline = create_headline_with_changes(filled_change, failed_change)
+
+        a_headline.cache
+        
+        failed_change.diff = '+def test_headline; end'
+        
+        a_headline = create_headline_with_changes(filled_change, failed_change)
+
+        assert !a_headline.cached?
+        
+        a_headline.cache
+        
+        assert a_headline.cached?
+        
+        hls = Headline.find(:all, :conditions => ["title = ?", a_headline.title])     
+        
+        assert_equal 1, hls.size
+    end
+
+private
+
+    def create_headline_with_changes(*changes)
+        a_headline = Headline.new(:author => 'thiagoarrais',
+                                  :title => 'this is the headline title',
+                                  :reported_by => 'subversion',
+                                  :happened_at => [1983, 1, 1, 02, 15, 12],
+                                  :rid => 'r47')
+                                  
+        changes.reverse.each do |c|
+            a_headline.article.changes.unshift(c)
+        end
+        
+        return a_headline
     end
     
 end

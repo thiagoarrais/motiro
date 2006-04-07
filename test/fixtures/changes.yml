@@ -4,14 +4,17 @@ svn_demo_add_trunk_change:
   id: 1
   article_id: 1
   summary: A /trunk
+  resource_kind: dir
 
 svn_demo_add_branches_change:
   id: 2
   article_id: 1
   summary: A /branches
+  resource_kind: dir
 
 svn_demo_add_tags_change:
   id: 3
   article_id: 1
   summary: A /tags
+  resource_kind: dir
   

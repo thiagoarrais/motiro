@@ -46,6 +46,48 @@ DIFF_END
 +end
 DIFF_END
 
+    R6C1INFO = <<END
+<?xml version="1.0" encoding="utf-8"?>
+<info>
+<entry
+   kind="file"
+   path="svn_connection.rb"
+   revision="6">
+<url>http://svn.berlios.de/svnroot/repos/motiro/trunk/src/test/stubs/svn_connection.rb</url>
+<repository>
+<root>http://svn.berlios.de/svnroot/repos/motiro</root>
+<uuid>31482026-630c-0410-91bb-adf60aae4351</uuid>
+</repository>
+<commit
+   revision="6">
+<author>thiagoarrais</author>
+<date>2006-02-17T15:22:25.029049Z</date>
+</commit>
+</entry>
+</info>
+END
+
+    R6C2INFO = <<END
+<?xml version="1.0" encoding="utf-8"?>
+<info>
+<entry
+   kind="file"
+   path="headline_test.rb"
+   revision="6">
+<url>http://svn.berlios.de/svnroot/repos/motiro/trunk/src/test/unit/headline_test.rb</url>
+<repository>
+<root>http://svn.berlios.de/svnroot/repos/motiro</root>
+<uuid>31482026-630c-0410-91bb-adf60aae4351</uuid>
+</repository>
+<commit
+   revision="6">
+<author>thiagoarrais</author>
+<date>2006-02-17T15:22:25.029049Z</date>
+</commit>
+</entry>
+</info>
+END
+
     diff_text  = <<DIFF_END
 Index: src/test/unit/headline_test.rb
 ===================================================================

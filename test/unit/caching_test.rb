@@ -22,9 +22,19 @@ class CachingTest < Test::Unit::TestCase
             with_any_args.
             returns(R6 + "-------------\n")
 
-        @connection.should_receive(:diff).with(6).
-            with_any_args.
-            returns('') # simulate bad or no output
+        diff = '' # simulate connection timeout
+        
+        @connection.mock_handle(:diff) do
+            diff
+        end
+
+        @connection.should_receive(:info).
+            with('/trunk/src/test/stubs/svn_connection.rb', '6').
+            returns(R6C1INFO)
+
+        @connection.should_receive(:info).
+            with('/trunk/src/test/unit/headline_test.rb', '6').
+            returns(R6C2INFO)
 
         @driver.tick
         
@@ -32,10 +42,10 @@ class CachingTest < Test::Unit::TestCase
         changes = headlines.first.article.changes
         assert_nil changes.first.diff
         
-        @connection.should_receive(:diff).with(6).
-            with_any_args.
-            returns(R6DIFF) # connection is back
+        diff = R6DIFF # connection is back
         
+        @driver.tick
+
         headlines = @chief_editor.latest_news_from(@reporter.name)
         changes = headlines.first.article.changes
         assert_not_nil changes.first.diff

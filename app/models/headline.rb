@@ -28,7 +28,16 @@ class Headline < ActiveRecord::Base
     
     # Saves the headline locally, if it isn't already cached
     def cache
-        self.save unless self.cached?
+        unless self.cached?
+            # TODO duplicate code
+            self.class.destroy_all(["author = ? " +
+                                    "and title = ?" +
+                                    "and happened_at =?",
+                                    self.author,
+                                    self.title,
+                                    self.happened_at])
+            self.save
+        end
     end
 
     def cached?
@@ -39,8 +48,22 @@ class Headline < ActiveRecord::Base
                                            self.author,
                                            self.title,
                                            self.happened_at])
+                                           
+        return false if cached_lines.empty?
             
-        return ! cached_lines.empty?
+        cached_lines.each do |hl| 
+            return true if hl.filled?
+        end
+
+        return false
+    end
+    
+    def filled?
+        self.article.changes.each do |c|
+            return false if !c.filled?
+        end
+        
+        return true
     end
     
 end
