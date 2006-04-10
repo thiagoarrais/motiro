@@ -1,6 +1,6 @@
 <p>
   <h1><%= h(@title) %></h1>
-  <%= link_to( image_tag('rss.gif', :border => 0),
+  <%= link_to( "<div class='rss-link'>RSS<span></span></div>",
                { :controller => 'report',
                  :action => 'show',
                  :reporter => @name,

@@ -25,3 +25,20 @@ div.channel {
     color: gray;
     clear: left;
 }
+
+div.rss-link {
+    margin:0; padding:0;
+    position:relative;
+    width:36px; height:14px;
+    margin:0; padding:0;
+    overflow:hidden;
+}
+
+div.rss-link span {
+      display:block;
+      position:absolute; left:0; top:0; z-index:1;
+      width:36px; height:14px;
+      margin:0; padding:0;
+      background: url(/images/rss.gif) no-repeat top left; 
+}
+

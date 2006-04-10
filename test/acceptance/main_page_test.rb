@@ -1,3 +1,6 @@
+require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../../vendor/selenium/seletest"
+
 class MotiroAcceptanceTest < Test::Unit::TestCase
 
     def test_main_page
@@ -11,8 +14,8 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
     def test_report_html
         open '/report/subversion'
         assertTextPresent 'Últimas notícias do Subversion'
-        assertElementPresent "//img[@src='/images/rss.gif']"
-        clickAndWait "//img[@src='/images/rss.gif']"
+        assertElementPresent "//div[@class='rss-link']"
+        clickAndWait "//div[@class='rss-link']"
         assertLocation "/feed/subversion"
     end
     
