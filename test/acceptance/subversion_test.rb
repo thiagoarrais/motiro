@@ -12,7 +12,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         open '/report/subversion'
         assertTextPresent @username
         assertTextPresent commit_msg
-        clickAndWait "//div[@class='rss-link']"
+        clickAndWait "//img[starts-with(@src, '/images/rss.gif')]"
         assertText "//rss/channel/item/title", commit_msg
         assertText "//rss/channel/item/author", @repo.username
         
