@@ -12,26 +12,24 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
                              '../../../config/report/subversion.yml')
         @opener = MockFileSystem.new
         @opener.expect_open(@expected_file_name) do
-            StringIO.new( "repo: svn://svn.berlios.de/motiro\n" +
-                          "package_size: 8\n" +
-                          "update_interval: 10")
+            StringIO.new( "package_size: 8\n" +
+                          "update_interval: 10\n" +
+                          "svn:\n" +
+                          "  repo: svn://svn.berlios.de/motiro\n")
         end
         @provider = SubversionSettingsProvider.new(@opener)
     end
 
     def test_fetches_repo_url
         assert_equal 'svn://svn.berlios.de/motiro', @provider.getRepoURL
-        @opener.verify
     end
     
     def test_fetches_package_size
         assert_equal 8, @provider.getPackageSize
-        @opener.verify
     end
     
     def test_fectches_update_interval
         assert_equal 10, @provider.getUpdateInterval
-        @opener.verify
     end
     
     def test_dynamically_fetches_parameters
@@ -39,15 +37,18 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
         @opener.verify
         
         @opener.expect_open(@expected_file_name) do
-            StringIO.new( "repo: http://svn.berlios.de/svnroot/repos/motiro\n" +
-                          "package_size: 5")
+            StringIO.new( "package_size: 5\n" +
+                          "svn:\n" +
+                          "  repo: http://svn.berlios.de/svnroot/repos/motiro\n")
         end
         
         @opener.expect_open(@expected_file_name)
         
         assert_equal 'http://svn.berlios.de/svnroot/repos/motiro', @provider.getRepoURL
         assert_equal 5, @provider.getPackageSize
-        
+    end
+    
+    def teardown
         @opener.verify
     end
     

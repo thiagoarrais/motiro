@@ -39,7 +39,7 @@ class ConfigurationTest < Test::Unit::TestCase
     def test_reconfigure_repo_url
         expected_url = 'http://www.nowhere.com'
         @config.repo = expected_url
-        assert_equal expected_url, read('repo')
+        assert_equal expected_url, read('svn/repo')
     end
 
     def teardown
@@ -52,7 +52,12 @@ private
         file = File.open(FILE_NAME)
         configs = YAML.load(file)
         file.close
-        return configs[key]
+
+        result = configs
+        key.split('/').each do |node|
+            result = result[node]
+        end
+        return result
     end
 
 end

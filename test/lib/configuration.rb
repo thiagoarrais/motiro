@@ -15,7 +15,7 @@ class Configuration
     end
     
     def repo=(new_url)
-        reconfigure('repo', new_url)
+        reconfigure('svn/repo', new_url)
     end
     
     def go_live
@@ -35,7 +35,14 @@ class Configuration
 private
 
     def reconfigure(key, value)
-        @confs[key] = value
+        dst_hash = @confs
+        keys = key.split('/')
+        last_key = keys.pop
+        keys.each do |k|
+            dst_hash = dst_hash[k]
+        end
+        
+        dst_hash[last_key] = value
         file = File.open(FILE_NAME, 'w')
         YAML.dump(@confs, file)
         file.close

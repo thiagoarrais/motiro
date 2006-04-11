@@ -12,7 +12,7 @@ class SubversionSettingsProvider
     end
 
     def getRepoURL
-        return load_confs['repo']
+        return load_confs['svn']['repo']
     end
     
     def getPackageSize
