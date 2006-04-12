@@ -26,7 +26,7 @@ class SubversionSettingsProvider
 private
     def load_confs
         file = @filesystem.open(File.expand_path(File.dirname(__FILE__) +
-                                '/../../config/report/subversion.yml'))
+                                '/../../config/motiro.yml'))
         confs = YAML.load file
     end
     

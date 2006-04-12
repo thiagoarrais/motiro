@@ -5,7 +5,7 @@ require 'yaml'
 
 class ConfigurationTest < Test::Unit::TestCase
     
-    FILE_NAME = File.dirname(__FILE__) + '/../../config/report/subversion.yml'
+    FILE_NAME = File.dirname(__FILE__) + '/../../config/motiro.yml'
 
     def setup
         @config = Configuration.new

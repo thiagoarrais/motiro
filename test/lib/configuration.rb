@@ -3,7 +3,7 @@ require 'yaml'
 class Configuration
 
     FILE_NAME = File.expand_path(File.dirname(__FILE__) +
-                             '/../../config/report/subversion.yml')
+                             '/../../config/motiro.yml')
 
     def initialize
         @original_contents = File.open(FILE_NAME).read

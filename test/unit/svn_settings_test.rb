@@ -9,7 +9,7 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
 
     def setup
         @expected_file_name = File.expand_path(File.dirname(__FILE__) +
-                             '../../../config/report/subversion.yml')
+                             '../../../config/motiro.yml')
         @opener = MockFileSystem.new
         @opener.expect_open(@expected_file_name) do
             StringIO.new( "package_size: 8\n" +
