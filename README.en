@@ -113,28 +113,24 @@ What you need to do is:
    2.3. Schema preparation
 
    Last step for setting your databases is setting up their schemas correctly.
-   Fortunately, Motiro comes with a pre-packaged DDL script for this purpose.
-   You'll just need to feed MySQL with it.
+   Fortunately, Motiro comes prepackaged with migration scripts for this
+   purpose. You will need to ask rake to run them.
 
-   % mysql -u motiro motiro_development < src/db/create.sql
-
-   % mysql -u motiro motiro_test < src/db/create.sql
-
-   % mysql -u motiro motiro_production < src/db/create.sql
+   % rake migrate
 
    And that's it. Now, if you'd like, you can run the test suite to test your
    installation. This is a highly recommended practice because it verifies if
    your system is capable of running the program. Maybe, if you're feeling
-   confident enough (I never am), you'd want to skip this part and jump directly
-   to step 4 to run the WEBrick web server and see the whole thing running.
-
+   confident enough (I never am), you'd want to skip this part and jump
+   directly to step 4 to run the WEBrick web server and see the whole thing
+   running.
 
 3. Run the test suite
 ------
 
-   Motiro comes with a prepackaged test suite. This is the full test suite we
-   use during our development to make sure we don't slip out of the track. To
-   run it, just cd to where you unpacked Motiro and say:
+   Motiro comes with a builtin test suite. This is the full test suite we use
+   during development to make sure we don't slip out of the track. To run it,
+   just cd to where you unpacked Motiro and say:
 
    ----------------------------------------------------------------------------
    % rake test_units
@@ -156,17 +152,21 @@ What you need to do is:
    1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
 
+   You are likely to get much more dots outputed as well as messagens than
+   that, if you are running a recent version. Don't get lost: you only need to
+   check the summary on the last line.
+   
    You may also choose to trigger both unit and functional tests at once by
-   saying simlpy
+   saying just
    
    % rake
 
    If any test happens to fail, an error message will be printed and the last
-   line will report it. In case you are executingtemporariamente both functional and unit
-   tests, remember there will be two 'last lines'. If there is any error when
-   you run these tests, please contact us on the development list, tell us which
-   kind of system you are trying to run Motiro on and from where did you get it.
-   Do not forget to append your bug report too.
+   line will report it. In case you are executing both functional and unit
+   tests, remember there will be two summaries. If there is any error when you
+   run these tests, please contact us on the development list, tell us which
+   kind of system you are trying to run Motiro on and from where did you get
+   it. Do not forget to append your bug report too.
 
 5. Start the job scheduler
 ------

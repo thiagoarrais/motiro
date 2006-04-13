@@ -123,15 +123,11 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    2.3. Preparação do esquema
    
    O último passo para a configuração das bases de dados é estruturar os
-   esquemas corretamente. Felizmente, o Motiro já vem com um script DDL
-   pré-cozido para este propósito. Você só precisa fazer com que o MySQL
-   execute-o.
+   esquemas corretamente. Felizmente, o Motiro já vem com um scripts de
+   migração pré-cozidso para este propósito. Você só vai precisar pedir ao rake
+   para rodá-los.
 
-   % mysql -u motiro motiro_development < src/db/create.sql
-
-   % mysql -u motiro motiro_test < src/db/create.sql
-
-   % mysql -u motiro motiro_production < src/db/create.sql
+   % rake migrate
 
    E é isso. Agora, se você quiser, pode rodar a suíte de testes para testar sua
    instalação. Esta é uma atitude altamente recomendada para verificar a
@@ -146,7 +142,7 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    Juntamente com o Motiro, você recebeu uma suíte de testes. Ela é a mesma
    suíte de testes que usamos durante o desenvolvimento para nos mantermos nos
    trilhos. Para rodá-la, basta navegar para onde você desempacotou o Motiro
-   e pedir o seguinte:
+   e pedir o seguinte:	
 
    ----------------------------------------------------------------------------
    % rake test_units
@@ -167,9 +163,13 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 
    1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
+   
+   É perfeitamente normal que a saída para você inclua muito mais pontos e
+   mensagens, se você estiver executando um versão mais recente. Mas não
+   precisa se desesperar: você só precisa checar o resumo na última linha.
 
-   Você pode ainda resolver ativar os testes unitários e funcionais ao mesmo
-   tempo simplesmente dizendo:
+   Você pode ainda resolver ativar os testes unitários e funcionais com um
+   único comando simplesmente dizendo:
    
    % rake
    
