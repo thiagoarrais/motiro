@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require File.dirname(__FILE__) + '/../config/boot'
+require File.dirname(__FILE__) + '/../config/environment'
+
+def adduser(login, password, password_confirmation)
+	user = User.new(:login => login,
+	                :password => password,
+	                :password_confirmation => password_confirmation)
+	                
+	user.save
+end
+
+# if we are being executed as a script
+if ($0 == __FILE__)
+	print 'Username: '
+	name = gets.split.first
+		
+	print 'Password: '
+	passwd = gets.split.first
+		
+	print 'Confirm password: '
+	passwd_confirmation = gets.split.first
+	
+	adduser(name, passwd, passwd_confirmation)
+end
+
