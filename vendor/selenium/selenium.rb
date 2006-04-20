@@ -802,11 +802,11 @@ end
 
 class Test::Unit::TestCase
 
-  alias normal_run run 
+  alias dry_run run 
   
   def run(result, &block)
     selenium_setup
-    normal_run(result) do |started, name|
+    dry_run(result) do |started, name|
       block.call(started, name)
     end
     selenium_teardown
@@ -830,6 +830,14 @@ private
 
   def open(addr)
     @sel.open(addr)
+  end
+  
+  def type(inputLocator, value)
+    @sel.type(inputLocator, value)
+  end
+  
+  def select(inputLocator, optionLocator)
+    @sel.select(inputLocator, optionLocator)
   end
 
   def assert_text(locator, expected)
