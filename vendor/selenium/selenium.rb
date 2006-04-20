@@ -799,3 +799,54 @@ end
 
 class SeleniumCommandError < RuntimeError 
 end
+
+class Test::Unit::TestCase
+
+  alias normal_run run 
+  
+  def run(result, &block)
+    selenium_setup
+    normal_run(result) do |started, name|
+      block.call(started, name)
+    end
+    selenium_teardown
+  end
+  
+  def selenium_setup
+    @sel = create_interpreter
+    @sel.start
+  end
+  
+  def create_interpreter
+    Selenium::SeleneseInterpreter.new("localhost", 4444,
+                        "*firefox", "http://localhost:3000", 15000) 
+  end
+  
+  def selenium_teardown
+    @sel.stop
+  end
+
+private
+
+  def open(addr)
+    @sel.open(addr)
+  end
+
+  def assert_text(locator, expected)
+    actual = get_text locator
+    if expected.is_a? Regexp
+      assert expected.match(actual)
+    else
+      assert_equal expected, actual
+    end
+  end
+
+  def method_missing(method_name, *args)
+    if args.empty?
+      @sel.send(method_name)
+    else
+      @sel.send(method_name, args)
+    end
+  end
+
+end

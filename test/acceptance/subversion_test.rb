@@ -4,12 +4,6 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
 
     include LiveModeTestCase
 
-    def do_setup
-        @sel = Selenium::SeleneseInterpreter.new("localhost", 4444,
-                        "*firefox", "http://localhost:3000", 15000)
-        @sel.start
-    end
-  
     def test_short_headline
         commit_msg = 'Created my project'
         
@@ -25,7 +19,7 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         
         link = get_text("//rss/channel/item/link")
         open link
-        #FIXME assert_equal 'Motiro - Subversion - Revisão r1', @sel.get_title
+        #FIXME assert_equal 'Motiro - Subversion - Revisão r1', get_title
         assert get_title.match(/Motiro - Subversion - Revis/)
         assert get_title.match(/o r1/)
     end
@@ -182,33 +176,6 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         #FIXME assert_text_present "AlteraÃ§Ãµes em file_number_two.txt"
         assert_text_present "es em file_number_two.txt"
         assert_text_present "@@ -0,0 +1 @@\n+this file will be renamed to file_number_two"
-    end
-
-    def do_teardown
-        @sel.stop
-    end
-
-private
-
-    def assert_text(locator, expected)
-        actual = @sel.get_text locator
-	if expected.is_a? Regexp
-            assert expected.match(actual)
-        else
-            assert_equal expected, actual
-        end
-    end
-
-    def open(addr)
-        @sel.open(addr)
-    end
-
-    def method_missing(method_name, *args)
-        if args.empty?
-            @sel.send(method_name)
-        else
- 	    @sel.send(method_name, args)
-        end
     end
 
 end
