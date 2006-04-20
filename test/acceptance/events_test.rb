@@ -1,8 +1,3 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-require 'test/unit'
-require '/home/thiagob/programas/selenium-remote-control-0.7.1/ruby/selenium'
-
 require 'acceptance/live_mode_test'
 
 class MotiroAcceptanceTest < Test::Unit::TestCase
@@ -17,7 +12,7 @@ class MotiroAcceptanceTest < Test::Unit::TestCase
   
     def test_no_error_on_development_mode
         @sel.open '/report/events'
-        @sel.assert_text_present 'Próximos eventos'
+        @sel.assert_text_present 'ximos eventos'
     end
     
     def do_teardown

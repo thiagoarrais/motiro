@@ -1,6 +1,3 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
-
 class MotiroAcceptanceTest < Test::Unit::TestCase
 
     def setup
