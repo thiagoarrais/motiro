@@ -114,7 +114,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         expectedComment += "\n"
         expectedComment += "Esqueci de colocar o svn_reporter. Foi mal!\n"
 
-        assert_equal(expectedComment, hls[0].article.description)
+        assert_equal(expectedComment, hls[0].description)
     end
 
     def test_name
@@ -138,18 +138,15 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal 'Criacao do trunk do projeto', article.description
     end
     
-    def test_fills_headline_with_article
+    def test_fills_headline_with_details
         hls = @reporter.latest_headlines
         headline = hls[0]
         
-        article = headline.article
-        assert_not_nil article
-        
-        changes = article.changes
+        changes = headline.changes
         assert_not_nil changes
         assert_equal 1, changes.size
         
-        assert_equal 'Criacao do trunk do projeto', article.description
+        assert_equal 'Criacao do trunk do projeto', headline.description
         assert_equal '   A /trunk', changes[0].summary
     end
     
@@ -167,7 +164,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         expected_diff += "+end"
 
         hls = @reporter.latest_headlines
-        change = hls[0].article.changes[0]
+        change = hls[0].changes[0]
 
         assert_equal '   A /trunk/app/models/change.rb', change.summary
         assert_equal expected_diff, change.diff
@@ -185,7 +182,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         expected_diff_for_headline = R6C2DIFF
                
         hls = @reporter.latest_headlines
-        changes = hls[0].article.changes
+        changes = hls[0].changes
         
         assert_equal '   A /trunk/src/test/stubs/svn_connection.rb', changes[0].summary
         assert_equal expected_diff_for_connection, changes[0].diff

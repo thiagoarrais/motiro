@@ -39,6 +39,7 @@ class SubversionReporter < MotiroReporter
         return hls
     end
     
+    #TODO remove this method
     def article_for(rid)
         revision_id = rid.match(/^r(.+)/)[1]
         
@@ -46,7 +47,7 @@ class SubversionReporter < MotiroReporter
         
         result_headline, remain = build_headline_from(output)
 
-        return result_headline.article
+        return result_headline
     end
     
 private
@@ -85,7 +86,7 @@ private
     def parse_changed_resources(theHeadline, text)
         remain = text
         
-        changes = theHeadline.article.changes
+        changes = theHeadline.changes
 
         # skip the first line with the title 'Changed resources' (or something
         # like this)
@@ -164,7 +165,7 @@ private
         theHeadline.title = md[1]
         
         md = /\n-+\n/.match(text)
-        theHeadline.article.description = md.pre_match
+        theHeadline.description = md.pre_match
         
         remain = md[0] + md.post_match
 

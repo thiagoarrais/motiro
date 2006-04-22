@@ -13,7 +13,7 @@ class ReportController; def rescue_action(e) raise e end; end
 
 class ReportControllerTest < Test::Unit::TestCase
 
-    fixtures :headlines, :articles
+    fixtures :headlines
     
     def setup
         @controller = ReportController.new
@@ -29,6 +29,7 @@ class ReportControllerTest < Test::Unit::TestCase
         assert_equal expected.size, assigns(:headlines).size
     end
     
+    #TODO decide what to do with this method now that article does not exist
     def test_fetches_individual_article_based_on_headline_rid
         svn_demo_headline = headlines('svn_demo_headline')
         get :show, { :format => 'html_fragment',
@@ -41,7 +42,7 @@ class ReportControllerTest < Test::Unit::TestCase
     def test_calling_show_with_an_id_delegates_to_chief_editor
         FlexMock.use do |editor|
             editor.should_receive(:article_for_headline).with('subversion', '3').
-                returns(articles('svn_demo_article')).
+                returns(headlines('svn_demo_headline')).
                 once
                 
             @controller = ReportController.new(editor)

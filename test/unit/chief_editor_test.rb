@@ -25,7 +25,7 @@ end
 
 class ChiefEditorTest < Test::Unit::TestCase
 
-    fixtures :headlines, :articles, :changes
+    fixtures :headlines, :changes
 
     @@log = ''
 
@@ -94,7 +94,7 @@ class ChiefEditorTest < Test::Unit::TestCase
                        :update_interval => 0)
     
             svn_demo_headline = headlines('svn_demo_headline')
-            svn_demo_article = articles('svn_demo_article')
+            svn_demo_article = headlines('svn_demo_headline')
 
             reporter.should_receive(:name).
                 returns('subversion')
@@ -118,7 +118,7 @@ class ChiefEditorTest < Test::Unit::TestCase
                        :update_interval => 8)
     
             svn_demo_headline = headlines('svn_demo_headline')
-            svn_demo_article = articles('svn_demo_article')
+            svn_demo_article = headlines('svn_demo_headline')
 
             reporter.should_receive(:name).
                 returns('subversion')

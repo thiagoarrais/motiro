@@ -29,7 +29,7 @@ class EventsAcceptanceTest < Test::Unit::TestCase
         select 'headline[happened_at(3i)]', '26'
         select 'headline[happened_at(2i)]', 'value=4'
         select 'headline[happened_at(1i)]', '2006'
-        type 'article_description', "Our next release will be awesome\n" +
+        type 'headline_description', "Our next release will be awesome\n" +
                                     "Let's get together somewhere to celebrate"
 
         click 'commit'

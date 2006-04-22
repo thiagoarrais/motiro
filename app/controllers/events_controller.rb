@@ -2,35 +2,24 @@ class EventsController < ApplicationController
 
   before_filter :login_required
 
-  def index
-    list
-    render :action => 'list'
-  end
-
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
-  def list
-    @rasta_pages, @rastas = paginate :rastas, :per_page => 10
-  end
-
   def new
     @headline = Headline.new
-    @article = Article.new
   end
 
   def create
     #TODO refactor
-    @article = Article.new(params[:article])
     h = params[:headline]
     @headline = Headline.new(:title => h['title'],
                              :author => session[:user].login,
                              :happened_at => [h['happened_at(1i)'].to_i,
                                               h['happened_at(2i)'].to_i,
                                               h['happened_at(3i)'].to_i ],
-                             :reported_by => 'events')
-    @headline.article = @article
+                             :reported_by => 'events',
+                             :description => h['description'])
     if @headline.save
       flash[:notice] = 'Evento registrado.'
       redirect_to :controller => 'root', :action => 'index'

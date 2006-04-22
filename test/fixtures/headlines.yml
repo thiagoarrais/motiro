@@ -23,6 +23,10 @@ svn_demo_headline:
   happened_at: 2006-03-23 11:10:04
   reported_by: subversion
   rid: r32
+  description: This is a subversion revision comment
+                 
+               The comment is a multiline comment that indicates the purpose
+               of the revision.
   
 release_event:
   id: 4
@@ -31,6 +35,11 @@ release_event:
   happened_at: 2006-04-26
   reported_by: events
   rid: e1
+  description: Motiro's next release is planned for April 26th. Somethings
+               we will be working on for this release are
+               
+               - Fixing bugs on the subversion reporter
+               - Adding user authentication
     
 meeting_event:
   id: 5

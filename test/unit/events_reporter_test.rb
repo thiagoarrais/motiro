@@ -4,7 +4,7 @@ require 'reporters/events_reporter'
 
 class EventsReporterTest < Test::Unit::TestCase
 
-    fixtures :headlines, :articles
+    fixtures :headlines
 
     def setup
         @reporter = EventsReporter.new
@@ -26,7 +26,7 @@ class EventsReporterTest < Test::Unit::TestCase
     
     def test_article_for
         release_event = headlines('release_event')
-        release_event_article = articles('release_event_article')
+        release_event_article = headlines('release_event')
         article = @reporter.article_for release_event.rid
         
         assert_equal release_event_article.description, article.description    

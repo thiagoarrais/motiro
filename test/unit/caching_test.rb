@@ -39,7 +39,7 @@ class CachingTest < Test::Unit::TestCase
         @driver.tick
         
         headlines = @chief_editor.latest_news_from(@reporter.name)
-        changes = headlines.first.article.changes
+        changes = headlines.first.changes
         assert_nil changes.first.diff
         
         diff = R6DIFF # connection is back
@@ -47,7 +47,7 @@ class CachingTest < Test::Unit::TestCase
         @driver.tick
 
         headlines = @chief_editor.latest_news_from(@reporter.name)
-        changes = headlines.first.article.changes
+        changes = headlines.first.changes
         assert_not_nil changes.first.diff
         assert_equal R6C1DIFF, changes.first.diff
     end

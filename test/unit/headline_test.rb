@@ -19,7 +19,7 @@ class FakeSaveHeadline < Headline
 end
 
 class HeadlineTest < Test::Unit::TestCase
-    fixtures :headlines, :articles, :changes
+    fixtures :headlines, :changes
 
     def test_create
         headline = Headline.find(1)
@@ -98,36 +98,6 @@ class HeadlineTest < Test::Unit::TestCase
         assert(1, aHeadline.times_save_called)
     end
     
-    def test_retrieves_corresponding_article
-        svn_demo_headline = headlines('svn_demo_headline')
-        svn_demo_article = articles('svn_demo_article')
-        aHeadline = Headline.find(svn_demo_headline.id)
-        
-        article = aHeadline.article
-        assert_equal svn_demo_article.description, article.description
-    end
-    
-    def test_saving_also_saves_article_inside
-        aHeadline = Headline.new(:author => 'thiagoarrais',
-                                 :title => 'this is the headline title',
-                                 :reported_by => 'subversion',
-                                 :happened_at => [1983, 1, 1, 02, 15, 12],
-                                 :rid => 'r47')
-                                
-        full_comment = "this is the headline title\n" +
-                       "\n"  +
-                       "this is the full comment"
-
-        aHeadline.article = Article.new(:description => full_comment)
-       
-        aHeadline.save
-       
-        article = Article.find(:first,
-                              :conditions => ["description = ?",
-                                              full_comment]) 
-        assert_not_nil article
-    end
-    
     def test_search_by_reporter_name_and_rid
         svn_demo_headline = headlines('svn_demo_headline')
         aHeadline = Headline.find_with_reporter_and_rid(svn_demo_headline.reported_by,
@@ -204,7 +174,7 @@ private
                                   :rid => 'r47')
                                   
         changes.reverse.each do |c|
-            a_headline.article.changes.unshift(c)
+            a_headline.changes.unshift(c)
         end
         
         return a_headline

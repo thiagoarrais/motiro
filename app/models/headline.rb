@@ -1,10 +1,9 @@
 class Headline < ActiveRecord::Base
 
-    has_one :article
+    has_many:changes
     
     def initialize(params={})
         super(params)
-        self.article = Article.new
     end
 
     def self.latest(num, reporter)
@@ -59,7 +58,7 @@ class Headline < ActiveRecord::Base
     end
     
     def filled?
-        self.article.changes.each do |c|
+        self.changes.each do |c|
             return false if !c.filled?
         end
         
