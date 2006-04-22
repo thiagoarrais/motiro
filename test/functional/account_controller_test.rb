@@ -3,9 +3,6 @@ require 'account_controller'
 
 load File.expand_path(File.dirname(__FILE__) + '/../../script/adduser')
 
-# Set salt to 'change-me' because thats what the fixtures assume. 
-User.salt = 'change-me'
-
 # Raise errors beyond the default web-based presentation
 class AccountController; def rescue_action(e) raise e end; end
 

@@ -1,0 +1,13 @@
+<%= error_messages_for 'headline' %>
+
+<!--[form:headline]-->
+<p><label for="headline_title">Título</label><br/>
+<%= text_field 'headline', 'title'  %></p>
+
+<p><label for="headline_happened_at">Data</label><br/>
+<%= date_select 'headline', 'happened_at'  %></p>
+
+<p><label for="article_description">Descrição</label><br/>
+<%= text_area 'article', 'description'  %></p>
+<!--[eoform:headline]-->
+

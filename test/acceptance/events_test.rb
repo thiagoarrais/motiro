@@ -1,13 +1,14 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
-
 require 'acceptance/live_mode_test'
 
 class EventsAcceptanceTest < Test::Unit::TestCase
 
     include LiveModeTestCase
 
-    fixture :users
+    fixtures :users
+
+    def setup
+        Headline.destroy_all
+    end
 
     def test_no_error_on_development_mode
         open '/report/events'
@@ -21,21 +22,26 @@ class EventsAcceptanceTest < Test::Unit::TestCase
         
         click 'login'
     
-        open '/events/create'
-
         event_title = "Let's celebrate the success of another release"
-        open '/fake_events_create.html'
-        type 'title', event_title
-        select 'date_day', '26'
-        select 'date_month', '04'
-        select 'date_year', '2006'
-        type 'description', "Our next release will be awesome\n" +
-                            "Let's get together somewhere to celebrate"
-        click 'add_event'
+
+        open '/events/new'
+        type 'headline_title', event_title
+        select 'headline[happened_at(3i)]', '26'
+        select 'headline[happened_at(2i)]', 'value=4'
+        select 'headline[happened_at(1i)]', '2006'
+        type 'article_description', "Our next release will be awesome\n" +
+                                    "Let's get together somewhere to celebrate"
+
+        click 'commit'
+        wait_for_page_to_load 1000
 
         assert_location '/'
-
+        
         assert_text_present event_title
+    end
+    
+    def teardown
+        Headline.destroy_all
     end
     
     #TODO test not logged can't create events

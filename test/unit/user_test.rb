@@ -1,8 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-# Set salt to 'change-me' because thats what the fixtures assume. 
-User.salt = 'change-me'
-
 class UserTest < Test::Unit::TestCase
   
   self.use_instantiated_fixtures  = true
@@ -86,7 +83,7 @@ class UserTest < Test::Unit::TestCase
     u.password = u.password_confirmation = "bobs_secure_password"
     assert u.save
         
-    assert_equal '98740ff87bade6d895010bceebbd9f718e7856bb', u.password    
+    assert_equal '352ebf77709ac891cd242c2ec74fa20a3726c1f8', u.password    
   end
 
   
