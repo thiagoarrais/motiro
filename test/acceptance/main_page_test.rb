@@ -1,12 +1,12 @@
-class MotiroAcceptanceTest < Test::Unit::TestCase
+class MainPageAcceptanceTest < Test::Unit::TestCase
 
     def test_main_page
         open '/'
         assert_equal "Motiro: Bem-vindo", get_title
         assert_element_present "//div[@id='description']"
         assert_text_present "Seja bem-vindo!"
-        assert_text_present 'Motiro vers' #Motiro versão 0.2
-        assert_text_present '0.2'
+        assert_text_present 'Motiro vers' #Motiro versão 0.3
+        assert_text_present '0.3'
     end
         
     def test_report_html
