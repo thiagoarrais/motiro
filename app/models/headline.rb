@@ -21,8 +21,12 @@ class Headline < ActiveRecord::Base
 
 
     def happened_at=(date_components)
-        year, month, day, hour, min, sec = date_components
-        self[:happened_at] = Time.local(year, month, day, hour, min, sec)
+        if date_components.is_a? Time
+            self[:happened_at] = date_components
+        else
+            year, month, day, hour, min, sec = date_components
+            self[:happened_at] = Time.local(year, month, day, hour, min, sec)
+        end
     end
     
     # Saves the headline locally, if it isn't already cached

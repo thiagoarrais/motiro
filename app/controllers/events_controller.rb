@@ -1,3 +1,5 @@
+require 'breakpoint'
+
 class EventsController < ApplicationController
 
   before_filter :login_required
@@ -11,15 +13,11 @@ class EventsController < ApplicationController
   end
 
   def create
-    #TODO refactor
-    h = params[:headline]
-    @headline = Headline.new(:title => h['title'],
-                             :author => session[:user].login,
-                             :happened_at => [h['happened_at(1i)'].to_i,
-                                              h['happened_at(2i)'].to_i,
-                                              h['happened_at(3i)'].to_i ],
-                             :reported_by => 'events',
-                             :description => h['description'])
+    attrs = params[:headline]
+    attrs[:author] = session[:user].login,
+    attrs[:reported_by] = 'events'
+
+    @headline = Headline.new(attrs)
     if @headline.save
       flash[:notice] = 'Evento registrado.'
       redirect_to :controller => 'root', :action => 'index'
