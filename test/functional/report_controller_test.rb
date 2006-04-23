@@ -29,19 +29,18 @@ class ReportControllerTest < Test::Unit::TestCase
         assert_equal expected.size, assigns(:headlines).size
     end
     
-    #TODO decide what to do with this method now that article does not exist
-    def test_fetches_individual_article_based_on_headline_rid
+    def test_fetches_individual_headline_based_on_rid
         svn_demo_headline = headlines('svn_demo_headline')
         get :show, { :format => 'html_fragment',
                      :reporter => svn_demo_headline.reported_by,
                      :id => svn_demo_headline.rid }
         assert_response :success
-        assert_not_nil assigns(:article)
+        assert_not_nil assigns(:headline)
     end
     
     def test_calling_show_with_an_id_delegates_to_chief_editor
         FlexMock.use do |editor|
-            editor.should_receive(:article_for_headline).with('subversion', '3').
+            editor.should_receive(:headline_with).with('subversion', '3').
                 returns(headlines('svn_demo_headline')).
                 once
                 

@@ -24,12 +24,11 @@ class EventsReporterTest < Test::Unit::TestCase
         assert headlines.include?(meeting_event)
     end
     
-    def test_article_for
+    def test_headline_method
         release_event = headlines('release_event')
-        release_event_article = headlines('release_event')
-        article = @reporter.article_for release_event.rid
+        headline = @reporter.headline release_event.rid
         
-        assert_equal release_event_article.description, article.description    
+        assert_equal release_event.description, headline.description    
     end
     
 end

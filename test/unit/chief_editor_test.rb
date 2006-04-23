@@ -88,26 +88,25 @@ class ChiefEditorTest < Test::Unit::TestCase
         reporter.verify
     end
     
-    def test_askes_reporter_for_article_in_development_mode
+    def test_askes_reporter_for_headline_in_development_mode
         FlexMock.use do |reporter|
             settings = StubConnectionSettingsProvider.new(
                        :update_interval => 0)
     
             svn_demo_headline = headlines('svn_demo_headline')
-            svn_demo_article = headlines('svn_demo_headline')
 
             reporter.should_receive(:name).
                 returns('subversion')
 
-            reporter.should_receive(:article_for).with(svn_demo_headline.rid).
-                returns(svn_demo_article).
+            reporter.should_receive(:headline).with(svn_demo_headline.rid).
+                returns(svn_demo_headline).
                 once
 
             chief_editor = ChiefEditor.new(settings)
             
             chief_editor.employ reporter
         
-            chief_editor.article_for_headline(svn_demo_headline.reported_by,
+            chief_editor.headline_with(svn_demo_headline.reported_by,
                                               svn_demo_headline.rid)
         end
     end
@@ -118,25 +117,24 @@ class ChiefEditorTest < Test::Unit::TestCase
                        :update_interval => 8)
     
             svn_demo_headline = headlines('svn_demo_headline')
-            svn_demo_article = headlines('svn_demo_headline')
 
             reporter.should_receive(:name).
                 returns('subversion')
 
-            reporter.should_receive(:article_for).
+            reporter.should_receive(:headline).
                 never
 
             chief_editor = ChiefEditor.new(settings)
             
             chief_editor.employ reporter
             
-            article = chief_editor.article_for_headline(
+            headline = chief_editor.headline_with(
                           svn_demo_headline.reported_by,
                           svn_demo_headline.rid)
             
             reporter.mock_verify
         
-            assert_equal svn_demo_article.description, article.description
+            assert_equal svn_demo_headline.description, headline.description
         end
     end
     

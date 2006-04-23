@@ -12,17 +12,17 @@
 <% end %>
     <div id="description">
       <pre>
-<%= h(@article.description) %>
+<%= h(@headline.description) %>
       </pre>
     </div>
     <div id="summary">
-        <% @article.changes.each do |change| %>
+        <% @headline.changes.each do |change| %>
             <%= change.render_summary -%>
             <br/>
         <% end %>
     </div>
 <% if !@partial then %>
-    <% @article.changes.each do |change| %>
+    <% @headline.changes.each do |change| %>
         <%= change.render_diff %>
     <% end %>
   </body>

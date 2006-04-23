@@ -23,7 +23,7 @@ class CacheReporterTest < Test::Unit::TestCase
         end
     end
     
-    def test_article_for
+    def test_headline
         FlexMock.use do |mock_headline_class| 
             settings = StubConnectionSettingsProvider.new(
                            :package_size => 6)
@@ -36,7 +36,7 @@ class CacheReporterTest < Test::Unit::TestCase
             reporter = CacheReporter.new('mail_list',
                                          settings,
                                          mock_headline_class)
-            reporter.article_for('m18')
+            reporter.headline('m18')
         end
     end
 

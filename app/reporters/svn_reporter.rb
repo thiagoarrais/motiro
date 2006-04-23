@@ -39,8 +39,7 @@ class SubversionReporter < MotiroReporter
         return hls
     end
     
-    #TODO remove this method
-    def article_for(rid)
+    def headline(rid)
         revision_id = rid.match(/^r(.+)/)[1]
         
         output = @connection.log(revision_id)

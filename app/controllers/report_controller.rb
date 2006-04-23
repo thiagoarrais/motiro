@@ -16,7 +16,7 @@ class ReportController < ApplicationController
             context = params[:context] || 'full'
             begin
                 @revision_id = id
-                @article = @chief_editor.article_for_headline(reporter_name, id)
+                @headline = @chief_editor.headline_with(reporter_name, id)
                 @partial = context == 'partial'
                 
                 render(:action => 'detail')

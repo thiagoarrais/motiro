@@ -26,8 +26,8 @@ class ChiefEditor
     end
     
     #TODO remove this method
-    def article_for_headline(reporter_name, rid)
-        @strategy.article_for_headline(reporter_name, rid)
+    def headline_with(reporter_name, rid)
+        @strategy.headline_with(reporter_name, rid)
     end
     
     def title_for(reporter_name)
@@ -63,9 +63,9 @@ class LiveEditorStrategy
         return reporter.latest_headlines
     end
     
-    def article_for_headline(reporter_name, rid)
+    def headline_with(reporter_name, rid)
         reporter = @reporters[reporter_name]
-        return reporter.article_for(rid)
+        return reporter.headline(rid)
     end
 
 end
@@ -80,8 +80,8 @@ class CachedEditorStrategy
         return reporter_with(name).latest_headlines
     end    
     
-    def article_for_headline(name, rid)
-        return reporter_with(name).article_for(rid)
+    def headline_with(name, rid)
+        return reporter_with(name).headline(rid)
     end
     
 private

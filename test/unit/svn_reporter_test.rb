@@ -128,14 +128,14 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal @reporter.name, headline.reported_by
     end
     
-    def test_retrieves_article_from_revision_id
+    def test_retrieves_headline_from_revision_id
         hls = @reporter.latest_headlines
         headline = hls[0]
 
-        article = @reporter.article_for(headline.rid)
+        headline_from_rid = @reporter.headline(headline.rid)
 
-        assert_not_nil article
-        assert_equal 'Criacao do trunk do projeto', article.description
+        assert_not_nil headline_from_rid
+        assert_equal 'Criacao do trunk do projeto', headline_from_rid.description
     end
     
     def test_fills_headline_with_details
@@ -191,7 +191,7 @@ class SubversionReporterTest < Test::Unit::TestCase
         assert_equal expected_diff_for_headline, changes[1].diff
     end
     
-    def test_method_article_for_records_diff_output
+    def test_method_headline_records_diff_output
         @svn_log = R105
         @svn_diff = R105DIFF
 
@@ -204,8 +204,8 @@ class SubversionReporterTest < Test::Unit::TestCase
         expected_diff += "+\n"
         expected_diff += "+end"
 
-        article = @reporter.article_for('r105')
-        change = article.changes[0]
+        headline = @reporter.headline('r105')
+        change = headline.changes[0]
 
         assert_equal '   A /trunk/app/models/change.rb', change.summary
         assert_equal expected_diff, change.diff
@@ -215,15 +215,15 @@ class SubversionReporterTest < Test::Unit::TestCase
         @svn_log = R124
         @svn_diff = R124DIFF
         
-        article = @reporter.article_for('r124')
-        change_for_html_fragment = find_in(article.changes) do |change|
+        headline = @reporter.headline('r124')
+        change_for_html_fragment = find_in(headline.changes) do |change|
             Regexp.new('A /trunk/app/views/report/html_fragment.rhtml').
                 match(change.summary)
         end
         
         assert_not_nil change_for_html_fragment
         
-        change_for_svn_html_fragment = find_in(article.changes) do |change|
+        change_for_svn_html_fragment = find_in(headline.changes) do |change|
             Regexp.new('D /trunk/app/views/report/subversion_html_fragment.rhtml').
                 match(change.summary)
         end
@@ -243,9 +243,9 @@ class SubversionReporterTest < Test::Unit::TestCase
 
         @svn_info = R10INFO
         
-        article = @reporter.article_for('r10')
+        headline = @reporter.headline('r10')
         
-        change = article.changes.first
+        change = headline.changes.first
         assert_equal 'file', change.resource_kind
     end
 
