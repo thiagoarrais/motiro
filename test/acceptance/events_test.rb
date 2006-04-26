@@ -1,3 +1,6 @@
+require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
+
 require 'acceptance/live_mode_test'
 
 class EventsAcceptanceTest < Test::Unit::TestCase
@@ -33,11 +36,24 @@ class EventsAcceptanceTest < Test::Unit::TestCase
                                     "Let's get together somewhere to celebrate"
 
         click 'commit'
-        wait_for_page_to_load 1000
+        wait_for_page_to_load 5000
 
         assert_location '/'
         
         assert_text_present event_title
+    end
+    
+    def test_show_event_details
+        test_create_event_and_show_headline
+        
+        event_title = "Let's celebrate the success of another release"
+        event_description = "Our next release will be awesome\n" +
+                            "Let's get together somewhere to celebrate"
+        click "//a[text() = \"#{event_title}\"]"    
+        wait_for_page_to_load 1000
+        
+        assert_text_present event_title
+        assert_text_present event_description
     end
     
     def teardown
