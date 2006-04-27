@@ -25,7 +25,6 @@ class ChiefEditor
         @strategy.latest_news_from(reporter_name)
     end
     
-    #TODO remove this method
     def headline_with(reporter_name, rid)
         @strategy.headline_with(reporter_name, rid)
     end

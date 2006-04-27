@@ -1,0 +1,21 @@
+<% if ! @partial then %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Motiro - Evento</title>
+    <%= stylesheet_link_tag "motiro", :media => "all" %>
+  </head>
+  <body>
+    <h1><%= h(@headline.title) -%></h1>
+<% end %>
+    <div id="description">
+      <pre>
+<%= h(@headline.description) %>
+      </pre>
+    </div>
+  </body>
+</html>
+
+    

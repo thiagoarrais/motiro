@@ -1,9 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
-
 require 'acceptance/live_mode_test'
 
-class EventsAcceptanceTest < Test::Unit::TestCase
+class EventsAcceptanceTest < SeleniumTestCase
 
     include LiveModeTestCase
 

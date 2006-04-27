@@ -1,4 +1,4 @@
-require 'breakpoint'
+require 'reporters/events_reporter'
 
 class EventsController < ApplicationController
 
@@ -8,17 +8,19 @@ class EventsController < ApplicationController
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
+  def initialize(reporter=EventsReporter.new)
+    @reporter = reporter
+  end
+
   def new
     @headline = Headline.new
   end
 
   def create
     attrs = params[:headline]
-    attrs[:author] = session[:user].login,
-    attrs[:reported_by] = 'events'
-
-    @headline = Headline.new(attrs)
-    if @headline.save
+    attrs[:author] = session[:user].login
+    
+    if @reporter.store_event(attrs)
       flash[:notice] = 'Evento registrado.'
       redirect_to :controller => 'root', :action => 'index'
     else

@@ -1,9 +1,9 @@
 require 'acceptance/live_mode_test'
 
-class SubversionAcceptanceTest < Test::Unit::TestCase
+class SubversionAcceptanceTest < SeleniumTestCase
 
     include LiveModeTestCase
-
+    
     def test_short_headline
         commit_msg = 'Created my project'
         
@@ -177,5 +177,5 @@ class SubversionAcceptanceTest < Test::Unit::TestCase
         assert_text_present "es em file_number_two.txt"
         assert_text_present "@@ -0,0 +1 @@\n+this file will be renamed to file_number_two"
     end
-
+    
 end

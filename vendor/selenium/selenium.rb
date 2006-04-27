@@ -22,6 +22,7 @@
 require 'net/http'
 require 'uri'
 require 'cgi'
+require 'test/unit'
 
 # 
 # Defines an object that runs Selenium commands.
@@ -800,33 +801,29 @@ end
 class SeleniumCommandError < RuntimeError 
 end
 
-class Test::Unit::TestCase
+class SeleniumTestCase < Test::Unit::TestCase
 
-  alias dry_run run 
-  
   def run(result, &block)
     selenium_setup
-    dry_run(result) do |started, name|
+    super(result) do |started, name|
       block.call(started, name)
     end
     selenium_teardown
   end
-  
+
   def selenium_setup
     @sel = create_interpreter
     @sel.start
   end
-  
+
   def create_interpreter
     Selenium::SeleneseInterpreter.new("localhost", 4444,
-                        "*firefox", "http://localhost:3000", 15000) 
+                        "*firefox", "http://localhost:3000", 15000)
   end
-  
+
   def selenium_teardown
     @sel.stop
   end
-
-private
 
   def open(addr)
     @sel.open(addr)
@@ -839,6 +836,10 @@ private
   def select(inputLocator, optionLocator)
     @sel.select(inputLocator, optionLocator)
   end
+  
+  def default_test; end
+
+private
 
   def assert_text(locator, expected)
     actual = get_text locator
@@ -853,7 +854,7 @@ private
     if args.empty?
       @sel.send(method_name)
     else
-      @sel.send(method_name, args)
+      @sel.send(method_name, *args)
     end
   end
 

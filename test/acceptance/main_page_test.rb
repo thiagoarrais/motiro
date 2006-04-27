@@ -1,4 +1,4 @@
-class MainPageAcceptanceTest < Test::Unit::TestCase
+class MainPageAcceptanceTest < SeleniumTestCase
 
     def test_main_page
         open '/'
