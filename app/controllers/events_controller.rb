@@ -6,7 +6,7 @@ class EventsController < ApplicationController
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
+         :redirect_to => { :controller => 'root', :action => 'index' }
 
   def initialize(reporter=EventsReporter.new)
     @reporter = reporter
@@ -16,7 +16,7 @@ class EventsController < ApplicationController
     @headline = Headline.new
   end
 
-  def create
+  def create  
     attrs = params[:headline]
     attrs[:author] = session[:user].login
     
@@ -28,18 +28,4 @@ class EventsController < ApplicationController
     end
   end
 
-  def update
-    @headline = Headline.find(params[:id])
-    if @headline.update_attributes(params[:rasta])
-      flash[:notice] = 'Evento modificado.'
-      redirect_to :action => 'show', :id => @headline
-    else
-      render :action => 'edit'
-    end
-  end
-
-  def destroy
-    Headline.find(params[:id]).destroy
-    redirect_to :action => 'list'
-  end
 end
