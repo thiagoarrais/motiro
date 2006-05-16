@@ -35,9 +35,9 @@ div.channel {
 }
 
 div.channel-title {
-    font: normal 8pt Verdana,sans-serif;
+    font: bold 10pt Verdana,sans-serif;
     margin:0 0 0 0;
-    padding: 2px 2px 0 8px;
+    padding: 2px 2px 1px 8px;
     text-align:left;
     color: #000
 }
@@ -47,6 +47,12 @@ div.channel-body-inner {
     padding: 1px 4px 1px 4px;
     background: #FFD;
     font:normal Verdana,sans-serif
+}
+
+a.feed {
+    display: block;
+    float: right;
+    margin: 14px 10px;
 }
 
 #footer {
