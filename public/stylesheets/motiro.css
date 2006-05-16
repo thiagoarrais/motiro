@@ -49,6 +49,10 @@ div.channel-body-inner {
     font:normal Verdana,sans-serif
 }
 
+div.channel-body-outer {
+    padding: 0 9px 0 9px;
+}
+
 a.feed {
     display: block;
     float: right;
