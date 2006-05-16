@@ -1,24 +1,28 @@
-<p>
-  <h1><%= h(@title) %></h1>
+<div class='channel-title'>
+  <h2><%= h(@title) %></h2>
   <%= link_to( image_tag('rss.gif', :border => 0),
                { :controller => 'report',
                  :action => 'show',
                  :reporter => @name,
                  :format => 'rss' } )
   %>
-</p>
+</div>
+<div class='channel-body-outer'>
+  <div class='channel-body-inner'>
 <% @headlines.each do |headline|%>
-  <p>
-    <%= link_to( h(headline.title),
-                 { :controller => 'report',
-                   :action => 'show',
-                   :reporter => @name,
-                   :id => headline.rid } )%>
-    <br/>
-    <font size="-1">
-      <i><%= h(headline.author) %></i>
-      <%= h(headline.happened_at) %>
-    </font>
-    <hr/>
-  </p>
+    <p>
+      <%= link_to( h(headline.title),
+                   { :controller => 'report',
+                     :action => 'show',
+                     :reporter => @name,
+                     :id => headline.rid } )%>
+      <br/>
+      <font size="-1">
+        <i><%= h(headline.author) %></i>
+        <%= h(headline.happened_at) %>
+      </font>
+      <hr/>
+    </p>
 <% end %>
+  </div>
+</div>
