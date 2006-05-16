@@ -1,3 +1,7 @@
+body {
+    font: normal 10pt Verdana,sans-serif
+}
+
 #notice {
     border: 2px solid red;
     padding: 0.5em;
@@ -15,6 +19,21 @@ div.channel {
     width: 48%;
     float: left;
     padding: 8px 16px 8px 0px;
+}
+
+div.channel-title{
+    font: normal 8pt Verdana,sans-serif;
+    margin:0 0 0 0;
+    padding: 2px 2px 0 8px;
+    text-align:left;
+    color: #000
+}
+            
+div.channel-body-inner{
+    margin:0;
+    padding: 1px 4px 1px 4px;
+    background: #FFC;
+    font:normal Verdana,sans-serif
 }
 
 #footer {
