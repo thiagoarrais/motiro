@@ -21,6 +21,7 @@
     </script>
   </head>
   <body>
+    <div id="content">
       <% if @flash[:notice] -%>
         <div id="notice"><%= @flash[:notice] %></div>
       <% end -%>
@@ -59,8 +60,9 @@
                            :action =>  'show',
                            :params => {:reporter => 'events'}) %>
     </div>
-  <div id="footer">
-    <p>Motiro versão <%= MOTIRO_VERSION %></p>
-  </div>
+    <div id="footer">
+      <p>Motiro versão <%= MOTIRO_VERSION %></p>
+    </div>
+    </div>
   </body>
 </html>
