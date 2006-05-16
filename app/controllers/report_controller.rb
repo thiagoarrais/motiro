@@ -11,6 +11,8 @@ class ReportController < ApplicationController
   def show
     reporter_name = params[:reporter]
     
+    @name = reporter_name
+
     if params[:id]
       id = params[:id]
       context = params[:context] || 'full'
@@ -28,7 +30,6 @@ class ReportController < ApplicationController
     else
       format = params[:format] || 'html_fragment'
       
-      @name = reporter_name
       @title = @chief_editor.title_for reporter_name
       @headlines = @chief_editor.latest_news_from reporter_name
       render(:action => format)

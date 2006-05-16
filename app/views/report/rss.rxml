@@ -13,12 +13,12 @@ xml.rss 'version' => '2.0' do
     	    	xml.title h(headline.title)
     	        xml.link(server_url_for(:controller => 'report',
                                         :action => 'show',
-                                        :reporter => 'subversion',
+                                        :reporter => @name,
                                         :id => headline.rid))
                 txt = render_component(:controller => 'report',
                                  :action => 'show',
                                  :id => headline.rid,
-                                 :params => { :reporter => 'subversion',
+                                 :params => { :reporter => @name,
                                               :context => 'partial' })
     	        xml.description(txt)
     	        xml.pubDate h(headline.happened_at)
