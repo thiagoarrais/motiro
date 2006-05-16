@@ -12,7 +12,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         open '/report/subversion'
         assert_text_present @username
         assert_text_present commit_msg
-        click "//img[starts-with(@src, '/images/rss.gif')]"
+        click "//img[starts-with(@src, '/images/rss.png')]"
         wait_for_page_to_load(1000)
         assert_equal commit_msg, get_text("//rss/channel/item/title")
         assert_equal @repo.username, get_text("//rss/channel/item/author")
