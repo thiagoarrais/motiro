@@ -6,16 +6,26 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Motiro - Evento</title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
+    <script type="text/javascript" src="/niftycube.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            Nifty("div.window","big");
+        }
+    </script>
   </head>
   <body>
-    <h1><%= h(@headline.title) -%></h1>
+    <div id="content">
+      <div id="description" class="window">
+        <h1><%= h(@headline.title) -%></h1>
 <% end %>
-    <div id="description">
-      <pre>
+        <pre>
 <%= h(@headline.description) %>
-      </pre>
+        </pre>
+<% if ! @partial then %>
+      </div>
     </div>
   </body>
 </html>
+<% end %>
 
     

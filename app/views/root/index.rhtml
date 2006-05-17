@@ -16,8 +16,7 @@
         window.onload=function(){
             Nifty("div.channel-title","top,big");
             Nifty("div.channel-body-outer","bottom,big");
-            Nifty("div#description","big");
-            Nifty("div#footer","big");
+            Nifty("div.window","big");
         }
     </script>
   </head>
@@ -26,7 +25,7 @@
       <% if @flash[:notice] -%>
         <div id="notice"><%= @flash[:notice] %></div>
       <% end -%>
-      <div id="description">
+      <div id="description" class="window">
       <h1>Motiro</h1>
       <p>
         Seja bem-vindo! Esta é a página principal do projeto Motiro.
@@ -61,7 +60,7 @@
                            :action =>  'show',
                            :params => {:reporter => 'events'}) %>
     </div>
-    <div id="footer">
+    <div id="footer" class="window">
       <p>Motiro versão <%= MOTIRO_VERSION %></p>
     </div>
     </div>

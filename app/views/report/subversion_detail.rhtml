@@ -6,25 +6,35 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Motiro - Subversion - Revisão <%= @revision_id -%></title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
+    <script type="text/javascript" src="/niftycube.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            Nifty("div.window","big");
+        }
+    </script>
   </head>
   <body>
-    <h1>Revisão <%= @revision_id -%></h1>
+    <div id="content">
+      <div id="description" class="window">
+        <h1>Revisão <%= @revision_id -%></h1>
 <% end %>
-    <div id="description">
-      <pre>
+        <pre>
 <%= h(@headline.description) %>
-      </pre>
-    </div>
-    <div id="summary">
-        <% @headline.changes.each do |change| %>
-            <%= change.render_summary -%>
-            <br/>
-        <% end %>
-    </div>
+        </pre>
+        <div id="summary">
+          <% @headline.changes.each do |change| %>
+              <%= change.render_summary -%>
+              <br/>
+          <% end %>
+        </div>
 <% if !@partial then %>
-    <% @headline.changes.each do |change| %>
-        <%= change.render_diff %>
-    <% end %>
+      </div>
+      <div id="changes" class="window">
+      <% @headline.changes.each do |change| %>
+          <%= change.render_diff %>
+      <% end %>
+      </div>
+    </div>
   </body>
 </html>
 <% end %>

@@ -19,11 +19,6 @@ body {
     text-align:left;   
 }
 
-#description {
-    background-color: #FFD;
-    padding: 0px 6px 2px 6px;
-}
-
 #summary {
     font: smaller courier;
 }
@@ -31,14 +26,13 @@ body {
 div.channel {
     width: 381px;
     float: left;
-    padding: 8px 4px 8px 4px;
+    margin: 4px 4px 4px 4px;
 }
 
 div.channel-title {
-    font: bold 10pt Verdana,sans-serif;
-    margin:0 0 0 0;
-    padding: 2px 2px 1px 8px;
-    text-align:left;
+    font-weight: bold;
+    margin:0;
+    padding: 0 2px 1px 8px;
     color: #000
 }
             
@@ -46,7 +40,6 @@ div.channel-body-inner {
     margin:0;
     padding: 1px 4px 1px 4px;
     background: #FFD;
-    font:normal Verdana,sans-serif
 }
 
 div.channel-body-outer {
@@ -59,10 +52,15 @@ a.feed {
     margin: 14px 10px;
 }
 
+div.window {
+    background-color: #FFD;
+    padding: 0px 8px 10px 8px;
+    margin: 8px 4px 8px 4px;
+}
+
 #footer {
-    padding: 4px 6px 2px 4px;
+    padding: 4px 6px 2px 8px;
     font-size: x-small;
     color: gray;
     clear: left;
-    background-color: #FFD;
 }
