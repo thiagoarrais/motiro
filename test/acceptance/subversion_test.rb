@@ -170,12 +170,52 @@ class SubversionAcceptanceTest < SeleniumTestCase
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
 
-        #FIXME assert_text_present "AlteraÃ§Ãµes em file_number_one.txt"
+        #FIXME assert_text_present "Alterações em file_number_one.txt"
         assert_text_present "es em file_number_one.txt"
         assert_text_present "@@ -1 +0,0 @@\n-this file will be renamed to file_number_two"
-        #FIXME assert_text_present "AlteraÃ§Ãµes em file_number_two.txt"
+        #FIXME assert_text_present "Alterações em file_number_two.txt"
         assert_text_present "es em file_number_two.txt"
         assert_text_present "@@ -0,0 +1 @@\n+this file will be renamed to file_number_two"
     end
     
+    def test_shows_only_one_diff_when_selected
+        @repo.add_file('file_one.txt', 'son, she said, have I got a little story for you')
+        @repo.add_file('file_two.txt', 'what you thought was your daddy was nothing but a...')
+
+        commit_title = 'added two files'
+        @repo.commit(commit_title)
+        
+        open '/report/subversion'
+        click "//a[text() = '#{commit_title}']"
+        wait_for_page_to_load(1000)
+        
+        click "//a[contains(text(), 'A /file_one.txt')]"
+
+        #TODO using IDs is a little counter-intuitive, maybe we could try text()
+        assert_visible "//div[@id='change17300898']"
+        assert_not_visible "//div[@id='change462869942']"
+        
+        click "//a[contains(text(), 'A /file_two.txt')]"
+        assert_visible "//div[@id='change462869942']"
+        assert_not_visible "//div[@id='change17300898']"
+    end
+    
+    def test_shows_diff_only_when_clicked
+        @repo.add_file('alive.txt', 'son, she said, have I got a little story for you')
+
+        commit_title = 'added alive.txt'
+        @repo.commit(commit_title)
+        
+        open '/report/subversion'
+        click "//a[text() = '#{commit_title}']"
+        wait_for_page_to_load(1000)
+        
+        assert_not_visible "//div[@id='changes']"
+        assert_not_visible "//div[@id='change-374147303']"
+        
+        click "//a[contains(text(), 'A /alive.txt')]"
+        
+        assert_visible "//div[@id='change-374147303']"
+    end
+
 end

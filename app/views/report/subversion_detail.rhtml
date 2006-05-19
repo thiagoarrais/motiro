@@ -6,10 +6,12 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Motiro - Subversion - Revisão <%= @revision_id -%></title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
+    <script type="text/javascript" src="/javascripts/motiro.js"></script>
     <script type="text/javascript" src="/niftycube.js"></script>
     <script type="text/javascript">
         window.onload=function(){
             Nifty("div.window","big");
+            hideChanges();
         }
     </script>
   </head>
