@@ -9,7 +9,7 @@
   <p><%= h(@title) %></p>
 </div>
 <div class='channel-body-outer'>
-  <div class='channel-body-inner'>
+  <div class='inner'>
 <% @headlines.each do |headline|%>
     <p>
       <%= link_to( h(headline.title),

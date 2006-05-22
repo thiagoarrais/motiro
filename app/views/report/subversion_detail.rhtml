@@ -18,23 +18,27 @@
   <body>
     <div id="content">
       <div id="description" class="window">
-        <h1>Revisão <%= @revision_id -%></h1>
+        <div class="inner">
+          <h1>Revisão <%= @revision_id -%></h1>
 <% end %>
-        <pre>
+          <pre>
 <%= h(@headline.description) %>
-        </pre>
-        <div id="summary">
-          <% @headline.changes.each do |change| %>
-              <%= change.render_summary -%>
-              <br/>
-          <% end %>
-        </div>
+          </pre>
+          <div id="summary">
+            <% @headline.changes.each do |change| %>
+                <%= change.render_summary -%>
+                <br/>
+            <% end %>
+          </div>
 <% if !@partial then %>
+        </div>
       </div>
       <div id="changes" class="window">
-      <% @headline.changes.each do |change| %>
-          <%= change.render_diff %>
-      <% end %>
+        <div class="inner">
+        <% @headline.changes.each do |change| %>
+            <%= change.render_diff %>
+        <% end %>
+        </div>
       </div>
     </div>
   </body>

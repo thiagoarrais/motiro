@@ -1,6 +1,6 @@
 body {
     font: normal 10pt Verdana,sans-serif;
-    background-color: #234; 
+    background-color: #FFF; 
     text-align:center;   
 }
 
@@ -36,12 +36,6 @@ div.channel-title {
     color: #000
 }
             
-div.channel-body-inner {
-    margin:0;
-    padding: 1px 4px 1px 4px;
-    background: #FFD;
-}
-
 div.channel-body-outer {
     padding: 0 9px 0 9px;
 }
@@ -53,14 +47,20 @@ a.feed {
 }
 
 div.window {
-    background-color: #FFD;
-    padding: 0px 8px 10px 8px;
+    background-color: #B0F3FF;
+    padding: 0 8px 8px 8px;
     margin: 8px 4px 8px 4px;
+}
+
+div.inner {
+    background: #FFF;
+    padding: 1px 4px 4px 4px;
 }
 
 #footer {
     padding: 4px 6px 2px 8px;
     font-size: x-small;
+    text-align: center;
     color: gray;
     clear: left;
 }

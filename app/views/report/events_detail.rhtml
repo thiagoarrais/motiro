@@ -16,12 +16,14 @@
   <body>
     <div id="content">
       <div id="description" class="window">
-        <h1><%= h(@headline.title) -%></h1>
+        <div class="inner">
+          <h1><%= h(@headline.title) -%></h1>
 <% end %>
-        <pre>
+          <pre>
 <%= h(@headline.description) %>
-        </pre>
+          </pre>
 <% if ! @partial then %>
+        </div>
       </div>
     </div>
   </body>
