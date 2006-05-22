@@ -20,12 +20,28 @@ class Change < ActiveRecord::Base
         if (has_diff?)
             return "<div id='#{ref}' class='diff-window'>" +
                      "<a name='#{ref}' />" +
-                     "<h2>Alterações em #{resource_name}</h2>" +
-                     "<pre>\n#{html_escape(diff)}\n</pre>" +
-                   "</div>"
+                     "<h2>Alterações em #{resource_name}</h2>\n" +
+                     render_diff_table +
+                     "</div>"
         else
             return ''
         end
+    end
+    
+    def render_diff_table
+        builder = DiffTableBuilder.new
+
+        diff.split("\n").each do |line|
+            c = line[0,1]
+
+            if '+' == c then
+                 builder.push_addition line[1, line.length - 1]
+            elsif '-' == c then
+                 builder.push_deletion line[1, line.length - 1]
+            end
+        end
+        
+        return builder.render_diff_table
     end
     
     def qualified_resource_name

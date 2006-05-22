@@ -57,6 +57,34 @@ div.inner {
     padding: 1px 4px 4px 4px;
 }
 
+.added {
+    background:#4F8;
+}
+
+.removed {
+    background:#F88;
+}
+
+table {
+    border: solid 1px;
+    font-family: monospace;
+}
+
+table pre {
+    margin: 0;
+    padding: 0;
+}
+
+tr {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    border: 0;
+}
+
+td {
+    padding: 0 0.4em 0 0.4em;
+}
+
 #footer {
     padding: 4px 6px 2px 8px;
     font-size: x-small;
