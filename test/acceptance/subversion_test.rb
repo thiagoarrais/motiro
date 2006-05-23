@@ -80,9 +80,9 @@ class SubversionAcceptanceTest < SeleniumTestCase
     def test_shows_diff_output_when_adding_file
         commit_title = 'I have added a file'
         filename = 'a_file.txt'
-        file_contents = "These are the file contents\n"
+        file_contents = "These are the file contents"
         diff_output = "@@ -0,0 +1 @@\n" +
-                      "+#{file_contents}"
+                      "+#{file_contents}\n"
 
         @repo.add_file(filename, file_contents)
         @repo.commit(commit_title)
@@ -93,7 +93,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
 
         assert_element_present "//a[text()='A /#{filename}']"
         #FIXME ADD: assert_element_present "//h2[text()='Alterações em a_file.txt']"
-        assert_text_present diff_output
+        assert_text_present file_contents
     end
 
     def test_shows_diff_output_when_modifying_file
@@ -110,7 +110,8 @@ class SubversionAcceptanceTest < SeleniumTestCase
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
 
-        assert_text_present diff_output
+        assert_text_present 'These are the file contents'
+        assert_text_present 'These are the modified file contents'
     end
     
     def test_showing_invalid_rid_shows_nice_error_message
@@ -156,7 +157,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         wait_for_page_to_load(1000)
         #FIXME assert_text_present "Alterações em file_number_two.txt"
         assert_text_present "es em file_number_two.txt"
-        assert_text_present "@@ -0,0 +1 @@\n+the content here will be copied to file_number_two"
+        assert_text_present "the content here will be copied to file_number_two"
     end
     
     def test_move_file
@@ -172,10 +173,10 @@ class SubversionAcceptanceTest < SeleniumTestCase
 
         #FIXME assert_text_present "Alterações em file_number_one.txt"
         assert_text_present "es em file_number_one.txt"
-        assert_text_present "@@ -1 +0,0 @@\n-this file will be renamed to file_number_two"
+        assert_text_present "this file will be renamed to file_number_two"
         #FIXME assert_text_present "Alterações em file_number_two.txt"
         assert_text_present "es em file_number_two.txt"
-        assert_text_present "@@ -0,0 +1 @@\n+this file will be renamed to file_number_two"
+        assert_text_present "this file will be renamed to file_number_two"
     end
     
     def test_shows_only_one_diff_when_selected

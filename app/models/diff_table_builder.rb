@@ -1,4 +1,8 @@
+require 'erb'
+
 class DiffTableBuilder
+
+    include ERB::Util
 
     def initialize
         @mod_groups = []
@@ -7,21 +11,21 @@ class DiffTableBuilder
     end
 
     def push_addition(text)
-        mod = Modification.create_addition(text)
+        mod = Modification.create_addition(html_escape(text))
         @mod_groups[@curr_addition] = ModGroup.new if @mod_groups[@curr_addition].nil?
         @mod_groups[@curr_addition].addition = mod
         @curr_addition += 1
     end
     
     def push_deletion(text)
-        mod = Modification.create_deletion(text)
+        mod = Modification.create_deletion(html_escape(text))
         @mod_groups[@curr_deletion] = ModGroup.new if @mod_groups[@curr_deletion].nil?
         @mod_groups[@curr_deletion].deletion = mod
         @curr_deletion += 1
     end
     
     def push_unchanged(text)
-        mg = UnchangedLine.new(text)
+        mg = UnchangedLine.new(html_escape(text))
         @curr_deletion =
             @curr_addition =
                 (@curr_deletion > @curr_addition ? @curr_deletion : @curr_addition)

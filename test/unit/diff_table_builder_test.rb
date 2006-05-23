@@ -142,4 +142,17 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         
         assert_equal expected_diff_table, @builder.render_diff_table
     end
+    
+    def test_escapes_html
+        @builder.push_unchanged '        <h1><%= h(@headline.title) -%></h1>'
+        expected_diff_table = "<table cellspacing='0'>\n" +
+                              "  <tr>\n" +
+                              "    <td style='text-align: center'>1</td>\n" +
+                              "    <td style='border:solid; border-width: 0 0 0 1px;'><pre>        &lt;h1&gt;&lt;%= h(@headline.title) -%&gt;&lt;/h1&gt;</pre></td>\n" +
+                              "    <td style='border:solid; border-width: 0 0 0 1px;'><pre>        &lt;h1&gt;&lt;%= h(@headline.title) -%&gt;&lt;/h1&gt;</pre></td>\n" +
+                              "  </tr>\n" +
+                              "</table>"
+
+        assert_equal expected_diff_table, @builder.render_diff_table
+    end
 end
