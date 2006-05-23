@@ -2,33 +2,35 @@ class DiffTableBuilder
 
     def initialize
         @mod_groups = []
-        @current_group = ModGroup.new
+        @curr_addition = 0
+        @curr_deletion = 0
     end
 
     def push_addition(text)
         mod = Modification.create_addition(text)
-        if @current_group.addition.nil? then
-            @current_group.addition = mod
-        else
-            @mod_groups << @current_group
-            @current_group = ModGroup.new
-            @current_group.addition = mod
-        end
+        @mod_groups[@curr_addition] = ModGroup.new if @mod_groups[@curr_addition].nil?
+        @mod_groups[@curr_addition].addition = mod
+        @curr_addition += 1
     end
     
     def push_deletion(text)
         mod = Modification.create_deletion(text)
-        if @current_group.deletion.nil? then
-            @current_group.deletion = mod
-        else
-            @mod_groups << @current_group
-            @current_group = ModGroup.new
-            @current_group.deletion = mod
-        end
+        @mod_groups[@curr_deletion] = ModGroup.new if @mod_groups[@curr_deletion].nil?
+        @mod_groups[@curr_deletion].deletion = mod
+        @curr_deletion += 1
+    end
+    
+    def push_unchanged(text)
+        mg = UnchangedLine.new(text)
+        @curr_deletion =
+            @curr_addition =
+                (@curr_deletion > @curr_addition ? @curr_deletion : @curr_addition)
+        @mod_groups[@curr_deletion] = mg
+        
+        @curr_deletion = @curr_addition = @curr_deletion + 1
     end
     
     def render_diff_table
-        @mod_groups << @current_group
         result  = "<table cellspacing='0'>\n"
         i = 0
         @mod_groups.each do |mg|
@@ -79,6 +81,22 @@ class ModGroup
         else
             return mod.render_diff_cell
         end
+    end
+
+end
+
+class UnchangedLine
+
+    def initialize(text)
+        @text = text
+    end
+
+    def render_diff_line(line_num)
+        result  = "  <tr>\n"
+        result += "    <td style='text-align: center'>#{line_num}</td>\n"
+        result += "    <td style='border:solid; border-width: 0 0 0 1px;'><pre>#{@text}</pre></td>\n"
+        result += "    <td style='border:solid; border-width: 0 0 0 1px;'><pre>#{@text}</pre></td>\n"
+        result += "  </tr>\n"
     end
 
 end

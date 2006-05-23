@@ -38,6 +38,8 @@ class Change < ActiveRecord::Base
                  builder.push_addition line[1, line.length - 1]
             elsif '-' == c then
                  builder.push_deletion line[1, line.length - 1]
+            elsif ' ' == c then
+                 builder.push_unchanged line[1, line.length - 1]
             end
         end
         

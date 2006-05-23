@@ -33,13 +33,11 @@
 <% if !@partial then %>
         </div>
       </div>
-      <div id="changes" class="window">
-        <div class="inner">
-        <% @headline.changes.each do |change| %>
-            <%= change.render_diff %>
-        <% end %>
-        </div>
-      </div>
+    </div>
+    <div id="changes">
+      <% @headline.changes.each do |change| %>
+          <%= change.render_diff %>
+      <% end %>
     </div>
   </body>
 </html>
