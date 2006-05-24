@@ -72,40 +72,7 @@ class ModGroup
         i = 0
         while i < length
             count.incc
-            borders_left = borders_right = 'border-width: '
-            if 0 == i then
-                borders_left += '1px '
-                borders_right += '1px '
-            else
-                borders_left += '0 '
-                borders_right += '0 '
-            end
-            borders_left += '1px '
-            if 0!=i and i >= additions.length then
-                borders_right += '0 '
-            else
-                borders_right += '1px '
-            end
-            if deletions.length == i+1 or (deletions.length == 0 and 0==i) then
-                borders_left += '1px '
-            else
-                borders_left += '0 '
-            end
-            if additions.length == i+1 or (additions.length == 0 and 0==i) then
-                borders_right += '1px '
-            else
-                borders_right += '0 '
-            end
-            if 0!=i and i >= deletions.length then
-                borders_left += '0;'
-                borders_right += '1px;'
-            elsif 0!=i and i >= additions.length then
-                borders_left += '1px;'
-                borders_right += '1px;'
-            else
-                borders_left += '1px;'
-                borders_right += '0;'
-            end
+            borders_left, borders_right = border_widths_for(i)
             
             result += "  <tr>\n"
             result += "    <td style='text-align: center; " +
@@ -124,10 +91,59 @@ class ModGroup
     
 private
 
+    def border_widths_for(pos)
+        borders_left = borders_right = 'border-width: '
+        if 0 == pos then
+            borders_left += '1px '
+            borders_right += '1px '
+        else
+            borders_left += '0 '
+            borders_right += '0 '
+        end
+        borders_left += '1px '
+        if 0!=pos and pos >= additions.length then
+            borders_right += '0 '
+        else
+            borders_right += '1px '
+        end
+        if deletions.length == pos+1 or (deletions.length == 0 and 0==pos) then
+            borders_left += '1px '
+        else
+            borders_left += '0 '
+        end
+        if additions.length == pos+1 or (additions.length == 0 and 0==pos) then
+            borders_right += '1px '
+        else
+            borders_right += '0 '
+        end
+        if 0!=pos and pos >= deletions.length then
+            borders_left += '0;'
+            borders_right += '1px;'
+        elsif 0!=pos and pos >= additions.length then
+            borders_left += '1px;'
+            borders_right += '1px;'
+        else
+            borders_left += '1px;'
+            borders_right += '0;'
+        end
+        
+        return borders_left, borders_right
+    end
+
     def render_left_cell(clazz, text, border_width)
         style = "border:solid; " +
                  border_width +
                 " border-color: black gray black black"
+        return render_cell(clazz, text, style)
+    end
+    
+    def render_right_cell(clazz, text, border_width)
+        style = "border:solid black; " +
+                 border_width
+        return render_cell(clazz, text, style)
+    end
+    
+    def render_cell(clazz, text, style)
         if text.nil? then
             return "    <td style='#{style}'>&nbsp;</td>\n"
         else
@@ -138,19 +154,6 @@ private
         end
     end
     
-    def render_right_cell(clazz, text, border_width)
-        style = "border:solid black; " +
-                 border_width
-        if text.nil? then
-            return "    <td style='#{style}'>&nbsp;</td>\n"
-        else
-            return "    <td class='#{clazz}' " +
-                            "style='#{style}'>" +
-                         "<pre>#{text}</pre>" +
-                       "</td>\n"
-        end
-    end
-
     attr_accessor :additions, :deletions
 
 end
