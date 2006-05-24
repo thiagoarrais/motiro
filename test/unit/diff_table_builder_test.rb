@@ -20,7 +20,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>&nbsp;" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 1px 0;'>" +
                   "<pre>I have added this</pre>" +
                 "</td>\n" +
@@ -39,7 +39,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
@@ -63,13 +63,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>I have removed this</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 1px 0;'>" +
                   "<pre>I have added this</pre>" +
                 "</td>\n" +
@@ -91,13 +91,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 0 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>This is the first old line</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 0 0;'>" +
                   "<pre>This is the first new line</pre>" +
                 "</td>\n" +
@@ -106,13 +106,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>2</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 0 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>This is the second old line</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 0 1px 1px 0;'>" +
                   "<pre>This is the second new line</pre>" +
                 "</td>\n" +
@@ -133,13 +133,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>This is the first old line</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 0 0;'>" +
                   "<pre>This is the first new line</pre>" +
                 "</td>\n" +
@@ -152,7 +152,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                            "border-width: 0 1px 0 0; " +
                            "border-color: black gray black black'>&nbsp;" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 0 1px 1px 1px;'>" +
                   "<pre>This is the second new line</pre>" +
                 "</td>\n" +
@@ -173,13 +173,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 0 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>This is the first old line</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 1px 0;'>" +
                   "<pre>This is the first new line</pre>" +
                 "</td>\n" +
@@ -188,7 +188,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>2</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 0 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
@@ -230,13 +230,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>2</td>\n" +
-            "    <td class='removed' " +
+            "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>" +
                   "<pre>    font: normal 8pt Verdana,sans-serif;</pre>" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 1px 0;'>" +
                   "<pre>    font: bold 10pt Verdana,sans-serif;</pre>" +
                 "</td>\n" +
@@ -290,7 +290,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>&nbsp;" +
                 "</td>\n" +
-            "    <td class='added' style='border:solid black; " +
+            "    <td class='changed' style='border:solid black; " +
                                          "border-width: 1px 1px 1px 0;'>" +
                   "<pre>This line was added</pre>" +
                 "</td>\n" +

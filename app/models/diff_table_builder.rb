@@ -76,8 +76,8 @@ class ModGroup
                                      "border-width: 0 1px 0 0;'>" +
                             "#{count.value}" +
                           "</td>\n"
-            result += render_left_cell('removed', deletions[i], borders_left)
-            result += render_right_cell('added', additions[i], borders_right)
+            result += render_left_cell(deletions[i], borders_left)
+            result += render_right_cell(additions[i], borders_right)
             result += "  </tr>\n"
             i += 1
         end
@@ -126,24 +126,24 @@ private
         return borders_left, borders_right
     end
 
-    def render_left_cell(clazz, text, border_width)
+    def render_left_cell(text, border_width)
         style = "border:solid; " +
                  border_width +
                 " border-color: black gray black black"
-        return render_cell(clazz, text, style)
+        return render_cell(text, style)
     end
     
-    def render_right_cell(clazz, text, border_width)
+    def render_right_cell(text, border_width)
         style = "border:solid black; " +
                  border_width
-        return render_cell(clazz, text, style)
+        return render_cell(text, style)
     end
     
-    def render_cell(clazz, text, style)
+    def render_cell(text, style)
         if text.nil? then
             return "    <td style='#{style}'>&nbsp;</td>\n"
         else
-            return "    <td class='#{clazz}' " +
+            return "    <td class='changed' " +
                             "style='#{style}'>" +
                          "<pre>#{text}</pre>" +
                        "</td>\n"
