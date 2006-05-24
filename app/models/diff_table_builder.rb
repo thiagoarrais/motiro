@@ -46,11 +46,7 @@ private
     
 end
 
-require 'erb'
-
 class ModGroup
-
-    include ERB::Util
 
     def initialize
         @deletions = []
