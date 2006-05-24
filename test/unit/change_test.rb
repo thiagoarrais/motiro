@@ -117,44 +117,4 @@ class ChangeTest < Test::Unit::TestCase
         assert ! change.filled?
     end
     
-    def test_renders_diff_table_for_add_only
-        diff_output = "@@ -0,0 +1 @@\n" +
-                      "+These are the file_contents"
-        change = Change.new(:summary => 'A /a_file.txt',
-                            :diff => diff_output)
-                            
-        actual_diff_table = change.render_diff_table
-        
-        expected_diff_table = "<table cellspacing='0'>\n" +
-                              "  <tr>\n" +
-                              "    <td style='text-align: center'>1</td>\n" +
-                              "    <td />\n" +
-                              "    <td class='added' style='border:solid; border-width: 0 0 0 1px;'><pre>These are the file_contents</pre></td>\n" +
-                              "  </tr>\n" +
-                              "</table>"
-        
-        assert_equal expected_diff_table, actual_diff_table
-    end
-    
-    def test_renders_diff_table_for_modification
-        diff_output = "@@ -1 +1 @@\n" +
-                      "-These were the file contents\n" +
-                      "+These are the file contents\n"
-
-        change = Change.new(:summary => 'A /a_file.txt',
-                            :diff => diff_output)
-                            
-        actual_diff_table = change.render_diff_table
-        
-        expected_diff_table = "<table cellspacing='0'>\n" +
-                              "  <tr>\n" +
-                              "    <td style='text-align: center'>1</td>\n" +
-                              "    <td class='removed' style='border:solid; border-width: 0 0 0 1px;'><pre>These were the file contents</pre></td>\n" +
-                              "    <td class='added' style='border:solid; border-width: 0 0 0 1px;'><pre>These are the file contents</pre></td>\n" +
-                              "  </tr>\n" +
-                              "</table>"
-        
-        assert_equal expected_diff_table, actual_diff_table
-    end
-
 end

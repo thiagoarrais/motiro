@@ -33,13 +33,14 @@ class Change < ActiveRecord::Base
 
         diff.split("\n").each do |line|
             c = line[0,1]
+            line_text = line[1, line.length - 1]
 
             if '+' == c then
-                 builder.push_addition line[1, line.length - 1]
+                 builder.push_addition line_text
             elsif '-' == c then
-                 builder.push_deletion line[1, line.length - 1]
+                 builder.push_deletion line_text
             elsif ' ' == c then
-                 builder.push_unchanged line[1, line.length - 1]
+                 builder.push_unchanged line_text
             end
         end
         
