@@ -204,6 +204,8 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     end
 
     def test_some_code_kept
+        @builder.start_line 6
+
         @builder.push_unchanged 'div.channel-title {'
         @builder.push_deletion  '    font: normal 8pt Verdana,sans-serif;'
         @builder.push_addition  '    font: bold 10pt Verdana,sans-serif;'
@@ -214,7 +216,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>1</td>\n" +
+                           "border-width: 0 1px 0 0;'>6</td>\n" +
             "    <td style='border:solid; " +
                            "border-color: gray; " +
                            "border-width: 0 1px 0 0;'>" +
@@ -229,7 +231,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>2</td>\n" +
+                           "border-width: 0 1px 0 0;'>7</td>\n" +
             "    <td class='changed' " +
                     "style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
@@ -244,7 +246,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>3</td>\n" +
+                           "border-width: 0 1px 0 0;'>8</td>\n" +
             "    <td style='border:solid; " +
                            "border-color: gray; " +
                            "border-width: 0 1px 0 0;'>" +
@@ -258,45 +260,6 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  </tr>\n" +
             "</table>"
 
-        assert_equal expected_diff_table, @builder.render_diff_table
-    end
-    
-    def test_addition_to_existent_code
-        @builder.push_unchanged 'This line will be kept'
-        @builder.push_addition 'This line was added'
-
-        expected_diff_table =
-            "<table cellspacing='0'>\n" +
-            "  <tr>\n" +
-            "    <td style='text-align: center; " +
-                           "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>1</td>\n" +
-            "    <td style='border:solid; " +
-                           "border-color: gray; " +
-                           "border-width: 0 1px 0 0;'>" +
-                  "<pre>This line will be kept</pre>" +
-                "</td>\n" +
-            "    <td style='border:solid; " +
-                           "border-color: gray; " +
-                           "border-width: 0 0 0 0;'>" +
-                  "<pre>This line will be kept</pre>" +
-                "</td>\n" +
-            "  </tr>\n" +
-            "  <tr>\n" +
-            "    <td style='text-align: center; " +
-                           "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>2</td>\n" +
-            "    <td style='border:solid; " +
-                           "border-width: 1px 1px 1px 1px; " +
-                           "border-color: black gray black black'>&nbsp;" +
-                "</td>\n" +
-            "    <td class='changed' style='border:solid black; " +
-                                         "border-width: 1px 1px 1px 0;'>" +
-                  "<pre>This line was added</pre>" +
-                "</td>\n" +
-            "  </tr>\n" +
-            "</table>"
-        
         assert_equal expected_diff_table, @builder.render_diff_table
     end
     

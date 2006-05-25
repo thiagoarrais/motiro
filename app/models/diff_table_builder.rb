@@ -7,16 +7,21 @@ class DiffTableBuilder
     def initialize
         @mod_groups = []
         @curr_group = 0
+        @line_to_start = 1
         @last_mod_type = nil
     end
 
     def render_diff_table
         result  = "<table cellspacing='0'>\n"
-        counter = Counter.new
         @mod_groups.each do |mg|
-            result += mg.render_diff_lines(counter)
+            result += mg.render_diff_lines
         end
         result += "</table>"
+    end
+    
+    def start_line(line_num)
+        @line_to_start = line_num
+        @group_started = true
     end
     
     { 'addition' => 'add',
@@ -31,14 +36,24 @@ private
 
     def get_current_group(mod_type)
         if need_a_new_group(mod_type) then
-            mg = :unch == mod_type ? UnchangedGroup.new : ModGroup.new
-            @mod_groups << mg
+            @mod_groups << create_group(mod_type)
         end
         @last_mod_type = mod_type
                 
         return @mod_groups.last
     end
     
+    def create_group(mod_type)
+        mg = :unch == mod_type ? UnchangedGroup.new(curr_line) :
+                                 ModGroup.new(curr_line)
+        @line_to_start = curr_line
+        return mg
+    end
+
+    def curr_line
+        return @mod_groups.last.num_lines + @line_to_start unless @mod_groups.empty?
+        return @line_to_start
+    end
     
     CREATE_GROUP_DECISION_TABLE = # current / last
     { :add =>  { :add => false, :del => false, :unch => true },
@@ -46,6 +61,10 @@ private
       :unch => { :add => true, :del => true, :unch => false} }
     
     def need_a_new_group(mod_type)
+        if @group_started then
+            @group_started = false
+            return true
+        end
         (@mod_groups.empty?) or
         CREATE_GROUP_DECISION_TABLE[mod_type][@last_mod_type]
     end
@@ -54,7 +73,8 @@ end
 
 class ModGroup
 
-    def initialize
+    def initialize(initial_line = 1)
+        @initial_line = initial_line
         @deletions = []
         @additions = []
     end
@@ -67,13 +87,11 @@ class ModGroup
         deletions << text
     end
 
-    def render_diff_lines(count)
+    def render_diff_lines
         result = ''
-        length = deletions.length > additions.length ?
-            deletions.length : additions.length
+        length = num_lines
         i = 0
         while i < length
-            count.incc
             borders_left = cell_border_width(i, :left)
             borders_right = cell_border_width(i, :right)
             
@@ -81,15 +99,21 @@ class ModGroup
             result += "    <td style='text-align: center; " +
                                      "border:solid gray; " +
                                      "border-width: 0 1px 0 0;'>" +
-                            "#{count.value}" +
+                             (@initial_line + i).to_s +
                           "</td>\n"
             result += render_left_cell(deletions[i], borders_left)
             result += render_right_cell(additions[i], borders_right)
             result += "  </tr>\n"
+
             i += 1
         end
         
         return result
+    end
+    
+    def num_lines
+        deletions.length > additions.length ? deletions.length :
+                                              additions.length    
     end
     
 private
@@ -171,19 +195,24 @@ class UnchangedGroup
 
     include ERB::Util
 
-    def initialize
+    def initialize(initial_line = 1)
         @lines = []
+        @initial_line = initial_line
     end
 
     def push_unchanged(text)
         @lines << text
     end
     
-    def render_diff_lines(count)
+    def num_lines
+        @lines.size
+    end
+    
+    def render_diff_lines
         result = ''
 
+        count = @initial_line
         @lines.each do |line|
-            count.incc
             curr_cell_prefix = "    <td style='border:solid; " +
                                "border-color: gray; " +
                                "border-width: 0 "
@@ -194,11 +223,12 @@ class UnchangedGroup
             result += "    <td style='text-align: center; " +
                                      "border:solid gray; " +
                                      "border-width: 0 1px 0 0;'>" +
-                             count.value.to_s +
+                             count.to_s +
                           "</td>\n"
             result += curr_cell_prefix + '1px' + curr_cell_suffix
             result += curr_cell_prefix + '0' + curr_cell_suffix
             result += "  </tr>\n"
+            count += 1
         end
 
         return result
