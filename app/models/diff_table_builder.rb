@@ -19,9 +19,11 @@ class DiffTableBuilder
         result += "</table>"
     end
     
-    %w{addition deletion unchanged}.each do |w|
-        eval "def push_#{w}(text); " +
-             "get_current_group(:#{w}).push_#{w}(html_escape(text)); " +
+    { 'addition' => 'add',
+      'deletion' => 'del',
+      'unchanged' => 'unch'}.each do |k,v|
+        eval "def push_#{k}(text); " +
+             "get_current_group(:#{v}).push_#{k}(html_escape(text)); " +
              "end"
     end
     
@@ -29,7 +31,7 @@ private
 
     def get_current_group(mod_type)
         if need_a_new_group(mod_type) then
-            mg = :unchanged == mod_type ? UnchangedGroup.new : ModGroup.new
+            mg = :unch == mod_type ? UnchangedGroup.new : ModGroup.new
             @mod_groups << mg
         end
         @last_mod_type = mod_type
@@ -37,11 +39,15 @@ private
         return @mod_groups.last
     end
     
+    
+    CREATE_GROUP_DECISION_TABLE = # current / last
+    { :add =>  { :add => false, :del => false, :unch => true },
+      :del =>  { :add => true, :del => false, :unch => true },
+      :unch => { :add => true, :del => true, :unch => false} }
+    
     def need_a_new_group(mod_type)
-        (@mod_groups.last.nil?) or
-        (:deletion == mod_type and :deletion != @last_mod_type) or
-        (:unchanged == mod_type and :unchanged != @last_mod_type) or
-        (:unchanged != mod_type and :unchanged == @last_mod_type)
+        (@mod_groups.empty?) or
+        CREATE_GROUP_DECISION_TABLE[mod_type][@last_mod_type]
     end
     
 end
@@ -68,7 +74,8 @@ class ModGroup
         i = 0
         while i < length
             count.incc
-            borders_left, borders_right = border_widths_for(i)
+            borders_left = cell_border_width(i, :left)
+            borders_right = cell_border_width(i, :right)
             
             result += "  <tr>\n"
             result += "    <td style='text-align: center; " +
@@ -87,43 +94,49 @@ class ModGroup
     
 private
 
-    def border_widths_for(pos)
-        borders_left = borders_right = 'border-width: '
-        if 0 == pos then
-            borders_left += '1px '
-            borders_right += '1px '
-        else
-            borders_left += '0 '
-            borders_right += '0 '
-        end
-        borders_left += '1px '
-        if 0!=pos and pos >= additions.length then
-            borders_right += '0 '
-        else
-            borders_right += '1px '
-        end
-        if deletions.length == pos+1 or (deletions.length == 0 and 0==pos) then
-            borders_left += '1px '
-        else
-            borders_left += '0 '
-        end
-        if additions.length == pos+1 or (additions.length == 0 and 0==pos) then
-            borders_right += '1px '
-        else
-            borders_right += '0 '
-        end
-        if 0!=pos and pos >= deletions.length then
-            borders_left += '0;'
-            borders_right += '1px;'
-        elsif 0!=pos and pos >= additions.length then
-            borders_left += '1px;'
-            borders_right += '1px;'
-        else
-            borders_left += '1px;'
-            borders_right += '0;'
-        end
+    def cell_border_width(pos, side)
+        borders = 'border-width: '
         
-        return borders_left, borders_right
+        borders += top_border(pos)
+        borders += right_border(pos, side)
+        borders += bottom_border(pos, :left == side ? deletions : additions)
+        borders += left_border(pos, side)
+        
+        return borders
+    end
+    
+    def top_border(pos)
+        if 0 == pos then
+            return '1px '
+        else
+            return '0 '
+        end
+    end
+    
+    def right_border(pos, side)
+        if :right == side and 0!=pos and pos >= additions.length then
+            return '0 '
+        else
+            return '1px '
+        end
+    end
+    
+    def bottom_border(pos, lines)
+        if lines.length == pos+1 or (lines.length == 0 and 0==pos) then
+            return '1px '
+        else
+            return '0 '
+        end
+    end
+    
+    def left_border(pos, side)
+        if 0!=pos and pos >= additions.length then
+            return '1px;'
+        elsif !( (:right == side) ^ (0!=pos and pos >= deletions.length) ) then
+            return '1px;'
+        else
+            return '0;'
+        end
     end
 
     def render_left_cell(text, border_width)
