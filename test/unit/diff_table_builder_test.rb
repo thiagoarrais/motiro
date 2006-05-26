@@ -326,6 +326,14 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "  </tr>\n" +
             "  <tr>\n" +
+            "    <td style='border:solid gray; " +
+                           "border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
+            "    <td style='border:solid gray; " +
+                           "border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
+            "    <td style='border:solid gray; " +
+                           "border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
                            "border-width: 0 1px 0 0;'>13</td>\n" +

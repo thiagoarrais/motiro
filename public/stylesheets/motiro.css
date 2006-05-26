@@ -62,7 +62,8 @@ div.inner {
 }
 
 table {
-    border: solid 1px gray;
+    border: solid gray;
+    border-width: 1px 0 1px 0;
     font-family: monospace;
 }
 

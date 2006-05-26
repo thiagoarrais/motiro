@@ -20,6 +20,7 @@ class DiffTableBuilder
     end
     
     def start_line(line_num)
+        @mod_groups << SpacingGroup.instance if @line_to_start != 1
         @line_to_start = line_num
         @start_new_group = true
     end
@@ -234,6 +235,19 @@ class UnchangedGroup
         return result
     end
     
+end
+
+class SpacingGroup
+
+    include Singleton
+
+    def render_diff_lines
+        cell = "    <td style='border:solid gray; " +
+                              "border-width: 1px 0 1px 0;'>&nbsp;</td>\n"
+
+        return "  <tr>\n" + cell + cell + cell + "  </tr>\n"
+    end
+
 end
 
 class Counter
