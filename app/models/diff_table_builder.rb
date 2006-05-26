@@ -21,7 +21,7 @@ class DiffTableBuilder
     
     def start_line(line_num)
         @line_to_start = line_num
-        @group_started = true
+        @start_new_group = true
     end
     
     { 'addition' => 'add',
@@ -47,12 +47,13 @@ private
         mg = :unch == mod_type ? UnchangedGroup.new(curr_line) :
                                  ModGroup.new(curr_line)
         @line_to_start = curr_line
+        @start_new_group = false
         return mg
     end
 
     def curr_line
-        return @mod_groups.last.num_lines + @line_to_start unless @mod_groups.empty?
-        return @line_to_start
+        return @line_to_start if @start_new_group or @mod_groups.empty?
+        return @mod_groups.last.num_lines + @line_to_start
     end
     
     CREATE_GROUP_DECISION_TABLE = # current / last
@@ -61,8 +62,7 @@ private
       :unch => { :add => true, :del => true, :unch => false} }
     
     def need_a_new_group(mod_type)
-        if @group_started then
-            @group_started = false
+        if @start_new_group then
             return true
         end
         (@mod_groups.empty?) or

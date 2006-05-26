@@ -263,6 +263,118 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         assert_equal expected_diff_table, @builder.render_diff_table
     end
     
+    def test_esparse_changes
+        @builder.start_line 6
+
+        @builder.push_unchanged 'div.channel-title {'
+        @builder.push_deletion  '    font: normal 8pt Verdana,sans-serif;'
+        @builder.push_addition  '    font: bold 10pt Verdana,sans-serif;'
+        @builder.push_unchanged '    margin:0 0 0 0;'
+        
+        @builder.start_line 13
+
+        @builder.push_unchanged 'div.channel-body-outer {'
+        @builder.push_deletion  '    padding: 0 9px 0 9px;'
+        @builder.push_addition  '    padding: 0 8px 0 8px;'
+        @builder.push_unchanged '}'
+
+        expected_diff_table =
+            "<table cellspacing='0'>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>6</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 1px 0 0;'>" +
+                  "<pre>div.channel-title {</pre>" +
+                "</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 0 0 0;'>" +
+                  "<pre>div.channel-title {</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>7</td>\n" +
+            "    <td class='changed' " +
+                    "style='border:solid; " +
+                           "border-width: 1px 1px 1px 1px; " +
+                           "border-color: black gray black black'>" +
+                  "<pre>    font: normal 8pt Verdana,sans-serif;</pre>" +
+                "</td>\n" +
+            "    <td class='changed' style='border:solid black; " +
+                                         "border-width: 1px 1px 1px 0;'>" +
+                  "<pre>    font: bold 10pt Verdana,sans-serif;</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>8</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 1px 0 0;'>" +
+                  "<pre>    margin:0 0 0 0;</pre>" +
+                "</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 0 0 0;'>" +
+                  "<pre>    margin:0 0 0 0;</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>13</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 1px 0 0;'>" +
+                  "<pre>div.channel-body-outer {</pre>" +
+                "</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 0 0 0;'>" +
+                  "<pre>div.channel-body-outer {</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>14</td>\n" +
+            "    <td class='changed' " +
+                    "style='border:solid; " +
+                           "border-width: 1px 1px 1px 1px; " +
+                           "border-color: black gray black black'>" +
+                  "<pre>    padding: 0 9px 0 9px;</pre>" +
+                "</td>\n" +
+            "    <td class='changed' style='border:solid black; " +
+                                         "border-width: 1px 1px 1px 0;'>" +
+                  "<pre>    padding: 0 8px 0 8px;</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>15</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 1px 0 0;'>" +
+                  "<pre>}</pre>" +
+                "</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 0 0 0;'>" +
+                  "<pre>}</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "</table>"
+
+        assert_equal expected_diff_table, @builder.render_diff_table
+    end
+
     def test_escapes_html
         @builder.push_unchanged '        <h1><%= h(@headline.title) -%></h1>'
         expected_diff_table =

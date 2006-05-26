@@ -36,11 +36,14 @@ class Change < ActiveRecord::Base
             line_text = line[1, line.length - 1]
 
             if '+' == c then
-                 builder.push_addition line_text
+                builder.push_addition line_text
             elsif '-' == c then
-                 builder.push_deletion line_text
+                builder.push_deletion line_text
             elsif ' ' == c then
-                 builder.push_unchanged line_text
+                builder.push_unchanged line_text
+            elsif '@' == c then
+                line_num = line_text.match(/\d+/)[0].to_i
+                builder.start_line line_num
             end
         end
         
