@@ -15,7 +15,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>1</td>\n" +
+                           "border-width: 0 1px 0 0;'>&nbsp;</td>\n" +
             "    <td style='border:solid; " +
                            "border-width: 1px 1px 1px 1px; " +
                            "border-color: black gray black black'>&nbsp;" +
@@ -123,9 +123,10 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     end
     
     def test_more_adds_than_deletes
-        @builder.push_deletion 'This is the first old line'
-        @builder.push_addition 'This is the first new line'
-        @builder.push_addition 'This is the second new line'
+        @builder.push_deletion  'This is the first old line'
+        @builder.push_addition  'This is the first new line'
+        @builder.push_addition  'This is the second new line'
+        @builder.push_unchanged 'This line remains the same'
 
         expected_diff_table =
             "<table cellspacing='0'>\n" +
@@ -147,7 +148,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "  <tr>\n" +
             "    <td style='text-align: center; " +
                            "border:solid gray; " +
-                           "border-width: 0 1px 0 0;'>2</td>\n" +
+                           "border-width: 0 1px 0 0;'>&nbsp;</td>\n" +
             "    <td style='border:solid; " +
                            "border-width: 0 1px 0 0; " +
                            "border-color: black gray black black'>&nbsp;" +
@@ -155,6 +156,21 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td class='changed' style='border:solid black; " +
                                          "border-width: 0 1px 1px 1px;'>" +
                   "<pre>This is the second new line</pre>" +
+                "</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td style='text-align: center; " +
+                           "border:solid gray; " +
+                           "border-width: 0 1px 0 0;'>2</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 1px 0 0;'>" +
+                  "<pre>This line remains the same</pre>" +
+                "</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-color: gray; " +
+                           "border-width: 0 0 0 0;'>" +
+                  "<pre>This line remains the same</pre>" +
                 "</td>\n" +
             "  </tr>\n" +
             "</table>"

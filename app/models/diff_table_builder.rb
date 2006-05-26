@@ -54,7 +54,7 @@ private
 
     def curr_line
         return @line_to_start if @start_new_group or @mod_groups.empty?
-        return @mod_groups.last.num_lines + @line_to_start
+        return @line_to_start + @mod_groups.last.num_lines_left
     end
     
     CREATE_GROUP_DECISION_TABLE = # current / last
@@ -97,11 +97,7 @@ class ModGroup
             borders_right = cell_border_width(i, :right)
             
             result += "  <tr>\n"
-            result += "    <td style='text-align: center; " +
-                                     "border:solid gray; " +
-                                     "border-width: 0 1px 0 0;'>" +
-                             (@initial_line + i).to_s +
-                          "</td>\n"
+            result += render_left_counter(i)
             result += render_left_cell(deletions[i], borders_left)
             result += render_right_cell(additions[i], borders_right)
             result += "  </tr>\n"
@@ -112,13 +108,17 @@ class ModGroup
         return result
     end
     
+    def num_lines_left
+        deletions.length
+    end
+
+private
+
     def num_lines
         deletions.length > additions.length ? deletions.length :
                                               additions.length    
     end
     
-private
-
     def cell_border_width(pos, side)
         borders = 'border-width: '
         
@@ -188,6 +188,21 @@ private
         end
     end
     
+    def render_left_counter(pos)
+        result = "    <td style='text-align: center; " +
+                                 "border:solid gray; " +
+                                 "border-width: 0 1px 0 0;'>"
+                     
+        if pos < deletions.length then
+            result += (@initial_line + pos).to_s
+        else
+            result += '&nbsp;'
+        end
+
+        result += "</td>\n"
+        return result
+    end
+    
     attr_accessor :additions, :deletions
 
 end
@@ -208,6 +223,8 @@ class UnchangedGroup
     def num_lines
         @lines.size
     end
+    
+    alias num_lines_left num_lines
     
     def render_diff_lines
         result = ''
@@ -248,18 +265,4 @@ class SpacingGroup
         return "  <tr>\n" + cell + cell + cell + "  </tr>\n"
     end
 
-end
-
-class Counter
-
-    attr_reader :value
-
-    def initialize
-        @value = 0
-    end
-
-    def incc
-        @value += 1    
-    end
-    
 end
