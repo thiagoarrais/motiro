@@ -31,25 +31,24 @@ class Change < ActiveRecord::Base
     end
     
     def render_diff_table
-        builder = DiffTableBuilder.new
-
+        @differ ||= DiffTableBuilder.new
         diff.split("\n").each do |line|
             c = line[0,1]
             line_text = line[1, line.length - 1]
 
             if '+' == c then
-                builder.push_addition line_text
+                @differ.push_addition line_text
             elsif '-' == c then
-                builder.push_deletion line_text
+                @differ.push_deletion line_text
             elsif ' ' == c then
-                builder.push_unchanged line_text
+                @differ.push_unchanged line_text
             elsif '@' == c then
-                line_num = line_text.match(/\d+/)[0].to_i
-                builder.start_line line_num
+                md = line_text.match(/-(\d+)[^\+]*\+(\d+)/)
+                @differ.start_line(md[1].to_i, md[2].to_i)
             end
         end
         
-        return builder.render_diff_table
+        return @differ.render_diff_table
     end
     
     def qualified_resource_name
@@ -63,6 +62,10 @@ class Change < ActiveRecord::Base
     def filled?
         return !self.resource_kind.nil? &&
                 ('dir' == self.resource_kind || !self.diff.nil?)
+    end
+    
+    def use_differ(differ)
+        @differ = differ
     end
     
 private

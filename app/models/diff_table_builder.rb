@@ -7,7 +7,7 @@ class DiffTableBuilder
     def initialize
         @mod_groups = []
         @curr_group = 0
-        @line_to_start = 1
+        @left_line_to_start = @right_line_to_start = 1
         @last_mod_type = nil
     end
 
@@ -19,9 +19,10 @@ class DiffTableBuilder
         result += "</table>"
     end
     
-    def start_line(line_num)
-        @mod_groups << SpacingGroup.instance if @line_to_start != 1
-        @line_to_start = line_num
+    def start_line(left_line_num, right_line_num=left_line_num)
+        @mod_groups << SpacingGroup.instance if @left_line_to_start != 1
+        @left_line_to_start = left_line_num
+        @right_line_to_start = right_line_num
         @start_new_group = true
     end
     
@@ -45,16 +46,21 @@ private
     end
     
     def create_group(mod_type)
-        mg = :unch == mod_type ? UnchangedGroup.new(curr_line) :
-                                 ModGroup.new(curr_line)
-        @line_to_start = curr_line
+        left_line, right_line = curr_lines
+        mg = :unch == mod_type ? UnchangedGroup.new(left_line, right_line) :
+                                 ModGroup.new(left_line, right_line)
+        @left_line_to_start, @right_line_to_start = left_line, right_line
         @start_new_group = false
         return mg
     end
 
-    def curr_line
-        return @line_to_start if @start_new_group or @mod_groups.empty?
-        return @line_to_start + @mod_groups.last.num_lines_left
+    def curr_lines
+        if @start_new_group or @mod_groups.empty? then
+          return [@left_line_to_start, @right_line_to_start]
+        else
+          return [ @left_line_to_start + @mod_groups.last.num_lines_left,
+                   @right_line_to_start + @mod_groups.last.num_lines_right ]
+        end
     end
     
     CREATE_GROUP_DECISION_TABLE = # current / last
@@ -74,8 +80,9 @@ end
 
 class ModGroup
 
-    def initialize(initial_line = 1)
-        @initial_line = initial_line
+    def initialize(initial_left_line = 1, initial_right_line = 1)
+        @initial_left_line = initial_left_line
+        @initial_right_line = initial_right_line
         @deletions = []
         @additions = []
     end
@@ -97,9 +104,10 @@ class ModGroup
             borders_right = cell_border_width(i, :right)
             
             result += "  <tr>\n"
-            result += render_left_counter(i)
+            result += render_counter(deletions, @initial_left_line, i)
             result += render_left_cell(deletions[i], borders_left)
             result += render_right_cell(additions[i], borders_right)
+            result += render_counter(additions, @initial_right_line, i)
             result += "  </tr>\n"
 
             i += 1
@@ -110,6 +118,10 @@ class ModGroup
     
     def num_lines_left
         deletions.length
+    end
+
+    def num_lines_right
+        additions.length
     end
 
 private
@@ -188,13 +200,11 @@ private
         end
     end
     
-    def render_left_counter(pos)
-        result = "    <td style='text-align: center; " +
-                                 "border:solid gray; " +
-                                 "border-width: 0 1px 0 0;'>"
+    def render_counter(lines, initial_line, pos)
+        result = "    <td class='line_number'>"
                      
-        if pos < deletions.length then
-            result += (@initial_line + pos).to_s
+        if pos < lines.length then
+            result += (initial_line + pos).to_s
         else
             result += '&nbsp;'
         end
@@ -204,16 +214,17 @@ private
     end
     
     attr_accessor :additions, :deletions
-
+    
 end
 
 class UnchangedGroup
 
     include ERB::Util
 
-    def initialize(initial_line = 1)
+    def initialize(initial_left_line = 1, initial_right_line = 1)
         @lines = []
-        @initial_line = initial_line
+        @initial_left_line = initial_left_line
+        @initial_right_line = initial_right_line
     end
 
     def push_unchanged(text)
@@ -225,28 +236,29 @@ class UnchangedGroup
     end
     
     alias num_lines_left num_lines
+    alias num_lines_right num_lines
     
     def render_diff_lines
         result = ''
 
-        count = @initial_line
+        left_count = @initial_left_line
+        right_count = @initial_right_line
         @lines.each do |line|
             curr_cell_prefix = "    <td style='border:solid; " +
-                               "border-color: gray; " +
-                               "border-width: 0 "
-            curr_cell_suffix = " 0 0;'><pre>#{line}</pre>" +
+                                              "border-color: gray; " +
+                                              "border-width: 0 "
+            curr_cell_suffix =                     " 0 0;'><pre>#{line}</pre>" +
                                    "</td>\n"
 
             result += "  <tr>\n"
-            result += "    <td style='text-align: center; " +
-                                     "border:solid gray; " +
-                                     "border-width: 0 1px 0 0;'>" +
-                             count.to_s +
-                          "</td>\n"
+            result += "    <td class='line_number'>#{left_count}</td>\n"
             result += curr_cell_prefix + '1px' + curr_cell_suffix
             result += curr_cell_prefix + '0' + curr_cell_suffix
+            result += "    <td class='line_number'>#{right_count}</td>\n"
+
             result += "  </tr>\n"
-            count += 1
+            left_count += 1
+            right_count += 1
         end
 
         return result
@@ -262,7 +274,7 @@ class SpacingGroup
         cell = "    <td style='border:solid gray; " +
                               "border-width: 1px 0 1px 0;'>&nbsp;</td>\n"
 
-        return "  <tr>\n" + cell + cell + cell + "  </tr>\n"
+        return "  <tr>\n" + cell + cell + cell + cell + "  </tr>\n"
     end
 
 end

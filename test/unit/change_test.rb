@@ -24,7 +24,7 @@ class ChangeTest < Test::Unit::TestCase
         
         actual_rendered_output = change.render_diff
 
-        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><a name='\1' \/><h2>Alterações em a_file.txt<\/h2>/
+        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/><h2>Alterações em a_file.txt<\/h2>/
         
         assert_not_nil md
         
@@ -33,6 +33,22 @@ class ChangeTest < Test::Unit::TestCase
         md = remain.match /<\/div>\Z/
         
         assert_not_nil md
+    end
+    
+    def test_passes_lines_numbers_to_differ
+        FlexMock.use do |differ|
+            differ.should_receive(:start_line).once.with(22, 34)
+            differ.should_receive(:render_diff_table).once.
+              and_return('rendered table')
+            differ.should_ignore_missing
+
+            change = Change.new(:summary => 'A /a_file.txt',
+                                  :diff => "@@ -22,0 +34 @@\n" +
+                                           "+These are the file_contents")
+
+            change.use_differ(differ)
+            assert_equal 'rendered table', change.render_diff_table
+        end
     end
     
     def test_render_summary_with_unset_diff
@@ -64,7 +80,7 @@ class ChangeTest < Test::Unit::TestCase
         md = change.render_summary.match /\A<a href='\#((\w|\d|-)+)'/
         summary_ref = md[1]
         
-        md = change.render_diff.match /\A<div id='((\w|\d|-)+)' class='diff-window'><a name='\1' \/>/
+        md = change.render_diff.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/>/
         diff_ref = md[1]
         
         assert_equal summary_ref, diff_ref
