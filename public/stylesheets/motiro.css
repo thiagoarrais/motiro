@@ -24,7 +24,7 @@ body {
 }
 
 div.channel {
-    width: 381px;
+    width: 378px;
     float: left;
     margin: 4px 4px 4px 4px;
 }
@@ -87,7 +87,7 @@ td {
 td.line_number {
     text-align: center;
     border:solid gray;
-    border-width: 0 1px 0 1px;';
+    border-width: 0 1px 0 1px;
 }
 
 #footer {
