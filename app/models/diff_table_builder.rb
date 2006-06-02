@@ -78,7 +78,20 @@ private
     
 end
 
-class ModGroup
+class Group
+
+protected
+
+    def render_cell_contents(text)
+        return "<pre>#{text}</pre>" unless text.nil? || 0 == text.length
+        return '&nbsp;'
+    end
+    
+
+
+end
+
+class ModGroup < Group
 
     def initialize(initial_left_line = 1, initial_right_line = 1)
         @initial_left_line = initial_left_line
@@ -104,10 +117,10 @@ class ModGroup
             borders_right = cell_border_width(i, :right)
             
             result += "  <tr>\n"
-            result += render_counter(deletions, @initial_left_line, i)
+            result += render_counter(:left, i)
             result += render_left_cell(deletions[i], borders_left)
             result += render_right_cell(additions[i], borders_right)
-            result += render_counter(additions, @initial_right_line, i)
+            result += render_counter(:right, i)
             result += "  </tr>\n"
 
             i += 1
@@ -190,20 +203,23 @@ private
     end
     
     def render_cell(text, style)
-        if text.nil? then
-            return "    <td style='#{style}'>&nbsp;</td>\n"
-        else
-            return "    <td class='changed' " +
-                            "style='#{style}'>" +
-                         "<pre>#{text}</pre>" +
-                       "</td>\n"
-        end
+        clazz = ''
+        clazz = " class='changed'" unless text.nil?
+        cell_contents = render_cell_contents(text)
+        return "    <td#{clazz} style='#{style}'>" +
+                     cell_contents +
+                   "</td>\n"
     end
     
-    def render_counter(lines, initial_line, pos)
+    def render_counter(side, pos)
+        num_lines, initial_line = num_lines_left, initial_left_line
+        if :right == side then
+            num_lines, initial_line = num_lines_right, initial_right_line
+        end
+        
         result = "    <td class='line_number'>"
                      
-        if pos < lines.length then
+        if pos < num_lines then
             result += (initial_line + pos).to_s
         else
             result += '&nbsp;'
@@ -214,10 +230,11 @@ private
     end
     
     attr_accessor :additions, :deletions
+    attr_reader :initial_left_line, :initial_right_line
     
 end
 
-class UnchangedGroup
+class UnchangedGroup < Group
 
     include ERB::Util
 
@@ -247,7 +264,8 @@ class UnchangedGroup
             curr_cell_prefix = "    <td style='border:solid; " +
                                               "border-color: gray; " +
                                               "border-width: 0 "
-            curr_cell_suffix =                     " 0 0;'><pre>#{line}</pre>" +
+            curr_cell_suffix =                     " 0 0;'>" +
+                                     render_cell_contents(line) +
                                    "</td>\n"
 
             result += "  <tr>\n"

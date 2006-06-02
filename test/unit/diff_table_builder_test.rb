@@ -533,4 +533,39 @@ class DiffTableBuilderTest < Test::Unit::TestCase
 
         assert_equal expected_diff_table, @builder.render_diff_table
     end
+    
+    def test_escapes_empty_lines
+        @builder.push_addition ''
+        @builder.push_addition '    def test_escapes_empty_lines'
+        expected_diff_table =
+        expected_diff_table =
+            "<table cellspacing='0'>\n" +
+            "  <tr>\n" +
+            "    <td class='line_number'>&nbsp;</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-width: 1px 1px 1px 1px; " +
+                           "border-color: black gray black black'>&nbsp;" +
+                "</td>\n" +
+            "    <td class='changed' style='border:solid black; " +
+                                         "border-width: 1px 1px 0 0;'>" +
+                  "&nbsp;" +
+                "</td>\n" +
+            "    <td class='line_number'>1</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td class='line_number'>&nbsp;</td>\n" +
+            "    <td style='border:solid; " +
+                           "border-width: 0 1px 0 0; " +
+                           "border-color: black gray black black'>&nbsp;" +
+                "</td>\n" +
+            "    <td class='changed' style='border:solid black; " +
+                                         "border-width: 0 1px 1px 1px;'>" +
+                  "<pre>    def test_escapes_empty_lines</pre>" +
+                "</td>\n" +
+            "    <td class='line_number'>2</td>\n" +
+            "  </tr>\n" +
+            "</table>"
+        
+        assert_equal expected_diff_table, @builder.render_diff_table
+    end
 end
