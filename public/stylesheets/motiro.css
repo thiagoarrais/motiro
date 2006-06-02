@@ -48,7 +48,7 @@ a.feed {
 
 div.window {
     background-color: #B0F3FF;
-    padding: 0 8px 8px 8px;
+    padding: 8px 8px 8px 8px;
     margin: 8px 4px 8px 4px;
 }
 
@@ -65,7 +65,7 @@ table {
     border: solid gray;
     border-width: 1px 0 1px 0;
     font-family: monospace;
-    font-size: small;
+    font-size: 0.72em;
 }
 
 table pre {
