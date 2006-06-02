@@ -80,22 +80,76 @@ end
 
 class Group
 
+    def render_diff_lines
+        result = ''
+        0.upto(num_lines - 1) do |i|
+            
+            result += "  <tr>\n"
+            result += render_counter(:left, i)
+            result += render_left_cell(i)
+            result += render_right_cell(i)
+            result += render_counter(:right, i)
+            result += "  </tr>\n"
+        end
+        
+        return result
+    end
+    
 protected
+
+    attr_reader :initial_left_line, :initial_right_line
+
+    def initialize(initial_left_line = 1, initial_right_line = 1)
+        @initial_left_line = initial_left_line
+        @initial_right_line = initial_right_line
+    end
 
     def render_cell_contents(text)
         return "<pre>#{text}</pre>" unless text.nil? || 0 == text.length
         return '&nbsp;'
     end
     
+    def render_counter(side, pos)
+        num_lines, initial_line = num_lines_left, initial_left_line
+        if :right == side then
+            num_lines, initial_line = num_lines_right, initial_right_line
+        end
+        
+        result = "    <td class='line_number'>"
+                     
+        if pos < num_lines then
+            result += (initial_line + pos).to_s
+        else
+            result += '&nbsp;'
+        end
 
+        return result + "</td>\n"
+    end
+
+    def render_left_cell(pos)
+        style = cell_border_width(pos, :left)
+        return render_cell(left_lines[pos], style, :left)
+    end
+    
+    def render_right_cell(pos)
+        style = cell_border_width(pos, :right)
+        return render_cell(right_lines[pos], style, :right)
+    end
+    
+    def render_cell(text, style, side)
+        clazz = class_for(text)
+        cell_contents = render_cell_contents(text)
+        return "    <td class='#{side.to_s}#{clazz}' style='#{style}'>" +
+                     cell_contents +
+                   "</td>\n"
+    end
 
 end
 
 class ModGroup < Group
 
     def initialize(initial_left_line = 1, initial_right_line = 1)
-        @initial_left_line = initial_left_line
-        @initial_right_line = initial_right_line
+        super(initial_left_line, initial_right_line)
         @deletions = []
         @additions = []
     end
@@ -108,27 +162,6 @@ class ModGroup < Group
         deletions << text
     end
 
-    def render_diff_lines
-        result = ''
-        length = num_lines
-        i = 0
-        while i < length
-            borders_left = cell_border_width(i, :left)
-            borders_right = cell_border_width(i, :right)
-            
-            result += "  <tr>\n"
-            result += render_counter(:left, i)
-            result += render_left_cell(deletions[i], borders_left)
-            result += render_right_cell(additions[i], borders_right)
-            result += render_counter(:right, i)
-            result += "  </tr>\n"
-
-            i += 1
-        end
-        
-        return result
-    end
-    
     def num_lines_left
         deletions.length
     end
@@ -189,48 +222,15 @@ private
         end
     end
 
-    def render_left_cell(text, border_width)
-        style = "border:solid; " +
-                 border_width +
-                " border-color: black gray black black"
-        return render_cell(text, style)
-    end
     
-    def render_right_cell(text, border_width)
-        style = "border:solid black; " +
-                 border_width
-        return render_cell(text, style)
-    end
-    
-    def render_cell(text, style)
-        clazz = ''
-        clazz = " class='changed'" unless text.nil?
-        cell_contents = render_cell_contents(text)
-        return "    <td#{clazz} style='#{style}'>" +
-                     cell_contents +
-                   "</td>\n"
-    end
-    
-    def render_counter(side, pos)
-        num_lines, initial_line = num_lines_left, initial_left_line
-        if :right == side then
-            num_lines, initial_line = num_lines_right, initial_right_line
-        end
-        
-        result = "    <td class='line_number'>"
-                     
-        if pos < num_lines then
-            result += (initial_line + pos).to_s
-        else
-            result += '&nbsp;'
-        end
-
-        result += "</td>\n"
-        return result
+    def class_for(text)
+        return ' changed' unless text.nil?
+        return ''
     end
     
     attr_accessor :additions, :deletions
-    attr_reader :initial_left_line, :initial_right_line
+    alias left_lines deletions
+    alias right_lines additions
     
 end
 
@@ -239,9 +239,8 @@ class UnchangedGroup < Group
     include ERB::Util
 
     def initialize(initial_left_line = 1, initial_right_line = 1)
+        super(initial_left_line, initial_right_line)
         @lines = []
-        @initial_left_line = initial_left_line
-        @initial_right_line = initial_right_line
     end
 
     def push_unchanged(text)
@@ -255,33 +254,21 @@ class UnchangedGroup < Group
     alias num_lines_left num_lines
     alias num_lines_right num_lines
     
-    def render_diff_lines
-        result = ''
+private
 
-        left_count = @initial_left_line
-        right_count = @initial_right_line
-        @lines.each do |line|
-            curr_cell_prefix = "    <td style='border:solid; " +
-                                              "border-color: gray; " +
-                                              "border-width: 0 "
-            curr_cell_suffix =                     " 0 0;'>" +
-                                     render_cell_contents(line) +
-                                   "</td>\n"
+    def cell_border_width(pos, side)
+        return 'border-width: 0 1px 0 0;' if :left == side
+        return 'border-width: 0 0 0 0;'
+    end
 
-            result += "  <tr>\n"
-            result += "    <td class='line_number'>#{left_count}</td>\n"
-            result += curr_cell_prefix + '1px' + curr_cell_suffix
-            result += curr_cell_prefix + '0' + curr_cell_suffix
-            result += "    <td class='line_number'>#{right_count}</td>\n"
-
-            result += "  </tr>\n"
-            left_count += 1
-            right_count += 1
-        end
-
-        return result
+    def class_for(text)
+        return ''
     end
     
+    attr_accessor :lines
+    alias left_lines lines
+    alias right_lines lines
+
 end
 
 class SpacingGroup

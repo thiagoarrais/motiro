@@ -84,6 +84,15 @@ td {
     padding: 0 0.4em 0 0.4em;
 }
 
+td.left {
+    border:solid;
+    border-color: black gray black black;
+}
+
+td.right {
+    border:solid black;
+}
+
 td.line_number {
     text-align: center;
     border:solid gray;
