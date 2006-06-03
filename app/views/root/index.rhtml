@@ -26,28 +26,7 @@
         <div id="notice"><%= @flash[:notice] %></div>
       <% end %>
       <div id='header'>
-        <%= start_form_tag :controller => 'account', :action=> 'login' %>
-          <table>
-            <tr>
-              <td><label for="user_login">Usuário</label></td>
-              <td><label for="user_password">Senha</label></td>
-              <td/>
-            </tr>
-            <tr>
-               <td>
-                 <input type="text" name="user_login" id="user_login"
-                        size="12" value="" />
-               </td>
-               <td>
-                 <input type="password" name="user_password" id="user_password"
-                        size="12" />
-               </td>
-               <td>
-                 <input type="submit" name="login" value="Login &#187;" />
-               </td>
-                </tr>
-          </table>
-        <%= end_form_tag %>
+        <%= render :partial => 'header' %>
       </div>
       <div id="description" class="window">
         <div class = "inner">
@@ -76,9 +55,7 @@
               Junte-se ao mutirão!
             </p>
           </div>
-          <div class='editbar'>
-            <span class='disabled'>Editar (identifique-se, por favor)</span>
-          </div>
+          <%= render :partial => 'editbar' %>
         </div>
       </div>
     <div class="channel" id="svn">

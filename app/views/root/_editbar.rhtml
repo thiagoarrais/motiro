@@ -1,0 +1,7 @@
+<div class='editbar'>
+  <% if @session[:user] then%>
+      <a href="#">Editar</a>
+  <% else %>
+      <span class='disabled'>Editar (identifique-se, por favor)</span>
+  <% end %>
+</div>

@@ -37,6 +37,17 @@ class MainPageAcceptanceTest < SeleniumTestCase
         
     end
     
+    def test_welcomes_user
+        open('/')
+        type 'user_login', 'bob'
+        type 'user_password', 'test'
+        
+        click 'login'
+        wait_for_page_to_load(1000)
+        
+        assert_text_present 'Bem-vindo, bob'
+    end
+
     def test_edition_enabled_when_authenticated
         open('/')
         type 'user_login', 'bob'
@@ -45,6 +56,8 @@ class MainPageAcceptanceTest < SeleniumTestCase
         click 'login'
         
         assert_location '/'
+        
+        assert_element_present "//a[text() = 'Editar']"
     end
     
 end
