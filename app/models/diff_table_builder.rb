@@ -12,7 +12,7 @@ class DiffTableBuilder
     end
 
     def render_diff_table
-        result  = "<table cellspacing='0'>\n"
+        result  = "<table class='diff 'cellspacing='0'>\n"
         @mod_groups.each do |mg|
             result += mg.render_diff_lines
         end

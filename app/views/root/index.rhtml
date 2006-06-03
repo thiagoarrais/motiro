@@ -24,34 +24,63 @@
     <div id="content">
       <% if @flash[:notice] -%>
         <div id="notice"><%= @flash[:notice] %></div>
-      <% end -%>
+      <% end %>
+      <div id='header'>
+        <%= start_form_tag :controller => 'account', :action=> 'login' %>
+          <table>
+            <tr>
+              <td><label for="user_login">Usuário</label></td>
+              <td><label for="user_password">Senha</label></td>
+              <td/>
+            </tr>
+            <tr>
+               <td>
+                 <input type="text" name="user_login" id="user_login"
+                        size="12" value="" />
+               </td>
+               <td>
+                 <input type="password" name="user_password" id="user_password"
+                        size="12" />
+               </td>
+               <td>
+                 <input type="submit" name="login" value="Login &#187;" />
+               </td>
+                </tr>
+          </table>
+        <%= end_form_tag %>
+      </div>
       <div id="description" class="window">
-      <div class = "inner">
-      <h1>Motiro</h1>
-      <p>
-        Seja bem-vindo! Esta é a página principal do projeto Motiro.
-      </p>
-      <p>
-        Estamos tentando construir um portal para reunir diversas
-        aplicações de apoio e controle ao desenvolvimento de software.
-        Alguns exemplos são aplicações de gerêcia de configuração,
-        controle de bugs e listas de discussão. O papel do portal é
-        fazer com que elas estejam integradas e funcionando de forma 
-        ubíqua, permitindo ao desenvolvedor ter acesso a diversos tipos
-        de informação sobre seu projeto em um único local.
-      </p>
-      <p>
-        Confuso? Dê uma olhada em volta. Esta página é um exemplo de 
-        portal Motiro em funcionamento.
-      </p>
-      <p>
-        Interessado? Use esta página para conseguir mais informações. Se
-        quiser nos contactar, estamos todos reunidos discutindo no grupo
-        <a href="http://groups.google.com/group/motiro">motiro@googlegroups.com</a>.
-        Junte-se ao mutirão!
-      </p>
-    </div>
-    </div>
+        <div class = "inner">
+          <div>
+            <h1>Motiro</h1>
+            <p>
+              Seja bem-vindo! Esta é a página principal do projeto Motiro.
+            </p>
+            <p>
+              Estamos tentando construir um portal para reunir diversas
+              aplicações de apoio e controle ao desenvolvimento de software.
+              Alguns exemplos são aplicações de gerêcia de configuração,
+              controle de bugs e listas de discussão. O papel do portal é
+              fazer com que elas estejam integradas e funcionando de forma 
+              ubíqua, permitindo ao desenvolvedor ter acesso a diversos tipos
+              de informação sobre seu projeto em um único local.
+            </p>
+            <p>
+              Confuso? Dê uma olhada em volta. Esta página é um exemplo de 
+              portal Motiro em funcionamento.
+            </p>
+            <p>
+              Interessado? Use esta página para conseguir mais informações. Se
+              quiser nos contactar, estamos todos reunidos discutindo no grupo
+              <a href="http://groups.google.com/group/motiro">motiro@googlegroups.com</a>.
+              Junte-se ao mutirão!
+            </p>
+          </div>
+          <div class='editbar'>
+            <span class='disabled'>Editar (identifique-se, por favor)</span>
+          </div>
+        </div>
+      </div>
     <div class="channel" id="svn">
       <%= render_component(:controller => 'report',
                            :action =>  'show',

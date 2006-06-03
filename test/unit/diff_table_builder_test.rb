@@ -11,7 +11,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_addition 'I have added this'
         
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +
@@ -31,7 +31,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_deletion 'I have removed this'
         
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
@@ -52,7 +52,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_addition 'I have added this'
         
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
@@ -77,7 +77,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_addition 'This is the second new line'
 
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
@@ -114,7 +114,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_unchanged 'This line remains the same'
 
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
@@ -160,7 +160,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_unchanged 'This line remains the same'
 
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
@@ -207,7 +207,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_unchanged '    margin:0 0 0 0;'
         
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
@@ -261,7 +261,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_unchanged '}'
 
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
@@ -357,7 +357,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_unchanged '}'
 
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
@@ -440,7 +440,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     def test_escapes_html
         @builder.push_unchanged '        <h1><%= h(@headline.title) -%></h1>'
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
@@ -461,7 +461,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
         @builder.push_addition '    def test_escapes_empty_lines'
         expected_diff_table =
         expected_diff_table =
-            "<table cellspacing='0'>\n" +
+            "<table class='diff 'cellspacing='0'>\n" +
             "  <tr>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +

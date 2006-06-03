@@ -29,4 +29,22 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert get_text("//div[@id = 'events']").match(/ximos eventos/) #regexp:Próximos eventos
     end
     
+    def test_edition_disabled_without_authentication
+        open('/')
+        assert_element_present "//span[@class = 'disabled']"
+        assert_equal "Editar (identifique-se, por favor)",
+                     get_text("//span[@class = 'disabled']")
+        
+    end
+    
+    def test_edition_enabled_when_authenticated
+        open('/')
+        type 'user_login', 'bob'
+        type 'user_password', 'test'
+        
+        click 'login'
+        
+        assert_location '/'
+    end
+    
 end
