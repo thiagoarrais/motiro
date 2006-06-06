@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Motiro: Editando MainPage</title>
+    <%= stylesheet_link_tag "motiro", :media => "all" %>
+    <style type="text/css">
+        div#svn div.channel-title{background: #E3A1C4}
+        div#svn div.channel-body-outer{background: #E3A1C4}
+        div#events div.channel-title{background: #FFBD00}
+        div#events div.channel-body-outer{background: #FFBD00}
+    </style>
+    <script type="text/javascript" src="/niftycube.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            Nifty("div.channel-title","top,big");
+            Nifty("div.channel-body-outer","bottom,big");
+            Nifty("div.window","big");
+        }
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <div id="editor" class="window">
+        <div class = "inner">
+  <input class="button"
+         type="submit"
+         name="btnSave"
+         value="Salvar modificações" />
+  <input class="button" type="submit" name="btnCancel" value="Cancelar" />
+<textarea id="txaEditor" name="savetext" rows="20" style="width: 100%;">
+<%= @page_text -%>
+</textarea>
+        </div>
+      </div>
+    <div id="footer">
+      <p>Motiro versão <%= MOTIRO_VERSION %></p>
+    </div>
+  </body>
+</html>

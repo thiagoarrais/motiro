@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'report_controller'
 
-require 'rubygems'
-
-require 'flexmock'
-
 require 'mocks/headline'
 require 'stubs/svn_settings'
 

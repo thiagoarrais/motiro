@@ -15,6 +15,9 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'show',
               :format => 'rss'
 
+  map.connect 'wiki/:action/:page',
+              :controller => 'wiki'
+
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

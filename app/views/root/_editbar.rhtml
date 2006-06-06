@@ -1,6 +1,9 @@
 <div class='editbar'>
   <% if @session[:user] then%>
-      <a href="#">Editar</a>
+      <%= link_to( 'Editar',
+                   { :controller => 'wiki',
+                     :action => 'edit',
+                     :page => 'MainPage' } )%>
   <% else %>
       <span class='disabled'>Editar (identifique-se, por favor)</span>
   <% end %>

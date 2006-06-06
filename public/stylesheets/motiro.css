@@ -47,14 +47,14 @@ a.feed {
 }
 
 div.window {
-    background-color: #B0F3FF;
+    background-color: #a0ccee;
     padding: 8px 8px 8px 8px;
     margin: 8px 4px 8px 4px;
 }
 
 div.inner {
     background: #FFF;
-    padding: 1px 4px 4px 4px;
+    padding: 4px 4px 4px 4px;
 }
 
 div.editbar {
@@ -109,7 +109,15 @@ td.line_number {
 }
 
 input {
-    border: solid black 1px;
+    border: solid 1px #80aacc;
+}
+
+input.button {
+    background-color: #b0ddff;
+}
+
+textarea {
+    border: solid 1px #80aacc;
 }
 
 #footer {

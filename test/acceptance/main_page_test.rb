@@ -1,5 +1,7 @@
 class MainPageAcceptanceTest < SeleniumTestCase
 
+    fixtures :pages, :users
+
     def test_main_page
         open '/'
         assert_equal "Motiro: Bem-vindo", get_title
@@ -54,10 +56,20 @@ class MainPageAcceptanceTest < SeleniumTestCase
         type 'user_password', 'test'
         
         click 'login'
+        wait_for_page_to_load(1000)
         
         assert_location '/'
         
         assert_element_present "//a[text() = 'Editar']"
+        click "//a[text() = 'Editar']"
+        
+        #open('/edit.html')
+
+        wait_for_page_to_load(1000)
+
+        assert_element_present "//input[@name='btnSave']"
+        assert_element_present "//input[@name='btnCancel']"
+        assert_element_present "//textarea[@id='txaEditor']"
     end
     
 end
