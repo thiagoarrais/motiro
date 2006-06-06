@@ -63,8 +63,6 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_element_present "//a[text() = 'Editar']"
         click "//a[text() = 'Editar']"
         
-        #open('/edit.html')
-
         wait_for_page_to_load(1000)
 
         assert_element_present "//input[@name='btnSave']"
