@@ -5,7 +5,7 @@ class WikiParser
     
     def parse(text)
         unit = WikiUnit.new
-        text.split("\n\n").each do |p|
+        text.split(/\r?\n\r?\n/).each do |p|
             unit << parse_paragraph(p)
         end
         return unit

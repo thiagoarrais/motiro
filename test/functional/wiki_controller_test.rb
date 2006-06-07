@@ -1,10 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'wiki_controller'
+require 'test_configuration'
 
 # Re-raise errors caught by the controller.
 class WikiController; def rescue_action(e) raise e end; end
 
 class WikiControllerTest < Test::Unit::TestCase
+
+  include TestConfiguration
+
   def setup
     @controller = WikiController.new
     @request    = ActionController::TestRequest.new
@@ -26,9 +30,15 @@ class WikiControllerTest < Test::Unit::TestCase
                                 :text => ''))
       @controller = WikiController.new(page_provider)
 
+      ensure_logged_in
       get :edit, {:page => 'TestPage'}
       assert_response :success
     end
   end
-
+  
+  def test_authentication_required_for_edition
+     get :edit, { :page => 'TestPage' }
+     assert_redirected_to(:controller => 'account', :action => 'login')
+  end
+  
 end

@@ -1,10 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'events_controller'
+require 'test_configuration'
 
 # Re-raise errors caught by the controller.
 class EventsController; def rescue_action(e) raise e end; end
 
 class EventsControllerTest < Test::Unit::TestCase
+
+  include TestConfiguration
+
   fixtures :headlines, :users
 
   def setup
@@ -62,13 +66,6 @@ class EventsControllerTest < Test::Unit::TestCase
   
 private
 
-  def ensure_logged_in
-    user = FlexMock.new
-    user.should_receive(:login).and_return('motiro')
-
-    @request.session[:user] = user
-  end
-  
   def unimportant
     return {:title => 'uninmportant',
             :happened_at => Time.local(2006, 04, 26),

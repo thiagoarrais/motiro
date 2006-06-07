@@ -118,6 +118,7 @@ input.button {
 
 textarea {
     border: solid 1px #80aacc;
+    width: 100%;
 }
 
 #footer {

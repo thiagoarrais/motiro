@@ -3,7 +3,7 @@
       <%= link_to( 'Editar',
                    { :controller => 'wiki',
                      :action => 'edit',
-                     :page => 'MainPage' } )%>
+                     :page => @page.name } )%>
   <% else %>
       <span class='disabled'>Editar (identifique-se, por favor)</span>
   <% end %>

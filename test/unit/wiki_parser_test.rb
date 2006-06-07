@@ -3,12 +3,18 @@ require 'wiki_ast'
 
 class WikiParserTest < Test::Unit::TestCase
 
-  def test_breaks_paragraphs
+  def test_breaks_paragraphs_on_linebreak
     unit = WikiParser.new.parse("= Motiro =\n\nThis is project Motiro")
     paragraphs = unit.paragraphs
     assert_equal 2, paragraphs.size
   end
   
+  def test_breaks_paragraphs_on_return_feed_plus_linebreak
+    unit = WikiParser.new.parse("= Motiro =\r\n\r\nThis is project Motiro")
+    paragraphs = unit.paragraphs
+    assert_equal 2, paragraphs.size
+  end
+
   # Top level title paragraphs have the following format:
   # 
   # level1_title : '= ' text ' =' $

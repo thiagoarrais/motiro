@@ -6,7 +6,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
         open '/'
         assert_equal "Motiro: Bem-vindo", get_title
         assert_element_present "//div[@id='description']"
-        assert_text_present "Seja bem-vindo!"
+        assert_element_present "//h1[text() = 'Motiro']"
         assert_text_present 'Motiro vers' #Motiro versão 0.3.2
         assert_text_present '0.3.2'
     end
@@ -51,6 +51,8 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
 
     def test_edition_enabled_when_authenticated
+        #TODO refactor this to a declarative style
+        #see http://www.testing.com/cgi-bin/blog/2005/12/19
         open('/')
         type 'user_login', 'bob'
         type 'user_password', 'test'
@@ -68,6 +70,26 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_element_present "//input[@name='btnSave']"
         assert_element_present "//input[@name='btnCancel']"
         assert_element_present "//textarea[@id='txaEditor']"
+    end
+    
+    def test_edit_main_page
+        open('/')
+        type 'user_login', 'bob'
+        type 'user_password', 'test'
+        
+        click 'login'
+        wait_for_page_to_load(1000)
+        
+        click "//a[text() = 'Editar']"
+        wait_for_page_to_load(1000)
+        
+        type 'txaEditor', "= Motiro =\n\nThis is project motiro."
+        click 'btnSave'
+        
+        wait_for_page_to_load(1000)
+        
+        assert_equal 'Motiro', get_text('//h1')
+        assert_text_present 'This is project motiro'
     end
     
 end
