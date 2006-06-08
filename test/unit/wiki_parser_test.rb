@@ -54,8 +54,8 @@ class WikiParserTest < Test::Unit::TestCase
   end
   
   def test_detects_multiple_languages_breaks
-    unit = WikiParser.new.parse("= Motiro =\n\nBem-vindo ao Motiro\n\n" +
-                                "--- en ---------\n" +
+    unit = WikiParser.new.parse("= Motiro =\n\nBem-vindo ao Motiro\n\r\n" +
+                                "--- en ---------\r\n" +
                                 "= Motiro =\n\nWelcome to Motiro\n\n" +
                                 "--- de ---------\n" +
                                 "= Motiro =\n\nWillkommen zum Motiro\n\n")

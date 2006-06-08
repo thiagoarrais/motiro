@@ -20,7 +20,7 @@ class WikiParser
 private
 
     def parse_languages(collector, text)
-        lang_break = /^--- (\S+) ----*$/
+        lang_break = /^--- (\S+) ----*\s*$/
         curr_lang = :def_lang
         remain = text
         while(md = remain.match(lang_break)) do
