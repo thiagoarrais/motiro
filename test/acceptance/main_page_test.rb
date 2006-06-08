@@ -7,8 +7,8 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_equal "Motiro: Bem-vindo", get_title
         assert_element_present "//div[@id='description']"
         assert_element_present "//h1[text() = 'Motiro']"
-        assert_text_present 'Motiro vers' #Motiro versão 0.3.2
-        assert_text_present '0.3.2'
+        assert_text_present 'Motiro vers' #Motiro versão 0.4
+        assert_text_present '0.4'
     end
         
     def test_report_html
@@ -90,6 +90,12 @@ class MainPageAcceptanceTest < SeleniumTestCase
         
         assert_equal 'Motiro', get_text('//h1')
         assert_text_present 'This is project motiro'
+    end
+    
+    def test_shows_installation_sucessful_page_with_absent_main_page
+        Page.destroy_all
+        open('/')
+        assert_text_present 'Parabéns! Você instalou o Motiro corretamente.'
     end
     
 end

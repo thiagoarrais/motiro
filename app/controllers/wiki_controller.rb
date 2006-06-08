@@ -29,7 +29,13 @@ class WikiController < ApplicationController
 private
 
     def find_page(name)
-        @page_provider.find_by_name(name)
+        @page_provider.find_by_name(name) || default_page(name)
+    end
+    
+    def default_page(name)
+        page = Page.new(:name => name)
+        page.text = WIKI_NOT_FOUND_TEXT
+        return page
     end
 
 end
