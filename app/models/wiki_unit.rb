@@ -4,20 +4,21 @@ require 'wiki_ast'
 class WikiUnit
 
     def initialize
-        @paragraphs = []
+        @paragraphs = {}
     end
     
-    def <<(paragraph)
-        @paragraphs.push(paragraph)
+    def push(paragraph, language=:def_lang)
+        @paragraphs[language] ||= []
+        @paragraphs[language].push(paragraph)
     end
     
-    def paragraphs
-        @paragraphs.clone
+    def paragraphs(language=:def_lang)
+        @paragraphs[language].clone
     end
     
     def render
         result = "<div>\n"
-        @paragraphs.each do |p|
+        paragraphs.each do |p|
             result += "<p>\n"
             result += p.render
             result += "</p>\n"
