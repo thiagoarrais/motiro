@@ -52,5 +52,16 @@ class WikiParserTest < Test::Unit::TestCase
 
     assert_equal 'This is project Motiro', en_paras[1].text
   end
+  
+  def test_detects_multiple_languages_breaks
+    unit = WikiParser.new.parse("= Motiro =\n\nBem-vindo ao Motiro\n\n" +
+                                "--- en ---------\n" +
+                                "= Motiro =\n\nWelcome to Motiro\n\n" +
+                                "--- de ---------\n" +
+                                "= Motiro =\n\nWillkommen zum Motiro\n\n")
+    assert_equal 'Bem-vindo ao Motiro', unit.paragraphs[1].text
+    assert_equal 'Welcome to Motiro', unit.paragraphs('en')[1].text
+    assert_equal 'Willkommen zum Motiro', unit.paragraphs('de')[1].text
+  end
 
 end
