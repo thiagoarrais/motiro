@@ -1,12 +1,11 @@
 class MainPageAcceptanceTest < SeleniumTestCase
 
-    fixtures :pages, :users
-
+    fixtures :users
+    
     def test_main_page
         open '/'
         assert_equal "Motiro: Bem-vindo", get_title
         assert_element_present "//div[@id='description']"
-        assert_element_present "//h1[text() = 'Motiro']"
         assert_text_present 'Motiro vers' #Motiro versão 0.4
         assert_text_present '0.4'
     end
@@ -93,9 +92,15 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
     
     def test_shows_installation_sucessful_page_with_absent_main_page
-        Page.destroy_all
         open('/')
-        assert_text_present 'Parabéns! Você instalou o Motiro corretamente.'
+        assert_text_present 'instalou o Motiro corretamente'
+        #TODO Parabéns! Você instalou o Motiro corretamente
     end
+    
+    def teardown
+        Page.destroy_all
+        Page.connection.commit_db_transaction
+    end
+
     
 end
