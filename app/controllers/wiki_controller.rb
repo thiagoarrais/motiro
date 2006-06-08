@@ -17,6 +17,11 @@ class WikiController < ApplicationController
     
     def show
         @page = find_page(params[:page])
+        if params[:locale] then
+          @rendered_page = @page.render_html(params[:locale])
+        else
+          @rendered_page = @page.render_html
+        end
     end
     
     def save

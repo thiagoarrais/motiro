@@ -32,7 +32,8 @@
         <div class = "inner">
           <%= render_component(:controller => 'wiki',
                                :action =>  'show',
-                               :params => {:page => 'MainPage'}) %>
+                               :params => { :page => 'MainPage',
+                                            :locale => @locale }) %>
         </div>
       </div>
     <div class="channel" id="svn">

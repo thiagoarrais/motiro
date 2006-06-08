@@ -1,10 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   # Add your own custom routes here.
   # The priority is based upon order of creation: first created -> highest priority.
-  map.connect '',
-              :controller => 'root',
-              :action => 'index'
-              
   map.connect 'report/:reporter',
               :controller => 'report',
               :action => 'show',
@@ -15,9 +11,16 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'show',
               :format => 'rss'
 
-  map.connect 'wiki/:action/:page',
-              :controller => 'wiki'
+  map.connect 'wiki/show/:page/:locale',
+              :controller => 'wiki',
+              :action => 'show'
 
+  map.connect 'wiki/:action/:page', :controller => 'wiki'
+
+  map.connect '', :controller => 'root', :action => 'index'
+
+  map.connect ':locale', :controller => 'root', :action => 'index'
+              
   # Here's a sample route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
@@ -32,5 +35,4 @@ ActionController::Routing::Routes.draw do |map|
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
-  map.connect 'selenium/javascript/driver', :controller => 'selenese', :action => 'driver'
 end

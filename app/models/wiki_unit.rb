@@ -16,9 +16,15 @@ class WikiUnit
         @paragraphs[language].clone
     end
     
-    def render
+    def render(locale=nil)
         result = "<div>\n"
-        paragraphs.each do |p|
+        if locale.nil? then
+          paras = paragraphs
+        else
+          paras = paragraphs(locale)
+        end
+        
+        paras.each do |p|
             result += "<p>\n"
             result += p.render
             result += "</p>\n"

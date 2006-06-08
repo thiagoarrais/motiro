@@ -13,5 +13,15 @@ class PageTest < Test::Unit::TestCase
                     "</div>"
     assert_equal expected_text, page.render_html
   end
+  
+  def test_renders_multiple_languages
+    page = Page.new
+    page.text = "Bem-vindo ao Motiro\n\n" +
+                "--- en ---\n" +
+                "Welcome to Motiro"
+    assert_equal "<div>\n<p>\nBem-vindo ao Motiro</p>\n</div>", page.render_html
+    assert_equal "<div>\n<p>\n\nWelcome to Motiro</p>\n</div>",
+                 page.render_html('en')
+  end
 
 end

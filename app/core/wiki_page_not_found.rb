@@ -10,7 +10,7 @@ identificar primeiro.
 
 = Congratulations! Motiro was installed correctly =
 
-Now that everything is in place, what about writing a little description for
+Now that everything is in place, how about writing a little description for
 your project here?
 
 You just need to click 'Edit' below this message. You must be logged in.
