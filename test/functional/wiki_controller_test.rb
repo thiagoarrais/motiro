@@ -78,8 +78,8 @@ class WikiControllerTest < Test::Unit::TestCase
           and_return(page).
           once
         page.should_receive(:render_html).
-          with_no_args.
-          and_return("<div>You've been mocked!").
+          with(nil).
+          and_return("<div>You've been mocked!</div>").
           once
         
         @controller = WikiController.new(provider)

@@ -32,36 +32,4 @@ class WikiParserTest < Test::Unit::TestCase
      assert_equal 'This is project Motiro', paragraph.text
   end
   
-  # Multiple languages can be specified for a page. Languages are identified
-  # by a line starting with three dashes, followed by a language/locale string 
-  # followed by three or more dashes.
-  # 
-  # lang_separator: '--- ' locale ' ---' ('-')*
-  def test_detects_language_breaks
-    unit = WikiParser.new.parse("= Motiro =\n\nEste é o projeto Motiro\n\n" +
-                                "--- en ---------\n" +
-                                "= Motiro =\n\nThis is project Motiro")
-    
-    def_paras = unit.paragraphs
-    assert_equal 2, def_paras.size
-    
-    assert_equal 'Este é o projeto Motiro', def_paras[1].text
-    
-    en_paras = unit.paragraphs('en')
-    assert_equal 2, en_paras.size
-
-    assert_equal 'This is project Motiro', en_paras[1].text
-  end
-  
-  def test_detects_multiple_languages_breaks
-    unit = WikiParser.new.parse("= Motiro =\n\nBem-vindo ao Motiro\n\r\n" +
-                                "--- en ---------\r\n" +
-                                "= Motiro =\n\nWelcome to Motiro\n\n" +
-                                "--- de ---------\n" +
-                                "= Motiro =\n\nWillkommen zum Motiro\n\n")
-    assert_equal 'Bem-vindo ao Motiro', unit.paragraphs[1].text
-    assert_equal 'Welcome to Motiro', unit.paragraphs('en')[1].text
-    assert_equal 'Willkommen zum Motiro', unit.paragraphs('de')[1].text
-  end
-
 end

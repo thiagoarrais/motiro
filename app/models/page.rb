@@ -1,12 +1,9 @@
 class Page < ActiveRecord::Base
 
-    def render_html(locale=nil)
-        unit = my_parser.parse(text)
-        if locale.nil? then
-          unit.render
-        else
-          unit.render(locale)
-        end
+    def render_html(locale_code=nil)
+        locale = Locale.for(locale_code)
+        unit = my_parser.parse(locale.localize(text))
+        unit.render
     end
     
     def use_parser(parser)
