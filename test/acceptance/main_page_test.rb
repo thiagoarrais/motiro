@@ -97,6 +97,19 @@ class MainPageAcceptanceTest < SeleniumTestCase
         #TODO Parabéns! Você instalou o Motiro corretamente
     end
     
+    def test_switches_languages
+        open('/')
+        click "//a[@id='pt-BR']"
+        wait_for_page_to_load(1000)
+        
+        assert_text_present 'instalou o Motiro corretamente'
+
+        click "//a[@id='en']"
+        wait_for_page_to_load(1000)
+
+        assert_text_present 'Congratulations! Motiro was installed correctly'
+    end
+    
     def teardown
         Page.destroy_all
         Page.connection.commit_db_transaction
