@@ -38,21 +38,13 @@ class RealLocale < Locale
   end
   
   def localize(text)
-    do_localize(text, default_text_from(text))
+    md = text.match(/^--- #{@lang} ----*\s*$/)
+    return default_text_from(text) if md.nil?
+    return default_text_from(md.post_match)
   end
   
 private
 
-  def do_localize(text, default)
-    md = text.match(LANG_BREAK)
-    if md.nil? then
-      return default
-    else
-      return default_text_from(md.post_match) if @lang == md[1]
-      return do_localize(md.post_match, default)
-    end
-  end
-  
   def default_text_from(text)
     md = text.match(LANG_BREAK)
     return md.pre_match unless md.nil?
