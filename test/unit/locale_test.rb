@@ -19,6 +19,12 @@ class LocaleTest < Test::Unit::TestCase
              "--- de -----\n" +
              "Wilkommen zum Motiro"
             
+  EN_PT_PT = "Motiro updated\n\n" +
+             "--- pt-BR -----\n" +
+             "Motiro atualizado\n\n" +
+             "--- pt-PT -----\n" +
+             "Motiro actualizado"
+
   def test_default_locale_with_translation_available
     assert_equal "This is the default locale text\n\n",
                  Locale.default.localize(EN_PT)
@@ -43,6 +49,23 @@ class LocaleTest < Test::Unit::TestCase
                  Locale.for('pt-BR').localize(EN_PT_DE)
     assert_equal "\nWilkommen zum Motiro",
                  Locale.for('de').localize(EN_PT_DE)
+  end
+  
+  def test_locates_right_translation_using_language_code_only
+    assert_equal "\nEste é o texto em português.",
+                 Locale.for('pt').localize(EN_PT)
+    assert_equal "\nBem-vindo ao Motiro\n\n",
+                 Locale.for('pt').localize(EN_PT_DE)
+  end
+  
+  def test_resorts_to_matching_language_code_only_when_locale_not_found
+    assert_equal "\nBem-vindo ao Motiro\n\n",
+                 Locale.for('pt-AO').localize(EN_PT_DE)
+  end
+  
+  def test_locates_most_specific_locale_when_available
+    assert_equal "\nMotiro actualizado",
+                 Locale.for('pt-PT').localize(EN_PT_PT)
   end
   
   def test_nil_locale_code_is_the_same_as_default

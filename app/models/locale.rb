@@ -33,14 +33,26 @@ end
 
 class RealLocale < Locale
 
+  attr_accessor :lang, :locale
+
   def initialize(locale_code)
-    @lang = locale_code
+    md = locale_code.match(/([^-]+)(-(.*))?/)
+    self.lang = md[1]
+    self.locale = md[3]
   end
   
   def localize(text)
-    md = text.match(/^--- #{@lang} ----*\s*$/)
+    md = text.match(/^--- #{lang}-#{locale} ----*\s*$/)
+    md = text.match(/^--- #{lang} ----*\s*$/) if md.nil?
+    md = text.match(/^--- #{lang}-\S+ ----*\s*$/) if md.nil?
     return default_text_from(text) if md.nil?
     return default_text_from(md.post_match)
+  end
+  
+  def ==(other)
+    return other.kind_of?(RealLocale) &&
+           lang == other.lang &&
+           locale == other.locale
   end
   
 private
