@@ -1,13 +1,13 @@
-class Locale
+class Translator
 
   LANG_BREAK = /^--- (\S+) ----*\s*$/
 
   def self.default
-    DefaultLocale.instance
+    DefaultTranslator.instance
   end
   
   def self.for(locale_code)
-    return RealLocale.new(locale_code) unless locale_code.nil?
+    return RealTranslator.new(locale_code) unless locale_code.nil?
     return default
   end
   
@@ -19,7 +19,7 @@ protected
 
 end
 
-class DefaultLocale < Locale
+class DefaultTranslator < Translator
 
   include Singleton
   
@@ -31,7 +31,7 @@ class DefaultLocale < Locale
 
 end
 
-class RealLocale < Locale
+class RealTranslator < Translator
 
   attr_accessor :lang, :locale
 

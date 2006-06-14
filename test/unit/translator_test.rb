@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 # followed by three or more dashes.
 # 
 # lang_separator: '--- ' locale ' ---' ('-')*
-class LocaleTest < Test::Unit::TestCase
+class TranslatorTest < Test::Unit::TestCase
 
   EN_ONLY = "This is the default locale text"
 
@@ -27,49 +27,49 @@ class LocaleTest < Test::Unit::TestCase
 
   def test_default_locale_with_translation_available
     assert_equal "This is the default locale text\n\n",
-                 Locale.default.localize(EN_PT)
+                 Translator.default.localize(EN_PT)
   end
   
   def test_default_locale_without_available_translation
     assert_equal "This is the default locale text",
-                 Locale.default.localize(EN_ONLY)
+                 Translator.default.localize(EN_ONLY)
   end
   
   def test_resorts_to_default_locale_when_translation_not_available
     assert_equal "This is the default locale text\n\n",
-                 Locale.for('de').localize(EN_PT)
+                 Translator.for('de').localize(EN_PT)
     assert_equal "This is the default locale text",
-                 Locale.for('de').localize(EN_ONLY)
+                 Translator.for('de').localize(EN_ONLY)
   end
   
   def test_locates_right_translation_for_fully_matching_locale_code
     assert_equal "\nEste é o texto em português.",
-                 Locale.for('pt-BR').localize(EN_PT)
+                 Translator.for('pt-BR').localize(EN_PT)
     assert_equal "\nBem-vindo ao Motiro\n\n",
-                 Locale.for('pt-BR').localize(EN_PT_DE)
+                 Translator.for('pt-BR').localize(EN_PT_DE)
     assert_equal "\nWilkommen zum Motiro",
-                 Locale.for('de').localize(EN_PT_DE)
+                 Translator.for('de').localize(EN_PT_DE)
   end
   
   def test_locates_right_translation_using_language_code_only
     assert_equal "\nEste é o texto em português.",
-                 Locale.for('pt').localize(EN_PT)
+                 Translator.for('pt').localize(EN_PT)
     assert_equal "\nBem-vindo ao Motiro\n\n",
-                 Locale.for('pt').localize(EN_PT_DE)
+                 Translator.for('pt').localize(EN_PT_DE)
   end
   
   def test_resorts_to_matching_language_code_only_when_locale_not_found
     assert_equal "\nBem-vindo ao Motiro\n\n",
-                 Locale.for('pt-AO').localize(EN_PT_DE)
+                 Translator.for('pt-AO').localize(EN_PT_DE)
   end
   
   def test_locates_most_specific_locale_when_available
     assert_equal "\nMotiro actualizado",
-                 Locale.for('pt-PT').localize(EN_PT_PT)
+                 Translator.for('pt-PT').localize(EN_PT_PT)
   end
   
   def test_nil_locale_code_is_the_same_as_default
-    assert_same Locale.default, Locale.for(nil)
+    assert_same Translator.default, Translator.for(nil)
   end
   
   def text_recognizes_languages_with_carriage_return_characters
@@ -79,9 +79,9 @@ class LocaleTest < Test::Unit::TestCase
             "--- de ---------\n" +
             "= Motiro =\n\nWillkommen zum Motiro\n\n"
     assert_equal "= Motiro =\n\nBem-vindo ao Motiro\n\r\n",
-                 Locale.default.localize(input)
+                 Translator.default.localize(input)
     assert_equal "\n= Motiro =\n\nWelcome to Motiro\n\n",
-                 Locale.for('en').localize(input)
+                 Translator.for('en').localize(input)
   end
   
 end
