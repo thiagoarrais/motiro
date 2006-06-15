@@ -12,7 +12,7 @@ class EventsAcceptanceTest < SeleniumTestCase
 
     def test_no_error_on_development_mode
         open '/report/events'
-        assert_text_present 'ximos eventos'
+        assert_text_present 'Upcoming events'
     end
     
     def test_create_event_and_show_headline

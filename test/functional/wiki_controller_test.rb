@@ -18,7 +18,8 @@ class WikiControllerTest < Test::Unit::TestCase
   def test_wiki_routing
     assert_routing('/wiki/edit/MainPage', :controller => 'wiki',
                                           :action => 'edit',
-                                          :page => 'MainPage')
+                                          :page => 'MainPage',
+                                          :locale => 'en-US')
   end
 
   def test_language_routing
@@ -26,7 +27,8 @@ class WikiControllerTest < Test::Unit::TestCase
                           :action => 'index',
                           :locale => 'en')
     assert_routing('/',   :controller => 'root',
-                          :action => 'index')
+                          :action => 'index',
+                          :locale => 'en-US')
     assert_routing('/wiki/show/MainPage/en', :controller => 'wiki',
                                              :action => 'show',
                                              :page => 'MainPage',

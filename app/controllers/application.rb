@@ -5,4 +5,13 @@ require_dependency "login_system"
 class ApplicationController < ActionController::Base
     include LoginSystem
     model :user
+    
+    before_filter :set_locale
+    
+    def set_locale
+      locale = params[:locale]
+      if locale then
+        Locale.set locale
+      end
+    end
 end

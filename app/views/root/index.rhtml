@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Motiro: Bem-vindo</title>
+    <title>Motiro: <%= 'Welcome'.t -%></title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
     <style type="text/css">
         div#svn div.channel-title{background: #E3A1C4}
@@ -53,7 +53,7 @@
                            :params => {:reporter => 'events'}) %>
     </div>
     <div id="footer">
-      <p>Motiro versão <%= MOTIRO_VERSION %></p>
+      <p>Motiro <%= 'version'.t -%> <%= MOTIRO_VERSION -%></p>
     </div>
     </div>
   </body>

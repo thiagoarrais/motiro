@@ -24,7 +24,7 @@ class MotiroReporter
     # If not called, a default title will be generated based on the class name
     def self.title(title)
         define_method :channel_title do
-            title
+            title.t
         end
     end
 
@@ -33,7 +33,7 @@ class MotiroReporter
     end
 
     def channel_title
-        return "Últimas notícias do #{name.humanize}"
+        return 'Latest news from %s' / name.humanize
     end
     
     def latest_headline

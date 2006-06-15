@@ -11,7 +11,7 @@ class EventsReporterTest < Test::Unit::TestCase
     end
 
     def test_channel_title
-        assert_equal 'Próximos eventos', @reporter.channel_title
+        assert_equal 'Upcoming events', @reporter.channel_title
     end
     
     def test_retrieves_from_database

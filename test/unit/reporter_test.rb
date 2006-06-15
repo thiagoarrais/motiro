@@ -11,7 +11,7 @@ class MotiroReporterTest < Test::Unit::TestCase
     def test_default_title
         default_reporter = MyDefaultTitleReporter.new
         
-        assert_equal 'Últimas notícias do My default title',
+        assert_equal 'Latest news from My default title',
                      default_reporter.channel_title
     end
     

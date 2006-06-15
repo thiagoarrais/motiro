@@ -5,6 +5,8 @@
                      :action => 'edit',
                      :page => @page.name } )%>
   <% else %>
-      <span class='disabled'>Editar (identifique-se, por favor)</span>
+    <span class='disabled'>
+      <%= 'Edit'.t -%> <%= '(requires authentication)'.t -%>
+    </span>
   <% end %>
 </div>

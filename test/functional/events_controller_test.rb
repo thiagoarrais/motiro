@@ -55,6 +55,8 @@ class EventsControllerTest < Test::Unit::TestCase
                 if 'motiro' != author
                   raise Test::Unit::AssertionFailedError.new("wrong author: '#{author}'")
                 end
+                
+                return true
               end
     
     @controller = EventsController.new(reporter)
@@ -62,6 +64,15 @@ class EventsControllerTest < Test::Unit::TestCase
     post :create, :headline => unimportant
     
     reporter.mock_verify
+  end
+  
+  def test_routing
+    assert_routing( '/', :controller => 'root',
+                                   :action => 'index',
+                                   :locale => 'en-US')
+    assert_routing( '/events/create', :controller => 'events',
+                                      :action => 'create',
+                                      :locale => 'en-US')
   end
   
 private

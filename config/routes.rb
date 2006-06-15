@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+
+  locale_defaults = { :locale => Globalize::Locale.language ?
+                                   Globalize::Locale.language.code : 'en-US'}
+
   # Add your own custom routes here.
   # The priority is based upon order of creation: first created -> highest priority.
   map.connect 'report/:reporter',
@@ -11,13 +15,11 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'show',
               :format => 'rss'
 
-  map.connect 'wiki/show/:page/:locale',
-              :controller => 'wiki',
-              :action => 'show'
+  map.connect 'wiki/:action/:page/:locale', :controller => 'wiki',
+              :defaults => locale_defaults
 
-  map.connect 'wiki/:action/:page', :controller => 'wiki'
-
-  map.connect '', :controller => 'root', :action => 'index'
+  map.connect '', locale_defaults.merge(:controller => 'root',
+                                        :action => 'index')
 
   map.connect ':locale', :controller => 'root', :action => 'index'
               
@@ -34,5 +36,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   # Install the default route as the lowest priority.
-  map.connect ':controller/:action/:id'
+  map.connect ':controller/:action/:id/:locale',
+              :defaults => locale_defaults
 end

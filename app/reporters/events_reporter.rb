@@ -1,7 +1,7 @@
 require 'core/cache_reporter'
 
 class EventsReporter < CacheReporter
-    title 'Próximos eventos'
+    title 'Upcoming events'
     
     def initialize
         super('events')
