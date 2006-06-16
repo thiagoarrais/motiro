@@ -47,7 +47,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         assert_text('//rss/channel/title', 'Motiro - Subversion')
         assert_text '//rss/channel/generator', 'Motiro'
         assert_text '//rss/channel/item/title', commit_title
-        assert_text('//rss/channel/item/description', /#{commit_msg.delete("\n")}/)
+        assert_text('//rss/channel/item/description', /This revision creates/)
     end
     
     def test_records_revision_description

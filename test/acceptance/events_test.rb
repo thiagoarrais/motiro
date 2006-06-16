@@ -35,7 +35,7 @@ class EventsAcceptanceTest < SeleniumTestCase
         click 'commit'
         wait_for_page_to_load 5000
 
-        assert_location '/'
+        assert_location 'exact:http://localhost:3000/'
         
         assert_text_present event_title
     end

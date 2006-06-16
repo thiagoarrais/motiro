@@ -139,7 +139,8 @@ end
 
 translation_dir = File.expand_path(__FILE__ + '/../../db/translation')
 Dir.foreach(translation_dir) do |file|
-  if (file != '.' && file != '..') then
+  if (file[0, 1] != '.') then
+    puts "Reading translation file #{file}"
     lang_code = file[0, file.length - 3]
     language = Language.pick(lang_code)
     contents = File.read(File.join(translation_dir, file))

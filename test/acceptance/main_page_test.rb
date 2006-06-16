@@ -12,7 +12,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_text_present 'Latest news from Subversion'
         click "//img[starts-with(@src, '/images/rss.png')]"
         wait_for_page_to_load(500)
-        assert_location "/feed/subversion"
+        assert_location 'exact:http://localhost:3000/feed/subversion'
     end
     
     def test_subversion_on_main
@@ -56,7 +56,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
         click 'login'
         wait_for_page_to_load(1000)
         
-        assert_location '/'
+        assert_location 'exact:http://localhost:3000/'
         
         assert_element_present "//a[text() = 'Editar']"
         click "//a[text() = 'Editar']"
