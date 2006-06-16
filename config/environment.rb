@@ -53,9 +53,8 @@ end
 # Include your application configuration below
 include Globalize
 
+require_dependency 'import_translations'
 require_dependency 'ports/ticker'
 
 require 'core/version'
 require 'core/wiki_page_not_found'
-
-Locale.set_base_language('en-US')
