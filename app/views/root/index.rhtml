@@ -45,12 +45,14 @@
     <div class="channel" id="svn">
       <%= render_component(:controller => 'report',
                            :action =>  'show',
-                           :params => {:reporter => 'subversion'}) %>
+                           :params => { :reporter => 'subversion',
+                                        :locale => @locale }) %>
     </div>
     <div class="channel" id="events">
       <%= render_component(:controller => 'report',
                            :action =>  'show',
-                           :params => {:reporter => 'events'}) %>
+                           :params => { :reporter => 'events',
+                                        :locale => @locale }) %>
     </div>
     <div id="footer">
       <p>Motiro <%= 'version'.t -%> <%= MOTIRO_VERSION -%></p>

@@ -19,7 +19,14 @@ class RootControllerTest < Test::Unit::TestCase
      assert_equal('pt-BR', Locale.active.code)
   end
   
-  #TODO give precedence to the language specified on the URL
+  def test_url_with_locale_takes_precedence
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR'
+     get :index, { :locale => 'de' }
+
+     assert_equal('de', assigns(:locale))
+     assert_equal('de', Locale.active.code)
+  end
+  
   #TODO recognize multiple-language list
 
 end
