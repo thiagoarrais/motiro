@@ -11,8 +11,15 @@ class RootControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_recognizes_locale_for_only_one_language_on_accept_language
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR'
+     get :index
+     
+     assert_equal('pt-BR', assigns(:locale))
+     assert_equal('pt-BR', Locale.active.code)
   end
+  
+  #TODO give precedence to the language specified on the URL
+  #TODO recognize multiple-language list
+
 end
