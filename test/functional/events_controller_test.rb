@@ -66,13 +66,12 @@ class EventsControllerTest < Test::Unit::TestCase
     reporter.mock_verify
   end
   
-  def test_routing
+  def test_language_routing
     assert_routing( '/', :controller => 'root',
-                                   :action => 'index',
-                                   :locale => 'en-US')
+                         :action => 'index',
+                         :locale => nil )
     assert_routing( '/events/create', :controller => 'events',
-                                      :action => 'create',
-                                      :locale => 'en-US')
+                                      :action => 'create' )
   end
   
 private

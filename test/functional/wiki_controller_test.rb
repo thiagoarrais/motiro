@@ -15,26 +15,19 @@ class WikiControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  def test_wiki_routing
+  def test_routes_to_nil_locale_when_not_specified_on_url
     assert_routing('/wiki/edit/MainPage', :controller => 'wiki',
                                           :action => 'edit',
-                                          :page => 'MainPage',
-                                          :locale => 'en-US')
+                                          :page => 'MainPage')
   end
 
-  def test_language_routing
-    assert_routing('/en', :controller => 'root',
-                          :action => 'index',
-                          :locale => 'en')
-    assert_routing('/',   :controller => 'root',
-                          :action => 'index',
-                          :locale => 'en-US')
+  def test_routes_to_specified_locale_page
     assert_routing('/wiki/show/MainPage/en', :controller => 'wiki',
                                              :action => 'show',
                                              :page => 'MainPage',
                                              :locale => 'en')
   end
-
+  
   def test_asks_page_provider_for_pages_when_editing
     FlexMock.use do |page_provider|
       page_provider.should_receive(:find_by_name).

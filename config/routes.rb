@@ -1,7 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
-  locale_defaults = { :locale => Globalize::Locale.language ?
-                                   Globalize::Locale.language.code : 'en-US'}
+  locale_defaults = { :locale => nil }
 
   # Add your own custom routes here.
   # The priority is based upon order of creation: first created -> highest priority.

@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
     before_filter :set_locale
     
     def set_locale
-      @locale = params[:locale] || request.env['HTTP_ACCEPT_LANGUAGE']
+      request_language = request.env['HTTP_ACCEPT_LANGUAGE']
+      request_language = request_language.nil? ? nil : request_language.split(',').first
+      @locale = params[:locale] || request_language
       if @locale then
         Locale.set @locale
       end
