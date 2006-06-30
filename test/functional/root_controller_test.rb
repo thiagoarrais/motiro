@@ -47,7 +47,38 @@ class RootControllerTest < Test::Unit::TestCase
      assert_equal('de', Locale.active.code)
   end
   
+  def test_uses_last_language_when_language_not_specified
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
+     get :index
+
+     assert_equal('fr', Locale.active.code)
+
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = nil
+     get :index, { :locale => 'de' }
+
+     assert_equal('de', Locale.active.code)
+     
+     get :index
+     
+     assert_equal('de', assigns(:locale))
+     assert_equal('de', Locale.active.code)
+  end
+  
+  def test_defaults_to_english_when_not_otherwise_specified
+    get :index
+    
+    assert_equal('en-US', assigns(:locale))
+    assert_equal('en-US', Locale.active.code)
+  end
+  
+  def test_empty_language_string_on_accept_language_means_nothing
+    @request.env['HTTP_ACCEPT_LANGUAGE'] = ''
+    get :index
+    
+    assert_equal('en-US', assigns(:locale))
+    assert_equal('en-US', Locale.active.code)
+  end
+  
   #TODO check the HTTP spec for the Accept-Language header format
-  #TODO use previous language when not specified
 
 end

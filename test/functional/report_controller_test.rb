@@ -71,4 +71,11 @@ class ReportControllerTest < Test::Unit::TestCase
   #TODO what happens if there are no cached headlines?
   #TODO more headlines registered than the package size
   
+private
+
+  def assert_template(expected)
+    assert_equal File.expand_path("#{__FILE__ + '/../../../'}/app/views/#{expected}.rhtml"),
+                 File.expand_path(@response.rendered_file)
+  end
+  
 end
