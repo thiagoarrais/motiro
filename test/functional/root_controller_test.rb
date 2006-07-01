@@ -47,6 +47,14 @@ class RootControllerTest < Test::Unit::TestCase
      assert_equal('de', Locale.active.code)
   end
   
+  def test_recognizes_locale_when_quality_specified
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-br;q=1,en-us;q=0.5'
+     get :index
+     
+     assert_equal('pt-br', assigns(:locale))
+     assert_equal('pt-br', Locale.active.code)
+  end
+  
   def test_uses_last_language_when_language_not_specified
      @request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
      get :index

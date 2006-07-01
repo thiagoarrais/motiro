@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     def set_locale
       request_language = request.env['HTTP_ACCEPT_LANGUAGE']
       request_language = request_language.nil? ?
-                             nil : request_language.split(',').first
+                             nil : request_language.split(/,|;/).first
 
       @locale = params[:locale] ||
                 request_language ||
