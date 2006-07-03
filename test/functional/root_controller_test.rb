@@ -81,6 +81,18 @@ class RootControllerTest < Test::Unit::TestCase
      assert_equal('de', Locale.active.code)
   end
   
+  def test_uses_last_specified_language_when_accept_language_differs
+     get :index, { :locale => 'sw' }
+     
+     assert_equal('sw', Locale.active.code)
+     
+     @request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR'
+     get :index
+     
+     assert_equal('sw', assigns(:locale))
+     assert_equal('sw', Locale.active.code)
+  end
+  
   def test_defaults_to_english_when_not_otherwise_specified
     get :index
     
