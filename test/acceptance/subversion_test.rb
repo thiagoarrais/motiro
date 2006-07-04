@@ -9,7 +9,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         @repo.mkdir('myproject', commit_msg)
         
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         assert_text_present @username
         assert_text_present commit_msg
         click "//img[starts-with(@src, '/images/rss.png')]"
@@ -19,9 +19,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         link = get_text("//rss/channel/item/link")
         open link
-        #FIXME assert_equal 'Motiro - Subversion - Revisão r1', get_title
-        assert get_title.match(/Motiro - Subversion - Revis/)
-        assert get_title.match(/o r1/)
+        assert_equal 'Motiro - Subversion - Revision r1', get_title
     end
     
     def test_show_subversion_on_main_page_when_in_development_mode
@@ -60,15 +58,13 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         @repo.mkdir(dir_name, commit_msg)
 
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         assert_text_present commit_title
         click "//a[text() = \"#{commit_title}\"]"
         wait_for_page_to_load(1000)
 
-        #FIXME assert_equal "Motiro - Subversion - Revisão r1", get_title
-        assert /Motiro - Subversion - Revis/.match(get_title)
-        assert /o r1\z/.match(get_title)
-        #FIXME ADD: assert_element_present "//h1[text() = 'Revisão r1']"
+        assert_equal get_title, 'Motiro - Subversion - Revision r1'
+        assert_element_present "//h1[text() = 'Revision r1']"
         assert_element_present "//div[@id='description']"
         assert_text_present commit_msg
         
@@ -86,12 +82,12 @@ class SubversionAcceptanceTest < SeleniumTestCase
         @repo.add_file(filename, file_contents)
         @repo.commit(commit_title)
         
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
 
         assert_element_present "//a[text()='A /#{filename}']"
-        #FIXME ADD: assert_element_present "//h2[text()='Alterações em a_file.txt']"
+        assert_element_present "//h2[text()='Changes to a_file.txt']"
         assert_text_present file_contents
     end
 
@@ -120,9 +116,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         open '/report/show/r104?reporter=subversion&locale=en'
         assert_equal "Motiro: Welcome", get_title
-        #FIXME assertText "//div[@id='notice']", "Não foi possível encontrar o artigo r104 do repórter Subversion"
-        #TODO translate
-        assert_text "//div[@id='notice']", /vel encontrar o artigo r104 do rep/
+        assert_text "//div[@id='notice']", 'The article r104 from the Subversion reporter could not be found'
     end
     
     def test_do_not_show_diff_section_when_adding_directories
@@ -130,13 +124,12 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         @repo.mkdir('trunk', commit_title)
         
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
         
         assert_element_not_present "//a"
-        #FIXME assert_text_not_present "Alterações em trunk"
-        assert_text_not_present "es em trunk"
+        assert_text_not_present "Changes to trunk"
         
     end
     
@@ -152,11 +145,10 @@ class SubversionAcceptanceTest < SeleniumTestCase
         commit_title = 'files copied'
         @repo.copy('file_number_one.txt', 'file_number_two.txt', commit_title)
         
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
-        #FIXME assert_text_present "Alterações em file_number_two.txt"
-        assert_text_present "es em file_number_two.txt"
+        assert_text_present "Changes to file_number_two.txt"
         assert_text_present "the content here will be copied to file_number_two"
     end
     
@@ -167,15 +159,13 @@ class SubversionAcceptanceTest < SeleniumTestCase
         commit_title = 'renamed file'
         @repo.move('file_number_one.txt', 'file_number_two.txt', commit_title)
         
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         click "//a[text() = '#{commit_title}']"
         wait_for_page_to_load(1000)
 
-        #FIXME assert_text_present "Alterações em file_number_one.txt"
-        assert_text_present "es em file_number_one.txt"
+        assert_text_present "Changes to file_number_one.txt"
         assert_text_present "this file will be renamed to file_number_two"
-        #FIXME assert_text_present "Alterações em file_number_two.txt"
-        assert_text_present "es em file_number_two.txt"
+        assert_text_present "Changes to file_number_two.txt"
         assert_text_present "this file will be renamed to file_number_two"
     end
     

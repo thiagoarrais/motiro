@@ -48,7 +48,7 @@ class ReportControllerTest < Test::Unit::TestCase
   
   def test_calling_show_with_invalid_rid_redirects_to_index
     get :show, { :reporter => 'subversion', :id => 'r300' }
-    assert_equal 'Não foi possível encontrar o artigo r300 do repórter Subversion', flash[:notice]
+    assert_equal 'The article r300 from the Subversion reporter could not be found', flash[:notice]
     assert_redirected_to :controller => 'root', :action => 'index'
   end
   

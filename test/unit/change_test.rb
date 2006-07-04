@@ -24,7 +24,7 @@ class ChangeTest < Test::Unit::TestCase
         
         actual_rendered_output = change.render_diff
 
-        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/><h2>Alterações em a_file.txt<\/h2>/
+        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/><h2>Changes to a_file.txt<\/h2>/
         
         assert_not_nil md
         

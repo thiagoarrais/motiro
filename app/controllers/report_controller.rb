@@ -24,7 +24,7 @@ class ReportController < ApplicationController
         render(:action => "#{reporter_name}_detail")
       rescue
         logger.error("Tried to access invalid headline #{id} from #{reporter_name}")
-        flash[:notice] = "Não foi possível encontrar o artigo #{id} do repórter #{reporter_name.capitalize}"
+        flash[:notice] = "The article #{id} from the #{reporter_name.capitalize} reporter could not be found"
         redirect_to(:controller => 'root', :action => 'index')
       end            
     else

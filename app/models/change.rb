@@ -21,7 +21,7 @@ class Change < ActiveRecord::Base
             return "<div id='#{ref}' class='diff-window'>" +
                      "<center>" +
                      "<a name='#{ref}' />" +
-                     "<h2>Alterações em #{resource_name}</h2>\n" +
+                     "<h2>#{'Changes to %s' / resource_name}</h2>\n" +
                      render_diff_table +
                      "</center>" +
                    "</div>"
