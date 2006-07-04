@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Motiro - Subversion - <%= 'Revision'.t -%> <%= @revision_id -%></title>
+    <title>Motiro - Subversion - <%= 'Revision %s' / @revision_id -%></title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
     <script type="text/javascript" src="/javascripts/motiro.js"></script>
     <script type="text/javascript" src="/niftycube.js"></script>
@@ -17,9 +17,30 @@
   </head>
   <body>
     <div id="content">
+      <div id='header'>
+        <div style='float: right;'>
+          <%= link_to 'English',
+                      { :controller => 'report',
+                        :action => 'show',
+                        :id => @revision_id,
+                        :reporter => 'subversion',
+                        :locale => 'en' },
+                      { :id => 'en' }
+          -%> |
+          <%= link_to 'Português',
+                      { :controller => 'report',
+                        :action => 'show',
+                        :id => @revision_id,
+                        :reporter => 'subversion',
+                        :locale => 'pt-BR' }, 
+                      { :id => 'pt-BR' }
+          -%>
+        </div>
+        &nbsp;
+      </div>
       <div id="description" class="window">
         <div class="inner">
-          <h1><%= 'Revision'.t -%> <%= @revision_id -%></h1>
+          <h1><%= 'Revision %s' / @revision_id -%></h1>
 <% end %>
           <pre>
 <%= h(@headline.description) %>
