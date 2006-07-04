@@ -1,10 +1,13 @@
+require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
+
 class MainPageAcceptanceTest < SeleniumTestCase
 
     fixtures :users
     
     def test_version_number
-        open '/'
-        assert_text_present '0.4'
+        open '/en'
+        assert_text_present 'Motiro version 0.4.1'
     end
         
     def test_report_html
