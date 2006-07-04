@@ -29,7 +29,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
 
         @repo.mkdir('myproject', commit_msg)
         
-        open '/'
+        open '/en'
         assert_text_present 'Latest news from Subversion'
         assert_text_present commit_msg
     end
@@ -118,7 +118,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
         
         @repo.mkdir('projectroot', commit_msg)
         
-        open '/report/show/r104?reporter=subversion'
+        open '/report/show/r104?reporter=subversion&locale=en'
         assert_equal "Motiro: Welcome", get_title
         #FIXME assertText "//div[@id='notice']", "Não foi possível encontrar o artigo r104 do repórter Subversion"
         #TODO translate

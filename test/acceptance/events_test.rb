@@ -11,7 +11,7 @@ class EventsAcceptanceTest < SeleniumTestCase
     end
 
     def test_no_error_on_development_mode
-        open '/report/events'
+        open '/report/events?locale=en'
         assert_text_present 'Upcoming events'
     end
     

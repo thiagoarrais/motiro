@@ -8,7 +8,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
         
     def test_report_html
-        open '/report/subversion'
+        open '/report/subversion?locale=en'
         assert_text_present 'Latest news from Subversion'
         click "//img[starts-with(@src, '/images/rss.png')]"
         wait_for_page_to_load(500)
@@ -16,23 +16,22 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
     
     def test_subversion_on_main
-        open('/')
+        open('/en')
         assert_element_present "//div[@id = 'svn']"
         assert get_text("//div[@id = 'svn']").match(/Latest news from Subversion/)
     end
     
     def test_events_on_main
-        open('/')
+        open('/en')
         assert_element_present "//div[@id = 'events']"
         assert get_text("//div[@id = 'events']").match(/Upcoming events/)
     end
     
     def test_edition_disabled_without_authentication
-        open('/')
+        open('/en')
         assert_element_present "//span[@class = 'disabled']"
         assert_equal "Edit (requires authentication)",
                      get_text("//span[@class = 'disabled']")
-        
     end
     
     def test_welcomes_user
