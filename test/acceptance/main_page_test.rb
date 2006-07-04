@@ -89,7 +89,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
     
     def test_shows_installation_sucessful_page_with_absent_main_page
-        open('/')
+        open('/en')
         assert_text_present 'Congratulations! Motiro was installed correctly'
     end
     
