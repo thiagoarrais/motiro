@@ -1,53 +1,51 @@
 require 'csv'
 
-class GlobalizeMigration < ActiveRecord::Migration
+def populate_translation_tables
+  # add in defaults
+  load_from_csv("globalize_countries", country_data)
+  load_from_csv("globalize_languages", language_data)
+  load_from_csv("globalize_translations", translation_data)
+end
 
-  def self.up
-    # add in defaults
-    load_from_csv("globalize_countries", country_data)
-    load_from_csv("globalize_languages", language_data)
-    load_from_csv("globalize_translations", translation_data)
-  end
+def load_from_csv(table_name, data)
+  column_clause = nil
+  is_header = false
+  cnx = ActiveRecord::Base.connection
+  ActiveRecord::Base.silence do
+    reader = CSV::Reader.create(data) 
 
-  def self.load_from_csv(table_name, data)
-    column_clause = nil
-    is_header = false
-    cnx = ActiveRecord::Base.connection
-    ActiveRecord::Base.silence do
-      reader = CSV::Reader.create(data) 
-      
-      columns = reader.shift.map {|column_name| cnx.quote_column_name(column_name) }
-      column_clause = columns.join(', ')
+    columns = reader.shift.map {|column_name| cnx.quote_column_name(column_name) }
+    column_clause = columns.join(', ')
 
-      reader.each do |row|
-        next if row.first.nil? # skip blank lines
-        raise "No table name defined" if !table_name
-        raise "No header defined" if !column_clause
-        values_clause = row.map {|v| cnx.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(', ')
-        sql = "INSERT INTO #{table_name} (#{column_clause}) VALUES (#{values_clause})"
-        cnx.insert(sql) 
-      end
+    reader.each do |row|
+      next if row.first.nil? # skip blank lines
+      raise "No table name defined" if !table_name
+      raise "No header defined" if !column_clause
+      values_clause = row.map {|v| cnx.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(', ')
+      sql = "INSERT INTO #{table_name} (#{column_clause}) VALUES (#{values_clause})"
+      cnx.insert(sql) 
     end
   end
+end
 
-  def self.country_data
-    <<END_OF_DATA
+def country_data
+  <<END_OF_DATA
 "id","code","english_name","date_format","currency_format","currency_code","thousands_sep","decimal_sep","currency_decimal_sep","number_grouping_scheme"
 1,"BR","Brazil",,"R$%n","BRR",".",",",",","western"
 2,"US","United States of America",,,"USD",",",".",".","western"
 END_OF_DATA
-  end
+end
 
-  def self.language_data
-    <<END_OF_DATA
+def language_data
+  <<END_OF_DATA
 "id","iso_639_1","iso_639_2","iso_639_3","rfc_3066","english_name","english_name_locale","english_name_modifier","native_name","native_name_locale","native_name_modifier","macro_language","direction","pluralization","scope"
 1,"en","eng","eng",,"English",,,,,,0,"ltr","c == 1 ? 1 : 2","L"
 2,"pt","por","por",,"Portuguese",,,"português",,,0,"ltr","c == 1 ? 1 : 2","L"
 END_OF_DATA
-  end
+end
 
-  def self.translation_data
-    <<END_OF_DATA
+def translation_data
+  <<END_OF_DATA
 "id","type","tr_key","table_name","item_id","facet","language_id","text","pluralization_index"
 1,"ViewTranslation","Sunday [weekday]","",,"",1,"Sunday",1
 2,"ViewTranslation","Monday [weekday]","",,"",1,"Monday",1
@@ -126,8 +124,7 @@ END_OF_DATA
 6003,"ViewTranslation","Nov [abbreviated month]","",,"",2,"Nov",1
 6004,"ViewTranslation","Dec [abbreviated month]","",,"",2,"Dez",1
 END_OF_DATA
-  end  
-end
+end  
 
 begin
   Locale.set_base_language('en-US')
@@ -135,7 +132,7 @@ begin
   begin
     Locale.set_translation('test', Language.pick('pt-BR'), 'teste')
   rescue
-    GlobalizeMigration.up
+    populate_translation_tables
   end
   
   translation_dir = File.expand_path(__FILE__ + '/../../db/translation')
