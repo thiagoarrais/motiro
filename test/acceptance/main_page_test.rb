@@ -35,14 +35,14 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
     
     def test_welcomes_user
-        open('/')
+        open('/en')
         type 'user_login', 'bob'
         type 'user_password', 'test'
         
         click 'login'
         wait_for_page_to_load(1000)
         
-        assert_text_present 'Bem-vindo, bob'
+        assert_text_present 'Welcome, bob'
     end
 
     def test_edition_enabled_when_authenticated
@@ -68,14 +68,14 @@ class MainPageAcceptanceTest < SeleniumTestCase
     end
     
     def test_edit_main_page
-        open('/')
+        open('/en')
         type 'user_login', 'bob'
         type 'user_password', 'test'
         
         click 'login'
         wait_for_page_to_load(1000)
         
-        click "//a[text() = 'Editar']"
+        click "//a[text() = 'Edit']"
         wait_for_page_to_load(1000)
         
         type 'txaEditor', "= Motiro =\n\nThis is project motiro."
@@ -92,7 +92,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_text_present 'Congratulations! Motiro was installed correctly'
     end
     
-    def test_switches_languages
+    def test_switches_languages_when_not_logged_in
         open('/')
         click "//a[@id='pt-BR']"
         wait_for_page_to_load(1000)
@@ -118,6 +118,25 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_text_present 'Upcoming events'
         assert_text_present 'Latest news from Subversion'
         assert_text_present 'Motiro version'
+    end
+    
+    def test_switches_languages_when_logged_in
+      open '/en'
+      
+      type 'user_login', 'bob'
+      type 'user_password', 'test'
+      
+      click 'login'
+      wait_for_page_to_load(1500)
+      
+      assert_text_present 'Welcome, bob'
+      assert_element_present "//a[text() = 'Edit']"
+      
+      click "//a[@id='pt-BR']"
+      wait_for_page_to_load(1500)
+
+      assert_text_present 'Bem-vindo, bob'
+      assert_element_present "//a[text() = 'Editar']"
     end
     
     def teardown

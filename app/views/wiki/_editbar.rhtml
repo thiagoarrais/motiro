@@ -1,6 +1,6 @@
 <div class='editbar'>
   <% if @session[:user] then%>
-      <%= link_to( 'Editar',
+      <%= link_to( 'Edit'.t,
                    { :controller => 'wiki',
                      :action => 'edit',
                      :page => @page.name } )%>

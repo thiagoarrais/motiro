@@ -25,5 +25,5 @@
       </table>
     <%= end_form_tag %>
 <% else %>
-    Bem-vindo, <%= @session[:user].login -%>
+    <%= 'Welcome'.t -%>, <%= @session[:user].login -%>
 <% end %>
