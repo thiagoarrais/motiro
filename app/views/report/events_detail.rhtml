@@ -1,20 +1,5 @@
+<% @title = "Motiro - Evento" %>
 <% if ! @partial then %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Motiro - Evento</title>
-    <%= stylesheet_link_tag "motiro", :media => "all" %>
-    <script type="text/javascript" src="/niftycube.js"></script>
-    <script type="text/javascript">
-        window.onload=function(){
-            Nifty("div.window","big");
-        }
-    </script>
-  </head>
-  <body>
-    <div id="content">
       <div id="description" class="window">
         <div class="inner">
           <h1><%= h(@headline.title) -%></h1>
@@ -25,9 +10,6 @@
 <% if ! @partial then %>
         </div>
       </div>
-    </div>
-  </body>
-</html>
 <% end %>
 
     

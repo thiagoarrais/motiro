@@ -16,10 +16,10 @@
 <% if !@partial then %>
         </div>
       </div>
-    </div>
-    <div id="changes">
-      <% @headline.changes.each do |change| %>
+      <div id="changes">
+        <% @headline.changes.each do |change| %>
           <%= change.render_diff %>
-      <% end %>
+        <% end %>
+      </div>
 <% end %>
   
