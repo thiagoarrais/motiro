@@ -29,6 +29,14 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_redirected_to "/bogus/location"
   end
   
+  def test_redirects_to_last_page
+    post :login, :user_login => 'bob', :user_password => 'test',
+         :return_to => '/my/previous/location'
+
+    assert_equal @bob, @response.session[:user]
+    assert_redirected_to '/my/previous/location'
+  end
+  
   def test_no_signup
     begin
         get :signup

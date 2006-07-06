@@ -75,9 +75,11 @@ module LoginSystem
   end
 
   # move to the last store_location call or to the passed default one
-  def redirect_back_or_default(default)
-    if @session[:return_to].nil?
-      redirect_to default
+  def redirect_back_or_default(target)
+    if ! target.nil?
+      redirect_to target
+    elsif @session[:return_to].nil?
+      redirect_to :controller => 'root', :action => 'index'
     else
       redirect_to_url @session[:return_to]
       @session[:return_to] = nil

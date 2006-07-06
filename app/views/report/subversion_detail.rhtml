@@ -18,27 +18,7 @@
   <body>
     <div id="content">
       <div id='header'>
-        <%# TODO almost the same code appears at the index page, remove the
-                 duplication %>
-        <div style='float: right;'>
-          <%= link_to 'English',
-                      { :controller => 'report',
-                        :action => 'show',
-                        :id => @revision_id,
-                        :reporter => 'subversion',
-                        :locale => 'en' },
-                      { :id => 'en' }
-          -%> |
-          <%= link_to 'Português',
-                      { :controller => 'report',
-                        :action => 'show',
-                        :id => @revision_id,
-                        :reporter => 'subversion',
-                        :locale => 'pt-BR' }, 
-                      { :id => 'pt-BR' }
-          -%>
-        </div>
-        &nbsp;
+        <%= render :partial => 'header' %>
       </div>
       <div id="description" class="window">
         <div class="inner">

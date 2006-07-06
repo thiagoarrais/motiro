@@ -26,13 +26,7 @@
         <div id="notice"><%= @flash[:notice] %></div>
       <% end %>
       <div id='header'>
-        <div style='float: right;'>
-          <a id='en' href='/en'>English</a> |
-          <a id='pt-BR' href='/pt-BR'>Português</a>
-        </div>
-        <div>
-          <%= render :partial => 'header' %>
-        </div>
+        <%= render :partial => 'header' %>
       </div>
       <div id="description" class="window">
         <div class = "inner">
