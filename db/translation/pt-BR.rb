@@ -10,5 +10,11 @@
 'Revision %s' => 'Revisão %s',
 'Changes to %s' => 'Alterações em %s',
 'The article %s from the %s reporter could not be found' => 'Não foi possível encontrar o artigo %s do repórter %s',
-'Event' => 'Evento'
+'Event' => 'Evento',
+'Events' => 'Eventos',
+'New event' => 'Novo evento',
+'Summary' => 'Título',
+'Date' => 'Data',
+'Description' => 'Descrição',
+'Create' => 'Criar'
 }

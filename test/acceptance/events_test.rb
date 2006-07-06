@@ -1,6 +1,3 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
-
 require 'acceptance/live_mode_test'
 
 class EventsAcceptanceTest < SeleniumTestCase
@@ -75,6 +72,34 @@ class EventsAcceptanceTest < SeleniumTestCase
     assert_equal 'Motiro - Evento', get_title
   end
   
+  def test_translates_event_creation_page
+    open '/account/login'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+
+    open '/events/new?locale=en'
+    
+    assert_equal 'Motiro - Events', get_title
+    
+    assert_text_present 'New event'
+    assert_text_present 'Summary'
+    assert_text_present 'Date'
+    assert_text_present 'Description'
+    assert_equal 'Create', get_attribute("commit@value")
+
+    open '/events/new?locale=pt-BR'
+
+    assert_equal 'Motiro - Eventos', get_title
+
+    assert_text_present 'Novo evento'
+    assert_text_present 'tulo' # Título
+    assert_text_present 'Data'
+    assert_text_present 'Descri' # Descrição
+    assert_equal 'Criar', get_attribute("commit@value")
+  end
+
   def teardown
     Headline.destroy_all
   end
