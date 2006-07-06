@@ -1,25 +1,5 @@
+<% @title = "Motiro - Subversion - #{'Revision %s' / @revision_id}" %>
 <% if ! @partial then %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Motiro - Subversion - <%= 'Revision %s' / @revision_id -%></title>
-    <%= stylesheet_link_tag "motiro", :media => "all" %>
-    <script type="text/javascript" src="/javascripts/motiro.js"></script>
-    <script type="text/javascript" src="/niftycube.js"></script>
-    <script type="text/javascript">
-        window.onload=function(){
-            Nifty("div.window","big");
-            hideChanges();
-        }
-    </script>
-  </head>
-  <body>
-    <div id="content">
-      <div id='header'>
-        <%= render :partial => 'header' %>
-      </div>
       <div id="description" class="window">
         <div class="inner">
           <h1><%= 'Revision %s' / @revision_id -%></h1>
@@ -41,8 +21,5 @@
       <% @headline.changes.each do |change| %>
           <%= change.render_diff %>
       <% end %>
-    </div>
-  </body>
-</html>
 <% end %>
-    
+  

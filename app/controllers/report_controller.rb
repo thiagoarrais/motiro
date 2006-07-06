@@ -4,8 +4,15 @@ require 'core/chief_editor'
 
 class ReportController < ApplicationController
   
+  layout :determine_layout
+  
   def initialize(chief_editor=ChiefEditor.new)
     @chief_editor = chief_editor
+  end
+  
+  def determine_layout
+    return 'application' if params[:id] and params[:context] != 'partial'
+    return nil
   end
   
   def show

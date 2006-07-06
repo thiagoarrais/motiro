@@ -1,7 +1,3 @@
-function hideChanges() {
-    document.getElementById('changes').style.display = 'none';
-}
-
 function showOnly(divId) {
     document.getElementById('changes').style.display = 'block';
 

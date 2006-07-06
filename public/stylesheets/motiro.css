@@ -23,6 +23,10 @@ body {
     font: smaller courier;
 }
 
+#changes {
+    display: none;
+}
+
 div.channel {
     width: 378px;
     float: left;
@@ -127,4 +131,20 @@ textarea {
     text-align: center;
     color: gray;
     clear: left;
+}
+
+div#svn div.channel-title {
+    background: #E3A1C4
+}
+
+div#svn div.channel-body-outer {
+    background: #E3A1C4
+}
+
+div#events div.channel-title {
+    background: #FFBD00
+}
+
+div#events div.channel-body-outer {
+    background: #FFBD00
 }

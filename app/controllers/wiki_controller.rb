@@ -1,5 +1,7 @@
 class WikiController < ApplicationController
 
+    layout nil
+
     before_filter :login_required
     
     def protect?(action)
