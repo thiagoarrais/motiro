@@ -63,28 +63,8 @@ class MainPageAcceptanceTest < SeleniumTestCase
         wait_for_page_to_load(1000)
 
         assert_element_present "//input[@name='btnSave']"
-        assert_element_present "//input[@name='btnCancel']"
+        assert_element_present "//input[@name='btnDiscard']"
         assert_element_present "//textarea[@id='txaEditor']"
-    end
-    
-    def test_edit_main_page
-        open('/en')
-        type 'user_login', 'bob'
-        type 'user_password', 'test'
-        
-        click 'login'
-        wait_for_page_to_load(1000)
-        
-        click "//a[text() = 'Edit']"
-        wait_for_page_to_load(1000)
-        
-        type 'txaEditor', "= Motiro =\n\nThis is project motiro."
-        click 'btnSave'
-        
-        wait_for_page_to_load(1000)
-        
-        assert_equal 'Motiro', get_text('//h1')
-        assert_text_present 'This is project motiro'
     end
     
     def test_shows_installation_sucessful_page_with_absent_main_page

@@ -1,34 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Motiro: Editando MainPage</title>
-    <%= stylesheet_link_tag "motiro", :media => "all" %>
-    <style type="text/css">
-        div#svn div.channel-title{background: #E3A1C4}
-        div#svn div.channel-body-outer{background: #E3A1C4}
-        div#events div.channel-title{background: #FFBD00}
-        div#events div.channel-body-outer{background: #FFBD00}
-    </style>
-    <script type="text/javascript" src="/niftycube.js"></script>
-    <script type="text/javascript">
-        window.onload=function(){
-            Nifty("div.channel-title","top,big");
-            Nifty("div.channel-body-outer","bottom,big");
-            Nifty("div.window","big");
-        }
-    </script>
-  </head>
-  <body>
-    <div id="content">
       <div id="editor" class="window">
         <div class = "inner">
           <%= start_form_tag :action => 'save' %>
-            <%= submit_tag 'Salvar modificações', :class => 'button',
+            <%= submit_tag 'Save modifications'.t, :class => 'button',
                                                   :name => 'btnSave' %>
-            <%= submit_tag 'Cancelar', :class => 'button',
-                                       :name => 'btnCancel' %>
+            <%= submit_tag 'Discard'.t, :class => 'button',
+                                       :name => 'btnDiscard' %>
             <%= hidden_field 'page', 'name' %>
             <%= text_area 'page', 'text', :id => 'txaEditor',
                                           :rows => '30' %>
@@ -37,16 +13,10 @@
       </div>
       <div class='window'>
         <div class='inner'>
-          <p><h2>Referência</h2></p>
+          <p><h2><%= 'Quick reference'.t -%></h2></p>
           <p>
-            <b>Título:</b> <code>= <i>Título</i> =</code><br/>
-            <b>Link:</b> <code>[<i>endereço</i> <i>rótulo</i>]</code>
+            <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
+            <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
           </p>
         </div>
       </div>
-    </div>
-    <div id="footer">
-      <p>Motiro versão <%= MOTIRO_VERSION %></p>
-    </div>
-  </body>
-</html>

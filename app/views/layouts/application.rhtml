@@ -24,6 +24,9 @@
         <%= render :partial => 'layouts/header' %>
       </div>
       <%= @content_for_layout %>
+      <div id="footer">
+        <p>Motiro <%= 'version'.t -%> <%= MOTIRO_VERSION -%></p>
+      </div>
     </div>
   </body>
 </html>
