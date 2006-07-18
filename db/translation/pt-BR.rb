@@ -2,8 +2,8 @@
 # Relative dates
 'Tomorrow' => 'Amanhã',
 'Yesterday' => 'Ontem',
-'%d %s ago' => 'Há %d %s',
-'%d %s from now' => 'Daqui a %d %s',
+"%s ago" => 'Há %s',
+"%s from now" => 'Daqui a %s',
 'minute' => 'minuto',
 'hour' => 'hora',
 'day' => 'dia',

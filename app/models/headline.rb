@@ -98,7 +98,7 @@ class Headline < ActiveRecord::Base
       return 'Tomorrow'.t if 1 == number && 'day' == period && 'from now' == sufix
       period = period.t
       inflected = if number > 1 then pluralize(period) else period end
-      return "%d %s #{sufix}" / number / inflected
+      return "%s #{sufix}" / "#{number} #{inflected}"
     end
   
 end
