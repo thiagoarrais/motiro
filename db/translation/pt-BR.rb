@@ -1,4 +1,17 @@
 {
+# Relative dates
+'Tomorrow' => 'Amanhã',
+'Yesterday' => 'Ontem',
+'%d %s ago' => 'Há %d %s',
+'%d %s from now' => 'Daqui a %d %s',
+'minute' => 'minuto',
+'hour' => 'hora',
+'day' => 'dia',
+'week' => 'semana',
+'month' => 'mês',
+'year' => 'ano',
+'Less than one minute ago' => 'Há menos de um minuto',
+
 # Main page
 'Welcome' => 'Bem-vindo',
 'User' => 'Usuário',
