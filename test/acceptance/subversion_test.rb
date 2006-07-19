@@ -225,10 +225,10 @@ class SubversionAcceptanceTest < SeleniumTestCase
     wait_for_page_to_load(1000)
     
     assert get_title =~ /Motiro - Subversion - Revis/
-    # Revisão r1
+    # RevisÃ£o r1
     assert_text_present 'Revis'
     assert_text_present 'o r1'
-    # Alterações em dauther.txt
+    # AlteraÃ§Ãµes em dauther.txt
     assert_text_present 'Altera'
     assert_text_present 'es em daughter.txt'
   end
@@ -248,6 +248,29 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     assert_text "//div[@id='notice']", /o foi poss/
     assert_text "//div[@id='notice']", /vel encontrar o artigo r30 do rep/
+  end
+  
+  def test_select_correct_translation_from_comment
+    @repo.add_file('wishlist.txt', 'I wish I was a neutron bomb, for once I could go off')
+    
+    commit_comment = "letras da musica Wishlist do album Yield\n" +
+                     "\n" +
+                     "--- en -----------------------------------\n" +
+                     "\n" +
+                     "lyrics for the song Wishlist from the album Yield\n"
+
+    @repo.commit(commit_comment)
+    
+    open '/report/subversion?locale=pt-BR'
+
+    assert_text_present("letras da musica Wishlist do album Yield")
+    assert_text_not_present('lyrics')
+    
+    open '/report/subversion?locale=en'
+    
+    assert_text_present("lyrics for the song Wishlist from the album Yield")
+    assert_text_not_present('letras')
+    assert_text_not_present('musica')
   end
 
 end
