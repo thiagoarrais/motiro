@@ -4,7 +4,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     
     def test_version_number
         open '/en'
-        assert_text_present 'Motiro version 0.4.1'
+        assert_text_present 'Motiro version 0.4.2'
     end
         
     def test_report_html
