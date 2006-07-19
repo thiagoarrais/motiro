@@ -4,6 +4,7 @@ gita:
   id: 1
   author: raulseixas
   title: gita
+  description: gita
   happened_at: 2005-01-01 00:00:00
   reported_by: subversion
   rid: r12
@@ -12,6 +13,7 @@ dia_em_que_a_terra_parou:
   id: 2
   author: raulseixas
   title: o dia em que a terra parou
+  description: o dia em que a terra parou
   happened_at: 2036-02-01 00:00:00
   reported_by: subversion
   rid: r16
@@ -45,6 +47,7 @@ meeting_event:
   id: 5
   author: motiro_maintainer
   title: Planning meeting
+  description: Planning meeting
   happened_at: 2006-04-04
   reported_by: events
   rid: e2

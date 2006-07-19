@@ -20,7 +20,7 @@ class PageTest < Test::Unit::TestCase
                 "--- en ---\n" +
                 "Welcome to Motiro"
     assert_equal "<div>\n<p>\nBem-vindo ao Motiro</p>\n</div>", page.render_html
-    assert_equal "<div>\n<p>\n\nWelcome to Motiro</p>\n</div>",
+    assert_equal "<div>\n<p>\nWelcome to Motiro</p>\n</div>",
                  page.render_html('en')
   end
 

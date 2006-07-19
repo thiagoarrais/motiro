@@ -59,8 +59,9 @@ private
 
   def default_text_from(text)
     md = text.match(LANG_BREAK)
-    return md.pre_match unless md.nil?
-    return text
+    result = if md.nil? then text else md.pre_match end
+    result.slice!(0,1) while "\n" == result[0,1]
+    return result
   end
   
 end

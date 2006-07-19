@@ -43,28 +43,28 @@ class TranslatorTest < Test::Unit::TestCase
   end
   
   def test_locates_right_translation_for_fully_matching_locale_code
-    assert_equal "\nEste é o texto em português.",
+    assert_equal "Este é o texto em português.",
                  Translator.for('pt-BR').localize(EN_PT)
-    assert_equal "\nBem-vindo ao Motiro\n\n",
+    assert_equal "Bem-vindo ao Motiro\n\n",
                  Translator.for('pt-BR').localize(EN_PT_DE)
-    assert_equal "\nWilkommen zum Motiro",
+    assert_equal "Wilkommen zum Motiro",
                  Translator.for('de').localize(EN_PT_DE)
   end
   
   def test_locates_right_translation_using_language_code_only
-    assert_equal "\nEste é o texto em português.",
+    assert_equal "Este é o texto em português.",
                  Translator.for('pt').localize(EN_PT)
-    assert_equal "\nBem-vindo ao Motiro\n\n",
+    assert_equal "Bem-vindo ao Motiro\n\n",
                  Translator.for('pt').localize(EN_PT_DE)
   end
   
   def test_resorts_to_matching_language_code_only_when_locale_not_found
-    assert_equal "\nBem-vindo ao Motiro\n\n",
+    assert_equal "Bem-vindo ao Motiro\n\n",
                  Translator.for('pt-AO').localize(EN_PT_DE)
   end
   
   def test_locates_most_specific_locale_when_available
-    assert_equal "\nMotiro actualizado",
+    assert_equal "Motiro actualizado",
                  Translator.for('pt-PT').localize(EN_PT_PT)
   end
   
@@ -72,7 +72,7 @@ class TranslatorTest < Test::Unit::TestCase
     assert_same Translator.default, Translator.for(nil)
   end
   
-  def text_recognizes_languages_with_carriage_return_characters
+  def test_recognizes_languages_with_carriage_return_characters
     input = "= Motiro =\n\nBem-vindo ao Motiro\n\r\n" +
             "--- en ---------\r\n" +
             "= Motiro =\n\nWelcome to Motiro\n\n" +
@@ -80,8 +80,17 @@ class TranslatorTest < Test::Unit::TestCase
             "= Motiro =\n\nWillkommen zum Motiro\n\n"
     assert_equal "= Motiro =\n\nBem-vindo ao Motiro\n\r\n",
                  Translator.default.localize(input)
-    assert_equal "\n= Motiro =\n\nWelcome to Motiro\n\n",
+    assert_equal "= Motiro =\n\nWelcome to Motiro\n\n",
                  Translator.for('en').localize(input)
   end
   
+  def test_strips_extra_blank_lines_after_language_separator
+    input = "= Motiro =\n\nBem-vindo ao Motiro\n\n" +
+            "--- en ---------\n" +
+            "\n\n= Motiro =\n\nWelcome to Motiro\n\n"
+    
+    assert_equal "= Motiro =\n\nWelcome to Motiro\n\n",
+                 Translator.for('en').localize(input)
+  end
+
 end
