@@ -77,8 +77,7 @@ class EventsControllerTest < Test::Unit::TestCase
 private
 
   def unimportant
-    return {:title => 'uninmportant',
-            :happened_at => Time.local(2006, 04, 26),
+    return {:happened_at => Time.local(2006, 04, 26),
             :description => 'uninmportant'}
   end
 

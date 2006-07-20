@@ -5,6 +5,11 @@ class Headline < ActiveRecord::Base
   has_many:changes
   
   def initialize(params={})
+    params[:description] ||= ''
+    if !params[:title].nil? then
+      params[:description] = params[:title] + "\n\n" + params[:description]
+      params.delete :title
+    end
     super(params)
   end
   
@@ -38,25 +43,14 @@ class Headline < ActiveRecord::Base
   # Saves the headline locally, if it isn't already cached
   def cache
     unless self.cached?
-      # TODO duplicate code
-      self.class.destroy_all(["author = ? " +
-                              "and title = ?" +
-                              "and happened_at =?",
-      self.author,
-      self.title,
-      self.happened_at])
+      self.class.destroy_all similar_to_self
       self.save
     end
   end
   
   def cached?
     cached_lines = Headline.find(:all,
-                               :conditions => ["author = ? " +
-                                               "and title = ?" +
-                                               "and happened_at =?",
-    self.author,
-    self.title,
-    self.happened_at])
+                                 :conditions => similar_to_self)
     
     return false if cached_lines.empty?
     
@@ -96,14 +90,19 @@ class Headline < ActiveRecord::Base
     return result || 'Less than one minute ago'.t
   end
   
-  private
+private
   
-    def filter_time_to(number, period, sufix)
-      return 'Yesterday'.t if 1 == number && 'day' == period && 'ago' == sufix
-      return 'Tomorrow'.t if 1 == number && 'day' == period && 'from now' == sufix
-      period = period.t
-      inflected = if number > 1 then pluralize(period) else period end
-      return "%s #{sufix}" / "#{number} #{inflected}"
-    end
+  def similar_to_self
+    ["author = ? and description = ?and happened_at =?",
+     self.author, self.description, self.happened_at]
+  end
+
+  def filter_time_to(number, period, sufix)
+    return 'Yesterday'.t if 1 == number && 'day' == period && 'ago' == sufix
+    return 'Tomorrow'.t if 1 == number && 'day' == period && 'from now' == sufix
+    period = period.t
+    inflected = if number > 1 then pluralize(period) else period end
+    return "%s #{sufix}" / "#{number} #{inflected}"
+  end
   
 end

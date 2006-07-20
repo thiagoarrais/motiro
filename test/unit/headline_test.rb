@@ -27,7 +27,7 @@ class HeadlineTest < Test::Unit::TestCase
     headline = Headline.find(1)
     
     assert_equal 'raulseixas', headline.author
-    assert_equal 'gita', headline.title
+    assert_equal 'gita', headline.description
     assert_equal Time.local(2005, 1, 1), headline.happened_at
   end
   
@@ -35,13 +35,12 @@ class HeadlineTest < Test::Unit::TestCase
     hls = Headline.latest(1, 'subversion')
     hl = hls.first
     
-    assert_equal 'o dia em que a terra parou', hl.title
+    assert_equal 'o dia em que a terra parou', hl.description
   end
   
   def test_cached
     svn_demo_headline = headlines('svn_demo_headline')
     headline = Headline.new(:author => svn_demo_headline.author,
-                            :title => svn_demo_headline.title,
                             :description => svn_demo_headline.description,
                             :happened_at => [2006, 03, 23, 11, 10, 04])
     
@@ -50,7 +49,6 @@ class HeadlineTest < Test::Unit::TestCase
   
   def test_not_cached
     headline = Headline.new(:author => 'chicobuarque',
-                            :title => 'a banda',
                             :description => 'a banda',
                             :happened_at => [1983, 1, 1])
     
@@ -59,20 +57,19 @@ class HeadlineTest < Test::Unit::TestCase
   
   def test_record_time
     headline = Headline.new(:author => 'thiagoarrais',
-                            :title => 'fiz besteira',
+                            :description => 'fiz besteira',
                             :happened_at => [1983, 1, 1, 00, 15, 12])
     
     headline.save
     
     headline = Headline.find(:first,
-                             :conditions => "author = 'thiagoarrais' and title = 'fiz besteira'")
+                             :conditions => "author = 'thiagoarrais' and description = 'fiz besteira'")
     
     assert_equal Time.local(1983, 1, 1, 00, 15, 12), headline.happened_at
   end
   
   def test_cache_with_date_time
     aHeadline = Headline.new(:author => 'thiagoarrais',
-                             :title => 'fiz besteira',
                              :description => 'fiz besteira',
                              :happened_at => [1983, 1, 1, 00, 15, 12])
     aHeadline.save
@@ -84,7 +81,6 @@ class HeadlineTest < Test::Unit::TestCase
   
   def test_cache_new
     aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
-                                     :title => 'this is a new headline',
                                      :description => 'this is a new headline',
                                      :happened_at => [1983, 1, 1, 00, 15, 12])
     
@@ -95,7 +91,6 @@ class HeadlineTest < Test::Unit::TestCase
   
   def test_cache_already_recorded
     aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
-                                     :title => 'we will try to cache this headline twice',
                                      :description => 'we will try to cache this headline twice',
                                      :happened_at => [1983, 8, 8, 07, 15, 12])
     
@@ -166,8 +161,9 @@ class HeadlineTest < Test::Unit::TestCase
     
     assert a_headline.cached?
     
-    hls = Headline.find(:all, :conditions => ["title = ?", a_headline.title])     
-    
+    hls = Headline.find(:all, :conditions => ["description = ?",
+                                              a_headline.description])
+                                              
     assert_equal 1, hls.size
   end
   
@@ -227,7 +223,6 @@ class HeadlineTest < Test::Unit::TestCase
   
   def test_empty_title_for_empty_description
     a_headline= Headline.new(:author => 'thiagoarrais',
-                             :title => '',
                              :reported_by => 'subversion',
                              :description => "\n")
                              
@@ -237,7 +232,6 @@ class HeadlineTest < Test::Unit::TestCase
 
   def test_translating_title
     a_headline= Headline.new(:author => 'thiagoarrais',
-                             :title => 'este eh o titulo da manchete',
                              :reported_by => 'subversion',
                              :description => "este eh o titulo da manchete\n" +
                                              "\n" +
@@ -251,11 +245,18 @@ class HeadlineTest < Test::Unit::TestCase
                  a_headline.title(Translator.for(nil))
   end
   
+  def test_set_title_on_construction_and_retrieve_it
+    a_headline = Headline.new(:author => 'thiagoarrais',
+                              :title => 'this is the headline title',
+                              :description => 'this is the description')
+    
+    assert_equal 'this is the headline title', a_headline.title
+  end
+  
 private
     
   def create_headline_with_changes(*changes)
     a_headline = Headline.new(:author => 'thiagoarrais',
-                              :title => 'this is the headline title',
                               :description => 'this is the headline title',
                               :reported_by => 'subversion',
                               :happened_at => [1983, 1, 1, 02, 15, 12],

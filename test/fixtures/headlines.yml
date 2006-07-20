@@ -3,7 +3,6 @@
 gita:
   id: 1
   author: raulseixas
-  title: gita
   description: gita
   happened_at: 2005-01-01 00:00:00
   reported_by: subversion
@@ -12,7 +11,6 @@ gita:
 dia_em_que_a_terra_parou:
   id: 2
   author: raulseixas
-  title: o dia em que a terra parou
   description: o dia em que a terra parou
   happened_at: 2036-02-01 00:00:00
   reported_by: subversion
@@ -21,7 +19,6 @@ dia_em_que_a_terra_parou:
 svn_demo_headline:
   id: 3
   author: james
-  title: This is a subversion revision comment
   happened_at: 2006-03-23 11:10:04
   reported_by: subversion
   rid: r32
@@ -33,11 +30,12 @@ svn_demo_headline:
 release_event:
   id: 4
   author: bond
-  title: Next release planned for April, 26th
   happened_at: 2006-04-26
   reported_by: events
   rid: e1
-  description: Motiro's next release is planned for April 26th. Somethings
+  description: Next release planned for April, 26th
+               
+               Motiro's next release is planned for April 26th. Somethings
                we will be working on for this release are
                
                - Fixing bugs on the subversion reporter
@@ -46,7 +44,6 @@ release_event:
 meeting_event:
   id: 5
   author: motiro_maintainer
-  title: Planning meeting
   description: Planning meeting
   happened_at: 2006-04-04
   reported_by: events

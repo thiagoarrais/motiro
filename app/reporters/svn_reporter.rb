@@ -160,9 +160,6 @@ private
     end
     
     def parse_description(theHeadline, text)
-        md = /^([^\r\n]*)\n/.match(text)
-        theHeadline.title = md[1]
-        
         md = /\n-+\n/.match(text)
         theHeadline.description = md.pre_match
         
