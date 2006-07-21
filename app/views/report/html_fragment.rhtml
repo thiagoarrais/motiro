@@ -12,7 +12,7 @@
   <div class='inner'>
 <% @headlines.each do |headline|%>
     <p>
-      <%= link_to( h(headline.title),
+      <%= link_to( h(headline.title(Translator.for(@locale))),
                    { :controller => 'report',
                      :action => 'show',
                      :reporter => @name,
