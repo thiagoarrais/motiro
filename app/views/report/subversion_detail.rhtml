@@ -5,7 +5,7 @@
           <h1><%= 'Revision %s' / @revision_id -%></h1>
 <% end %>
           <pre>
-<%= h(@headline.description) %>
+<%= h(@headline.description(Translator.for(@locale))) %>
           </pre>
           <div id="summary">
             <% @headline.changes.each do |change| %>

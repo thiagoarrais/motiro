@@ -253,6 +253,37 @@ class HeadlineTest < Test::Unit::TestCase
     assert_equal 'this is the headline title', a_headline.title
   end
   
+  def test_translating_description
+    english_description = "this is the headline title\n" +
+                          "\n" +
+                          "these are some commit details\n\n"
+    portuguese_description = "este eh o titulo da manchete\n" +
+                             "\n" +
+                             "aqui vao os detalhes sobre o commit"
+    a_headline = Headline.new(:author => 'thiagoarrais',
+                              :description => english_description +
+                                              "--- pt-BR ----\n\n" +
+                                              portuguese_description)
+
+    assert_equal english_description, a_headline.description(Translator.for('en'))
+    assert_equal portuguese_description, a_headline.description(Translator.for('pt-BR'))
+  end
+  
+  def test_unspecified_translation_returns_default_description
+    english_description = "this is the headline title\n" +
+                          "\n" +
+                          "these are some commit details\n\n"
+    portuguese_description = "este eh o titulo da manchete\n" +
+                             "\n" +
+                             "aqui vao os detalhes sobre o commit"
+    a_headline = Headline.new(:author => 'thiagoarrais',
+                              :description => english_description +
+                                              "--- pt-BR ----\n\n" +
+                                              portuguese_description)
+
+    assert_equal english_description, a_headline.description
+  end
+  
 private
     
   def create_headline_with_changes(*changes)

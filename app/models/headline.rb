@@ -36,8 +36,13 @@ class Headline < ActiveRecord::Base
   end
   
   def title(translator=Translator.default)
-    text = translator.localize(description)
-    text.split($/).first || ''
+    description(translator).
+      split($/).
+      first || ''
+  end
+  
+  def description(translator=Translator.default)
+    translator.localize(self[:description])
   end
   
   # Saves the headline locally, if it isn't already cached
