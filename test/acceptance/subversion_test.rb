@@ -255,22 +255,41 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     commit_comment = "letras da musica Wishlist do album Yield\n" +
                      "\n" +
+                     "Este album foi originalmente lancado em 1998\n" +
+                     "\n" +
                      "--- en -----------------------------------\n" +
                      "\n" +
-                     "lyrics for the song Wishlist from the album Yield\n"
+                     "lyrics for the song Wishlist from the album Yield\n" +
+                     "\n" +
+                     "This album was originally released in 1998\n"
 
     @repo.commit(commit_comment)
     
     open '/report/subversion?locale=pt-BR'
 
-    assert_text_present("letras da musica Wishlist do album Yield")
     assert_text_not_present('lyrics')
+
+    click '//a[text() = "letras da musica Wishlist do album Yield"]'
+    wait_for_page_to_load(2000)
+    
+    assert_text_present("letras da musica Wishlist do album Yield")
+    assert_text_present('Este album foi originalmente lancado em 1998')
+    assert_text_not_present('this')
+    assert_text_not_present('originally released')
     
     open '/report/subversion?locale=en'
     
-    assert_text_present("lyrics for the song Wishlist from the album Yield")
     assert_text_not_present('letras')
     assert_text_not_present('musica')
+
+    click '//a[text() = "lyrics for the song Wishlist from the album Yield"]'
+    wait_for_page_to_load(2000)
+
+    assert_text_present("lyrics for the song Wishlist from the album Yield")
+    assert_text_present('This album was originally released in 1998')
+    assert_text_not_present('musica')
+    assert_text_not_present('Este')
+    assert_text_not_present('foi originalmente')
   end
 
 end
