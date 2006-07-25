@@ -1,23 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-# A kind of headline that doesn't have real save method, but a
-# fake one that only records the number of times the method got called
-class FakeSaveHeadline < Headline
-  
-  def initialize(params)
-    super(params)
-  end
-  
-  def times_save_called
-    @times_save_called || 0
-  end
-  
-  def save
-    @times_save_called = (@save_times_called || 0) + 1
-  end
-  
-end
-
 class HeadlineTest < Test::Unit::TestCase
   fixtures :headlines, :changes
   
@@ -78,24 +60,25 @@ class HeadlineTest < Test::Unit::TestCase
   end
   
   def test_cache_new
-    aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
-                                     :description => 'this is a new headline',
-                                     :happened_at => [1983, 1, 1, 00, 15, 12])
+    aHeadline = Headline.new(:author => 'herbertvianna',
+                             :description => 'this is a new headline',
+                             :happened_at => [1983, 1, 1, 00, 15, 12])
     
     aHeadline.cache
     
-    assert(1, aHeadline.times_save_called)
+    hls = Headline.find(:all, :conditions => ['author = ?', 'herbertvianna'])
+    assert_equal(1, hls.size)
   end
   
   def test_cache_already_recorded
-    aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
-                                     :description => 'we will try to cache this headline twice',
-                                     :happened_at => [1983, 8, 8, 07, 15, 12])
+    contents = { :author => 'zeramalho',
+                 :description => 'we will try to cache this headline twice',
+                 :happened_at => [1983, 8, 8, 07, 15, 12] }
+    Headline.new(contents).cache
+    Headline.new(contents).cache
+    hls = Headline.find(:all, :conditions => ['author = ?', 'zeramalho'])
     
-    aHeadline.cache
-    aHeadline.cache
-    
-    assert(1, aHeadline.times_save_called)
+    assert_equal(1, hls.size)
   end
   
   def test_search_by_reporter_name_and_rid
@@ -280,6 +263,22 @@ class HeadlineTest < Test::Unit::TestCase
                                               portuguese_description)
 
     assert_equal english_description, a_headline.description
+  end
+  
+  def test_does_not_recache_translated_headlines
+    contents = { :author => 'ritalee',
+                 :description => "this is the english description\n" +
+                                 "\n" +
+                                 "--- pt-BR --------\n" +
+                                 "\n" +
+                                 "esta eh a descricao em portugues",
+                 :happened_at => [2006, 07, 25, 19, 21, 43] }
+    
+    Headline.new(contents).cache
+    Headline.new(contents).cache
+    hls = Headline.find(:all, :conditions => ['author = ?', 'ritalee'])
+    
+    assert_equal(1, hls.size)
   end
   
 private

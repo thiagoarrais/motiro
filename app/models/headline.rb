@@ -98,8 +98,8 @@ class Headline < ActiveRecord::Base
 private
   
   def similar_to_self
-    ["author = ? and description = ?and happened_at =?",
-     self.author, self.description, self.happened_at]
+    ["author = ? and description = ? and happened_at =?",
+     self[:author], self[:description], self[:happened_at]]
   end
 
   def filter_time_to(number, period, sufix)
