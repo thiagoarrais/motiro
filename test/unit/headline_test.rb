@@ -77,8 +77,6 @@ class HeadlineTest < Test::Unit::TestCase
     assert aHeadline.cached?
   end
   
-  
-  
   def test_cache_new
     aHeadline = FakeSaveHeadline.new(:author => 'thiagoarrais',
                                      :description => 'this is a new headline',

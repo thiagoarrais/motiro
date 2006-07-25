@@ -108,6 +108,4 @@ class RootControllerTest < Test::Unit::TestCase
     assert_equal('en-US', Locale.active.code)
   end
   
-  #TODO check the HTTP spec for the Accept-Language header format
-
 end
