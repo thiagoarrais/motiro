@@ -60,6 +60,7 @@ class EventsAcceptanceTest < SeleniumTestCase
     
     event_title = "Let's celebrate the success of another release"
     click "//a[text() = \"#{event_title}\"]"    
+    wait_for_page_to_load(2000)
 
     click "//a[@id='en']"
     wait_for_page_to_load(1000)

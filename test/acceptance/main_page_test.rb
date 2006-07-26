@@ -12,7 +12,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
         assert_text_present 'Latest news from Subversion'
         click "//img[starts-with(@src, '/images/rss.png')]"
         wait_for_page_to_load(500)
-        assert_location 'exact:http://localhost:3000/feed/subversion'
+        assert_location 'exact:http://localhost:3000/feed/subversion?locale=en'
     end
     
     def test_subversion_on_main
@@ -48,17 +48,17 @@ class MainPageAcceptanceTest < SeleniumTestCase
     def test_edition_enabled_when_authenticated
         #TODO refactor this to a declarative style
         #see http://www.testing.com/cgi-bin/blog/2005/12/19
-        open('/')
+        open('/en')
         type 'user_login', 'bob'
         type 'user_password', 'test'
         
         click 'login'
         wait_for_page_to_load(1000)
         
-        assert_location 'exact:http://localhost:3000/'
+        assert_location 'exact:http://localhost:3000/en'
         
-        assert_element_present "//a[text() = 'Editar']"
-        click "//a[text() = 'Editar']"
+        assert_element_present "//a[text() = 'Edit']"
+        click "//a[text() = 'Edit']"
         
         wait_for_page_to_load(1000)
 
