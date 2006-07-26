@@ -3,7 +3,8 @@
                { :controller => 'report',
                  :action => 'show',
                  :reporter => @name,
-                 :format => 'rss' },
+                 :format => 'rss',
+                 :locale => @locale },
                :class => 'feed' )
   %>
   <p><%= h(@title) %></p>

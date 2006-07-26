@@ -10,11 +10,12 @@ xml.rss 'version' => '2.0' do
     	xml.ttl '60'
     	@headlines.each do |headline|
     	    xml.item do
-    	    	xml.title h(headline.title)
+    	    	xml.title h(headline.title(Translator.for(@locale)))
     	        xml.link(server_url_for(:controller => 'report',
                                         :action => 'show',
                                         :reporter => @name,
-                                        :id => headline.rid))
+                                        :id => headline.rid,
+                                        :locale => @locale))
                 txt = render_component(:controller => 'report',
                                  :action => 'show',
                                  :id => headline.rid,
