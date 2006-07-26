@@ -292,4 +292,30 @@ class SubversionAcceptanceTest < SeleniumTestCase
     assert_text_not_present('foi originalmente')
   end
 
+  def test_if_text_on_rss_feed_is_translated
+    english_msg = "I changed something in the source code repository"
+    portuguese_msg = "Mudei algo no repositorio de codigo fonte"
+    commit_msg = english_msg + "\n\n--- pt-br ----\n\n" + portuguese_msg
+    
+    @repo.mkdir('myproject', commit_msg)
+    
+    open '/report/subversion?locale=en'
+    click "//img[starts-with(@src, '/images/rss.png')]"
+    wait_for_page_to_load(1000)
+    assert_equal english_msg, get_text("//rss/channel/item/title")
+    link = get_text("//rss/channel/item/link")
+    open link
+    assert_text_present 'I changed something in the source code repository'
+    assert_text_not_present 'Mudei algo no repositorio de codigo fonte'
+
+    open '/report/subversion?locale=pt-br'
+    click "//img[starts-with(@src, '/images/rss.png')]"
+    wait_for_page_to_load(1000)
+    assert_equal portuguese_msg, get_text("//rss/channel/item/title")
+    link = get_text("//rss/channel/item/link")
+    open link
+    assert_text_present 'Mudei algo no repositorio de codigo fonte'
+    assert_text_not_present 'I changed something in the source code repository'
+  end
+
 end
