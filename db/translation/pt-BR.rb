@@ -29,6 +29,7 @@
 
 # Event details and new event pages
 'Events' => 'Eventos',
+'Event' => 'Evento',
 'Date' => 'Data',
 'Note' => 'Observação',
 'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
