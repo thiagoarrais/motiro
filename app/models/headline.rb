@@ -36,9 +36,10 @@ class Headline < ActiveRecord::Base
   end
   
   def title(translator=Translator.default)
-    description(translator).
-      split($/).
-      first || ''
+    answer = description(translator).
+               split($/).
+               first || ''
+    answer.strip
   end
   
   def description(translator=Translator.default)

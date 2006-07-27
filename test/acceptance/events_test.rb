@@ -100,6 +100,33 @@ class EventsAcceptanceTest < SeleniumTestCase
     assert_text_present 'Descri' # Descrição
     assert_equal 'Criar', get_attribute("commit@value")
   end
+  
+  def test_first_line_on_event_description_becomes_main_page_summary
+    open '/en'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+  
+    open '/events/new?locale=en'
+    
+    event_title = 'This is the event summary'
+    type 'txaEditor', event_title + "\n\n" +
+                      "And here comes the detailed description"
+
+    select 'headline[happened_at(3i)]', '26'
+    select 'headline[happened_at(2i)]', 'value=7'
+    select 'headline[happened_at(1i)]', '2006'
+    
+    click 'btnSave'
+    wait_for_page_to_load(2000)
+    
+    assert_text_not_present 'And here comes the detailed description'
+    click "//a[text() = \"#{event_title}\"]"
+    wait_for_page_to_load(2000)
+    
+    assert_text_present 'And here comes the detailed description'
+  end
 
   def teardown
     Headline.destroy_all

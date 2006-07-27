@@ -265,6 +265,12 @@ class HeadlineTest < Test::Unit::TestCase
     assert_equal english_description, a_headline.description
   end
   
+  def test_extracts_title_with_carriage_returns
+    a_headline = Headline.new :description => "this is the title\r\n\this is the description"
+    
+    assert_equal 'this is the title', a_headline.title
+  end
+  
   def test_does_not_recache_translated_headlines
     contents = { :author => 'ritalee',
                  :description => "this is the english description\n" +
