@@ -16,7 +16,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_create_event_and_show_headline
-    open '/account/login'
+    open '/en'
     type 'user_login', 'bob'
     type 'user_password', 'test'
     
@@ -25,14 +25,14 @@ class EventsAcceptanceTest < SeleniumTestCase
     event_title = "Let's celebrate the success of another release"
     
     open '/events/new'
-    type 'headline_title', event_title
+    type 'txaEditor', event_title + "\n\n" +
+                                 "Our next release will be awesome\n" +
+                                 "Let's get together somewhere to celebrate"
     select 'headline[happened_at(3i)]', '26'
     select 'headline[happened_at(2i)]', 'value=4'
     select 'headline[happened_at(1i)]', '2006'
-    type 'headline_description', "Our next release will be awesome\n" +
-                                 "Let's get together somewhere to celebrate"
     
-    click 'commit'
+    click 'btnSave'
     wait_for_page_to_load 5000
     
     assert_location 'exact:http://localhost:3000/'
@@ -84,21 +84,26 @@ class EventsAcceptanceTest < SeleniumTestCase
     
     assert_equal 'Motiro - Events', get_title
     
-    assert_text_present 'New event'
-    assert_text_present 'Summary'
+    assert_equal 'Save modifications', get_attribute('btnSave@value')
+    assert_equal 'Discard', get_attribute('btnDiscard@value')
+
     assert_text_present 'Date'
-    assert_text_present 'Description'
-    assert_equal 'Create', get_attribute("commit@value")
+    assert_text_present 'Note'
+    assert_text_present 'The first line on the event text will turn into a ' +
+                        'summary displayed on the main page'
 
     open '/events/new?locale=pt-BR'
 
     assert_equal 'Motiro - Eventos', get_title
 
-    assert_text_present 'Novo evento'
-    assert_text_present 'tulo' # Título
+    assert /Salvar modifica/ =~ get_attribute('btnSave@value')
+    assert_equal 'Descartar', get_attribute('btnDiscard@value')
+
     assert_text_present 'Data'
-    assert_text_present 'Descri' # Descrição
-    assert_equal 'Criar', get_attribute("commit@value")
+    assert_text_present 'Observa'
+    assert_text_present 'A primeira linha do texto do evento ser'
+    assert_text_present 'exibida como resumo na p'
+    assert_text_present 'gina principal'
   end
   
   def test_first_line_on_event_description_becomes_main_page_summary

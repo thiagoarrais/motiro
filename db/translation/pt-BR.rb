@@ -28,13 +28,10 @@
 'The article %s from the %s reporter could not be found' => 'Não foi possível encontrar o artigo %s do repórter %s',
 
 # Event details and new event pages
-'Event' => 'Evento',
 'Events' => 'Eventos',
-'New event' => 'Novo evento',
-'Summary' => 'Título',
 'Date' => 'Data',
-'Description' => 'Descrição',
-'Create' => 'Criar',
+'Note' => 'Observação',
+'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
 
 # Wiki edition page
 'Save modifications' => 'Salvar modificações',

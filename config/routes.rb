@@ -16,6 +16,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect 'wiki/:action/:page/:locale', :controller => 'wiki',
               :defaults => locale_defaults
+              
+  map.connect 'events/:action/:locale', :controller => 'events',
+              :defaults => locale_defaults
 
   map.connect '', locale_defaults.merge(:controller => 'root',
                                         :action => 'index')

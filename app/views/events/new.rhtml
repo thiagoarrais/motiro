@@ -1,6 +1,34 @@
-<h1><%= 'New event'.t -%></h1>
-
-<%= start_form_tag :action => 'create' %>
-  <%= render :partial => 'form' %>
-  <%= submit_tag 'Create'.t %>
-<%= end_form_tag %>
+<% @title = 'Motiro - ' + 'Events'.t %>
+<div id="editor" class="window">
+  <div class = "inner">
+    <%= start_form_tag :action => 'create' %>
+      <%= submit_tag 'Save modifications'.t, :class => 'button',
+                                            :name => 'btnSave' %>
+      <%= submit_tag 'Discard'.t, :class => 'button',
+                                 :name => 'btnDiscard' %>
+      <%= text_area 'headline', 'description', :id => 'txaEditor',
+                                               :rows => '30' %>
+      <p style="float: left; padding-right: 2em;">
+        <label for="headline_happened_at"><%= 'Date'.t -%>:</label>
+        <%= date_select 'headline', 'happened_at'  %>
+      </p>
+      <div>
+        <p>
+          <b><%= 'Note'.t -%>:</b>
+          <%= ('The first line on the event text will turn into a summary ' +
+              'displayed on the main page').t -%>
+        </p>
+      </div>
+      <div style="height: 0; clear: left;">&nbsp;</div>
+    <%= end_form_tag %>
+  </div>
+</div>
+<div class='window'>
+  <div class='inner'>
+    <p><h2><%= 'Quick reference'.t -%></h2></p>
+    <p>
+      <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
+      <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
+    </p>
+  </div>
+</div>

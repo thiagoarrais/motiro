@@ -72,6 +72,9 @@ class EventsControllerTest < Test::Unit::TestCase
                          :locale => nil )
     assert_routing( '/events/create', :controller => 'events',
                                       :action => 'create' )
+    assert_routing('/events/new/en', :controller=>"events",
+                                     :locale=>"en",
+                                     :action=>"new")
   end
   
 private
