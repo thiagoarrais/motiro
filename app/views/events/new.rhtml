@@ -1,13 +1,7 @@
-<% @title = 'Motiro - ' + 'Events'.t %>
-<div id="editor" class="window">
-  <div class = "inner">
-    <%= start_form_tag :action => 'create' %>
-      <%= submit_tag 'Save modifications'.t, :class => 'button',
-                                            :name => 'btnSave' %>
-      <%= submit_tag 'Discard'.t, :class => 'button',
-                                 :name => 'btnDiscard' %>
-      <%= text_area 'headline', 'description', :id => 'txaEditor',
-                                               :rows => '30' %>
+<% @title = 'Motiro - ' + 'Events'.t
+   @action = 'create'
+   @destination = { :name => 'headline', :attr => 'description' }
+   @after_editor_content = Proc.new do %>
       <p style="float: left; padding-right: 2em;">
         <label for="headline_happened_at"><%= 'Date'.t -%>:</label>
         <%= date_select 'headline', 'happened_at'  %>
@@ -20,15 +14,4 @@
         </p>
       </div>
       <div style="height: 0; clear: left;">&nbsp;</div>
-    <%= end_form_tag %>
-  </div>
-</div>
-<div class='window'>
-  <div class='inner'>
-    <p><h2><%= 'Quick reference'.t -%></h2></p>
-    <p>
-      <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
-      <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
-    </p>
-  </div>
-</div>
+<% end %>

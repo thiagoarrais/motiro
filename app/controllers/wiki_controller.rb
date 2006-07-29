@@ -15,7 +15,7 @@ class WikiController < ApplicationController
     
     def edit
         @page = find_page(params[:page])
-        render(:layout => 'application')
+        render(:layout => 'wiki_edit')
     end
     
     def show

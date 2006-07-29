@@ -14,6 +14,7 @@ class EventsController < ApplicationController
 
   def new
     @headline = Headline.new
+    render :layout =>  'wiki_edit'
   end
 
   def create  

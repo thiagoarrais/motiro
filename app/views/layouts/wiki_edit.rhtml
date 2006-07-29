@@ -1,0 +1,29 @@
+<%= render :partial => 'layouts/top' %>
+      <div id="editor" class="window">
+        <div class = "inner">
+          <%= start_form_tag :action => @action %>
+            <%= submit_tag 'Save modifications'.t, :class => 'button',
+                                                  :name => 'btnSave' %>
+            <%= submit_tag 'Discard'.t, :class => 'button',
+                                       :name => 'btnDiscard' %>
+            <%= if @before_editor_content.nil? then ''
+                else @before_editor_content.call; end %>
+            <%= text_area @destination[:name],
+                          @destination[:attr],
+                          :id => 'txaEditor',
+                          :rows => '30' %>
+            <%= if @after_editor_content.nil? then ''
+                else @after_editor_content.call; end %>
+          <%= end_form_tag %>
+        </div>
+      </div>
+      <div class='window'>
+        <div class='inner'>
+          <p><h2><%= 'Quick reference'.t -%></h2></p>
+          <p>
+            <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
+            <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
+          </p>
+        </div>
+      </div>
+<%= render :partial => 'layouts/bottom' %>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title><%= @title -%></title>
+    <%= stylesheet_link_tag "motiro", :media => "all" %>
+    <script type="text/javascript" src="/javascripts/motiro.js"></script>
+    <script type="text/javascript" src="/niftycube.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            Nifty("div.channel-title","top,big");
+            Nifty("div.channel-body-outer","bottom,big");
+            Nifty("div.window","big");
+        }
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <% if @flash[:notice] -%>
+        <div id="notice"><%= @flash[:notice] %></div>
+      <% end %>
+      <div id='header'>
+        <%= render :partial => 'layouts/header' %>
+      </div>
