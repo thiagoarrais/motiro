@@ -4,9 +4,9 @@
         <div class="inner">
           <h1><%= h(@headline.title(Translator.for(@locale))) -%></h1>
 <% end %>
-          <pre>
-<%= h(@headline.description(Translator.for(@locale))) %>
-          </pre>
+<%= page = Page.new
+    page.text = @headline.description(Translator.for(@locale))
+    page.render_html %>
 <% if ! @partial then %>
         </div>
       </div>

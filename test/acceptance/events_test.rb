@@ -26,7 +26,7 @@ class EventsAcceptanceTest < SeleniumTestCase
     
     open '/events/new'
     type 'txaEditor', event_title + "\n\n" +
-                                 "Our next release will be awesome\n" +
+                                 "Our next release will be awesome! " +
                                  "Let's get together somewhere to celebrate"
     select 'headline[happened_at(3i)]', '26'
     select 'headline[happened_at(2i)]', 'value=4'
@@ -44,7 +44,7 @@ class EventsAcceptanceTest < SeleniumTestCase
     test_create_event_and_show_headline
     
     event_title = "Let's celebrate the success of another release"
-    event_description = "Our next release will be awesome\n" +
+    event_description = "Our next release will be awesome! " +
                         "Let's get together somewhere to celebrate"
     click "//a[text() = \"#{event_title}\"]"    
     wait_for_page_to_load 1000
@@ -143,11 +143,11 @@ class EventsAcceptanceTest < SeleniumTestCase
     open '/events/new?locale=en'
     
     english_title = 'Eighth release'
-    english_description = "Our eighth release, with version number 0.5, should be comming out sometime\n" +
-                          "in August. This will be the first version with a sketch of the feature\n" +
+    english_description = "Our eighth release, with version number 0.5, should be comming out sometime " +
+                          "in August. This will be the first version with a sketch of the feature " +
                           "voting system."
     portuguese_title = 'Oitavo release'
-    portuguese_description = "Nosso oitavo release, com numero de versao 0.5, deve estar disponivel em algum ponto\n" +
+    portuguese_description = "Nosso oitavo release, com numero de versao 0.5, deve estar disponivel em algum ponto " +
                              "de agosto. Esta serah a primeira versao com uma previa do sistema de votacao."
     type 'txaEditor', english_title + "\n\n" + english_description +
                       "\n\n--- pt-br ----------\n\n" +
@@ -179,6 +179,32 @@ class EventsAcceptanceTest < SeleniumTestCase
     
     assert_text_present portuguese_title
     assert_text_not_present english_title
+  end
+  
+  def test_render_events_as_wiki_text
+    open '/en'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+  
+    open '/events/new'
+    
+    title = 'This is the event title'
+    first_paragraph = 'This is the first paragraph'
+    second_paragraph = 'This is the second paragraph'
+    type 'txaEditor', title + "\n\n" +
+                      first_paragraph + "\n\n" +
+                      second_paragraph
+    
+    click 'btnSave'
+    wait_for_page_to_load(2000)
+    
+    click "//a[text() = \"#{title}\"]"
+    wait_for_page_to_load(2000)
+    
+    assert_element_present "//p[text() = \"#{first_paragraph}\"]"
+    assert_element_present "//p[text() = \"#{second_paragraph}\"]"
   end
 
   def teardown

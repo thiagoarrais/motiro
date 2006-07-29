@@ -7,9 +7,7 @@ class PageTest < Test::Unit::TestCase
     page = Page.new
     page.text = '= Motiro ='
     expected_text = "<div>\n" +
-                    "<p>\n" +
-                    "<h1>Motiro</h1>" +
-                    "</p>\n" +
+                    "<p><h1>Motiro</h1></p>\n" +
                     "</div>"
     assert_equal expected_text, page.render_html
   end
@@ -19,8 +17,8 @@ class PageTest < Test::Unit::TestCase
     page.text = "Bem-vindo ao Motiro\n\n" +
                 "--- en ---\n" +
                 "Welcome to Motiro"
-    assert_equal "<div>\n<p>\nBem-vindo ao Motiro</p>\n</div>", page.render_html
-    assert_equal "<div>\n<p>\nWelcome to Motiro</p>\n</div>",
+    assert_equal "<div>\n<p>Bem-vindo ao Motiro</p>\n</div>", page.render_html
+    assert_equal "<div>\n<p>Welcome to Motiro</p>\n</div>",
                  page.render_html('en')
   end
 
