@@ -132,6 +132,54 @@ class EventsAcceptanceTest < SeleniumTestCase
     
     assert_text_present 'And here comes the detailed description'
   end
+  
+  def test_translates_event
+    open '/en'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+  
+    open '/events/new?locale=en'
+    
+    english_title = 'Eighth release'
+    english_description = "Our eighth release, with version number 0.5, should be comming out sometime\n" +
+                          "in August. This will be the first version with a sketch of the feature\n" +
+                          "voting system."
+    portuguese_title = 'Oitavo release'
+    portuguese_description = "Nosso oitavo release, com numero de versao 0.5, deve estar disponivel em algum ponto\n" +
+                             "de agosto. Esta serah a primeira versao com uma previa do sistema de votacao."
+    type 'txaEditor', english_title + "\n\n" + english_description +
+                      "\n\n--- pt-br ----------\n\n" +
+                      portuguese_title + "\n\n" + portuguese_description
+
+    select 'headline[happened_at(3i)]', '21'
+    select 'headline[happened_at(2i)]', 'value=8'
+    select 'headline[happened_at(1i)]', '2006'
+    
+    click 'btnSave'
+    wait_for_page_to_load(2000)
+    
+    assert_text_not_present portuguese_title
+    click "//a[text() = \"#{english_title}\"]"
+    wait_for_page_to_load(2000)
+    
+    assert_text_present english_description
+    assert_text_not_present portuguese_title
+    assert_text_not_present portuguese_description
+    
+    click "//a[@id='pt-BR']"
+    wait_for_page_to_load(2000)
+    
+    assert_text_present portuguese_description 
+    assert_text_not_present english_title
+    assert_text_not_present english_description
+    
+    open "/pt-BR"
+    
+    assert_text_present portuguese_title
+    assert_text_not_present english_title
+  end
 
   def teardown
     Headline.destroy_all

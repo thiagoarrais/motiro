@@ -2,10 +2,10 @@
 <% if ! @partial then %>
       <div id="description" class="window">
         <div class="inner">
-          <h1><%= h(@headline.title) -%></h1>
+          <h1><%= h(@headline.title(Translator.for(@locale))) -%></h1>
 <% end %>
           <pre>
-<%= h(@headline.description) %>
+<%= h(@headline.description(Translator.for(@locale))) %>
           </pre>
 <% if ! @partial then %>
         </div>
