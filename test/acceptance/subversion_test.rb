@@ -66,7 +66,9 @@ class SubversionAcceptanceTest < SeleniumTestCase
     assert_equal get_title, 'Motiro - Subversion - Revision r1'
     assert_element_present "//h1[text() = 'Revision r1']"
     assert_element_present "//div[@id='description']"
-    assert_text_present commit_msg
+    assert_text_present commit_title
+    assert_text_present 'This project dir will hold everything needed to build and'
+    assert_text_present 'deploy our project from source code'
     
     assert_element_present "//div[@id='summary']"
     assert_text_present "A /#{dir_name}"
@@ -316,6 +318,20 @@ class SubversionAcceptanceTest < SeleniumTestCase
     open link
     assert_text_present 'Mudei algo no repositorio de codigo fonte'
     assert_text_not_present 'I changed something in the source code repository'
+  end
+  
+  def test_formats_page_as_wiki_text
+    commit_msg = "This is the comment title\n" +
+                 "\n" +
+                 "This is the second paragraph"
+                 
+    @repo.mkdir('wikitest', commit_msg)
+
+    open '/report/subversion'
+    click "//a[text() = 'This is the comment title']"
+    wait_for_page_to_load(2000)
+    
+    assert_element_present "//p[text() = 'This is the second paragraph']"
   end
 
 end

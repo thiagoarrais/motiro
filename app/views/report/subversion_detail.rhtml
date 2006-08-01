@@ -4,9 +4,8 @@
         <div class="inner">
           <h1><%= 'Revision %s' / @revision_id -%></h1>
 <% end %>
-          <pre>
-<%= h(@headline.description(Translator.for(@locale))) %>
-          </pre>
+<%= Page.new(:text => @headline.description(Translator.for(@locale))).
+      render_html %>
           <div id="summary">
             <% @headline.changes.each do |change| %>
                 <%= change.render_summary -%>
