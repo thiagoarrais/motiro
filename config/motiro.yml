@@ -22,5 +22,5 @@ svn:
 #
 # Tells the reporter where to find your project's repository
 # Default: http://svn.berlios.de/svnroot/repos/motiro
-  repo: http://svn.berlios.de/svnroot/repos/motiro
+  repo: https://svn.sourceforge.net/svnroot/motiro
 
