@@ -7,7 +7,7 @@ class PageTest < Test::Unit::TestCase
     page = Page.new
     page.text = '= Motiro ='
     expected_text = "<div>\n" +
-                    "<p><h1>Motiro</h1></p>\n" +
+                    "<h1>Motiro</h1>\n" +
                     "</div>"
     assert_equal expected_text, page.render_html
   end

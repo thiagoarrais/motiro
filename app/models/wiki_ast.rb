@@ -32,7 +32,7 @@ end
 class TitleParagraph < Paragraph
 
     def do_render
-        "<h1>#{text}</h1>"
+        "<h1>#{text}</h1>\n"
     end
 
 end
@@ -40,7 +40,7 @@ end
 class RawParagraph < Paragraph
 
     def do_render
-        text
+        "<p>#{text}</p>\n"
     end
 
 end

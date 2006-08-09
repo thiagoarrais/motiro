@@ -18,9 +18,7 @@ class WikiUnit
     def render
         result = "<div>\n"
         @paragraphs.each do |p|
-            result += "<p>"
             result += p.render
-            result += "</p>\n"
         end
         result += "</div>"
     end
