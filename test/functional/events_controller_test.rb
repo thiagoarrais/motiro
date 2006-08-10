@@ -38,7 +38,7 @@ class EventsControllerTest < Test::Unit::TestCase
 
     @controller = EventsController.new(reporter)
     
-    post :create, :headline => unimportant
+    post :create, :headline => unimportant, 'btnSave' => 'Save'
     
     reporter.mock_verify
   end
@@ -61,7 +61,7 @@ class EventsControllerTest < Test::Unit::TestCase
     
     @controller = EventsController.new(reporter)
     
-    post :create, :headline => unimportant
+    post :create, :headline => unimportant, 'btnSave' => 'Save'
     
     reporter.mock_verify
   end
@@ -75,6 +75,10 @@ class EventsControllerTest < Test::Unit::TestCase
     assert_routing('/events/new/en', :controller=>"events",
                                      :locale=>"en",
                                      :action=>"new")
+  end
+  
+  def test_reminder
+    assert false, 'You still need to DRY the params[btnSave] code on the wiki and events controllers'
   end
   
 private

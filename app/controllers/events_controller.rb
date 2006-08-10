@@ -21,12 +21,11 @@ class EventsController < ApplicationController
     attrs = params[:headline]
     attrs[:author] = session[:user].login
     
-    if @reporter.store_event(attrs)
+    if params['btnSave'] && @reporter.store_event(attrs)
       flash[:notice] = 'Evento registrado.'
-      redirect_to :controller => 'root', :action => 'index'
-    else
-      render :action => 'new'
     end
+
+    redirect_to :controller => 'root', :action => 'index'
   end
 
 end

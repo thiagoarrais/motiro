@@ -206,7 +206,27 @@ class EventsAcceptanceTest < SeleniumTestCase
     assert_element_present "//p[text() = \"#{first_paragraph}\"]"
     assert_element_present "//p[text() = \"#{second_paragraph}\"]"
   end
-
+  
+  def test_discard_button_does_not_save
+    open '/en'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+  
+    open '/events/new'
+    
+    type 'txaEditor', "This event should now show on the main page\n\n" +
+                      "This is a testing event"
+                    
+    click 'btnDiscard'
+    wait_for_page_to_load(2000)
+    
+    assert_location 'exact:http://localhost:3000/'
+    
+    assert_text_not_present 'This event should now show on the main page'
+  end
+  
   def teardown
     Headline.destroy_all
   end

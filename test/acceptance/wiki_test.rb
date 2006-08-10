@@ -56,4 +56,27 @@ class SubversionAcceptanceTest < SeleniumTestCase
     assert_text_present 'tulo]'
   end
   
+  def test_does_not_save_modifications_when_discard_button_pressed
+    open '/en'
+    
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    click "//a[text() = 'Edit']"
+    wait_for_page_to_load(1500)
+    
+    type 'txaEditor', "= This title does not show =\n\n" +
+                      "Neither does this text"
+    
+    click 'btnDiscard'
+    wait_for_page_to_load(1500)
+    
+    assert_location 'exact:http://localhost:3000/'
+    
+    assert_text_not_present 'This title does not show'
+  end
+  
 end
