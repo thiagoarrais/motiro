@@ -10,7 +10,7 @@ class Change < ActiveRecord::Base
     
     def render_summary
         if (has_diff?)
-            return "<a href='\##{ref}' onClick=\"showOnly('#{ref}')\">#{html_escape(summary)}</a>"
+            return "<a href='\#' onClick=\"showOnly('#{ref}')\">#{html_escape(summary)}</a>"
         else
             return summary
         end
@@ -20,7 +20,6 @@ class Change < ActiveRecord::Base
         if (has_diff?)
             return "<div id='#{ref}' class='diff-window'>" +
                      "<center>" +
-                     "<a name='#{ref}' />" +
                      "<h2>#{'Changes to %s' / resource_name}</h2>\n" +
                      render_diff_table +
                      "</center>" +

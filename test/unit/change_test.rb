@@ -24,7 +24,7 @@ class ChangeTest < Test::Unit::TestCase
         
         actual_rendered_output = change.render_diff
 
-        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/><h2>Changes to a_file.txt<\/h2>/
+        md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><h2>Changes to a_file.txt<\/h2>/
         
         assert_not_nil md
         
@@ -66,7 +66,7 @@ class ChangeTest < Test::Unit::TestCase
         
         actual_rendered_output = change.render_summary
         
-        md = actual_rendered_output.match /\A<a href='\#((\w|\d|-)+)' onClick="showOnly\('\1'\)">A \/a_file.txt<\/a>\Z/
+        md = actual_rendered_output.match /\A<a href='\#' onClick="showOnly\('((\w|\d|-)+)'\)">A \/a_file.txt<\/a>\Z/
         
         assert_not_nil md
     end
@@ -77,10 +77,10 @@ class ChangeTest < Test::Unit::TestCase
         change = Change.new(:summary => 'A /a_file.txt',
                             :diff => diff_output)
                             
-        md = change.render_summary.match /\A<a href='\#((\w|\d|-)+)'/
+        md = change.render_summary.match /\A<a href='\#' onClick="showOnly\('((\w|\d|-)+)'\)/
         summary_ref = md[1]
         
-        md = change.render_diff.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><a name='\1' \/>/
+        md = change.render_diff.match /\A<div id='((\w|\d|-)+)'/
         diff_ref = md[1]
         
         assert_equal summary_ref, diff_ref
