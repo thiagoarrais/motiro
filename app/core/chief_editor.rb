@@ -34,6 +34,11 @@ class ChiefEditor
         return reporter.channel_title
     end
     
+    def toolbar_for(reporter_name)
+        reporter = @reporters[reporter_name]
+        return reporter.toolbar
+    end
+    
     # Adds the given reporter to the set of reporters employed by the editor
     def employ(reporter)
         @reporters.update(reporter.name => reporter)

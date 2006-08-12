@@ -11,6 +11,11 @@
 </div>
 <div class='channel-body-outer'>
   <div class='inner'>
+  <% if ! @toolbar.nil?  then %>
+    <div class='toolbar channel_toolbar'>
+      <%= render :partial => @toolbar -%>
+    </div> 
+  <% end %>
 <% @headlines.each do |headline|%>
     <p>
       <%= link_to( h(headline.title(Translator.for(@locale))),

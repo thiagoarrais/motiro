@@ -1,0 +1,7 @@
+<% if @session[:user] then %>
+  <%= link_to( 'Add'.t,
+               :controller => 'events',
+               :action => 'new') -%>
+<% else %>
+  <span class='disabled'><%= 'Add'.t -%></span>
+<% end %>

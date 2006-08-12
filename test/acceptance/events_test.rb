@@ -227,6 +227,29 @@ class EventsAcceptanceTest < SeleniumTestCase
     assert_text_not_present 'This event should now show on the main page'
   end
   
+  def test_event_addition_disabled_without_authentication
+    open('/en')
+    assert_element_present "//span[@class = 'disabled' and text() = 'Add']"
+  end
+    
+  def test_edition_enabled_when_authenticated
+    #TODO refactor this to a declarative style
+    #see http://www.testing.com/cgi-bin/blog/2005/12/19
+    open('/en')
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+        
+    click 'login'
+    wait_for_page_to_load(1500)
+        
+    assert_element_present "//a[text() = 'Add']"
+
+    click "//a[text() = 'Add']"
+    wait_for_page_to_load(1500)
+    
+    assert_equal get_title, 'Motiro - Events'
+  end
+ 
   def teardown
     Headline.destroy_all
   end

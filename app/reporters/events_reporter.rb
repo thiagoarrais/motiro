@@ -2,6 +2,7 @@ require 'core/cache_reporter'
 
 class EventsReporter < CacheReporter
     title 'Upcoming events'
+    use_toolbar 'events/toolbar'
     
     def initialize
         super('events')

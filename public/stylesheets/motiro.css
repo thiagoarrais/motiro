@@ -61,10 +61,18 @@ div.inner {
     padding: 4px 4px 4px 4px;
 }
 
-div.editbar {
-    border-top: 1px dotted #9C9C9C;
+div.toolbar {
     font-size: 0.8em;
 }
+
+div.editbar {
+    border-top: 1px dotted #9C9C9C;
+}
+
+div.channel_toolbar {
+    border-bottom: 1px dotted #9C9C9C;
+}
+
 
 .disabled {
     color: gray;

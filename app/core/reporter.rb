@@ -28,6 +28,21 @@ class MotiroReporter
         end
     end
 
+    # Configures the reporter to use a toolbar
+    #
+    #       class MyReporter < MotiroReporter
+    #           use_toolbar 'my_reporter/toolbar'
+    #       end
+    #       
+    #       MyReporter.new.channel_title => 'my_reporter/toolbar'
+    #
+    # Default behavior is to not have any toolbar
+    def self.use_toolbar(toolbar_template)
+        define_method :toolbar do
+            toolbar_template
+        end
+    end
+
     def name
         return self.class.reporter_name
     end
@@ -35,6 +50,8 @@ class MotiroReporter
     def channel_title
         return 'Latest news from %s' / name.humanize
     end
+    
+    def toolbar; end
     
     def latest_headline
         return latest_headlines.first

@@ -21,6 +21,7 @@
 'Latest news from %s' => 'Últimas notícias do %s',
 'Upcoming events' => 'Próximos eventos',
 'version' => 'versão',
+'Add' => 'Adicionar',
 
 # Subversion revision details page
 'Revision %s' => 'Revisão %s',

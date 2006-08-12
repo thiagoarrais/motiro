@@ -157,6 +157,25 @@ class ChiefEditorTest < Test::Unit::TestCase
         end
     end
     
+    def test_fetches_reporter_toolbar
+        FlexMock.use do |reporter|
+            settings = StubConnectionSettingsProvider.new
+            
+            reporter.should_receive(:name).
+                returns('mail_list')
+
+            toolbar = 'mail_list/toolbar'
+
+            reporter.should_receive(:toolbar).
+                returns(toolbar)
+                
+            chief_editor = ChiefEditor.new(settings)
+            chief_editor.employ reporter
+
+            assert_equal toolbar, chief_editor.toolbar_for('mail_list')
+        end
+    end
+
     def test_retrieves_headlines_from_correct_reporter_on_cached_mode
         FlexMock.use('1', '2') do |events_reporter, subversion_reporter|
             settings = StubConnectionSettingsProvider.new(
