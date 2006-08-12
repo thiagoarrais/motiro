@@ -5,8 +5,8 @@ about their project's situation.
 The instructions here are intended for getting you started with Motiro and
 running a first test to see what you can possibly get out of it. For real-life
 production use, you will probably need a different setup. Please contact us
-at the English development mail list for further help. Subscription is free
-and available at http://lists.berlios.de/mailman/listinfo/motiro-devel-en
+at the English development mailing list for further help. Subscription is free
+and available at http://lists.sourceforge.net/mailman/listinfo/motiro-devel-en
 
 GET IT RUNNING
 =====
@@ -16,7 +16,7 @@ To get your own Motiro portal up and running, you will need the following:
 1. MySQL 4.1 (5.x is not yet supported and previous versions weren't tested)
 2. Ruby 1.8.2+ (should work with posterior versions, previous versions not
    yet tested)
-3. Rails 1.0.0 (should work with posterior versions, previous versions not
+3. Rails 1.1.2 (should work with posterior versions, previous versions not
    tested)
 4. Subversion client (svn) for the Subversion reporter (the only one currently
    available)
@@ -32,9 +32,9 @@ What you need to do is:
 
    You probably already did it to read this. Just choose anyplace inside your
    system and unpack the contents of the archive, or get the latest source from
-   our Subversion repository at svn://svn.berlios.de/motiro But keep in mind
-   that the repository is a 'live' version, updated with our latest revisions
-   and may present errors at some times.
+   our Subversion repository at https://svn.sourceforge.net/svnroot/motiro But
+   keep in mind that the repository is a 'live' version, updated with our latest
+   revisions and may present errors at some times.
 
 2. Setup the database
 ------
@@ -133,7 +133,7 @@ What you need to do is:
    just cd to where you unpacked Motiro and say:
 
    ----------------------------------------------------------------------------
-   % rake test_units
+   % rake test:units
    (in /home/thiago/devel/motiro)
    Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
    Started
@@ -142,7 +142,7 @@ What you need to do is:
 
    8 tests, 26 assertions, 0 failures, 0 errors
    
-   % rake test_functional
+   % rake test:functionals
    (in /home/thiago/devel/motiro)
    Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
    Started
@@ -152,23 +152,17 @@ What you need to do is:
    1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
 
-   You are likely to get much more dots outputed as well as messagens than
-   that, if you are running a recent version. Don't get lost: you only need to
-   check the summary on the last line.
+   You are likely to get much more dots outputed as well as messages than that,
+   if you are running a recent version. Don't get lost: you only need to check
+   the summary on the last line. If any test happens to fail, an error message
+   will be printed and the last line will report it.
    
-   You may also choose to trigger both unit and functional tests at once by
-   saying just
-   
-   % rake
+   If there is any error when you run these tests, please contact us on the
+   development list, tell us which kind of system you are trying to run Motiro
+   on and from where did you get it. Do not forget to append your bug report
+   too.
 
-   If any test happens to fail, an error message will be printed and the last
-   line will report it. In case you are executing both functional and unit
-   tests, remember there will be two summaries. If there is any error when you
-   run these tests, please contact us on the development list, tell us which
-   kind of system you are trying to run Motiro on and from where did you get
-   it. Do not forget to append your bug report too.
-
-5. Start the job scheduler
+4. Start the job scheduler
 ------
 
    Motiro uses a separate program responsable for automatically fetching the
@@ -193,7 +187,7 @@ What you need to do is:
 
    To run Motiro within a WEBrick server (a pure Ruby server), you'll just
    need to run another Ruby script. You may also try to run Motiro on a variety
-   of servers, like Apache and lighttpd. But, for the sake of brevity, this
+   of servers, like Apache and lighttpd. But, for the sake of brevity, those
    won't be covered here.
 
    To run the script that boots the WEBrick server, just cd to where you
@@ -216,18 +210,26 @@ What you need to do is:
 ------
 
    Motiro comes pre-configured to its own development needs because we actually
-   use it to keep track of our own progress. This may be satisfactory, if you
-   are interested in watching us work. But most people want to keep track of
-   their own project, their own team.
+   use it to keep track of our progress. This may be satisfactory, if you are
+   interested in watching us work. But most people want to keep track of their
+   own project, their own team.
    
    To customize Motiro to your needs, you will need to edit the configuration
-   files inside the 'config/report' directory. For example, suppose you are
-   trying to keep on eye on the development of the Ruby on Rails framework. You
-   can make Motiro look at their subversion repository by changing the 'repo'
-   line on the 'subversion.yml' file to
+   file 'config/motiro.yml'. For example, suppose you are trying to keep on eye
+   on the development of the Ruby on Rails framework. You can make Motiro look
+   at their subversion repository by changing the 'repo' line to:
 
    repo: http://dev.rubyonrails.org/svn/rails
 
+   After changing the config file to suit your needs, you'll much probably want
+   to have a username to edit the project description and start adding events.
+   To do that, you just need to run the script `adduser':
+   
+   % ruby script/adduser
+   
+   
+   But be careful: this script will show the entered password on the screen.
+   
    For further information about customizing your Motiro, please contact us.
 
 FURTHER INFO AND TROUBLESHOOTING
@@ -236,6 +238,6 @@ FURTHER INFO AND TROUBLESHOOTING
 If you experience any problems with Motiro, if you have any compliments or if
 you just want to discuss it, please go to
 
-http://developer.berlios.de/mail/?group_id=5989
+http://sourceforge.net/mail/?group_id=173790
 
 and choose the mail list most suited to your needs.
