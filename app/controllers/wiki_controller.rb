@@ -1,4 +1,4 @@
-class WikiController < ApplicationController
+class WikiController < EditionController
 
   layout nil
 
@@ -23,13 +23,10 @@ class WikiController < ApplicationController
     @rendered_page = @page.render_html(params[:locale])
   end
     
-  def save
-    if params['btnSave'] then
-      page = find_page(params[:page][:name])
-      page.text = params[:page][:text]
-      page.save
-    end
-    redirect_to(:controller => 'root', :action => 'index')
+  def do_save
+    page = find_page(params[:page][:name])
+    page.text = params[:page][:text]
+    page.save
   end
     
 private

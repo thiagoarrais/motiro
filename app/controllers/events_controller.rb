@@ -1,6 +1,6 @@
 require 'reporters/events_reporter'
 
-class EventsController < ApplicationController
+class EventsController < EditionController
 
   before_filter :login_required
 
@@ -17,15 +17,11 @@ class EventsController < ApplicationController
     render :layout =>  'wiki_edit'
   end
 
-  def create  
+  def do_save  
     attrs = params[:headline]
     attrs[:author] = session[:user].login
     
-    if params['btnSave'] && @reporter.store_event(attrs)
-      flash[:notice] = 'Evento registrado.'
-    end
-
-    redirect_to :controller => 'root', :action => 'index'
+    flash[:notice] = 'Evento registrado.' if @reporter.store_event(attrs)
   end
 
 end

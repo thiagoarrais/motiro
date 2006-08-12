@@ -1,5 +1,4 @@
-<% @action = 'save'
-   @destination = { :name => 'page', :attr => 'text' }
+<% @destination = { :name => 'page', :attr => 'text' }
    @before_editor_content = Proc.new do %>
 <%= hidden_field 'page', 'name' %>
 <%end%>
