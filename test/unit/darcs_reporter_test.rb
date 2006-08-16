@@ -29,6 +29,7 @@ END
     hl = @reporter.latest_headline
     assert_equal 'thiago.arrais', hl.author
     assert_equal 'Some refactoring after the mess', hl.description
+    assert_equal Time.local(2006, 7, 17, 20, 9, 39), hl.happened_at
   end
 
 end
