@@ -9,9 +9,9 @@ class SubversionConnection
     end
 
     def log(rev_id=nil)
-        command = "svn log #{@settings.getRepoURL} -v "
+        command = "svn log #{@settings.repo_url} -v "
         if rev_id.nil? 
-            command += "--limit=#{@settings.getPackageSize}"
+            command += "--limit=#{@settings.package_size}"
         else
             command += "-r#{rev_id.to_s}"
         end
@@ -23,7 +23,7 @@ class SubversionConnection
         cached_result = @diff_cache[rev_id]
         
         if cached_result.nil?
-            command = "svn diff #{@settings.getRepoURL} -r#{rev_id.to_i - 1}:#{rev_id}"
+            command = "svn diff #{@settings.repo_url} -r#{rev_id.to_i - 1}:#{rev_id}"
     
             cached_result = @runner.run command
             @diff_cache[rev_id] = cached_result
@@ -33,7 +33,7 @@ class SubversionConnection
     end
     
     def info(path, rev_id)
-        command = "svn info -r#{rev_id} --xml #{@settings.getRepoURL}#{path}"
+        command = "svn info -r#{rev_id} --xml #{@settings.repo_url}#{path}"
         @runner.run(command)
     end
     

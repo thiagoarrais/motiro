@@ -11,12 +11,8 @@ class SettingsProvider
         @filesystem = fs
     end
 
-    def getPackageSize
-        return load_confs['package_size'].to_i
-    end
-    
-    def getUpdateInterval
-        return load_confs['update_interval'].to_i
+    def method_missing(method_id)
+      load_confs[method_id.to_s].to_i
     end
     
     def active_reporter_ids

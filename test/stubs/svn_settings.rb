@@ -8,19 +8,12 @@ class StubConnectionSettingsProvider
         @confs.update(params)
     end
     
-    def getRepoURL
+    def repo_url
         @confs[:repo]
     end
     
-    def getPackageSize
-        @confs[:package_size]
+    def method_missing(method_id)
+      @confs[method_id]
     end
     
-    def getUpdateInterval
-        @confs[:update_interval]
-    end
-    
-    def active_reporter_ids
-       @confs[:active_reporter_ids]
-    end
 end

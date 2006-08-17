@@ -15,7 +15,7 @@ class CacheReporter < MotiroReporter
     end
 
     def latest_headlines
-        return @headlines_source.latest(@settings.getPackageSize, @source_reporter_name)
+        return @headlines_source.latest(@settings.package_size, @source_reporter_name)
     end
     
     def headline(rid)

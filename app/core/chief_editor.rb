@@ -48,7 +48,7 @@ class ChiefEditor
 private
     
     def create_strategy
-        if (@settings.getUpdateInterval == 0) then
+        if (@settings.update_interval == 0) then
             return LiveEditorStrategy.new(@reporters)
         else
             return CachedEditorStrategy.new(@settings)
