@@ -16,9 +16,9 @@ package_size: 5
 update_interval: 10
 
 # Subversion specific settings
-svn:
+subversion:
 
-# svn/repo
+# subversion/repo
 #
 # Tells the reporter where to find your project's repository
 # Default: http://svn.berlios.de/svnroot/repos/motiro

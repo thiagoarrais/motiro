@@ -8,7 +8,7 @@ require 'stubs/svn_settings'
 require 'core/chief_editor'
 
 require 'reporters/svn_driver'
-require 'reporters/svn_reporter'
+require 'reporters/subversion_reporter'
 
 class CachingTest < Test::Unit::TestCase
 

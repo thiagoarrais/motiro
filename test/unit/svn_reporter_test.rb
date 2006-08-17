@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 require 'svn_excerpts'
-require 'reporters/svn_reporter'
+require 'reporters/subversion_reporter'
 
 class SubversionReporterTest < Test::Unit::TestCase
 

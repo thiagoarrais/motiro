@@ -3,9 +3,9 @@ require 'reporters/events_reporter'
 require 'models/headline'
 
 require 'core/cache_reporter'
-require 'core/reporter_loader'
 require 'core/settings'
 
+require 'ports/reporter_loader'
 
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor

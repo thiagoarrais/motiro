@@ -1,4 +1,4 @@
-require 'reporters/svn_reporter'
+require 'reporters/subversion_reporter'
 
 require 'headline'
 

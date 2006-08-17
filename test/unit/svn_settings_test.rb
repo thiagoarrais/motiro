@@ -15,7 +15,7 @@ class SubversionSettingsProviderTest < Test::Unit::TestCase
           once.
           returns( StringIO.new( "package_size: 8\n" +
                                  "update_interval: 10\n" +
-                                 "svn:\n" +
+                                 "subversion:\n" +
                                  "  repo: svn://svn.berlios.de/motiro\n"))
 
         @provider = SubversionSettingsProvider.new(@opener)

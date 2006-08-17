@@ -15,7 +15,7 @@ class Configuration
     end
     
     def repo=(new_url)
-        reconfigure('svn/repo', new_url)
+        reconfigure('subversion/repo', new_url)
     end
     
     def go_live
