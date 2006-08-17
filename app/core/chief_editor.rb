@@ -1,15 +1,15 @@
 require 'reporters/svn_settings'
-require 'reporters/svn_reporter'
 require 'reporters/events_reporter'
 require 'models/headline'
 
+require 'core/settings'
 require 'core/cache_reporter'
 
 
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor
 
-    def initialize(settings=SubversionSettingsProvider.new)
+    def initialize(settings=SettingsProvider.new)
         @settings = settings
         @reporters = Hash.new
         @strategy = create_strategy

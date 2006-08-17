@@ -3,7 +3,7 @@ require 'reporters/svn_settings'
 
 class Ticker < ActiveRecord::Base
 
-    interval = SubversionSettingsProvider.new.getUpdateInterval
+    interval = SettingsProvider.new.getUpdateInterval
 
     if interval != 0 then
         background :tick_drivers, :every => interval.minute

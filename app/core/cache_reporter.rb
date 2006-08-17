@@ -7,7 +7,7 @@
 class CacheReporter < MotiroReporter
 
     def initialize( reporter,
-                    settings=SubversionSettingsProvider.new,
+                    settings=SettingsProvider.new,
                     headlines_source=Headline)
         @headlines_source = headlines_source
         @settings = settings
