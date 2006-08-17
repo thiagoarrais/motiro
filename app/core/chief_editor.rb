@@ -2,22 +2,23 @@ require 'reporters/svn_settings'
 require 'reporters/events_reporter'
 require 'models/headline'
 
-require 'core/settings'
 require 'core/cache_reporter'
+require 'core/reporter_loader'
+require 'core/settings'
 
 
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor
 
-    def initialize(settings=SettingsProvider.new)
+    def initialize(settings=SettingsProvider.new, loader=ReporterLoader.new)
         @settings = settings
         @reporters = Hash.new
         @strategy = create_strategy
                 
-        #TODO Maybe we'll need something like a reporter fetcher that updates
-        #     the reporter list at server startup time
-        #     Or maybe the reporters can be 'require'd dinamically as needed
-        self.employ(SubversionReporter.new)
+        @settings.active_reporter_ids.each do |rid|
+          self.employ(loader.create_reporter(rid))
+        end
+
         self.employ(EventsReporter.new)
     end
 

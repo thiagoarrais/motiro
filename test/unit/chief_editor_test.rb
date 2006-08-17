@@ -176,31 +176,45 @@ class ChiefEditorTest < Test::Unit::TestCase
         end
     end
 
-    def test_retrieves_headlines_from_correct_reporter_on_cached_mode
-        FlexMock.use('1', '2') do |events_reporter, subversion_reporter|
-            settings = StubConnectionSettingsProvider.new(
-                       :update_interval => 8)
-            
-            events_reporter.should_receive(:name).
-                returns('events')
+  def test_retrieves_headlines_from_correct_reporter_on_cached_mode
+    FlexMock.use('1', '2') do |events_reporter, subversion_reporter|
+      settings = StubConnectionSettingsProvider.new(:update_interval => 8)
 
-            subversion_reporter.should_receive(:name).
-                returns('subversion')
+      events_reporter.should_receive(:name).
+        returns('events')
 
-            chief_editor = ChiefEditor.new(settings)
-            chief_editor.employ events_reporter
-            chief_editor.employ subversion_reporter
+      subversion_reporter.should_receive(:name).
+        returns('subversion')
+
+      chief_editor = ChiefEditor.new(settings)
+      chief_editor.employ events_reporter
+      chief_editor.employ subversion_reporter
             
-            events_news = chief_editor.latest_news_from 'events'
+      events_news = chief_editor.latest_news_from 'events'
             
-            assert_equal 2, events_news.size
+      assert_equal 2, events_news.size
             
-            subversion_news = chief_editor.latest_news_from 'subversion'
+      subversion_news = chief_editor.latest_news_from 'subversion'
             
-            assert_equal 3, subversion_news.size
-        end
-        
+      assert_equal 3, subversion_news.size
     end
+  end
     
-    #TODO should signal when the reporter is not registered
+  def test_loads_only_active_reporters
+    FlexMock.use('1', '2') do |loader, reporter|
+      settings = StubConnectionSettingsProvider.new(
+                   :active_reporter_ids => ['darcs', 'mail'])
+      
+      loader.should_receive(:create_reporter).with('darcs').
+        returns(reporter).once
+      loader.should_receive(:create_reporter).with('mail').
+        returns(reporter).once
+      
+      reporter.should_receive(:name).returns('fake_reporter').twice
+      
+      chield_editor = ChiefEditor.new(settings, loader)
+    end
+  end
+    
+  #TODO should signal when the reporter is not registered
 end

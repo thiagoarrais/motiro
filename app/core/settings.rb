@@ -19,6 +19,10 @@ class SettingsProvider
         return load_confs['update_interval'].to_i
     end
     
+    def active_reporter_ids
+      load_confs.keys - ['package_size', 'update_interval']
+    end
+    
 private
     def load_confs
         file = @filesystem.open(File.expand_path(File.dirname(__FILE__) +
