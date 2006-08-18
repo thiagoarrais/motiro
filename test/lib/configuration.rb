@@ -5,7 +5,8 @@ class Configuration
     FILE_NAME = File.expand_path(File.dirname(__FILE__) +
                              '/../../config/motiro.yml')
 
-    def initialize
+    def initialize(repo_type='subversion')
+        @repo_type = repo_type
         @original_contents = File.open(FILE_NAME).read
         @confs = YAML.load @original_contents
     end
@@ -15,7 +16,7 @@ class Configuration
     end
     
     def repo=(new_url)
-        reconfigure('subversion/repo', new_url)
+        reconfigure("#{@repo_type}/repo", new_url)
     end
     
     def go_live
@@ -39,7 +40,7 @@ private
         keys = key.split('/')
         last_key = keys.pop
         keys.each do |k|
-            dst_hash = dst_hash[k]
+          dst_hash = dst_hash[k] = {}
         end
         
         dst_hash[last_key] = value

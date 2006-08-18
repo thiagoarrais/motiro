@@ -62,8 +62,8 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
                                          
         regexp = Regexp.new("Index: local_file.txt\n" +
                      "===================================================================\n" +
-                     "--- local_file.txt\t\\([^1]+ 1\\)\n" +
-                     "\\+\\+\\+ local_file.txt\t\\([^2]+ 2\\)\n" +
+                     "--- local_file.txt\t\\([^1]+1\\)\n" +
+                     "\\+\\+\\+ local_file.txt\t\\([^2]+2\\)\n" +
                      "@@ -1,2 \\+1,2 @@\n" +
                      " this is line number 1\n" +
                      "-this is line number 2\n" +

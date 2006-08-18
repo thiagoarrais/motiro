@@ -1,6 +1,8 @@
 require 'fileutils'
 require 'socket'
 
+require 'repoutils'
+
 include FileUtils
 
 class LocalSubversionRepository
@@ -67,6 +69,8 @@ class LocalSubversionRepository
 
 private
 
+    include RepoUtils
+
     def svn_command(command, comment=nil)
         line = "svn #{command}"
         unless comment.nil?
@@ -92,24 +96,6 @@ private
        return wc_dir
     end
     
-    def find_root_dir
-        tmpdir = ENV['TEMP']
-        return find_free_dir_under(tmpdir, 'svn')
-    end
-
-    def find_free_dir_under(parent_dir, prefix)
-        contents = Dir.entries(parent_dir)
-        suffix = ''
-        if (contents.include?(prefix))
-            suffix = 1
-            while(contents.include?(prefix + suffix.to_s))
-                suffix += 1
-            end
-        end
-        
-        return parent_dir + '/' + prefix + suffix.to_s
-    end
-
     def start_server(repo_dir)
         port = find_available_port
 

@@ -39,7 +39,15 @@ class ConfigurationTest < Test::Unit::TestCase
     def test_reconfigure_repo_url
         expected_url = 'http://www.nowhere.com'
         @config.repo = expected_url
-        assert_equal expected_url, read('svn/repo')
+        assert_equal expected_url, read('subversion/repo')
+    end
+    
+    def test_use_custom_repo_type_prefix
+      expected_url = '/tmp/darcsrepo'
+      @config = Configuration.new('darcs')
+      @config.repo = expected_url
+      
+      assert_equal expected_url, read('darcs/repo')
     end
 
     def teardown
