@@ -7,6 +7,8 @@ require 'models/headline'
 
 require 'core/reporter'
 
+require 'reporters/darcs_connection'
+
 class DarcsReporter < MotiroReporter
 
   def initialize(conn=DarcsConnection.new)

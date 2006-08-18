@@ -19,7 +19,6 @@ end
 class SubversionReporter < MotiroReporter
 
     def initialize(connection = SubversionConnection.new)
-
         @connection = connection
     end
 
