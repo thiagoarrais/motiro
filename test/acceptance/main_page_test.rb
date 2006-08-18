@@ -17,8 +17,8 @@ class MainPageAcceptanceTest < SeleniumTestCase
     
     def test_subversion_on_main
         open('/en')
-        assert_element_present "//div[@id = 'svn']"
-        assert get_text("//div[@id = 'svn']").match(/Latest news from Subversion/)
+        assert_element_present "//div[@id = 'subversion']"
+        assert get_text("//div[@id = 'subversion']").match(/Latest news from Subversion/)
     end
     
     def test_events_on_main
