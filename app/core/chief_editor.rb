@@ -1,5 +1,4 @@
 require 'reporters/svn_settings'
-require 'reporters/events_reporter'
 require 'models/headline'
 
 require 'core/cache_reporter'
@@ -17,8 +16,6 @@ class ChiefEditor
         fetcher.active_reporters.each do |reporter|
           self.employ(reporter)
         end
-
-        self.employ(EventsReporter.new)
     end
 
     def latest_news_from(reporter_name)
