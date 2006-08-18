@@ -199,20 +199,18 @@ class ChiefEditorTest < Test::Unit::TestCase
       assert_equal 3, subversion_news.size
     end
   end
-    
-  def test_loads_only_active_reporters
-    FlexMock.use('1', '2') do |loader, reporter|
-      settings = StubConnectionSettingsProvider.new(
-                   :active_reporter_ids => ['darcs', 'mail'])
+  
+  def test_askes_fetcher_for_reporters_to_employt
+    FlexMock.use('1', '2') do |fetcher, reporter|
+      settings = StubConnectionSettingsProvider.new
       
-      loader.should_receive(:create_reporter).with('darcs').
-        returns(reporter).once
-      loader.should_receive(:create_reporter).with('mail').
-        returns(reporter).once
-      
-      reporter.should_receive(:name).returns('fake_reporter').twice
-      
-      chield_editor = ChiefEditor.new(settings, loader)
+      fetcher.should_receive(:active_reporters).once.
+        returns([reporter, reporter])
+
+      reporter.should_receive(:name).twice.
+        returns('fake_reporter')
+
+      editor = ChiefEditor.new(settings, fetcher)
     end
   end
     

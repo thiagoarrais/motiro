@@ -1,3 +1,6 @@
+require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
+
 require 'acceptance/live_mode_test'
 
 class SubversionAcceptanceTest < SeleniumTestCase
@@ -105,7 +108,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     open '/report/subversion'
     click "//a[text() = '#{commit_title}']"
-    wait_for_page_to_load(1000)
+    wait_for_page_to_load(1500)
     
     assert_text_present 'These are the file contents'
     assert_text_present 'These are the modified file contents'

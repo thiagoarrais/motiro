@@ -1,3 +1,4 @@
+# Loads a reporter from the local filesystem
 class ReporterLoader
 
   def create_reporter(reporter_id)

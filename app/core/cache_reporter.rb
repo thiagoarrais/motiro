@@ -1,3 +1,5 @@
+require 'core/reporter'
+
 # A cache reporter is a reporter that just repeats news discovered by real
 # reporters
 #

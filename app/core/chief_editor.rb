@@ -3,20 +3,19 @@ require 'reporters/events_reporter'
 require 'models/headline'
 
 require 'core/cache_reporter'
+require 'core/reporter_fetcher'
 require 'core/settings'
-
-require 'ports/reporter_loader'
 
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor
 
-    def initialize(settings=SettingsProvider.new, loader=ReporterLoader.new)
+    def initialize(settings=SettingsProvider.new, fetcher=ReporterFetcher.new)
         @settings = settings
         @reporters = Hash.new
         @strategy = create_strategy
                 
-        @settings.active_reporter_ids.each do |rid|
-          self.employ(loader.create_reporter(rid))
+        fetcher.active_reporters.each do |reporter|
+          self.employ(reporter)
         end
 
         self.employ(EventsReporter.new)

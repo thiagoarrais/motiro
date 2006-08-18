@@ -6,8 +6,8 @@ require 'svn_excerpts'
 require 'stubs/svn_settings'
 
 require 'core/chief_editor'
+require 'core/reporter_driver'
 
-require 'reporters/svn_driver'
 require 'reporters/subversion_reporter'
 
 class CachingTest < Test::Unit::TestCase
@@ -65,12 +65,14 @@ private
     def create_fixture_objects
         @connection = FlexMock.new
         settings = StubConnectionSettingsProvider.new(:update_interval => 12)
-
         @reporter = SubversionReporter.new(@connection)
-        @driver = SubversionDriver.new(@reporter)
 
-        @chief_editor = ChiefEditor.new(settings)
-        @chief_editor.employ(@reporter)
+        fetcher = FlexMock.new
+        fetcher.should_receive(:active_reporters).returns([@reporter])
+
+        @driver = ReporterDriver.new(fetcher)
+
+        @chief_editor = ChiefEditor.new(settings, fetcher)
     end
     
 end
