@@ -141,11 +141,11 @@ textarea {
     clear: left;
 }
 
-div#svn div.channel-title {
+div#subversion div.channel-title {
     background: #E3A1C4
 }
 
-div#svn div.channel-body-outer {
+div#subversion div.channel-body-outer {
     background: #E3A1C4
 }
 
@@ -155,4 +155,12 @@ div#events div.channel-title {
 
 div#events div.channel-body-outer {
     background: #FFBD00
+}
+
+div#darcs div.channel-title {
+    background: #E3A1C4
+}
+
+div#darcs div.channel-body-outer {
+    background: #E3A1C4
 }

@@ -7,15 +7,12 @@
                                             :locale => @locale }) %>
         </div>
       </div>
-    <div class="channel" id="svn">
+  <% ReporterFetcher.new.active_reporters.each do |reporter| %>
+    <div class="channel" id="<%= reporter.name -%>">
       <%= render_component(:controller => 'report',
                            :action =>  'show',
-                           :params => { :reporter => 'subversion',
+                           :params => { :reporter => reporter.name,
                                         :locale => @locale }) %>
     </div>
-    <div class="channel" id="events">
-      <%= render_component(:controller => 'report',
-                           :action =>  'show',
-                           :params => { :reporter => 'events',
-                                        :locale => @locale }) %>
-    </div>
+  <% end %>
+    
