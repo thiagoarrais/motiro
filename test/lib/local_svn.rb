@@ -74,10 +74,9 @@ private
     def svn_command(command, comment=nil)
         line = "svn #{command}"
         unless comment.nil?
-            line += " --username #{@username} --password #{@password} -m '#{comment}'"
+            line += " --username #{@username} --password #{@password} -m \"#{comment}\""
         end
-        line += " > /dev/null 2>&1"
-        system(line)
+        `#{line}`
     end
 
     def create_repo(root_dir)
@@ -99,8 +98,8 @@ private
     def start_server(repo_dir)
         port = find_available_port
 
-        @server_pid = fork do
-            exec "svnserve -d --foreground --listen-port #{port} -r #{repo_dir}"
+        @server_thread = Thread.new do
+            system("svnserve -d --foreground --listen-port #{port} -r #{repo_dir}")
         end
         
         sleep 0.4 # give some time for the server to boot
@@ -109,7 +108,7 @@ private
     end
     
     def kill_server
-        Process.kill('SIGKILL', @server_pid)
+        @server_thread.kill
     end
     
     def authorize_anon_read(repo_dir, username, password)

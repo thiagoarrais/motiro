@@ -26,12 +26,10 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     repo = DarcsRepository.new
     file_name = 'fileOne.txt'
     
-    puts 'starting test...'
-
     repo.add_file(file_name, 'unimportant')
     
     assert File.exists?(repo.url + '/' + file_name)
-    output = `darcs changes --repo=#{repo.url} 2>&1`
+    output = `darcs whatsnew --repo=#{repo.url} 2>&1`
     assert output.match(/addfile/)
     assert output.match(/#{file_name}/)
     

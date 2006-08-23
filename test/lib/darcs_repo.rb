@@ -25,7 +25,7 @@ class DarcsRepository
   end
   
   def record(patch_title)
-    `darcs record -am'#{patch_title}' --repodir=#{self.url} 2>&1 --author='#{self.author}'`
+    `darcs record -am\"#{patch_title}\" --repodir=#{self.url} 2>&1 --author=\"#{self.author}\"`
   end
   
   def destroy
