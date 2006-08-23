@@ -5,8 +5,8 @@ module LiveModeTestCase
 
   def setup
     super
-    @repo = create_repository
-    @config = Configuration.new(repo_type)
+    @repo = self.create_repository
+    @config = Configuration.new(self.repo_type)
     @config.repo = @repo.url
     @config.go_live
     do_setup

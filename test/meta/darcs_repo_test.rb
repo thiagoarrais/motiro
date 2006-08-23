@@ -22,6 +22,22 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     repo.destroy
   end
   
+  def test_add_file
+    repo = DarcsRepository.new
+    file_name = 'fileOne.txt'
+    
+    puts 'starting test...'
+
+    repo.add_file(file_name, 'unimportant')
+    
+    assert File.exists?(repo.url + '/' + file_name)
+    output = `darcs changes --repo=#{repo.url} 2>&1`
+    assert output.match(/addfile/)
+    assert output.match(/#{file_name}/)
+    
+    repo.destroy
+  end
+
   def test_destroy_removes_dir
     repo = DarcsRepository.new
     
@@ -30,6 +46,35 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     repo.destroy
 
     assert !File.exists?(repo.url)
+  end
+  
+  def test_adding_file
+    repo = DarcsRepository.new
+    file_name = 'fileOne.txt'
+
+    repo.add_file(file_name, 'unimportant')
+    
+    assert File.exists?(repo.url + '/' + file_name)
+    output = `darcs whatsnew --repo=#{repo.url} 2>&1`
+    assert output.match(/addfile/)
+    assert output.match(/#{file_name}/)
+    
+    repo.destroy
+  end
+  
+  def test_recording_and_author_name
+    repo = DarcsRepository.new
+    patch_title = 'This is the first patch ever'
+
+    repo.add_file('fileOne.txt', 'unimportant')
+    repo.record(patch_title)
+    
+    assert `darcs whatsnew --repo=#{repo.url} 2>&1`.match(/No changes!/)
+    output = `darcs changes --repo=#{repo.url} 2>&1`
+    assert output.match(/#{patch_title}/)
+    assert output.match(/#{repo.author}/)
+    
+    repo.destroy
   end
 
 end

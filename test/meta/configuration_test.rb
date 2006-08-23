@@ -48,6 +48,7 @@ class ConfigurationTest < Test::Unit::TestCase
       @config.repo = expected_url
       
       assert_equal expected_url, read('darcs/repo')
+      assert_nil read('subversion/repo')
     end
 
     def teardown
@@ -63,7 +64,7 @@ private
 
         result = configs
         key.split('/').each do |node|
-            result = result[node]
+            result = result[node] unless result.nil?
         end
         return result
     end

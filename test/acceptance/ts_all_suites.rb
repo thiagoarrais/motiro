@@ -5,4 +5,5 @@ require File.join(File.dirname(__FILE__), 'main_page_test')
 require File.join(File.dirname(__FILE__), 'subversion_test')
 require File.join(File.dirname(__FILE__), 'events_test')
 require File.join(File.dirname(__FILE__), 'wiki_test')
+require File.join(File.dirname(__FILE__), 'darcs_test')
 

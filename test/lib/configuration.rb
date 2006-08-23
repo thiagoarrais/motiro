@@ -9,6 +9,7 @@ class Configuration
         @repo_type = repo_type
         @original_contents = File.open(FILE_NAME).read
         @confs = YAML.load @original_contents
+        @confs.delete 'subversion' if repo_type != 'subversion'
     end
 
     def update_interval=(new_interval)
