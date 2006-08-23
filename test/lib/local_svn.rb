@@ -102,13 +102,15 @@ private
             system("svnserve -d --foreground --listen-port #{port} -r #{repo_dir}")
         end
         
-        sleep 0.4 # give some time for the server to boot
+        sleep 0.5 # give some time for the server to boot
         
         return "svn://localhost:#{port}"
     end
     
     def kill_server
-        @server_thread.kill
+        @server_thread.exit
+        
+        sleep 0.5 # wait some time for the server to shutdown
     end
     
     def authorize_anon_read(repo_dir, username, password)

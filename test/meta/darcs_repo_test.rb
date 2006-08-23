@@ -22,20 +22,6 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     repo.destroy
   end
   
-  def test_add_file
-    repo = DarcsRepository.new
-    file_name = 'fileOne.txt'
-    
-    repo.add_file(file_name, 'unimportant')
-    
-    assert File.exists?(repo.url + '/' + file_name)
-    output = `darcs whatsnew --repo=#{repo.url} 2>&1`
-    assert output.match(/addfile/)
-    assert output.match(/#{file_name}/)
-    
-    repo.destroy
-  end
-
   def test_destroy_removes_dir
     repo = DarcsRepository.new
     
@@ -53,7 +39,7 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     repo.add_file(file_name, 'unimportant')
     
     assert File.exists?(repo.url + '/' + file_name)
-    output = `darcs whatsnew --repo=#{repo.url} 2>&1`
+    output = `darcs whatsnew --no-summary --repo=#{repo.url} 2>&1`
     assert output.match(/addfile/)
     assert output.match(/#{file_name}/)
     
