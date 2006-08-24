@@ -13,21 +13,21 @@ package_size: 5
 #
 # Set to 0 to send them out everytime a request arrives and to not record
 # anything locally (useful for testing and debugging)
-update_interval: 10
+update_interval: 3
 
 # Subversion specific settings
-subversion:
+# subversion:
 
 # subversion/repo
 #
 # Tells the reporter where to find your project's repository
 # Default: http://svn.berlios.de/svnroot/repos/motiro
-  repo: https://svn.sourceforge.net/svnroot/motiro
+#   repo: https://svn.sourceforge.net/svnroot/motiro
   
 # Darcs specific settings
 # Uncomment the lines below to activate darcs reporting
-# darcs:
+darcs:
 
 # darcs/repo
 # Tells the reporter where to find the project's central repository
-#   repo: http://motiro.sf.net/darcsrepos/trunk
+  repo: J:/ATPDC/Carga/Fontes/Regras~1.0/repo/trunk

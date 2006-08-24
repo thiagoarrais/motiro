@@ -23,6 +23,19 @@ linebreaking issues.</comment>
 </changelog>
 END
 
+  P3 = <<END
+<changelog>
+<patch author='thiago.arrais@gmail.com' date='20060822135332' local_date='Tue Aug 22 10:53:32 Hora oficial do Brasil 2006' inverted='False' hash='20060822135332-47d7b-f311f9b4f4f2d329d8de62efaa09c5d20cf08f8f.gz'>
+	<name> </name>
+</patch>
+</changelog>
+END
+
+  P_EMPTY = <<END
+<changelog>
+</changelog>
+END
+
   def setup
     @darcs_changes = ''
         
@@ -43,6 +56,7 @@ END
     assert_equal Time.local(2006, 7, 17, 20, 9, 39), hl.happened_at
     assert_equal '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz',
                  hl.rid
+    assert_equal 'darcs', hl.reported_by
   end
   
   def test_fetches_headline_details
@@ -66,8 +80,25 @@ END
                  "linebreaking issues.",    
                  hl.description
   end
+  
+  def test_empty_change_log
+    @darcs_changes = P_EMPTY
+    
+    hls = @reporter.latest_headlines
+    
+    assert_equal 0, hls.size
+  end
+  
+  def test_patch_with_empty_title
+    @darcs_changes = P3
+    
+    hl = @reporter.latest_headline
+    
+    assert_equal 'Untitled patch', hl.description
+  end
 
-  #TODO when pointing to empty repo, changes return empty changelog
+  #TODO should use the package size when asking the repo connection for xml
+  #     input
   #TODO dates are UTC
 
 end

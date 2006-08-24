@@ -16,11 +16,11 @@ class DarcsReporter < MotiroReporter
   end
   
   def latest_headlines
-    return [parse_headline(@connection.changes)]
+    parse_headlines(@connection.changes)
   end
   
   def headline(rid)
-    parse_headline(@connection.changes(rid))
+    parse_headlines(@connection.changes(rid)).first
   end
   
   def author_from_darcs_id(id)
@@ -36,18 +36,27 @@ class DarcsReporter < MotiroReporter
   
 private
 
-  def parse_headline(xml_input)
-    info = XmlSimple.xml_in(xml_input)['patch'].first
-    
+  def parse_headlines(xml_input)
+    patches = XmlSimple.xml_in(xml_input)['patch'] || []
+    patches.collect do |patch_info|
+      parse_headline(patch_info)
+    end
+  end
+  
+  def parse_headline(info)
     headline = Headline.new
     headline.author = author_from_darcs_id(info['author'])
 
-    description = info['name'].first
-    description += "\n" + info['comment'].first if info['comment']
+    name = info['name'].first
+    comments = info['comment']
+    description = if name.empty? then 'Untitled patch'
+                                 else name; end
+    description += "\n" + comments.first if comments
     
     headline.description = description
     headline.happened_at = time_from_darcs_date(info['date'])
     headline.rid =  info['hash']
+    headline.reported_by = self.name
     
     return headline
   end
