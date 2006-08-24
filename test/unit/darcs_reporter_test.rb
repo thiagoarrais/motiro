@@ -96,9 +96,7 @@ END
     
     assert_equal 'Untitled patch', hl.description
   end
-
-  #TODO should use the package size when asking the repo connection for xml
-  #     input
+  
   #TODO dates are UTC
 
 end
