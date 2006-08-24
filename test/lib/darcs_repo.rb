@@ -24,8 +24,12 @@ class DarcsRepository
     `darcs add --repo=#{self.url} #{file_path}`
   end
   
-  def record(patch_title)
-    `darcs record -am\"#{patch_title}\" --repodir=#{self.url} 2>&1 --author=\"#{self.author}\"`
+  def record(patch_text)
+    temp_file = ENV['TEMP'] + '/darcs-msg.motiro'
+    File.open(temp_file, 'w') do |file|
+      file << patch_text
+    end
+    `darcs record -a --logfile=#{temp_file} --repodir=#{self.url} --author=\"#{self.author}\" 2>&1`
   end
   
   def destroy

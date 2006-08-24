@@ -60,5 +60,17 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     
     repo.destroy
   end
+  
+  def test_recording_with_long_comment
+    repo = DarcsRepository.new
+    
+    repo.add_file('fileTwo.txt', 'file contents')
+    repo.record("This is the comment title\n\n" +
+                "And these are some details about the patch")
+
+    output = `darcs changes --repo=#{repo.url}`
+    assert output.match(/This is the comment title/)
+    assert output.match(/And these are some details about the patch/)
+  end
 
 end

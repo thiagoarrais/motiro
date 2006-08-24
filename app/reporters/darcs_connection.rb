@@ -9,8 +9,12 @@ class DarcsConnection
     @settings, @runner = settings, runner
   end
   
-  def changes
-    @runner.run("darcs changes --xml --repo=#{@settings.repo_url}")
+  def changes(hashcode=nil)
+    command = 'darcs changes --xml '
+    command += "--from-match=\"hash #{hashcode}\" " +
+               "--to-match=\"hash #{hashcode}\" " unless hashcode.nil?
+    command += "--repo=#{@settings.repo_url}"
+    @runner.run(command)
   end
 
 end

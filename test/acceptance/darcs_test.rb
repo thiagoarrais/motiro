@@ -20,4 +20,25 @@ class DarcsAcceptanceTest < SeleniumTestCase
     assert_text_present @repo.author.match(/@/).pre_match
   end
   
+  def test_shows_full_text_on_details_page
+    patch_title = 'This is the patch title'
+    patch_text = patch_title + "\n\n" +
+                 "This is a short description of some problems faced when " +
+                 "making this patch and some pointers for future investigation"
+                 
+    @repo.add_file('fileB.txt', 'this is file B')
+    @repo.record(patch_text)
+    
+    open '/'
+    
+    assert_text_present patch_title
+    assert_text_not_present 'This is a short description'
+    
+    click "//a[text() = '#{patch_title}']"
+    wait_for_page_to_load(2000)
+    
+    assert_text_present 'This is a short description of some problems faced'
+    assert_text_present 'for future investigation'
+  end
+  
 end

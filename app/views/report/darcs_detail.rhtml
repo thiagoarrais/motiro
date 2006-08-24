@@ -1,0 +1,24 @@
+<% @title = 'Motiro - Darcs Patch' %>
+<% if ! @partial then %>
+      <div id="description" class="window">
+        <div class="inner">
+          <h1>Darcs patch</h1>
+<% end %>
+<%= Page.new(:text => @headline.description(Translator.for(@locale))).
+      render_html %>
+          <div id="summary">
+            <% @headline.changes.each do |change| %>
+                <%= change.render_summary -%>
+                <br/>
+            <% end %>
+          </div>
+<% if !@partial then %>
+        </div>
+      </div>
+    </div>
+    <div id="changes">
+      <% @headline.changes.each do |change| %>
+        <%= change.render_diff %>
+      <% end %>
+<% end %>
+  
