@@ -31,6 +31,20 @@ END
 </changelog>
 END
 
+  P4 = <<END
+<changelog>
+<patch author='thiago.arrais@gmail.com' date='20060717200939' local_date='Mon Jul 17 17:09:39 BRT 2006' inverted='False' hash='20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz'>
+	<name>Some refactoring after the mess</name>
+</patch>
+<patch author='thiago.arrais@gmail.com' date='20060813140540' local_date='Sun Aug 13 11:05:40 BRT 2006' inverted='False' hash='20060813140540-49d33-a640b3999077a8be03d81825ad7d40108c827250.gz'>
+        <name>Cheking for ghc --make output</name>
+        <comment>
+Still need testing on Windows. Much probably there are file system and/or
+linebreaking issues.</comment>
+</patch>
+</changelog>
+END
+
   P_EMPTY = <<END
 <changelog>
 </changelog>
@@ -95,6 +109,16 @@ END
     hl = @reporter.latest_headline
     
     assert_equal 'Untitled patch', hl.description
+  end
+  
+  def test_multiple_headlines
+    @darcs_changes = P4
+    
+    hls = @reporter.latest_headlines
+    
+    assert_equal 2, hls.size
+    assert_equal 'Some refactoring after the mess', hls[0].title
+    assert_equal 'Cheking for ghc --make output', hls[1].title
   end
   
 end
