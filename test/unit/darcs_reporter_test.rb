@@ -53,7 +53,7 @@ END
     hl = @reporter.latest_headline
     assert_equal 'thiago.arrais', hl.author
     assert_equal 'Some refactoring after the mess', hl.description
-    assert_equal Time.local(2006, 7, 17, 20, 9, 39), hl.happened_at
+    assert_equal Time.utc(2006, 7, 17, 20, 9, 39), hl.happened_at
     assert_equal '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz',
                  hl.rid
     assert_equal 'darcs', hl.reported_by
@@ -97,6 +97,4 @@ END
     assert_equal 'Untitled patch', hl.description
   end
   
-  #TODO dates are UTC
-
 end

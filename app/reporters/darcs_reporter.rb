@@ -30,8 +30,8 @@ class DarcsReporter < MotiroReporter
   
   def time_from_darcs_date(date)
     md = date.match(/(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/)
-    Time.local(md[1].to_i, md[2].to_i, md[3].to_i,
-               md[4].to_i, md[5].to_i, md[6].to_i)
+    nums = md[1..6].collect do |s| s.to_i end
+    Time.utc(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], nums[6])
   end
   
 private
