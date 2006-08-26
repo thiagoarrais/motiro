@@ -1,13 +1,11 @@
 require 'yaml'
 
-require 'ports/filesystem'
-
 class SettingsProvider
     
     # The settings provider is responsible for reading the settings from the
     # config file and providing them to clients
 
-    def initialize(fs=FileSystem.new)
+    def initialize(fs=File)
         @filesystem = fs
     end
 
