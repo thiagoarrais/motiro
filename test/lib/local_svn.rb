@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'socket'
 
 require 'repoutils'
 
@@ -127,23 +126,5 @@ private
         passwd_file.close
     end
     
-    def find_available_port
-        port = 36906
-        while(try_port(port))
-            port += 1
-        end
-        
-        return port
-    end
-    
-    def try_port(port)
-        begin
-            t = TCPSocket.new('localhost', port)
-            t.close
-            return true
-        rescue
-            return false
-        end
-    end
 
 end
