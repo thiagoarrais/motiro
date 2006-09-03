@@ -16,16 +16,19 @@ Para ter seu portal Motiro rodando, você vai precisar de:
 
 1. MySQL 4.1 (versões 5.x não são cobertas e versões anteriores não foram
    testadas)
-2. Ruby 1.8.2+ (qualquer versão posterior deve funcionar, versões anteriores
-   ainda não testadas)
-3. Rails 1.1.2 (qualquer versão posterior deve funcionar, versões anteriores
-   não testadas)
-4. Cliente Subversion (svn) para o repórter Subversion (que é o único repórter
-   disponível nesta versão do Motiro :-)
-5. Xml-Simple 1.0.8 (qualquer versão posterior deve funcionar, versões
-   anteriores não testadas)
-6. FlexMock 0.1.7 para executar os testes (qualquer versão posterior deve
-   funcionar)
+2. Ruby 1.8.2 ou superior
+3. Rails 1.1.6 ou superior
+4. Cliente Subversion (svn) se quiser usar o repórter Subversion
+5. Cliente Darcs (darcs) se quiser usar o repórter Darcs
+6. Xml-Simple 1.0.9 ou superior (disponível como Ruby Gem:  xml-simple)
+7. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
+   Gem: flexmock)
+   
+Se você estiver rodando o Motiro sobre uma plataforma Windows, vai precisar
+também de:
+
+8. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
+9. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
 
 Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 
