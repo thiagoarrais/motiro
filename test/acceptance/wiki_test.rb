@@ -1,6 +1,11 @@
+require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
+
 require 'acceptance/live_mode_test'
 
-class SubversionAcceptanceTest < SeleniumTestCase
+class WikiAcceptanceTest < SeleniumTestCase
+
+  fixtures :users, :pages
   
   def test_edit_main_page
     open '/en'
@@ -78,5 +83,39 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     assert_text_not_present 'This title does not show'
   end
+  
+  def test_blocks_edition_for_unauthorized_users
+    open '/en'
+    
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    open '/wiki/edit/TestPage'
+    
+    type 'txaEditor', 'Original Text'
+    type 'txtAuthorized', 'bob eric'
+    click 'btnSave'
+    wait_for_page_to_load(1500)
+    
+    open '/account/logout'
+    open '/en'
+    
+    type 'user_login', 'john'
+    type 'user_password', 'lennon'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    open '/wiki/show/TestPage'
+    assert_text_present 'Edit (not authorized)'
+    
+    open '/wiki/edit/TestPage'
+    assert get_text("//span[@class = 'warning']").match(/\(not authorized\)/)
+  end
+  
+  #TODO only original author can change authorization list
   
 end

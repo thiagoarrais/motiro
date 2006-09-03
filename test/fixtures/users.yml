@@ -10,6 +10,16 @@ bob:
   login: bob
   password: b8ccc7b7f539f5ed5b557990935848e5a637d209 # test
   
+john:
+  id: 1000004
+  login: john
+  password: 6b9094cf1f9d7d2b517c88116c757ed30180a55b #lennon
+  
+eric:
+  id: 1000005
+  login: eric
+  password: ba43ae2dac98d836fce3a55d42b5931fa0644631 # clapton
+  
 existingbob:
   id: 1000002
   login: existingbob
