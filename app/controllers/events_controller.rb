@@ -22,6 +22,7 @@ class EventsController < EditionController
     attrs[:author] = session[:user].login
     
     flash[:notice] = 'Evento registrado.' if @reporter.store_event(attrs)
+    redirect_to :controller => 'root', :action => 'index'
   end
 
 end

@@ -39,7 +39,19 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'show', :page => page_name
   end
   
-  # TODO direct http post to save should be blocked
+  def test_blocks_saving_pages_for_unauthorized_users
+    @request.session[:user] = users('john')
+  
+    page_name = pages('bob_and_erics_page').name
+    
+    post :save, { :page => { :name => page_name,
+                             :text => 'New text',
+                             :editors => 'john' },
+                  'btnSave' => true }
+    
+    assert flash[:not_authorized]
+    assert_redirected_to :action => 'show', :page => page_name
+  end
   
   def test_asks_page_provider_for_pages_when_editing
     FlexMock.use do |page_provider|

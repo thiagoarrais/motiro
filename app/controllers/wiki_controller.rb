@@ -15,7 +15,7 @@ class WikiController < EditionController
     
   def edit
     @page = find_page(params[:page])
-    if session[:user] && session[:user].can_edit?(@page)
+    if user_authorized?
       render(:layout => 'wiki_edit')
     else
       flash[:not_authorized] = true
@@ -29,12 +29,23 @@ class WikiController < EditionController
   end
     
   def do_save
-    page = find_page(params[:page][:name])
-    page.attributes = params[:page]
-    page.save
+    @page = find_page(params[:page][:name])
+    if user_authorized? #TODO DRY authorization code
+      @page.attributes = params[:page]
+      @page.save
+    else
+      flash[:not_authorized] = true
+    end
+    redirect_to :action => 'show', :page => @page.name
   end
+  
+  #TODO show prettier page when /wiki/show/PageName
     
 private
+
+  def user_authorized?
+    session[:user] && session[:user].can_edit?(@page)
+  end
 
   def find_page(name)
     @page_provider.find_by_name(name) || default_page(name)
