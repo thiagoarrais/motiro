@@ -15,7 +15,12 @@ class WikiController < EditionController
     
   def edit
     @page = find_page(params[:page])
-    render(:layout => 'wiki_edit')
+    if session[:user] && session[:user].can_edit?(@page)
+      render(:layout => 'wiki_edit')
+    else
+      flash[:not_authorized] = true
+      redirect_to :action => 'show', :page => @page.name
+    end
   end
     
   def show
@@ -25,7 +30,7 @@ class WikiController < EditionController
     
   def do_save
     page = find_page(params[:page][:name])
-    page.text = params[:page][:text]
+    page.attributes = params[:page]
     page.save
   end
     

@@ -18,6 +18,7 @@
 'Password' => 'Senha',
 'Edit' => 'Editar',
 '(requires authentication)' => '(identifique-se, por favor)',
+'(not authorized)' => '(não autorizado)',
 'Latest news from %s' => 'Últimas notícias do %s',
 'Upcoming events' => 'Próximos eventos',
 'version' => 'versão',
@@ -38,6 +39,8 @@
 # Wiki edition page
 'Save modifications' => 'Salvar modificações',
 'Discard' => 'Descartar',
+'Who should be able to edit this page?' => 'Quem pode editar esta página?',
+'(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
 'Quick Reference' => 'Referência rápida',
 'Title' => 'Título',
 'address' => 'endereço',

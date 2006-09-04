@@ -1,6 +1,3 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
-
 require 'acceptance/live_mode_test'
 
 class WikiAcceptanceTest < SeleniumTestCase
@@ -113,7 +110,7 @@ class WikiAcceptanceTest < SeleniumTestCase
     assert_text_present 'Edit (not authorized)'
     
     open '/wiki/edit/TestPage'
-    assert get_text("//span[@class = 'warning']").match(/\(not authorized\)/)
+    assert get_text("//span[@class = 'marked']").match(/\(not authorized\)/)
   end
   
   #TODO only original author can change authorization list

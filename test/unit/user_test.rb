@@ -86,5 +86,13 @@ class UserTest < Test::Unit::TestCase
     assert_equal '352ebf77709ac891cd242c2ec74fa20a3726c1f8', u.password    
   end
 
+  def test_page_edition_authorization
+    u = User.new(:login => 'john')
+    attrs = { :name => 'TestPage', :text => '' }
+
+    assert  u.can_edit?(Page.new(attrs.merge(:editors => 'john')))
+    assert !u.can_edit?(Page.new(attrs.merge(:editors => 'eric')))
+    assert  u.can_edit?(Page.new(attrs.merge(:editors => '  ')))
+  end
   
 end

@@ -17,8 +17,11 @@ class User < ActiveRecord::Base
     find_first(["login = ? AND password = ?", login, sha1(pass)])
   end  
   
-
-  protected
+  def can_edit?(page)
+    page.is_open_to_all? || page.editors.split.include?(login)
+  end
+  
+protected
 
   # Apply SHA1 encryption to the supplied password. 
   # We will additionally surround the password with a salt 
@@ -48,7 +51,7 @@ class User < ActiveRecord::Base
     else
       write_attribute "password", self.class.sha1(password)
     end        
-  end  
+  end
   
   validates_uniqueness_of :login, :on => :create
 

@@ -21,5 +21,14 @@ class PageTest < Test::Unit::TestCase
     assert_equal "<div>\n<p>Welcome to Motiro</p>\n</div>",
                  page.render_html('en')
   end
+  
+  def test_is_open_to_all
+    attrs = { :name => 'SomePage', :text => 'Page text' }
+    assert !Page.new(attrs.merge(:editors => 'john')).is_open_to_all?
+    assert  Page.new(attrs.merge(:editors => '')).is_open_to_all?
+    assert  Page.new(attrs.merge(:editors => '  ')).is_open_to_all?
+    assert !Page.new(attrs.merge(:editors => '  john ')).is_open_to_all?
+    assert  Page.new(attrs.merge(:editors => "\n")).is_open_to_all?
+  end
 
 end

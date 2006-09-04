@@ -1,4 +1,8 @@
-<% @destination = { :name => 'page', :attr => 'text' }
-   @before_editor_content = Proc.new do %>
+<% @destination = { :name => 'page', :attr => 'text' } %>
+<label for='txtAuthorized'>
+  <%= 'Who should be able to edit this page?'.t -%>
+  <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
+</label><br />
+<%= text_field('page', 'editors', :id => 'txtAuthorized',
+                                  :class => 'text') %>
 <%= hidden_field 'page', 'name' %>
-<%end%>

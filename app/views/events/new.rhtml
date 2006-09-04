@@ -1,6 +1,5 @@
 <% @title = 'Motiro - ' + 'Events'.t
-   @destination = { :name => 'headline', :attr => 'description' }
-   @after_editor_content = Proc.new do %>
+   @destination = { :name => 'headline', :attr => 'description' } %>
       <p style="float: left; padding-right: 2em;">
         <label for="headline_happened_at"><%= 'Date'.t -%>:</label>
         <%= date_select 'headline', 'happened_at'  %>
@@ -13,4 +12,3 @@
         </p>
       </div>
       <div style="height: 0; clear: left;">&nbsp;</div>
-<% end %>

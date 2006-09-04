@@ -1,12 +1,20 @@
 <div class='toolbar editbar'>
-  <% if @session[:user] then%>
+  <% if @session[:user].nil? then %>
+    <span class='disabled'>
+      <%= 'Edit'.t -%> <%= '(requires authentication)'.t -%>
+    </span>
+  <% elsif !session[:user].can_edit?(@page) then
+       klass = if flash[:not_authorized] then 'marked' else 'none' end
+     %>
+    <span class='disabled'>
+      <%= 'Edit'.t -%> <%= content_tag('span',
+                                       '(not authorized)'.t,
+                                       :class => klass) -%>
+    </span>
+  <% else %>
       <%= link_to( 'Edit'.t,
                    { :controller => 'wiki',
                      :action => 'edit',
                      :page => @page.name } )%>
-  <% else %>
-    <span class='disabled'>
-      <%= 'Edit'.t -%> <%= '(requires authentication)'.t -%>
-    </span>
   <% end %>
 </div>

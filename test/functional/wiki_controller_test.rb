@@ -8,6 +8,8 @@ class WikiController; def rescue_action(e) raise e end; end
 class WikiControllerTest < Test::Unit::TestCase
 
   include TestConfiguration
+  
+  fixtures :users, :pages
 
   def setup
     @controller = WikiController.new
@@ -27,6 +29,17 @@ class WikiControllerTest < Test::Unit::TestCase
                                              :page => 'MainPage',
                                              :locale => 'en')
   end
+  
+  def test_blocks_edition
+    @request.session[:user] = users('bob')
+    
+    page_name = pages('johns_page').name
+    
+    get :edit, { :page => page_name }
+    assert_redirected_to :action => 'show', :page => page_name
+  end
+  
+  # TODO direct http post to save should be blocked
   
   def test_asks_page_provider_for_pages_when_editing
     FlexMock.use do |page_provider|

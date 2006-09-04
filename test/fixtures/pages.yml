@@ -1,6 +1,19 @@
 main_page:
   id: 1
   name: MainPage
+  editors:  ""
   text: = Motiro =
         
         This is project motiro
+
+johns_page:
+  id: 2
+  name: John_s
+  editors: john
+  text: This is John's page
+  
+bob_and_erics_page:
+  id: 3
+  name: Bob_and_Eric_s
+  editors: bob eric
+  text: This is Bob and Eric's page

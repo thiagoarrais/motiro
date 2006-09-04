@@ -6,14 +6,11 @@
                                                   :name => 'btnSave' %>
             <%= submit_tag 'Discard'.t, :class => 'button',
                                        :name => 'btnDiscard' %>
-            <%= if @before_editor_content.nil? then ''
-                else @before_editor_content.call; end %>
             <%= text_area @destination[:name],
                           @destination[:attr],
                           :id => 'txaEditor',
                           :rows => '30' %>
-            <%= if @after_editor_content.nil? then ''
-                else @after_editor_content.call; end %>
+            <%= @content_for_layout %>
           <%= end_form_tag %>
         </div>
       </div>

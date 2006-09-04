@@ -78,6 +78,11 @@ div.channel_toolbar {
     color: gray;
 }
 
+.marked {
+    color: #F00;
+    background: #FFA;
+}
+
 .changed {
     background:#FFD;
 }
@@ -126,6 +131,10 @@ input {
 
 input.button {
     background-color: #b0ddff;
+}
+
+#editor input.text {
+    width: 100%;
 }
 
 textarea {
