@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'show',
               :format => 'rss'
 
-  map.connect 'wiki/:action/:page/:locale', :controller => 'wiki',
+  map.connect 'wiki/:action/:page_name/:locale', :controller => 'wiki',
               :defaults => locale_defaults
               
   map.connect 'events/:action/:locale', :controller => 'events',

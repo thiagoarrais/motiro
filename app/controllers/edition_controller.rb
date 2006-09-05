@@ -1,7 +1,11 @@
 class EditionController < ApplicationController
 
   def save
-    do_save if params['btnSave']
+    if params['btnSave']
+      do_save
+    else
+      redirect_to :controller => 'root', :action => 'index'
+    end
   end
   
   def do_save; end

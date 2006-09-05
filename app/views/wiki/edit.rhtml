@@ -5,4 +5,4 @@
 </label><br />
 <%= text_field('page', 'editors', :id => 'txtAuthorized',
                                   :class => 'text') %>
-<%= hidden_field 'page', 'name' %>
+<%= hidden_field_tag 'page_name', @page.name %>

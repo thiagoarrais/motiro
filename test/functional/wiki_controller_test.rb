@@ -20,13 +20,13 @@ class WikiControllerTest < Test::Unit::TestCase
   def test_routes_to_nil_locale_when_not_specified_on_url
     assert_routing('/wiki/edit/MainPage', :controller => 'wiki',
                                           :action => 'edit',
-                                          :page => 'MainPage')
+                                          :page_name => 'MainPage')
   end
 
   def test_routes_to_specified_locale_page
     assert_routing('/wiki/show/MainPage/en', :controller => 'wiki',
                                              :action => 'show',
-                                             :page => 'MainPage',
+                                             :page_name => 'MainPage',
                                              :locale => 'en')
   end
   
@@ -35,8 +35,8 @@ class WikiControllerTest < Test::Unit::TestCase
     
     page_name = pages('johns_page').name
     
-    get :edit, { :page => page_name }
-    assert_redirected_to :action => 'show', :page => page_name
+    get :edit, { :page_name => page_name }
+    assert_redirected_to :action => 'show', :page_name => page_name
   end
   
   def test_blocks_saving_pages_for_unauthorized_users
@@ -44,13 +44,13 @@ class WikiControllerTest < Test::Unit::TestCase
   
     page_name = pages('bob_and_erics_page').name
     
-    post :save, { :page => { :name => page_name,
-                             :text => 'New text',
+    post :save, { :page_name => page_name,
+                  :page => { :text => 'New text',
                              :editors => 'john' },
                   'btnSave' => true }
     
     assert flash[:not_authorized]
-    assert_redirected_to :action => 'show', :page => page_name
+    assert_redirected_to :action => 'show', :page_name => page_name
   end
   
   def test_asks_page_provider_for_pages_when_editing
@@ -63,13 +63,13 @@ class WikiControllerTest < Test::Unit::TestCase
       @controller = WikiController.new(page_provider)
 
       ensure_logged_in
-      get :edit, {:page => 'TestPage'}
+      get :edit, {:page_name => 'TestPage'}
       assert_response :success
     end
   end
   
   def test_authentication_required_for_edition
-     get :edit, { :page => 'TestPage' }
+     get :edit, { :page_name => 'TestPage' }
      assert_redirected_to(:controller => 'account', :action => 'login')
   end
   
@@ -86,7 +86,7 @@ class WikiControllerTest < Test::Unit::TestCase
         
         @controller = WikiController.new(provider)
 
-        get :show, {:page => 'TestPage', :locale => 'en'}
+        get :show, {:page_name => 'TestPage', :locale => 'en'}
         assert_response :success
      end
   end
@@ -104,7 +104,7 @@ class WikiControllerTest < Test::Unit::TestCase
         
         @controller = WikiController.new(provider)
 
-        get :show, {:page => 'TestPage'}
+        get :show, {:page_name => 'TestPage'}
         assert_response :success
      end
   end

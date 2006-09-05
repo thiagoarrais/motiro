@@ -3,6 +3,7 @@ class WikiController < EditionController
   layout nil
 
   before_filter :login_required
+  before_filter :check_edit_access, :only => [:edit, :save]
     
   def protect?(action)
     return false if 'show' == action
@@ -12,40 +13,40 @@ class WikiController < EditionController
   def initialize(page_provider=Page)
     @page_provider = page_provider
   end
-    
-  def edit
-    @page = find_page(params[:page])
-    if user_authorized?
-      render(:layout => 'wiki_edit')
-    else
+  
+  def check_edit_access
+    @page = find_page(params[:page_name])
+    if not session[:user] && session[:user].can_edit?(@page)
       flash[:not_authorized] = true
-      redirect_to :action => 'show', :page => @page.name
+      redirect_to :action => 'show', :page_name => @page.name
+      return false
     end
+    
+    return true
   end
     
-  def show
-    @page = find_page(params[:page])
-    @rendered_page = @page.render_html(params[:locale])
+  def edit
+    render(:layout => 'wiki_edit')
   end
     
   def do_save
-    @page = find_page(params[:page][:name])
-    if user_authorized? #TODO DRY authorization code
-      @page.attributes = params[:page]
-      @page.save
+    @page.attributes = params[:page]
+    @page.save
+    if 'MainPage' == @page.name
+      redirect_to :controller => 'root', :action => 'index'
     else
-      flash[:not_authorized] = true
+      redirect_to :action => 'show', :page_name => @page.name
     end
-    redirect_to :action => 'show', :page => @page.name
   end
   
+  def show
+    @page = find_page(params[:page_name])
+    @rendered_page = @page.render_html(params[:locale])
+  end
+    
   #TODO show prettier page when /wiki/show/PageName
     
 private
-
-  def user_authorized?
-    session[:user] && session[:user].can_edit?(@page)
-  end
 
   def find_page(name)
     @page_provider.find_by_name(name) || default_page(name)
