@@ -1,4 +1,7 @@
 class Page < ActiveRecord::Base
+
+  belongs_to :original_author, :class_name => 'User',
+                               :foreign_key => 'original_author_id'
   
   def render_html(locale_code=nil)
     translator = Translator.for(locale_code)

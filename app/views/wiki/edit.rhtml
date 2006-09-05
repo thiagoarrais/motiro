@@ -1,8 +1,11 @@
 <% @destination = { :name => 'page', :attr => 'text' } %>
-<label for='txtAuthorized'>
-  <%= 'Who should be able to edit this page?'.t -%>
-  <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
-</label><br />
-<%= text_field('page', 'editors', :id => 'txtAuthorized',
-                                  :class => 'text') %>
+<% if original_author_is_editing %>
+  <label for='txtAuthorized'>
+    <%= 'Who should be able to edit this page?'.t -%>
+    <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
+  </label><br />
+  <%= text_field('page', 'editors', :id => 'txtAuthorized',
+                                    :class => 'text') %>
+<% end %>
 <%= hidden_field_tag 'page_name', @page.name %>
+                                  

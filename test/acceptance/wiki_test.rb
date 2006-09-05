@@ -113,6 +113,48 @@ class WikiAcceptanceTest < SeleniumTestCase
     assert get_text("//span[@class = 'marked']").match(/\(not authorized\)/)
   end
   
-  #TODO only original author can change authorization list
+  def test_original_author_can_change_authorization_list
+    open '/en'
+
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    open '/wiki/edit/' + pages('bob_and_erics_page').name
+    
+    type 'txtAuthorized', 'bob eric john'
+    click 'btnSave'
+    wait_for_page_to_load(1500)
+    
+    open '/account/logout'
+    open '/en'
+    
+    type 'user_login', 'john'
+    type 'user_password', 'lennon'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    open '/wiki/edit/' + pages('bob_and_erics_page').name
+    assert_element_present 'txaEditor'
+  end
+  
+  def test_only_original_author_can_change_authorization_list
+    open '/en'
+
+    type 'user_login', 'eric'
+    type 'user_password', 'clapton'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    open '/wiki/edit/' + pages('bob_and_erics_page').name
+    assert_element_present 'txaEditor'
+    assert_element_not_present 'txtAuthorized'
+  end
+  
+  #TODO original author is recorded
   
 end
