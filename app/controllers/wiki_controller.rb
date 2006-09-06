@@ -16,7 +16,7 @@ class WikiController < EditionController
   
   def check_edit_access
     @page = find_page(params[:page_name])
-    if not session[:user] && session[:user].can_edit?(@page)
+    unless current_user.can_edit?(@page)
       flash[:not_authorized] = true
       redirect_to :action => 'show', :page_name => @page.name
       return false
@@ -30,6 +30,7 @@ class WikiController < EditionController
   end
     
   def do_save
+    @page.original_author ||= current_user
     @page.attributes = params[:page]
     @page.save
     if 'MainPage' == @page.name

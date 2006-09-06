@@ -3,7 +3,7 @@
   | <%= link_to 'Português', params.merge(:locale => 'pt-BR'), { :id => 'pt-BR' } -%>
 </div>
 <div>
-  <% if @session[:user].nil? then %>
+  <% if current_user.nil? then %>
       <%= start_form_tag :controller => 'account', :action=> 'login' %>
         <table>
           <tr>

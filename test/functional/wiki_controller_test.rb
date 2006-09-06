@@ -73,6 +73,9 @@ class WikiControllerTest < Test::Unit::TestCase
      assert_redirected_to(:controller => 'account', :action => 'login')
   end
   
+  #TODO block editors list changing for direct post
+  #TODO think about and write a test for stealthy manipulation of author field
+  
   def test_askes_page_to_render_in_specific_language
     FlexMock.use('provider', 'page') do |provider, page|
         provider.should_receive(:find_by_name).

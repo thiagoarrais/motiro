@@ -20,3 +20,10 @@ bob_and_erics_page:
   original_author_id: 1000001
   editors: bob eric
   text: This is Bob and Eric's page
+  
+nobodys_page:
+  id: 4
+  name: Unclaimed
+  original_author_id:
+  editors: ""
+  text: This page was created before the wiki access control was in place

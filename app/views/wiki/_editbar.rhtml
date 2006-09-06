@@ -1,9 +1,9 @@
 <div class='toolbar editbar'>
-  <% if @session[:user].nil? then %>
+  <% if current_user.nil? then %>
     <span class='disabled'>
       <%= 'Edit'.t -%> <%= '(requires authentication)'.t -%>
     </span>
-  <% elsif !session[:user].can_edit?(@page) then
+  <% elsif !current_user.can_edit?(@page) then
        klass = if flash[:not_authorized] then 'marked' else 'none' end
      %>
     <span class='disabled'>

@@ -4,6 +4,8 @@ require_dependency "login_system"
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   include LoginSystem
+  include ApplicationHelper
+  
   model :user
   
   before_filter :set_locale

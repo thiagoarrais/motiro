@@ -155,6 +155,37 @@ class WikiAcceptanceTest < SeleniumTestCase
     assert_element_not_present 'txtAuthorized'
   end
   
-  #TODO original author is recorded
-  
+  def test_records_original_author_for_pages_without_author
+    open '/en'
+
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+
+    edition_page = '/wiki/edit/' + pages('nobodys_page').name
+    open edition_page
+    
+    assert_element_present 'txtAuthorized'
+    
+    type 'txaEditor', 'New edited text for Nobody\'s Page'
+    click 'btnSave'
+    wait_for_page_to_load(1500)
+    
+    open '/account/logout'
+
+    open '/en'
+
+    type 'user_login', 'john'
+    type 'user_password', 'lennon'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+
+    open edition_page
+
+    assert_element_not_present 'txtAuthorized'
+  end
+
 end

@@ -4,7 +4,7 @@ class AccountController < ApplicationController
   def login
     case @request.method
       when :post
-      if @session[:user] = User.authenticate(@params[:user_login], @params[:user_password])
+      if session[:user] = User.authenticate(@params[:user_login], @params[:user_password])
 
         flash['notice']  = "Login successful"
         redirect_back_or_default params[:return_to]
@@ -17,7 +17,7 @@ class AccountController < ApplicationController
   end
   
   def logout
-    @session[:user] = nil
+    session[:user] = nil
   end
     
   def welcome
