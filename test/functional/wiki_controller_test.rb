@@ -73,7 +73,21 @@ class WikiControllerTest < Test::Unit::TestCase
      assert_redirected_to(:controller => 'account', :action => 'login')
   end
   
-  #TODO block editors list changing for direct post
+  def test_only_original_author_can_change_editors_list
+    @request.session[:user] = users('eric')
+    
+    page_name = pages('bob_and_erics_page').name
+    post :save, :page_name => page_name,
+                :page => { :text => 'New page text',
+                           :editors => 'bob eric john'},
+                :btnSave => true
+    
+    @request.session[:user] = users('john')
+    
+    get :edit, :page_name => page_name
+    assert flash[:not_authorized]
+  end
+
   #TODO think about and write a test for stealthy manipulation of author field
   
   def test_askes_page_to_render_in_specific_language

@@ -17,7 +17,7 @@ johns_page:
 bob_and_erics_page:
   id: 3
   name: Bob_and_Eric_s
-  original_author_id: 1000001
+  original_author_id: 1000001 #bob
   editors: bob eric
   text: This is Bob and Eric's page
   
