@@ -17,10 +17,15 @@
 
 class WikiController < EditionController
 
-  layout nil
+  layout :choose_layout
 
   before_filter :login_required
   before_filter :check_edit_access, :only => [:edit, :save]
+  
+  def choose_layout
+    return 'wiki_show' unless params[:context] == 'partial'
+    return nil
+  end
     
   def protect?(action)
     return false if 'show' == action
