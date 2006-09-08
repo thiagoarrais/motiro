@@ -1,3 +1,20 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require 'digest/sha1'
 
 # this model expects a certain database layout and its based on the name/login pattern. 
@@ -18,7 +35,9 @@ class User < ActiveRecord::Base
   end  
   
   def can_edit?(page)
-    page.is_open_to_all? || page.editors.split.include?(login)
+    self == page.original_author ||
+    page.is_open_to_all? ||
+    page.editors.split.include?(login)
   end
   
   def can_change_editors?(page)

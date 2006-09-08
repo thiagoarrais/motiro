@@ -1,10 +1,27 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < Test::Unit::TestCase
   
   self.use_instantiated_fixtures  = true
 
-  fixtures :users
+  fixtures :users, :pages
     
   def test_auth
 
@@ -93,6 +110,16 @@ class UserTest < Test::Unit::TestCase
     assert  u.can_edit?(Page.new(attrs.merge(:editors => 'john')))
     assert !u.can_edit?(Page.new(attrs.merge(:editors => 'eric')))
     assert  u.can_edit?(Page.new(attrs.merge(:editors => '  ')))
+  end
+  
+  def test_original_author_can_always_edit_page
+    bob = users('bob')
+    john = users('john')
+    bobs_page = pages('bob_and_erics_page')
+    
+    bobs_page.editors = 'john'
+    assert john.can_edit?(bobs_page)
+    assert bob.can_edit?(bobs_page)
   end
   
 end
