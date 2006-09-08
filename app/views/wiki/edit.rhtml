@@ -1,5 +1,5 @@
 <% @destination = { :name => 'page', :attr => 'text' } %>
-<% if original_author_is_editing %>
+<% if current_user.can_change_editors?(@page) %>
   <label for='txtAuthorized'>
     <%= 'Who should be able to edit this page?'.t -%>
     <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>

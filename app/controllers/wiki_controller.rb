@@ -31,6 +31,7 @@ class WikiController < EditionController
     
   def do_save
     @page.original_author ||= current_user
+    params[:page].delete(:editors) unless current_user.can_change_editors?(@page)
     @page.attributes = params[:page]
     @page.save
     if 'MainPage' == @page.name

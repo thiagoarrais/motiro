@@ -2,7 +2,8 @@
 class NullUser
 
   def nil?; true; end
-  def can_edit?; false; end
+  def can_edit?(p); false; end
+  def can_change_editors?(p); false; end
   
 end
 

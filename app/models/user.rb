@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     page.is_open_to_all? || page.editors.split.include?(login)
   end
   
+  def can_change_editors?(page)
+    page.original_author.nil? || self == page.original_author
+  end
+  
 protected
 
   # Apply SHA1 encryption to the supplied password. 
