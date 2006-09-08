@@ -1,3 +1,20 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require File.dirname(__FILE__) + '/../test_helper'
 require 'wiki_controller'
 require 'test_configuration'
@@ -31,7 +48,7 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_blocks_edition
-    @request.session[:user] = users('bob')
+    log_as 'bob'
     
     page_name = pages('johns_page').name
     
@@ -40,7 +57,7 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_blocks_saving_pages_for_unauthorized_users
-    @request.session[:user] = users('john')
+    log_as 'john'
   
     page_name = pages('bob_and_erics_page').name
     
@@ -74,7 +91,7 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_only_original_author_can_change_editors_list
-    @request.session[:user] = users('eric')
+    log_as 'eric'
     
     page_name = pages('bob_and_erics_page').name
     post :save, :page_name => page_name,
@@ -82,14 +99,29 @@ class WikiControllerTest < Test::Unit::TestCase
                            :editors => 'bob eric john'},
                 :btnSave => true
     
-    @request.session[:user] = users('john')
+    log_as 'john'
     
     get :edit, :page_name => page_name
     assert flash[:not_authorized]
   end
-
-  #TODO think about and write a test for stealthy manipulation of author field
   
+  def test_noone_can_change_the_original_author
+    bob = users('bob')
+    page_name = pages('johns_page').name
+    
+    log_as 'john'
+    
+    post :save, :page_name => page_name,
+                :btnSave => true, 
+                :page => { :original_author_id => bob.id,
+                           :editors => 'john bob' }
+                
+    log_as 'bob'
+    
+    get :edit, :page_name => page_name
+    assert_no_tag :tag => 'label', :attributes => { :for => 'txtAuthorized' }
+  end
+
   def test_askes_page_to_render_in_specific_language
     FlexMock.use('provider', 'page') do |provider, page|
         provider.should_receive(:find_by_name).
@@ -124,6 +156,12 @@ class WikiControllerTest < Test::Unit::TestCase
         get :show, {:page_name => 'TestPage'}
         assert_response :success
      end
+  end
+  
+private
+
+  def log_as(user_name)
+    @request.session[:user] = users(user_name)
   end
   
 end
