@@ -173,3 +173,11 @@ div#darcs div.channel-title {
 div#darcs div.channel-body-outer {
     background: #E3A1C4
 }
+
+div#nextrelease div.channel-title {
+    background: #5CE28B
+}
+
+div#nextrelease div.channel-body-outer {
+    background: #5CE28B
+}

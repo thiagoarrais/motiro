@@ -16,4 +16,18 @@
                                         :locale => @locale }) %>
     </div>
   <% end %>
+  <div class="channel" id="nextrelease">
+    <div class='channel-title'>
+      <p><%= 'Planned features'.t -%></p>
+    </div>
+    <div class='channel-body-outer'>
+      <div class='inner'>
+        <%= render_component(:controller => 'wiki',
+                             :action =>  'show',
+                             :params => { :page_name => 'NextRelease',
+                                          :context => 'partial',
+                                          :locale => @locale }) %>
+      </div>
+    </div>
+  </div>
     

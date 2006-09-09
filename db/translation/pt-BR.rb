@@ -21,6 +21,7 @@
 '(not authorized)' => '(não autorizado)',
 'Latest news from %s' => 'Últimas notícias do %s',
 'Upcoming events' => 'Próximos eventos',
+'Planned features' => 'Funcionalidades planejadas',
 'version' => 'versão',
 'Add' => 'Adicionar',
 
