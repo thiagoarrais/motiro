@@ -147,7 +147,7 @@ class WikiControllerTest < Test::Unit::TestCase
           and_return(page).
           once
         page.should_receive(:render_html).
-          with(nil).
+          with('en-US').
           and_return("<div>You've been mocked!</div>").
           once
         
@@ -156,6 +156,13 @@ class WikiControllerTest < Test::Unit::TestCase
         get :show, {:page_name => 'TestPage'}
         assert_response :success
      end
+  end
+  
+  def test_considers_last_chosen_language_when_displaying_not_found_page
+    get '/en'
+    
+    get :show, :page_name => 'NotYetCreatedPage'
+    assert_tag :content => /nothing to be read here/
   end
   
 private

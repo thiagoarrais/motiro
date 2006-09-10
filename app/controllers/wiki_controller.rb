@@ -69,7 +69,7 @@ class WikiController < EditionController
   
   def show
     @page = find_page(params[:page_name])
-    @rendered_page = @page.render_html(params[:locale])
+    @rendered_page = @page.render_html(current_locale)
   end
     
 private
