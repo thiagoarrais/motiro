@@ -33,7 +33,8 @@ class WikiController < EditionController
   end
     
   def initialize(page_provider=Page)
-    @page_provider = page_provider
+    @real_page_provider = page_provider
+    @default_page_provider = DefaultPageProvider.new
   end
   
   def check_edit_access
@@ -71,18 +72,11 @@ class WikiController < EditionController
     @rendered_page = @page.render_html(params[:locale])
   end
     
-  #TODO show prettier page when /wiki/show/PageName
-    
 private
 
   def find_page(name)
-    @page_provider.find_by_name(name) || default_page(name)
+    @real_page_provider.find_by_name(name) ||
+    @default_page_provider.find_by_name(name)
   end
     
-  def default_page(name)
-    page = Page.new(:name => name)
-    page.text = WIKI_NOT_FOUND_TEXT
-    return page
-  end
-
 end
