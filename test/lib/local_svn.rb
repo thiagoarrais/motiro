@@ -113,7 +113,7 @@ class LocalSubversionRepository
     svnserve_file = File.open(repo_dir + '/conf/svnserve.conf', 'w')
     svnserve_file << "[general]\n" <<
                          "anon-access = read\n" <<
-                         "auth-acces = write\n" <<
+                         "auth-access = write\n" <<
                          "password-db = passwd\n"
     svnserve_file.close
     

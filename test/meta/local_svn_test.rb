@@ -73,7 +73,7 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
     assert_equal "local_file.txt\n", execute("svn ls #{@repo.url}")
     
     @repo.put_file('local_file.txt', "this is line number 1\n" +
-                                         "this is the new line number 2\n") 
+                                     "this is the new line number 2\n") 
     
     @repo.commit('added a new file')
     
@@ -85,6 +85,7 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
                         " this is line number 1\n" +
                         "-this is line number 2\n" +
                         "\\+this is the new line number 2")
+    
     assert_not_nil regexp.match(execute("svn diff -r1:2 #{@repo.url}"))
   end
   
