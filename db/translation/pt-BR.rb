@@ -16,6 +16,8 @@
 'Welcome' => 'Bem-vindo',
 'User' => 'Usuário',
 'Password' => 'Senha',
+'Confirmation' => 'Confirmação',
+'New user?' => 'Novo usuário?',
 'Edit' => 'Editar',
 '(requires authentication)' => '(identifique-se, por favor)',
 '(not authorized)' => '(não autorizado)',

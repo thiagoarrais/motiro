@@ -9,7 +9,14 @@
           <tr>
             <td><label for="user_login"><%= 'User'.t -%></label></td>
             <td><label for="user_password"><%= 'Password'.t -%></label></td>
-            <td/>
+            <td class="password_confirm" style="display: none">
+              <label for="user_password_confirmation"><%= 'Confirmation'.t -%></label>
+            </td>
+            <td>
+              <input type="checkbox" id="chk_new_user" name="chk_new_user"
+                     onClick="tooglePasswordConfirmation(document.forms[0].chk_new_user.checked)" />
+              <%= 'New user?'.t -%>
+            </td>
           </tr>
           <tr>
             <td>
@@ -19,6 +26,10 @@
             <td>
               <input type="password" name="user_password" id="user_password"
                      size="12" />
+            </td>
+            <td class="password_confirm" style="display: none">
+              <input type="password" name="user_password_confirmation"
+                     id="user_password_confirmation" size="12" disabled="true"/>
             </td>
             <td>
               <input type='hidden' name='return_to' value="<%= url_for(params) -%>"/>
@@ -31,6 +42,6 @@
         </table>
       <%= end_form_tag %>
   <% else %>
-    <%= 'Welcome'.t -%>, <%= @session[:user].login -%>
+    <%= 'Welcome'.t -%>, <%= current_user.login -%>
   <% end %>
 </div>

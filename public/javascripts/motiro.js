@@ -13,6 +13,17 @@ function showOnly(divId) {
     }
 }
 
+function tooglePasswordConfirmation(show) {
+	var cells = getElementsBySelector("td.password_confirm");
+	var state = show ? 'block' : 'none';
+            
+	document.getElementById("user_password_confirmation").disabled = !show;
+
+	for(i=0; i < cells.length; i++) {
+		cells[i].style.display = state;
+	}
+}
+
 //copied from niftycube
 //TODO try to DRY this
 function getElementsBySelector(selector){

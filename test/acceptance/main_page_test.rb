@@ -144,6 +144,19 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_element_present "//a[text() = 'Editar']"
   end
   
+  def test_new_user_check_toogles_password_confirmation_field
+    open '/en'
+    
+    assert_text_present 'New user?'
+    assert_not_visible "//label[@for='user_password_confirmation']"
+    assert_not_visible 'id=user_password_confirmation'
+    
+    click 'chk_new_user'
+    
+    assert_visible "//label[@for='user_password_confirmation']"
+    assert_visible 'id=user_password_confirmation'
+  end
+  
   def teardown
     Page.destroy_all
     Page.connection.commit_db_transaction

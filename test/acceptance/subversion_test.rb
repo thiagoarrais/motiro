@@ -227,10 +227,10 @@ class SubversionAcceptanceTest < SeleniumTestCase
     wait_for_page_to_load(1000)
     
     assert get_title =~ /Motiro - Subversion - Revis/
-    # RevisÃ£o r1
+    # Revisão r1
     assert_text_present 'Revis'
     assert_text_present 'o r1'
-    # AlteraÃ§Ãµes em dauther.txt
+    # Alteraçõµes em dauther.txt
     assert_text_present 'Altera'
     assert_text_present 'es em daughter.txt'
   end
