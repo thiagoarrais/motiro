@@ -144,7 +144,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_element_present "//a[text() = 'Editar']"
   end
   
-  def test_new_user_check_toogles_password_confirmation_field
+  def test_registering_new_user
     open '/en'
     
     assert_text_present 'New user?'
@@ -155,7 +155,36 @@ class MainPageAcceptanceTest < SeleniumTestCase
     
     assert_visible "//label[@for='user_password_confirmation']"
     assert_visible 'id=user_password_confirmation'
+    
+    click 'chk_new_user'
+    
+    assert_not_visible "//label[@for='user_password_confirmation']"
+    assert_not_visible 'id=user_password_confirmation'
+    
+    click 'chk_new_user'
+    
+    type 'user_login', 'paul'
+    type 'user_password', 'mccartney'
+    type 'user_password_confirmation', 'mccartney'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    assert_text_present 'Welcome, paul'
+    
+    open '/account/logout'
+    open '/en'
+    
+    type 'user_login', 'paul'
+    type 'user_password', 'mccartney'
+    
+    click 'login'
+    wait_for_page_to_load(1500)
+    
+    assert_text_present 'Welcome, paul'
   end
+  
+  #TODO blocks recreating existent user
   
   def teardown
     Page.destroy_all

@@ -21,7 +21,7 @@ class AccountControllerTest < Test::Unit::TestCase
   def test_auth_bob
     @request.session[:return_to] = "/bogus/location"
 
-    post :login, :user_login => "bob", :user_password => "test"
+    login_as 'bob', 'test'
     assert_session_has :user
 
     assert_equal @bob, @response.session[:user]
@@ -30,8 +30,7 @@ class AccountControllerTest < Test::Unit::TestCase
   end
   
   def test_redirects_to_last_page
-    post :login, :user_login => 'bob', :user_password => 'test',
-         :return_to => '/my/previous/location'
+    login_as 'bob', 'test', :return_to => '/my/previous/location'
 
     assert_equal @bob, @response.session[:user]
     assert_redirected_to '/my/previous/location'
@@ -47,28 +46,43 @@ class AccountControllerTest < Test::Unit::TestCase
   end
 
   def test_invalid_login
-    post :login, :user_login => "bob", :user_password => "not_correct"
+    login_as 'bob', 'not_correct'
      
     assert_session_has_no :user
-    
-    assert_template_has "login"
   end
   
   def test_login_logoff
-
-    post :login, :user_login => "bob", :user_password => "test"
+    login_as 'bob', 'test'
     assert_not_nil session[:user]
 
     get :logout
     assert_session_has_no :user
-
+  end
+  
+  def test_signup_and_login
+    post :signup, :user => { :login => 'paul', :password => 'mccartney',
+                             :password_confirmation => 'mccartney' },
+                  :return_to => '/'
+    assert_not_nil session[:user]
+    
+    get :logout
+    assert_session_has_no :user
+    
+    login_as 'paul', 'mccartney'
+    assert_not_nil session[:user]
   end
   
   def test_add_user_script
     adduser('charlie', 'charliessecret', 'charliessecret')
     
-    post :login, :user_login => "charlie", :user_password => "charliessecret"
+    login_as 'charlie', 'charliessecret'
     assert_not_nil session[:user]
+  end
+  
+private
+
+  def login_as(login, password, opts={})
+    post :login, opts.update(:user => {:login => login, :password => password})
   end
   
 end

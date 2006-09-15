@@ -20,16 +20,14 @@
           </tr>
           <tr>
             <td>
-            <input type="text" name="user_login" id="user_login"
-                   size="12" value="" />
+              <%= text_field 'user', 'login', :size => 12 -%>
             </td>
             <td>
-              <input type="password" name="user_password" id="user_password"
-                     size="12" />
+              <%= password_field 'user', 'password', :size => 12 -%>
             </td>
             <td class="password_confirm" style="display: none">
-              <input type="password" name="user_password_confirmation"
-                     id="user_password_confirmation" size="12" disabled="true"/>
+              <%= password_field 'user', 'password_confirmation', :size => 12,
+                                 :disabled => true -%>
             </td>
             <td>
               <input type='hidden' name='return_to' value="<%= url_for(params) -%>"/>

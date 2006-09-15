@@ -16,8 +16,10 @@ function showOnly(divId) {
 function tooglePasswordConfirmation(show) {
 	var cells = getElementsBySelector("td.password_confirm");
 	var state = show ? 'block' : 'none';
+	var action = show ? '/account/signup' : '/account/login' ;
             
 	document.getElementById("user_password_confirmation").disabled = !show;
+	document.forms[0].action = action;
 
 	for(i=0; i < cells.length; i++) {
 		cells[i].style.display = state;
