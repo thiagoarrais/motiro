@@ -4,11 +4,12 @@
 </div>
 <div style="position: relative">
   <% if current_user.nil? then %>
-      <%   login_style = nil %>
-      <% if flash[:username_used] %>
-      <%   login_style = 'border: 2px solid #FAA' %>
-        <span style="border: 1px solid #F33; background: #FFA; position: absolute; top: 10px; left: 64px; padding: 0 3px 0 3px">Username unavailable</span>
-      <% end %>
+      <div id="authentication_errors">
+        <%= render_component :controller => 'account',
+                             :action => 'availability',
+                             :params => { :desired_login => flash[:desired_login] }%>
+      </div>
+      
       <%= start_form_tag :controller => 'account', :action=> 'login' %>
         <table>
           <tr>
@@ -26,8 +27,7 @@
           <tr>
             <td>
               <%= text_field 'user', 'login', :size => 12,
-                                              :style => login_style,
-                                              :value => flash[:username_used] -%>
+                                              :value => flash[:desired_login] -%>
             </td>
             <td>
               <%= password_field 'user', 'password', :size => 12 -%>
@@ -45,6 +45,12 @@
             </td>
           </tr>
         </table>
+        <%= observe_field 'user_login',
+                          :url => { :controller => 'account',
+                                    :action => 'availability' },
+                          :with => 'desired_login',
+                          :frequency => 1,
+                          :update => 'authentication_errors' %>
       <%= end_form_tag %>
   <% else %>
     <%= 'Welcome'.t -%>, <%= current_user.login -%>

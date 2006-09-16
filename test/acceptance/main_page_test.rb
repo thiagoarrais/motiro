@@ -184,7 +184,15 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Welcome, paul'
   end
   
-  #TODO blocks recreating existent user
+  def test_register_existing_user
+    open '/en'
+    
+    type 'user_login', 'eric'
+    sleep 1
+    wait_for_condition 'selenium.page()' +
+                       ".findElement('id=username_not_available')",
+                       1000
+  end
   
   def teardown
     Page.destroy_all

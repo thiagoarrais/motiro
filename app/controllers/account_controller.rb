@@ -21,22 +21,23 @@ class AccountController < ApplicationController
   end
   
   def signup
-    if User.find_by_login(params[:user][:login])
-    
-      flash[:username_used] = params[:user][:login]
+    user = User.new(params[:user])
       
-      redirect_back_or_default params[:return_to]
+    if user.save
+      session[:user] = User.authenticate( params[:user][:login],
+                                          params[:user][:password] )
+
     else
-      user = User.new(params[:user])
-        
-      if user.save
-        session[:user] = User.authenticate( params[:user][:login],
-                                            params[:user][:password] )
-  
-      end
-  
-      redirect_back_or_default params[:return_to]
+      flash[:desired_login] = params[:user][:login]
     end
+
+    redirect_back_or_default params[:return_to]
+  end
+  
+  def availability
+    @not_available = ! User.find_by_login(params[:desired_login]).nil?
+    
+    render :template => 'layouts/_auth_errors', :layout => false
   end
   
   def logout

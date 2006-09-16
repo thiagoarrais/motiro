@@ -71,8 +71,14 @@ class AccountControllerTest < Test::Unit::TestCase
   def test_do_not_allow_signing_up_with_already_used_username
     signup_as 'bob', 'dylan'
     assert_nil session[:user]
+  end
+  
+  def test_check_for_availability
+    post :availability, :desired_login => 'bob'
+    assert assigns(:not_available)
     
-    assert flash[:username_used]
+    post :availability, :desired_login => 'paul'
+    assert !assigns(:not_available)
   end
   
 private
