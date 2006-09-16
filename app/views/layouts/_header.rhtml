@@ -2,8 +2,13 @@
     <%= link_to 'English', params.merge(:locale => 'en'), { :id => 'en' } -%>
   | <%= link_to 'Português', params.merge(:locale => 'pt-BR'), { :id => 'pt-BR' } -%>
 </div>
-<div>
+<div style="position: relative">
   <% if current_user.nil? then %>
+      <%   login_style = nil %>
+      <% if flash[:username_used] %>
+      <%   login_style = 'border: 2px solid #FAA' %>
+        <span style="border: 1px solid #F33; background: #FFA; position: absolute; top: 10px; left: 64px; padding: 0 3px 0 3px">Username unavailable</span>
+      <% end %>
       <%= start_form_tag :controller => 'account', :action=> 'login' %>
         <table>
           <tr>
@@ -20,7 +25,9 @@
           </tr>
           <tr>
             <td>
-              <%= text_field 'user', 'login', :size => 12 -%>
+              <%= text_field 'user', 'login', :size => 12,
+                                              :style => login_style,
+                                              :value => flash[:username_used] -%>
             </td>
             <td>
               <%= password_field 'user', 'password', :size => 12 -%>

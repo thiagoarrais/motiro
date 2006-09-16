@@ -21,15 +21,22 @@ class AccountController < ApplicationController
   end
   
   def signup
-    user = User.new(params[:user])
+    if User.find_by_login(params[:user][:login])
+    
+      flash[:username_used] = params[:user][:login]
       
-    if user.save
-      session[:user] = User.authenticate( params[:user][:login],
-                                          params[:user][:password] )
-
+      redirect_back_or_default params[:return_to]
+    else
+      user = User.new(params[:user])
+        
+      if user.save
+        session[:user] = User.authenticate( params[:user][:login],
+                                            params[:user][:password] )
+  
+      end
+  
+      redirect_back_or_default params[:return_to]
     end
-
-    redirect_back_or_default params[:return_to]
   end
   
   def logout

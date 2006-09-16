@@ -58,9 +58,7 @@ class AccountControllerTest < Test::Unit::TestCase
   end
   
   def test_signup_and_login
-    post :signup, :user => { :login => 'paul', :password => 'mccartney',
-                             :password_confirmation => 'mccartney' },
-                  :return_to => '/'
+    signup_as 'paul', 'mccartney'
     assert_not_nil session[:user]
     
     get :logout
@@ -70,10 +68,23 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_not_nil session[:user]
   end
   
+  def test_do_not_allow_signing_up_with_already_used_username
+    signup_as 'bob', 'dylan'
+    assert_nil session[:user]
+    
+    assert flash[:username_used]
+  end
+  
 private
 
   def login_as(login, password, opts={})
     post :login, opts.update(:user => {:login => login, :password => password})
+  end
+  
+  def signup_as(username, password)
+    post :signup, :user => { :login => username, :password => password,
+                             :password_confirmation => password },
+                  :return_to => '/'
   end
   
 end
