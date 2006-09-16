@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'account_controller'
 
-load File.expand_path(File.dirname(__FILE__) + '/../../script/adduser')
-
 # Raise errors beyond the default web-based presentation
 class AccountController; def rescue_action(e) raise e end; end
 
@@ -69,13 +67,6 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_session_has_no :user
     
     login_as 'paul', 'mccartney'
-    assert_not_nil session[:user]
-  end
-  
-  def test_add_user_script
-    adduser('charlie', 'charliessecret', 'charliessecret')
-    
-    login_as 'charlie', 'charliessecret'
     assert_not_nil session[:user]
   end
   

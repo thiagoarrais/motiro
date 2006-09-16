@@ -260,15 +260,6 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    
    repo: http://dev.rubyonrails.org/svn/rails
    
-   Depois de adaptar o arquivo de configuração para suas necessidades, você
-   muito provavelmente vai querer ter um nome de usuário para editar a descrição
-   do projeto e adicionar eventos. Para fazer isso, basta executar o script
-   `adduser':
-   
-   % ruby script/adduser
-   
-   Cuidado, este script vai mostrar a senha digitada na tela.
-
    Para maiores informações sobre como personalizar o Motiro, favor nos
    contactar.
 

@@ -243,15 +243,6 @@ What you need to do is:
 
    repo: http://dev.rubyonrails.org/svn/rails
 
-   After changing the config file to suit your needs, you'll much probably want
-   to have a username to edit the project description and start adding events.
-   To do that, you just need to run the script `adduser':
-   
-   % ruby script/adduser
-   
-   
-   But be careful: this script will show the entered password on the screen.
-   
    For further information about customizing your Motiro, please contact us.
 
 FURTHER INFO AND TROUBLESHOOTING
