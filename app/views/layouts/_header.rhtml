@@ -2,7 +2,7 @@
     <%= link_to 'English', params.merge(:locale => 'en'), { :id => 'en' } -%>
   | <%= link_to 'Português', params.merge(:locale => 'pt-BR'), { :id => 'pt-BR' } -%>
 </div>
-<div style="position: relative">
+<div>
   <% if current_user.nil? then %>
       <div id="authentication_errors">
         <%= render_component :controller => 'account',

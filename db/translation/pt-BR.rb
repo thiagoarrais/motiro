@@ -18,6 +18,7 @@
 'Password' => 'Senha',
 'Confirmation' => 'Confirmação',
 'New user?' => 'Novo usuário?',
+'Not available' => 'Não está disponível',
 'Edit' => 'Editar',
 '(requires authentication)' => '(identifique-se, por favor)',
 '(not authorized)' => '(não autorizado)',

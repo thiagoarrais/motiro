@@ -181,3 +181,12 @@ div#nextrelease div.channel-title {
 div#nextrelease div.channel-body-outer {
     background: #5CE28B
 }
+
+#username_not_available {
+	border: 1px solid #F33;
+	background: #FFA;
+	position: absolute;
+	top: 12px;
+	left: 64px;
+	padding: 0 3px 0 3px
+}
