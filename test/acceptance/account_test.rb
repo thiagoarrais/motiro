@@ -91,13 +91,20 @@ class AccountAcceptanceTest < SeleniumTestCase
   end
   
   def test_register_existing_user
-    open '/en'
+    open '/'
+    
+    click 'chk_new_user'
+    type 'user_login', 'eric'
+    sleep 1
+    wait_for_condition "selenium.page().findElement('id=username_not_available')", 1000
+  end
+  
+  def test_do_not_show_error_tooltip_when_not_registering_new_user
+    open '/'
     
     type 'user_login', 'eric'
     sleep 1
-    wait_for_condition 'selenium.page()' +
-                       ".findElement('id=username_not_available')",
-                       1000
+    assert_element_not_present 'id=username_not_available'
   end
   
   def test_edition_disabled_without_authentication

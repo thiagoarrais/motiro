@@ -37,8 +37,7 @@
       </tr>
     </table>
     <%= observe_field 'user_login',
-                      :url => { :controller => 'account',
-                                :action => 'availability' },
+                      :function => "if (document.getElementById('chk_new_user').checked) { new Ajax.Updater('authentication_errors', '/account/availability', {asynchronous:true, evalScripts:true, parameters:'desired_login=' + value})}",
                       :with => 'desired_login',
                       :frequency => 1,
                       :update => 'authentication_errors' %>
