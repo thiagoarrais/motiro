@@ -3,6 +3,9 @@
 	<%= render_component :action => 'availability',
 	                     :params => { :desired_login => flash[:desired_login] }%>
   </div>
+  <%= content_tag :span, 'Passwords do not match'.t,
+                  :id => 'passwords_do_not_match', :class => 'warning',
+                  :style=> 'display:none' %>
   <%= start_form_tag :controller => 'account', :action=> 'login' %>
     <table>
       <tr>
@@ -41,6 +44,10 @@
                       :with => 'desired_login',
                       :frequency => 1,
                       :update => 'authentication_errors' %>
+    <% ['user_password', 'user_password_confirmation'].each do |field| %>
+      <%= observe_field field, :frequency => 1,
+                               :function => "check_password_confirmation()" %>
+    <% end%>
   <%= end_form_tag %>
 <% else %>
   <%= 'Welcome'.t -%>, <%= current_user.login -%>

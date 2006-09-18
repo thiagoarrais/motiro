@@ -182,11 +182,20 @@ div#nextrelease div.channel-body-outer {
     background: #5CE28B
 }
 
-#username_not_available {
+span.warning {
 	border: 1px solid #F33;
 	background: #FFA;
+	padding: 0 3px 0 3px
+}
+
+#username_not_available {
 	position: absolute;
 	top: 12px;
 	left: 64px;
-	padding: 0 3px 0 3px
+}
+
+#passwords_do_not_match {
+	position: absolute;
+	top: 12px;
+	left: 174px;
 }

@@ -151,4 +151,21 @@ class AccountAcceptanceTest < SeleniumTestCase
     assert_text_present gita.description
   end
   
+  def test_shows_passwords_do_not_match_warning
+    open '/'
+    
+    click 'chk_new_user'
+    
+    type 'user_login', 'neil'
+    type 'user_password', 'young'
+    sleep 1.2
+    
+    assert_not_visible 'id=passwords_do_not_match'
+    
+    type 'user_password_confirmation', 'youmg'
+    sleep 1.2
+
+    assert_visible 'id=passwords_do_not_match'
+  end
+  
 end

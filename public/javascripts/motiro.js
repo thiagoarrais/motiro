@@ -26,6 +26,18 @@ function tooglePasswordConfirmation(show) {
 	}
 }
 
+function check_password_confirmation() {
+    var passwd = document.getElementById('user_password').value;
+    var passwd_confirm = document.getElementById('user_password_confirmation').value;
+    var do_not_match_warn = document.getElementById('passwords_do_not_match');
+    
+    if (passwd_confirm == '' || passwd == '' || passwd == passwd_confirm) {
+      do_not_match_warn.style.display = 'none';
+    } else {
+      do_not_match_warn.style.display = 'block';
+    }
+}
+
 //copied from niftycube
 //TODO try to DRY this
 function getElementsBySelector(selector){
