@@ -1,0 +1,48 @@
+<% if current_user.nil? then %>
+  <div id="authentication_errors">
+	<%= render_component :action => 'availability',
+	                     :params => { :desired_login => flash[:desired_login] }%>
+  </div>
+  <%= start_form_tag :controller => 'account', :action=> 'login' %>
+    <table>
+      <tr>
+        <td><label for="user_login"><%= 'User'.t -%></label></td>
+        <td><label for="user_password"><%= 'Password'.t -%></label></td>
+        <td class="password_confirm" style="display: none">
+          <label for="user_password_confirmation"><%= 'Confirmation'.t -%></label>
+        </td>
+        <td>
+          <input type="checkbox" id="chk_new_user" name="chk_new_user"
+                 onClick="tooglePasswordConfirmation(document.forms[0].chk_new_user.checked)" />
+            <%= 'New user?'.t -%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= text_field 'user', 'login', :size => 12,
+                                          :value => flash[:desired_login] -%>
+        </td>
+        <td>
+          <%= password_field 'user', 'password', :size => 12 -%>
+        </td>
+        <td class="password_confirm" style="display: none">
+          <%= password_field 'user', 'password_confirmation', :size => 12,
+                             :disabled => true -%>
+        </td>
+        <td>
+          <input type='hidden' name='return_to' value="<%= request.env['REQUEST_URI'] -%>"/>
+          <input class='button' type="submit"
+                 name="login" value="Login &#187;" />
+        </td>
+      </tr>
+    </table>
+    <%= observe_field 'user_login',
+                      :url => { :controller => 'account',
+                                :action => 'availability' },
+                      :with => 'desired_login',
+                      :frequency => 1,
+                      :update => 'authentication_errors' %>
+  <%= end_form_tag %>
+<% else %>
+  <%= 'Welcome'.t -%>, <%= current_user.login -%>
+<% end %>

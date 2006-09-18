@@ -17,8 +17,6 @@
 
 class MainPageAcceptanceTest < SeleniumTestCase
   
-  fixtures :users
-  
   def test_version_number
     open '/en'
     assert_text_present 'Motiro version 0.5'
@@ -48,46 +46,6 @@ class MainPageAcceptanceTest < SeleniumTestCase
     open('/en')
     assert_element_present "//div[@id = 'nextrelease']"
     assert get_text("//div[@id = 'nextrelease']").match(/Planned features/)
-  end
-  
-  def test_edition_disabled_without_authentication
-    open('/en')
-    assert_element_present "//span[@class = 'disabled']"
-    assert_equal "Edit (requires authentication)",
-    get_text("//span[@class = 'disabled']")
-  end
-  
-  def test_welcomes_user
-    open('/en')
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1000)
-    
-    assert_text_present 'Welcome, bob'
-  end
-  
-  def test_edition_enabled_when_authenticated
-    #TODO refactor this to a declarative style
-    #see http://www.testing.com/cgi-bin/blog/2005/12/19
-    open('/en')
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1000)
-    
-    assert_location 'exact:http://localhost:3000/en'
-    
-    assert_element_present "//a[text() = 'Edit']"
-    click "//a[text() = 'Edit']"
-    
-    wait_for_page_to_load(1000)
-    
-    assert_element_present "//input[@name='btnSave']"
-    assert_element_present "//input[@name='btnDiscard']"
-    assert_element_present "//textarea[@id='txaEditor']"
   end
   
   def test_shows_installation_sucessful_page_with_absent_main_page
@@ -123,75 +81,6 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Latest news from Subversion'
     assert_text_present 'Motiro version'
     assert_text_present 'Planned features'
-  end
-  
-  def test_switches_languages_when_logged_in
-    open '/en'
-    
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
-    
-    assert_text_present 'Welcome, bob'
-    assert_element_present "//a[text() = 'Edit']"
-    
-    click "//a[@id='pt-BR']"
-    wait_for_page_to_load(1500)
-    
-    assert_text_present 'Bem-vindo, bob'
-    assert_element_present "//a[text() = 'Editar']"
-  end
-  
-  def test_registering_new_user
-    open '/en'
-    
-    assert_text_present 'New user?'
-    assert_not_visible "//label[@for='user_password_confirmation']"
-    assert_not_visible 'id=user_password_confirmation'
-    
-    click 'chk_new_user'
-    
-    assert_visible "//label[@for='user_password_confirmation']"
-    assert_visible 'id=user_password_confirmation'
-    
-    click 'chk_new_user'
-    
-    assert_not_visible "//label[@for='user_password_confirmation']"
-    assert_not_visible 'id=user_password_confirmation'
-    
-    click 'chk_new_user'
-    
-    type 'user_login', 'paul'
-    type 'user_password', 'mccartney'
-    type 'user_password_confirmation', 'mccartney'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
-    
-    assert_text_present 'Welcome, paul'
-    
-    open '/account/logout'
-    open '/en'
-    
-    type 'user_login', 'paul'
-    type 'user_password', 'mccartney'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
-    
-    assert_text_present 'Welcome, paul'
-  end
-  
-  def test_register_existing_user
-    open '/en'
-    
-    type 'user_login', 'eric'
-    sleep 1
-    wait_for_condition 'selenium.page()' +
-                       ".findElement('id=username_not_available')",
-                       1000
   end
   
   def teardown

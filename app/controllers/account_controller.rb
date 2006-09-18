@@ -4,6 +4,10 @@ class AccountController < ApplicationController
   verify :method => :post, :only => [:signup],
          :redirect_to => {:controller => 'root', :action => 'index'}
 
+  def authorization
+    render :layout => false
+  end
+  
   def login
     case request.method
       when :post
@@ -37,7 +41,7 @@ class AccountController < ApplicationController
   def availability
     @not_available = ! User.find_by_login(params[:desired_login]).nil?
     
-    render :template => 'layouts/_auth_errors', :layout => false
+    render :layout => false
   end
   
   def logout
