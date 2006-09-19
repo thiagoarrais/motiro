@@ -133,6 +133,10 @@ input.button {
     background-color: #b0ddff;
 }
 
+input.checkbox {
+   border: none;
+}
+
 #editor input.text {
     width: 100%;
 }
