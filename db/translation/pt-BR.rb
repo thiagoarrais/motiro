@@ -46,7 +46,7 @@
 'Discard' => 'Descartar',
 'Who should be able to edit this page?' => 'Quem pode editar esta página?',
 '(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
-'Quick Reference' => 'Referência rápida',
+'Quick reference' => 'Referência rápida',
 'Title' => 'Título',
 'address' => 'endereço',
 'label' => 'rótulo'

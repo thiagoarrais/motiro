@@ -17,6 +17,8 @@
 
 class MainPageAcceptanceTest < SeleniumTestCase
   
+  fixtures :pages
+  
   def test_version_number
     open '/en'
     assert_text_present 'Motiro version 0.5'
@@ -49,11 +51,15 @@ class MainPageAcceptanceTest < SeleniumTestCase
   end
   
   def test_shows_installation_sucessful_page_with_absent_main_page
+    Page.delete_all("name = 'MainPage'")
+
     open('/en')
     assert_text_present 'Congratulations! Motiro was installed correctly'
   end
   
   def test_switches_languages_when_not_logged_in
+    Page.delete_all("name = 'MainPage'")
+
     open('/')
     click "//a[@id='pt-BR']"
     wait_for_page_to_load(1000)
@@ -81,11 +87,6 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Latest news from Subversion'
     assert_text_present 'Motiro version'
     assert_text_present 'Planned features'
-  end
-  
-  def teardown
-    Page.destroy_all
-    Page.connection.commit_db_transaction
   end
   
 end
