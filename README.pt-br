@@ -33,22 +33,22 @@ FAZENDO A COISA RODAR
 
 Para ter seu portal Motiro rodando, você vai precisar de:
 
-1.  MySQL 4.1 (versões 5.x não são cobertas e versões anteriores não foram
-    testadas)
+1.  SQLite 3 out superior
 2.  Ruby 1.8.2 ou superior
 3.  Rails 1.1.6 ou superior
 4.  Cliente Subversion (svn) se quiser usar o repórter Subversion
 5.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
 6.  Xml-Simple 1.0.9 ou superior (disponível como Ruby Gem: xml-simple)
 7.  MediaCloth 0.0.2 ou superior ((disponível como Ruby Gem: mediacloth)
-8.  FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
+8.  SQLite3-Ruby 1.1.0 ou superior (available as Ruby Gem: sqlite3-ruby)   
+9.  FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
     Gem: flexmock)
    
 Se você estiver rodando o Motiro sobre uma plataforma Windows, vai precisar
 também de:
 
-9.  Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
-10. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
+10. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
+11. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
 
 Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 
@@ -67,88 +67,10 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 2. Configurar o banco de dados
 ------
 
-   2.1. Conexão TCP
-
-   O Motiro utiliza um soquete TCP para se conectar ao servidor MySQL. É
-   necessário certificar-se que o servidor está ativo e escutando por conexões
-   na porta 3306 (a porta padrão para servidores MySQL). Se você não tiver
-   certeza, tente executar o comando:
-
-   % telnet localhost 3306
-
-   A saída deve ser parecida com
-
-   7
-    4.1.18-nt
-          xH?@cU]S,�!?h3d{bUf~jv5A
-
-   Se não houver resposta, pode ser que seu servidor MySQL não esteja ativo ou
-   não esteja aceitando conexões TCP. Caso julgue necessário como medida de
-   segurança, o servidor MySQL pode ser instruído a aceitar conexões apenas da
-   máquina local.
-   
-   Para maiores informações, por favor consulte o manual do MySQL.
-
-   2.2. Criação das bases de dados
-
-   O Motiro utiliza um usuário de nome 'motiro' e senha vazia para
-   autenticar-se junto ao servidor MySQL. Pode ser necessário acessar três
-   bases de dados diferentes, dependendo do contexto de execução. Os nomes
-   delas são:
-   
-     - motiro_development: para propósitos de desenvolvimento e testes iniciais
-     - motiro_test: para propósitos de testes automáticos
-     - motiro_production: para utilização no selvagem mundo real
-     
-   É preciso certificar-se que estas bases de dados existem e estão
-   completamente acessíveis para o usuário motiro. O script a seguir deve
-   resolver a bronca. É um script para interface de linha de comando que utiliza
-   o cliente mysql padrão, mas você pode usar qualquer ferramenta com a qual
-   sinta-se mais confortável (talvez uma com interface gráfica ou web). Deve
-   dar tudo certo desde que não haja erros de digitação nos nomes das bases de
-   dados e lembrar de dar todos os privilégios para o usuário motiro.
-     
-   Para usar o cliente mysql basta acioná-lo como root e dizer algo nessa linha:
-   
-   (as linhas que começam com '%' são comandos para meu shell e com 'mysql>' são
-   para o banco de dados MySQL, as demais são respostas do sistema)
-
-   ----------------------------------------------------------------------------
-   % mysql -u root -p
-   Enter password: ***********
-   Welcome to the MySQL monitor.  Commands end with ; or \g.
-   Your MySQL connection id is 13 to server version: 4.1.18-nt
-
-   Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-
-   mysql> create database motiro_development;
-   Query OK, 1 row affected (0.00 sec)
-
-   mysql> create database motiro_test;
-   Query OK, 1 row affected (0.00 sec)
-
-   mysql> create database motiro_production;
-   Query OK, 1 row affected (0.02 sec)
-
-   mysql> grant all on motiro_development.* to motiro;
-   Query OK, 0 rows affected (0.00 sec)
-
-   mysql> grant all on motiro_test.* to motiro;
-   Query OK, 0 rows affected (0.00 sec)
-
-   mysql> grant all on motiro_production.* to motiro;
-   Query OK, 0 rows affected (0.00 sec)
-
-   mysql> exit
-   Bye
-   ----------------------------------------------------------------------------
-
-   2.3. Preparação do esquema
-   
-   O último passo para a configuração das bases de dados é estruturar os
+   Tudo que você precisa para configurar sua base de dados é estruturar os
    esquemas corretamente. Felizmente, o Motiro já vem com scripts de migração
    pré-cozidos para este propósito. Você só vai precisar pedir ao rake para
-   rodá-los.
+   rodá-los:
 
    % rake migrate
 
@@ -187,11 +109,11 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
    
-   É perfeitamente normal que a saída para você inclua muito mais pontos e
-   mensagens, se você estiver executando um versão mais recente. Mas não
-   precisa se desesperar: você só precisa checar o resumo na última linha. Se
-   acontecer de qualquer teste falhar, uma mensagem de erro será mostrada e
-   o relatório da última linha vai ser atualizado de acordo.
+   É perfeitamente normal que a sau saída inclua muito mais pontos e mensagens,
+   se você estiver executando um versão mais recente. Mas não precisa se
+   desesperar: você só precisa checar o resumo na última linha. Se acontecer de
+   qualquer teste falhar, uma mensagem de erro será mostrada e o relatório da
+   última linha vai ser atualizado de acordo.
    
    Se houver algum erro detectado por estes testes, por favor contacte o grupo
    de desenvolvedores. Conte-nos em que tipo de sistema você está tentando
