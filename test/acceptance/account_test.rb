@@ -138,7 +138,7 @@ class AccountAcceptanceTest < SeleniumTestCase
   
   def test_returns_to_previous_page_after_logged_in
     gita = headlines('gita')
-    open "/report/show/#{gita.rid}?reporter=#{gita.reported_by}"
+    open "/report/#{gita.reported_by}/#{gita.rid}"
     
     assert_text_present gita.description
     
@@ -147,7 +147,7 @@ class AccountAcceptanceTest < SeleniumTestCase
     click 'login'
     wait_for_page_to_load 1500
     
-    assert_location "exact:http://localhost:3000/report/show/#{gita.rid}?reporter=#{gita.reported_by}"
+    assert_location "exact:http://localhost:3000/report/#{gita.reported_by}/#{gita.rid}"
     assert_text_present gita.description
   end
   

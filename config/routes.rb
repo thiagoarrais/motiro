@@ -6,8 +6,12 @@ ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
   map.connect 'report/:reporter',
               :controller => 'report',
-              :action => 'show'
+              :action => 'list'
   
+  map.connect 'report/:reporter/:id',
+              :controller => 'report',
+              :action => 'show'
+
   map.connect 'feed/:reporter',
               :controller => 'report',
               :action => 'rss'

@@ -18,7 +18,7 @@ class ReportControllerTest < Test::Unit::TestCase
   end
   
   def test_fetches_headlines_from_cache
-    get :show, {:reporter => 'events' }
+    get :list, {:reporter => 'events' }
     assert_response :success
     assert_not_nil assigns(:headlines)
     expected = Headline.find(:all, :conditions => "reported_by = 'events'")

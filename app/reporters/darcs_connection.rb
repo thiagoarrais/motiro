@@ -20,7 +20,7 @@ class DarcsConnection
     else
       command += "--last=#{@settings.package_size} "
     end
-    command += "--repo=#{@settings.repo_url} --repodir=#{@repo.path}"
+    command += "--repo=#{@settings.repo_url} --repodir=\"#{@repo.path}\""
     @runner.run(command)
   end
 

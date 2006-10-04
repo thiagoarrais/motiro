@@ -14,7 +14,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
       runner.should_receive(:run).once.
         with('darcs changes --xml --last=7 ' +
                            '--repo=http://motiro.sf.net/darcsrepo/trunk ' +
-                           '--repodir=/tmp/tmprepo').
+                           '--repodir="/tmp/tmprepo"').
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)
@@ -35,7 +35,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
                           " --from-match=\"hash #{hashcode}\"" +
                           " --to-match=\"hash #{hashcode}\"" +
                           ' --repo=http://motiro.sf.net/darcsrepo/trunk' +
-                          ' --repodir=/tmp/tmprepo').
+                          ' --repodir="/tmp/tmprepo"').
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)

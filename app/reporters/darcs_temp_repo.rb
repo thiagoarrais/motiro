@@ -14,7 +14,7 @@ class DarcsTempRepo
     @path = File.expand_path(__FILE__ + '../../../../tmp/tmprepo')
     unless filesystem.exists?(@path + '/_darcs')
       fileutils.mkdir_p(@path)
-      runner.run("darcs init --repodir=#{@path}")
+      runner.run("darcs init --repodir=\"#{@path}\"")
     end
   end
 

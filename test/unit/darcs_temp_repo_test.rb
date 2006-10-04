@@ -14,7 +14,7 @@ class DarcsTempRepoTest < Test::Unit::TestCase
       fileutils.should_receive(:mkdir_p).once.
         with(EXPECTED_PATH)
       runner.should_receive(:run).once.
-        with("darcs init --repodir=#{EXPECTED_PATH}")
+        with("darcs init --repodir=\"#{EXPECTED_PATH}\"")
         
       repo = DarcsTempRepo.new(filesystem, fileutils, runner)
       assert_equal EXPECTED_PATH, repo.path

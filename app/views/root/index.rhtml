@@ -11,7 +11,7 @@
   <% ReporterFetcher.new.active_reporters.each do |reporter| %>
     <div class="channel" id="<%= reporter.name -%>">
       <%= render_component(:controller => 'report',
-                           :action =>  'show',
+                           :action =>  'list',
                            :params => { :reporter => reporter.name,
                                         :locale => @locale }) %>
     </div>
