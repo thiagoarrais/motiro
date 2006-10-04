@@ -1,3 +1,20 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require 'acceptance/live_mode_test'
 
 class SubversionAcceptanceTest < SeleniumTestCase
@@ -116,7 +133,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     @repo.mkdir('projectroot', commit_msg)
     
-    open '/report/show/r104?reporter=subversion&locale=en'
+    open '/report/subversion/r104?locale=en'
     assert_equal "Motiro: Welcome", get_title
     assert_text "//div[@id='notice']", 'The article r104 from the Subversion reporter could not be found'
   end
@@ -217,7 +234,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added daughter.txt'
     @repo.commit(commit_title)
     
-    open '/report/show/r1?reporter=subversion&locale=en'
+    open '/report/subversion/r1?locale=en'
     
     assert_equal 'Motiro - Subversion - Revision r1', get_title
     assert_text_present 'Revision r1'
@@ -241,12 +258,12 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added daughter.txt'
     @repo.commit(commit_title)
     
-    open '/report/show/r30?reporter=subversion&locale=en'
+    open '/report/subversion/r30?locale=en'
     
     assert_equal "Motiro: Welcome", get_title
     assert_text "//div[@id='notice']", 'The article r30 from the Subversion reporter could not be found'
 
-    open '/report/show/r30?reporter=subversion&locale=pt-BR'
+    open '/report/subversion/r30?locale=pt-BR'
     
     assert_text "//div[@id='notice']", /o foi poss/
     assert_text "//div[@id='notice']", /vel encontrar o artigo r30 do rep/
