@@ -15,32 +15,32 @@ class ReportController < ApplicationController
     return nil
   end
   
+  def rss
+    @name = params[:reporter]
+    @headlines = @chief_editor.latest_news_from @name
+  end
+  
   def show
-    reporter_name = params[:reporter]
+    @name = params[:reporter]
     
-    @name = reporter_name
-
     if params[:id]
       id = params[:id]
       context = params[:context] || 'full'
       begin
         @revision_id = id
-        @headline = @chief_editor.headline_with(reporter_name, id)
+        @headline = @chief_editor.headline_with(@name, id)
         @partial = context == 'partial'
         
-        render(:action => "#{reporter_name}_detail")
+        render(:action => "#{@name}_detail")
       rescue
-        logger.error("Tried to access invalid headline #{id} from #{reporter_name}")
-        flash[:notice] = 'The article %s from the %s reporter could not be found' / id / reporter_name.capitalize
+        logger.error("Tried to access invalid headline #{id} from #{@name}")
+        flash[:notice] = 'The article %s from the %s reporter could not be found' / id / @name.capitalize
         redirect_to(:controller => 'root', :action => 'index')
       end            
     else
-      format = params[:format] || 'html_fragment'
-      
-      @title = @chief_editor.title_for reporter_name
-      @toolbar = @chief_editor.toolbar_for reporter_name
-      @headlines = @chief_editor.latest_news_from reporter_name
-      render(:action => format)
+      @title = @chief_editor.title_for @name
+      @toolbar = @chief_editor.toolbar_for @name
+      @headlines = @chief_editor.latest_news_from @name
     end
   end
   

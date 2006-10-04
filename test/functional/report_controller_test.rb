@@ -18,7 +18,7 @@ class ReportControllerTest < Test::Unit::TestCase
   end
   
   def test_fetches_headlines_from_cache
-    get :show, {:reporter => 'events', :format => 'html_fragment'}
+    get :show, {:reporter => 'events' }
     assert_response :success
     assert_not_nil assigns(:headlines)
     expected = Headline.find(:all, :conditions => "reported_by = 'events'")
@@ -27,8 +27,7 @@ class ReportControllerTest < Test::Unit::TestCase
   
   def test_fetches_individual_headline_based_on_rid
     svn_demo_headline = headlines('svn_demo_headline')
-    get :show, { :format => 'html_fragment',
-                 :reporter => svn_demo_headline.reported_by,
+    get :show, { :reporter => svn_demo_headline.reported_by,
                  :id => svn_demo_headline.rid }
     assert_response :success
     assert_not_nil assigns(:headline)

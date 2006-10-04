@@ -3,28 +3,31 @@ xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
 xml.rss 'version' => '2.0' do
     xml.channel do
     	xml.title "Motiro - Subversion"
+    	xml.description
     	xml.link server_url_for(:controller => 'root', :action => 'index')
     	xml.language 'en'
     	xml.generator 'Motiro'
-    	xml.pubDate Time.now
+    	xml.pubDate @headlines.first.happened_at.to_s(:rfc822)
     	xml.ttl '60'
     	@headlines.each do |headline|
     	    xml.item do
+    	    	permalink = server_url_for(:controller => 'report',
+                                           :action => 'show',
+                                           :reporter => @name,
+                                           :id => headline.rid,
+                                           :locale => @locale)
+    	    	
     	    	xml.title h(headline.title(Translator.for(@locale)))
-    	        xml.link(server_url_for(:controller => 'report',
-                                        :action => 'show',
-                                        :reporter => @name,
-                                        :id => headline.rid,
-                                        :locale => @locale))
+    	        xml.link permalink
                 txt = render_component(:controller => 'report',
                                  :action => 'show',
                                  :id => headline.rid,
                                  :params => { :reporter => @name,
                                               :context => 'partial' })
     	        xml.description(txt)
-    	        xml.pubDate h(headline.happened_at)
+    	        xml.pubDate h(headline.happened_at.to_s(:rfc822))
     	        xml.author h(headline.author)
-    	        xml.guid
+    	        xml.guid permalink
     	    end
     	end
     end

@@ -6,13 +6,11 @@ ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
   map.connect 'report/:reporter',
               :controller => 'report',
-              :action => 'show',
-              :format => 'html_fragment'
+              :action => 'show'
   
   map.connect 'feed/:reporter',
               :controller => 'report',
-              :action => 'show',
-              :format => 'rss'
+              :action => 'rss'
 
   map.connect 'wiki/:action/:page_name/:locale', :controller => 'wiki',
               :defaults => locale_defaults
