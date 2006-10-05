@@ -27,12 +27,12 @@ class SubversionAcceptanceTest < SeleniumTestCase
     @repo.mkdir('myproject', commit_msg)
     
     open '/report/subversion?locale=en'
-    assert_text_present @username
+    assert_text_present @repo.username
     assert_text_present commit_msg
     click "//img[starts-with(@src, '/images/rss.png')]"
     wait_for_page_to_load(1000)
     assert_equal commit_msg, get_text("//rss/channel/item/title")
-#    assert_equal @repo.username, get_text("//rss/channel/item/{http://purl.org/dc/elements/1.1/}creator")
+    assert_equal @repo.username, get_text("//rss/channel/item/*[local-name() = 'creator']")
     
     link = get_text("//rss/channel/item/link")
     open link
