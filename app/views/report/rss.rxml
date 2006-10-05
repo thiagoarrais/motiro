@@ -20,12 +20,7 @@ xml.rss 'version' => '2.0',
     	    	
     	    	xml.title h(headline.title(Translator.for(@locale)))
     	        xml.link permalink
-                txt = render_component(:controller => 'report',
-                                 :action => 'show',
-                                 :id => headline.rid,
-                                 :params => { :reporter => @name,
-                                              :context => 'partial' })
-    	        xml.description(txt)
+    	        xml.description Page.new(:text => headline.description(Translator.for(@locale))).render_html
     	        xml.pubDate h(headline.happened_at.to_s(:rfc822))
     	        xml.dc :creator, h(headline.author)
     	        xml.guid permalink
