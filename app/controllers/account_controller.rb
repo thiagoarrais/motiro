@@ -46,9 +46,7 @@ class AccountController < ApplicationController
   
   def logout
     session[:user] = nil
+    redirect_back_or_default params[:return_to]
   end
     
-  def welcome
-  end
-  
 end

@@ -168,4 +168,18 @@ class AccountAcceptanceTest < SeleniumTestCase
     assert_visible 'id=passwords_do_not_match'
   end
   
+  def test_signout_redirects_to_previous_page
+    open '/en'
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load 1500
+    
+    click 'signout'
+    wait_for_page_to_load 1500
+    
+    assert_location "exact:http://localhost:3000/en"
+  end
+  
 end

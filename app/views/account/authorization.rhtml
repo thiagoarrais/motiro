@@ -52,4 +52,9 @@
   <%= end_form_tag %>
 <% else %>
   <%= 'Welcome'.t -%>, <%= current_user.login -%>
+  [<%= link_to 'Sign out'.t,
+               { :controller => 'account',
+                 :action => 'logout',
+                 :return_to => request.env['REQUEST_URI'] },
+               :id => 'signout' -%>]
 <% end %>
