@@ -196,10 +196,12 @@ span.warning {
 	position: absolute;
 	top: 12px;
 	left: 64px;
+	z-index: 6;
 }
 
 #passwords_do_not_match {
 	position: absolute;
 	top: 12px;
 	left: 174px;
+	z-index: 6;
 }
