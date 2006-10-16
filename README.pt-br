@@ -109,7 +109,7 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
    
-   É perfeitamente normal que a sau saída inclua muito mais pontos e mensagens,
+   É perfeitamente normal que a sua saída inclua muito mais pontos e mensagens,
    se você estiver executando um versão mais recente. Mas não precisa se
    desesperar: você só precisa checar o resumo na última linha. Se acontecer de
    qualquer teste falhar, uma mensagem de erro será mostrada e o relatório da
