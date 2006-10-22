@@ -25,6 +25,10 @@ class Page < ActiveRecord::Base
   belongs_to :original_author, :class_name => 'User',
                                :foreign_key => 'original_author_id'
   
+  def after_initialize
+    self.editors = '' unless self.editors
+  end
+  
   def render_html(locale_code=nil)
     translator = Translator.for(locale_code)
     wiki_text = translator.localize(text).delete("\r")
