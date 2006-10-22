@@ -58,3 +58,5 @@ require_dependency 'ports/ticker'
 
 require 'core/version'
 require 'core/wiki_page_not_found'
+
+ActiveRecord::Base.schema_format = :sql

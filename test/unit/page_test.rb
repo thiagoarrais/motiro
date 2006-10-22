@@ -59,5 +59,17 @@ class PageTest < Test::Unit::TestCase
     assert !Page.new(attrs.merge(:editors => '  john ')).is_open_to_all?
     assert  Page.new(attrs.merge(:editors => "\n")).is_open_to_all?
   end
+  
+  def test_fresh_page_is_open_to_all
+    page = Page.new(:name => 'FreshPage')
+    
+    assert page.is_open_to_all?
+  end
+  
+  def test_fresh_page_has_empty_editors_list
+    page = Page.new(:name => 'AnotherFreshPage')
+    
+    assert_equal 0, page.editors.size
+  end
 
 end
