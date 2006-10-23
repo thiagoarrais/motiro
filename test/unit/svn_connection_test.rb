@@ -31,7 +31,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
                    :repo => 'svn://svn.berlios.de/motiro')
       
       runner.should_receive(:run).once.
-        with('svn log svn://svn.berlios.de/motiro -v --limit=5')
+        with('svn log svn://svn.berlios.de/motiro -v --limit=5',
+             'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -44,7 +45,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new :package_size => 3
       
       runner.should_receive(:run).once.
-        with('svn log http://svn.fake.domain.org/fake_repo -v --limit=3')
+        with('svn log http://svn.fake.domain.org/fake_repo -v --limit=3',
+             'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -57,7 +59,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new
       
       runner.should_receive(:run).once.
-        with('svn log http://svn.fake.domain.org/fake_repo -v -r7')
+        with('svn log http://svn.fake.domain.org/fake_repo -v -r7',
+             'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -70,7 +73,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new
       
       runner.should_receive(:run).once.
-        with('svn diff http://svn.fake.domain.org/fake_repo -r14:15')
+        with('svn diff http://svn.fake.domain.org/fake_repo -r14:15',
+             'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -98,7 +102,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new
       
       runner.should_receive(:run).once.
-        with('svn info -r18 --xml http://svn.fake.domain.org/fake_repo/trunk/file_a.txt')
+        with('svn info -r18 --xml http://svn.fake.domain.org/fake_repo/trunk/file_a.txt',
+             'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -106,20 +111,18 @@ class SubversionConnectionTest < Test::Unit::TestCase
     end
   end
   
-#  def test_uses_english_locale
-#    FlexMock.use('env', 'runner') do |env, runner|
-#      runner.should_receive(:run).once
-#        .with 'svn log http://svn.fake.domain.org/fake_repo -v --limit=3'
-#    end
-#  end
-#  
-#  def setup
-#    @old_env = ENV
-#  end
-#  
-#  def teardown
-#    ENV = @old_env
-#  end
+  def test_uses_english_locale
+    FlexMock.use do |runner|
+      runner.should_receive(:run).once.
+        with('svn log http://svn.fake.domain.org/fake_repo -v --limit=5',
+             'LC_MESSAGES' => 'C')
+      
+      connection = SubversionConnection.new(StubConnectionSettingsProvider.new,
+                     runner)
+      
+      connection.log
+    end
+  end
   
   # TODO what happens if we ask for an inexistent revision
   
