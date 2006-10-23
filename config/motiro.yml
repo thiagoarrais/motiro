@@ -21,7 +21,7 @@ subversion:
 # subversion/repo
 #
 # Tells the reporter where to find your project's repository
-# Default: http://svn.berlios.de/svnroot/repos/motiro
+# Default: https://svn.sourceforge.net/svnroot/motiro
   repo: https://svn.sourceforge.net/svnroot/motiro
   
 # Darcs specific settings
