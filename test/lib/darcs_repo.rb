@@ -43,8 +43,7 @@ class DarcsRepository
 private
 
   def create_http_server_on(document_root)
-    port = find_available_port
-    server = WEBrick::HTTPServer.new :Port => port,
+    server = WEBrick::HTTPServer.new :Port => find_available_port,
                                      :DocumentRoot => document_root,
                                      :Logger => NullLogger.new,
                                      :AccessLog => [ [NullLogger.new, WEBrick::AccessLog::COMBINED_LOG_FORMAT] ]

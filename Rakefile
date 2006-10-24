@@ -15,3 +15,12 @@ task :dist_tarball => [:test_units, :test_functional] do
     parentdir = File.expand_path(File.dirname(__FILE__) + '/..')
     `tar cvzf motiro-#{MOTIRO_VERSION}.tar.gz  .`
 end
+
+namespace :test do
+  desc "Run the functional tests in test/contract"
+  Rake::TestTask.new(:contracts) do |t|
+    t.libs << "test"
+    t.pattern = 'test/contract/**/*_test.rb'
+    t.verbose = true
+  end
+end

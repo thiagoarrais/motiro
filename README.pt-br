@@ -107,6 +107,15 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    Finished in 0.056199 seconds.
 
    1 tests, 1 assertions, 0 failures, 0 errors
+
+   % rake test:contracts
+   (in /home/thiago/devel/motiro)
+   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader
+   Started
+   .
+   Finished in 0.200615 seconds.
+
+   1 tests, 1 assertions, 0 failures, 0 errors
    ----------------------------------------------------------------------------
    
    É perfeitamente normal que a sua saída inclua muito mais pontos e mensagens,
