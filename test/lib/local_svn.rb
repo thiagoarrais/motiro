@@ -1,5 +1,5 @@
 require 'fileutils'
-
+require 'netutils'
 require 'repoutils'
 
 include FileUtils
@@ -95,7 +95,7 @@ class LocalSubversionRepository
   end
   
   def start_server(repo_dir)
-    port = find_available_port
+    port = NetUtils.find_available_port
     
     @server_pid = start_process(
       "svnserve -d --foreground --listen-port #{port} -r #{repo_dir}")

@@ -1,6 +1,6 @@
 require 'fileutils'
 require 'repoutils'
-require 'webrick'
+require 'webserver'
 
 include FileUtils
 
@@ -10,7 +10,7 @@ class DarcsRepository
   
   def initialize
     @dir = find_root_dir('darcs')
-    @server = create_http_server_on(self.dir)
+    @server = WebServer.create_http_server_on(self.dir)
     @url = 'http://localhost:' + @server.config[:Port].to_s
     @author = 'alceu.valenca@olinda.pe.br'
     mkdir_p(self.dir)
@@ -42,22 +42,6 @@ class DarcsRepository
   
 private
 
-  def create_http_server_on(document_root)
-    server = WEBrick::HTTPServer.new :Port => find_available_port,
-                                     :DocumentRoot => document_root,
-                                     :Logger => NullLogger.new,
-                                     :AccessLog => [ [NullLogger.new, WEBrick::AccessLog::COMBINED_LOG_FORMAT] ]
-    Thread.new do
-      server.start
-    end
-    
-    return server
-  end
-
   include RepoUtils
 
-end
-
-class NullLogger
-  def method_missing(name, *args); end
 end
