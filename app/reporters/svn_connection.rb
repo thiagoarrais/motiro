@@ -22,7 +22,7 @@ class SubversionConnection
   
   def initialize(settings=SubversionSettingsProvider.new, runner=Runner.new)
     @settings = settings
-    @runner = CustomEnvironmentRunner.new(runner, 'LC_MESSAGES' => 'C')
+    @runner = FixedParameterRunner.new(runner, "t\n", 'LC_MESSAGES' => 'C')
     @diff_cache = Hash.new
   end
   

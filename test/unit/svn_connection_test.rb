@@ -32,7 +32,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       runner.should_receive(:run).once.
         with('svn log svn://svn.berlios.de/motiro -v --limit=5',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -46,7 +46,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       runner.should_receive(:run).once.
         with('svn log http://svn.fake.domain.org/fake_repo -v --limit=3',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -60,7 +60,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       runner.should_receive(:run).once.
         with('svn log http://svn.fake.domain.org/fake_repo -v -r7',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -74,7 +74,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       runner.should_receive(:run).once.
         with('svn diff http://svn.fake.domain.org/fake_repo -r14:15',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -103,7 +103,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       runner.should_receive(:run).once.
         with('svn info -r18 --xml http://svn.fake.domain.org/fake_repo/trunk/file_a.txt',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
@@ -111,11 +111,11 @@ class SubversionConnectionTest < Test::Unit::TestCase
     end
   end
   
-  def test_uses_english_locale
+  def test_uses_english_locale_and_temporarily_accepts_ssl_certificate
     FlexMock.use do |runner|
       runner.should_receive(:run).once.
         with('svn log http://svn.fake.domain.org/fake_repo -v --limit=5',
-             'LC_MESSAGES' => 'C')
+             "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(StubConnectionSettingsProvider.new,
                      runner)

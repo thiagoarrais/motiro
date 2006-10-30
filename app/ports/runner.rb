@@ -15,16 +15,28 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+require 'open3'
+
 class Runner
 
-  def run(command, env={})
+  def initialize(process_creator=Open3)
+    @creator = process_creator
+  end
+  
+  def run(command, input='', env={})
     commons = {}
     env.each_key do |k|
       commons[k] = ENV[k] if ENV.has_key?(k)
     end
     ENV.update env
 
-    result = `#{command}`
+    pin, pout = @creator.popen3(command)
+    begin
+      pin << input
+      pin.flush
+    rescue
+      #ignore i/o errors
+    end
 
     env.each_key do |k|
       ENV.delete k
@@ -33,19 +45,19 @@ class Runner
       ENV[k] = v
     end
     
-    return result
+    return pout.read
   end
 
 end
 
-class CustomEnvironmentRunner
+class FixedParameterRunner
   
-  def initialize(underlying_runner, env)
-    @runner, @env = underlying_runner, env
+  def initialize(underlying_runner, input, env)
+    @runner, @input, @env = underlying_runner, input, env
   end
   
   def run(command)
-    @runner.run(command, @env)
+    @runner.run(command, @input, @env)
   end
   
 end
