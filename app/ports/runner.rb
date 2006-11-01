@@ -15,11 +15,9 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'open3'
-
 class Runner
 
-  def initialize(process_creator=Open3)
+  def initialize(process_creator=IO)
     @creator = process_creator
   end
   
@@ -30,10 +28,10 @@ class Runner
     end
     ENV.update env
 
-    pin, pout = @creator.popen3(command)
+    process = @creator.popen(command, 'r+')
     begin
-      pin << input
-      pin.flush
+      process << input
+      process.flush
     rescue
       #ignore i/o errors
     end
@@ -44,8 +42,8 @@ class Runner
     commons.each do |k, v|
       ENV[k] = v
     end
-    
-    return pout.read
+
+    return process.read
   end
 
 end
