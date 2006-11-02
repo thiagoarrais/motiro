@@ -43,7 +43,10 @@ class Runner
       ENV[k] = v
     end
 
-    return process.read
+    result = process.read
+    process.close
+    
+    return result    
   end
 
 end
