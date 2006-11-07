@@ -41,7 +41,7 @@
       </tr>
     </table>
     <%= observe_field 'user_login',
-                      :function => "if (document.getElementById('chk_new_user').checked) { new Ajax.Updater('authentication_errors', '/account/availability', {asynchronous:true, evalScripts:true, parameters:'desired_login=' + value})}",
+                      :function => "if (document.getElementById('chk_new_user').checked) { new Ajax.Updater('authentication_errors', '#{url_for :controller => 'account', :action => 'availability'}', {asynchronous:true, evalScripts:true, parameters:'desired_login=' + value})}",
                       :with => 'desired_login',
                       :frequency => 1,
                       :update => 'authentication_errors' %>

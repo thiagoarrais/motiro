@@ -6,10 +6,8 @@
     <title><%= @title -%></title>
     <%= stylesheet_link_tag "motiro", :media => "all" %>
     <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag 'motiro' %>
-    <script src="<%= url_for :controller => 'javascript',
-                             :action => 'niftycube' -%>"
-            type="text/javascript"></script>
+    <%= dynjs_include_tag 'motiro' %>
+    <%= dynjs_include_tag 'niftycube' %>
     <script type="text/javascript">
         window.onload=function(){
             Nifty("div.channel-title","top,big");

@@ -29,6 +29,12 @@ module ApplicationHelper
   def server_url_for(options = {})
     url_for options.update(:only_path => false)
   end
+  
+  def dynjs_include_tag(script_name)
+    content_tag("script", "", { "type" => "text/javascript",
+                                "src" => url_for(:controller => 'javascript',
+                                                 :action => script_name) })
+  end
 
 end
 
