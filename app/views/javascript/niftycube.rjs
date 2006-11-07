@@ -1,3 +1,4 @@
+page << <<JS
 /* Nifty Corners Cube - rounded corners with CSS and Javascript
 Copyright 2006 Alessandro Fulciniti (a.fulciniti@html.it)
 
@@ -34,7 +35,7 @@ niftyCss=true;
 var l=CreateEl("link");
 l.setAttribute("type","text/css");
 l.setAttribute("rel","stylesheet");
-l.setAttribute("href","/niftyCorners.css");
+l.setAttribute("href","#{stylesheet_path 'niftyCorners'}");
 l.setAttribute("media","screen");
 document.getElementsByTagName("head")[0].appendChild(l);
 }
@@ -296,3 +297,4 @@ for(i=0;i<3;i++){
     }
 return("#"+r[0]+r[1]+r[2]);
 }
+JS
