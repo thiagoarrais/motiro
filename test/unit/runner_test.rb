@@ -56,11 +56,8 @@ class RunnerTest < Test::Unit::TestCase
     FlexMock.use('creator') do |creator|
       command = 'svn diff https://svn.sourceforge.net/svnroot/motiro/ -r363:364'
       output = "diff\n"
-      pin, pout, perr = StringIO.new, StringIO.new(output),  StringIO.new
-      creator.should_receive(:popen3).
-        with(command).
-        and_return([pin, pout, perr]).
-        once
+      creator.should_receive(:popen).with(command, 'r+').once.
+        and_return(StringIO.new)
 
       Runner.new(creator).run(command, '', 'FIRST_TEST_VAR' => 'first_value',
                                            'SECOND_TEST_VAR' => 'second_value')
