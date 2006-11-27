@@ -68,18 +68,14 @@ class RunnerTest < Test::Unit::TestCase
   end
   
   def test_recovers_from_broken_pipe_io_error
-    pin = Object.new
-    def pin.method_missing(name, *args)
-      raise Errno::EPIPE
-    end
-    
     FlexMock.use('creator') do |creator|
       command = 'svn diff https://svn.sourceforge.net/svnroot/motiro/ -r363:364'
       output = "diff command output\n"
-      pout, perr = StringIO.new(output),  StringIO.new
-      creator.should_receive(:popen3).
-        with(command).
-        and_return([pin, pout, perr]).
+      pio = StubIO.new(output)
+      def pio.<<(_); raise Errno::EPIPE; end
+
+      creator.should_receive(:popen).with(command, 'r+').
+        and_return(pio).
         once
 
       assert_equal output, Runner.new(creator).run(command)
