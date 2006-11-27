@@ -17,10 +17,19 @@ task :dist_tarball => [:test_units, :test_functional] do
 end
 
 namespace :test do
-  desc "Run the functional tests in test/contract"
+  desc "Run the tests under test/contract"
   Rake::TestTask.new(:contracts) do |t|
     t.libs << "test"
     t.pattern = 'test/contract/**/*_test.rb'
     t.verbose = true
   end
+
+  desc "Run the meta-tests under test/meta"
+  Rake::TestTask.new(:meta) do |t|
+    t.libs << "test"
+    t.pattern = 'test/meta/**/*_test.rb'
+    t.verbose = true
+  end
+
 end
+

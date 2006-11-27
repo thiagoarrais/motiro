@@ -17,6 +17,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'stubio'
 require 'ports/runner'
 
 class RunnerTest < Test::Unit::TestCase
@@ -25,15 +26,14 @@ class RunnerTest < Test::Unit::TestCase
     FlexMock.use('creator') do |creator|
       command = 'svn diff https://svn.sourceforge.net/svnroot/motiro/ -r363:364'
       output = "diff\n"
-      pin, pout, perr = StringIO.new, StringIO.new(output),  StringIO.new
-      creator.should_receive(:popen3).
-        with(command).
-        and_return([pin, pout, perr]).
-        once
+
+      pio = StubIO.new(output)
+      creator.should_receive(:popen).with(command, 'r+').once.
+        and_return(pio)
 
       runner = Runner.new(creator)
       assert_equal output, runner.run(command, "t\n")
-      assert_equal "t\n", pin.string
+      assert_equal "t\n", pio.string
     end
   end
   
