@@ -17,6 +17,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'ports/runner'
+
 class RunnerTest < Test::Unit::TestCase
 
   def test_feeds_inner_process_given_input
@@ -38,12 +40,10 @@ class RunnerTest < Test::Unit::TestCase
   def test_augments_and_cleans_environment
     FlexMock.use('creator') do |creator|
       command = 'svn log -v https://svn.sourceforge.net/svnroot/motiro/ -r363'
-      pin, pout, perr = StringIO.new, StringIO.new('logged'),  StringIO.new
-      creator.should_receive(:popen3).
-        with(command).
-        once.returns do
+      creator.should_receive(:popen).with(command, 'r+').once.
+        returns do
           assert_equal 'test_value', ENV['TEST_VAR']
-          [pin, pout, perr]
+          StringIO.new
         end
 
       Runner.new(creator).run(command, '', 'TEST_VAR' => 'test_value')
