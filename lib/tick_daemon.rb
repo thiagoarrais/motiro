@@ -1,3 +1,5 @@
+#  tick_daemon.rb based on the Rails' Daemon Generator by Kyle Maxwell
+#
 #  Motiro - A project tracking tool
 #  Copyright (C) 2006  Thiago Arrais
 #  
@@ -15,29 +17,22 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'yaml'
+require File.dirname(__FILE__) + "/../config/environment"
 
-# The settings provider is responsible for reading the settings from the
-# config file and providing them to clients
-class SettingsProvider
-  
-  def initialize(fs=File)
-    @filesystem = fs
-  end
-  
-  def method_missing(method_id)
-    load_confs[method_id.to_s].to_i
-  end
-  
-  def active_reporter_ids
-    load_confs.keys - ['package_size', 'update_interval']
-  end
-  
-private
+require 'core/reporter_driver'
+require 'core/settings'
 
-  def load_confs
-    file = @filesystem.open(File.expand_path(RAILS_ROOT + '/config/motiro.yml'))
-    confs = YAML.load file
+$running = true;
+Signal.trap("TERM") do 
+  $running = false
+end
+
+interval = SettingsProvider.new.update_interval
+driver = ReporterDriver.new
+
+if interval > 0
+  while($running) do
+    driver.tick
+    sleep(60 * interval)
   end
-  
 end
