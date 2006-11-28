@@ -39,14 +39,15 @@ To get your own Motiro portal up and running, you will need the following:
 5.  Darcs client (darcs) if you are planning to use the Darcs reporter
 6.  Xml-Simple 1.0.9 or later (available as Ruby Gem: xml-simple)
 7.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
-8.  SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
-9.  FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
+8.  Daemons 1.0.3 (available as Ruby Gem: daemons)
+9.  SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
+10. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
     (available as Ruby Gem: flexmock)
    
 If you are running Motiro with an Windows platform, you'll also need:
 
-10. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
-11. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
+11. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
+12. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
    
 What you need to do is:
 
@@ -124,22 +125,17 @@ What you need to do is:
 4. Start the job scheduler
 ------
 
-   Motiro uses a separate program responsible for automatically fetching the
-   news. This program is run as a Rails Cron job. Rails Cron is a job
-   scheduler similar to the `cron' program, much common in Unix systems,
-   specially written for use with Rails. 
+   Motiro uses a separate daemon program responsible for automatically
+   fetching the news periodically. You can use the script/ticker script to
+   start and stop the daemon. 
    
-   To start the scheduler, you can use the 'cron_start' rake task. To stop it,
-   try 'cron_stop'.
+   To start the scheduler, try cd'ing to where you installed Motiro and doing:
 
-   % rake cron_start
-   % rake cron_stop
-   
-   On Windows systems, the job scheduler can be started with the command line
+   % ruby script/ticker start
 
-   % ruby script\runner 'RailsCron.start'
-   
-   and stopped by pressing Ctrl-C.
+   Analogously, to stop the scheduler, try:
+
+   % ruby script/ticker stop
    
 5. Boot the server
 ------

@@ -15,11 +15,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 --------------------------------------------------------------------------------
-Motiro version 0.5 - September 2006
+Motiro version 0.5.4 - December 2006
 
-Please refer to your preferred language README.
+Please refer to your preferred language README. Every text file below this
+directory is UTF-8 encoded. Please make sure to set up your reader accordingly.
 
-Por favor, consulte o README no idioma de sua preferência.
+Por favor, consulte o README no idioma de sua preferência. Todo arquivo abaixo
+deste diretório está codificado com UTF-8. Por favor certifique-se de configurar
+seu leitor de acordo.
 
 English				-	README.en
 Português (Brasil)	-	README.pt-br
