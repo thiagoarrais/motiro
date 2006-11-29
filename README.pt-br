@@ -41,15 +41,17 @@ Para ter seu portal Motiro rodando, você vai precisar de:
 6.  Xml-Simple 1.0.9 ou superior (disponível como Ruby Gem: xml-simple)
 7.  MediaCloth 0.0.2 ou superior (disponível como Ruby Gem: mediacloth)
 8.  Daemons 1.0.3 (disponível como Ruby Gem: daemons)
-9.  SQLite3-Ruby 1.1.0 ou superior (available as Ruby Gem: sqlite3-ruby)   
-10. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
+9.  Platform 0.4.0 (disponível como Ruby Gem: platform)
+10. POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
+11. SQLite3-Ruby 1.1.0 ou superior (disponível como Ruby Gem: sqlite3-ruby)   
+12. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
     Gem: flexmock)
    
 Se você estiver rodando o Motiro sobre uma plataforma Windows, vai precisar
 também de:
 
-11. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
-12. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
+13. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
+14. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
 
 Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 

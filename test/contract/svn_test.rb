@@ -17,7 +17,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-require 'open3'
+require 'platform'
+require 'popen4'
 
 require 'webserver'
 
@@ -28,13 +29,16 @@ class SubversionTest < Test::Unit::TestCase
     server = WebServer.create_https_server
     
     ENV['LC_MESSAGES'] = 'C'
-    stderr = Open3.popen3("svn log https://localhost:#{server[:Port]}")[2]
-    
-    9.times do
-      stderr.gets
+    POpen4.popen4("svn log https://localhost:#{server[:Port]}") do |_, err, sin|
+      9.times do
+        err.gets
+      end
+      
+      assert err.read(30) =~ /\(t\)/
+
+      sin.close
     end
     
-    assert stderr.read(30) =~ /\(t\)/
   end
   
 end
