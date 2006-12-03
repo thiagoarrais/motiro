@@ -34,11 +34,11 @@ class LocalSubversionRepositoryTest < Test::Unit::TestCase
   def test_destroy_removes_dir
     repo = DarcsRepository.new
     
-    assert is_repo?(repo.url)
+    assert is_repo?(repo.dir)
     
     repo.destroy
 
-    assert !is_repo?(repo.url)
+    assert !is_repo?(repo.dir)
   end
   
   def test_adding_file

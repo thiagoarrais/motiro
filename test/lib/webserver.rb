@@ -19,8 +19,9 @@ require 'webrick'
 require 'webrick/https'
 
 require 'netutils'
+require 'platform_thread'
 
-module WebServer
+class WebServer
 
   def self.create_https_server
     create_server(
@@ -39,15 +40,28 @@ module WebServer
                  :Logger => NullLogger.new,
                  :AccessLog => [ [NullLogger.new, WEBrick::AccessLog::COMBINED_LOG_FORMAT] ] }
 
-    server = WEBrick::HTTPServer.new defaults.update(options)
-
-    Thread.new do
-      server.start
-    end
-    
-    return server
+    return new(defaults.update(options))
+  end
+  
+  def shutdown
+    @server_thread.kill
+  end
+  
+  def [](key)
+    @options[key]
   end
 
+private
+  
+  def initialize(options)
+    @options = options
+
+    @server_thread = PlatformThread.new do
+      server = WEBrick::HTTPServer.new options
+      server.start
+    end
+  end
+  
 end
 
 class NullLogger

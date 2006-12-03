@@ -25,20 +25,26 @@ require 'webserver'
 # What we expect from the `svn' command line client
 class SubversionTest < Test::Unit::TestCase
 
+  def setup
+    @server = WebServer.create_https_server
+  end
+  
   def test_accept_certificate_temporarily
-    server = WebServer.create_https_server
-    
     ENV['LC_MESSAGES'] = 'C'
-    POpen4.popen4("svn log https://localhost:#{server[:Port]}") do |_, err, sin|
+    POpen4.popen4("svn log https://localhost:#{@server[:Port]}") do |_, err, sin|
+      sin.puts 't'
+      sin.close
+      
       9.times do
         err.gets
       end
-      
-      assert err.read(30) =~ /\(t\)/
 
-      sin.close
+      assert err.read(30) =~ /\(t\)/
     end
-    
+  end
+  
+  def teardown
+    @server.shutdown
   end
   
 end

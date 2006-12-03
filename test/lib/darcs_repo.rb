@@ -11,7 +11,7 @@ class DarcsRepository
   def initialize
     @dir = find_root_dir('darcs')
     @server = WebServer.create_http_server_on(self.dir)
-    @url = 'http://localhost:' + @server.config[:Port].to_s
+    @url = 'http://localhost:' + @server[:Port].to_s
     @author = 'alceu.valenca@olinda.pe.br'
     mkdir_p(self.dir)
     `darcs init --repodir=#{self.dir}`
