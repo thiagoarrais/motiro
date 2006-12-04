@@ -60,6 +60,8 @@ private
       server = WEBrick::HTTPServer.new options
       server.start
     end
+    
+    sleep 1.2
   end
   
 end
