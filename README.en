@@ -41,15 +41,16 @@ To get your own Motiro portal up and running, you will need the following:
 7.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
 8.  Daemons 1.0.3 (available as Ruby Gem: daemons)
 9.  Platform 0.4.0 (available as Ruby Gem: platform)
-10. POpen4 0.1.1 (available as Ruby Gem: POpen4)
-11. SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
-12. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
+10. Open4 0.9.1 (available as Ruby Gem: open4)
+11. POpen4 0.1.1 (available as Ruby Gem: POpen4)
+12. SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
+13. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
     (available as Ruby Gem: flexmock)
    
 If you are running Motiro with an Windows platform, you'll also need:
 
-13. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
-14. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
+14. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
+15. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
    
 What you need to do is:
 
