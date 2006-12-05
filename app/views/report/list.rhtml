@@ -10,7 +10,7 @@
 </div>
 <div class='channel-body-outer'>
   <div class='inner'>
-  <% if ! @toolbar.nil?  then %>
+  <% if @toolbar then %>
     <div class='toolbar channel_toolbar'>
       <%= render :partial => @toolbar -%>
     </div> 

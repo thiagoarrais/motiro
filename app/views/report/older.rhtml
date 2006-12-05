@@ -1,0 +1,31 @@
+<% @title = "Motiro - Subversion - #{'Revision %s' / @revision_id}" %>
+      <div id="revisions" class="window">
+        <div class="inner">
+          <table class="oldernews">
+            <thead>
+             <tr>
+                <th class="date">Data</th>
+                <th class="relative"/>
+                <th>Autor</th>
+                <th>Título</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% i = 0 %>
+            <% @headlines.each do |headline| %>
+              <% i += 1 %>
+              <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
+                <td class="date"><%= headline.happened_at-%></td>
+                <td class="relative"><%= headline.relative_to_now %></td>
+                <td><%= headline.author %></td>
+                <td><%= link_to( h(headline.title(Translator.for(@locale))),
+                                 { :controller => 'report',
+                                   :action => 'show',
+                                   :reporter => @name,
+                                   :id => headline.rid } )%></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>

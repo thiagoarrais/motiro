@@ -40,13 +40,20 @@ class ReportController < ApplicationController
   end
   
   def determine_layout
-    return 'application' if params[:id] and params[:context] != 'partial'
+    return 'application' if params[:id] and params[:context] != 'partial' or
+                            params[:action] == 'older'
     return nil
   end
   
   def list
     @title = @chief_editor.title_for @name
     @toolbar = @chief_editor.toolbar_for @name
+  end
+  
+  def older
+    @headlines = Headline.find_all(['reported_by = ?', @name],
+                                   'happened_at DESC')
+    @title = @chief_editor.title_for @name
   end
   
   def show

@@ -4,6 +4,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # Add your own custom routes here.
   # The priority is based upon order of creation: first created -> highest priority.
+  map.connect 'report/older/:reporter',
+              :controller => 'report',
+              :action => 'older'
+
   map.connect 'report/:reporter',
               :controller => 'report',
               :action => 'list'

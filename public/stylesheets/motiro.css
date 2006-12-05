@@ -110,21 +110,42 @@ table.diff td {
     padding: 0 0.4em 0 0.4em;
 }
 
-td.left {
+table.diff td.left {
     border:solid;
     border-color: black gray black black;
 }
 
-td.right {
+table.diff td.right {
     border:solid black;
 }
 
-td.line_number {
+table.diff td.line_number {
     text-align: center;
     border:solid gray;
     border-width: 0 1px 0 1px;
 }
 
+table.oldernews {
+  border-spacing: 0;
+  text-align: left;
+  font-size: .85em;
+  width: 100%;
+}
+      
+table.oldernews tr.even { background-color: #fff; }
+        
+table.oldernews tr.odd { background-color: #eee; }
+      
+table.oldernews thead { background-color: #d0d0d0; }
+      
+table.oldernews tbody th { border: 1px #c9c9c9 solid; }
+
+table.oldernews tbody td { border: 1px #c9c9c9 solid; }
+      
+table.oldernews .date { border-right-width: 0; }
+
+table.oldernews .relative { border-left-width: 0; }
+      
 input {
     border: solid 1px #80aacc;
 }
