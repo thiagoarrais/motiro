@@ -58,13 +58,14 @@ class SubversionConnectionTest < Test::Unit::TestCase
     FlexMock.use do |runner|
       settings = StubConnectionSettingsProvider.new
       
-      runner.should_receive(:run).once.
+      runner.should_receive(:run).twice.
         with('svn log http://svn.fake.domain.org/fake_repo -v -r7',
              "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
       
       connection.log(7)
+      connection.log('7')
     end
   end
   
@@ -121,6 +122,20 @@ class SubversionConnectionTest < Test::Unit::TestCase
                      runner)
       
       connection.log
+    end
+  end
+  
+  def test_unlimited_logging
+    FlexMock.use do |runner|
+      settings = StubConnectionSettingsProvider.new
+      
+      runner.should_receive(:run).once.
+        with('svn log http://svn.fake.domain.org/fake_repo -v',
+             "t\n", 'LC_MESSAGES' => 'C')
+      
+      connection = SubversionConnection.new(settings, runner)
+      
+      connection.log(:no_limit)
     end
   end
   

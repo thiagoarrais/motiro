@@ -17,7 +17,7 @@
 
 require 'models/headline'
 
-require 'core/chief_editor'
+require_dependency 'core/chief_editor'
 
 class ReportController < ApplicationController
   
@@ -51,8 +51,7 @@ class ReportController < ApplicationController
   end
   
   def older
-    @headlines = Headline.find_all(['reported_by = ?', @name],
-                                   'happened_at DESC')
+    @headlines = @chief_editor.news_from @name
     @title = @chief_editor.title_for @name
   end
   

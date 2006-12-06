@@ -26,12 +26,13 @@ class SubversionConnection
     @diff_cache = Hash.new
   end
   
-  def log(rev_id=nil)
-    command = "svn log #{@settings.repo_url} -v "
-    if rev_id.nil? 
-      command += "--limit=#{@settings.package_size}"
-    else
-      command += "-r#{rev_id.to_s}"
+  def log(options=nil)
+    command = "svn log #{@settings.repo_url} -v"
+
+    if options.nil?
+      command += " --limit=#{@settings.package_size}"
+    elsif :no_limit != options
+      command += " -r#{options.to_s}"
     end
     
     @runner.run(command)

@@ -42,19 +42,11 @@ class SubversionReporter < MotiroReporter
   end
   
   def latest_headlines
-    remain = @connection.log
-    
-    hls = Array.new
-    
-    hl = 0
-    until hl.nil? do
-      hl, remain = build_headline_from(remain)
-      unless hl.nil?
-        hl.reported_by = self.name
-        hls.push hl
-      end
-    end
-    return hls
+    build_headlines_from(@connection.log)
+  end
+  
+  def headlines
+    build_headlines_from(@connection.log(:no_limit))
   end
   
   def headline(rid)
@@ -69,6 +61,21 @@ class SubversionReporter < MotiroReporter
   
 private
   
+  def build_headlines_from(text)
+    remain = text
+    hls = Array.new
+    
+    hl = 0
+    until hl.nil? do
+      hl, remain = build_headline_from(remain)
+      unless hl.nil?
+        hl.reported_by = self.name
+        hls.push hl
+      end
+    end
+    return hls
+  end
+
   def build_headline_from(text)
     begin
       result = Headline.new

@@ -350,5 +350,21 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     assert_element_present "//p[text() = 'This is the second paragraph']"
   end
+  
+  def test_shows_older_revisions
+    1.upto 8 do |n|
+      @repo.mkdir("directory#{n}", "Created directory n#{n}")
+    end
+    
+    open '/en'
+    click "//a[text() = 'Older']"
+    wait_for_page_to_load(2000)
+    
+    assert_element_present "//a[text() = 'Created directory n1']"
+    assert_element_present "//a[text() = 'Created directory n2']"
+    assert_element_present "//a[text() = 'Created directory n5']"
+    assert_element_present "//a[text() = 'Created directory n7']"
+    assert_element_present "//a[text() = 'Created directory n8']"
+  end
 
 end
