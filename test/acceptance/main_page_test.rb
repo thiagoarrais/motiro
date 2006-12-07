@@ -72,7 +72,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'ximos eventos'
     assert_text_present 'ltimas not' # TODO Últimas notícias do Subversion
     assert_text_present 'cias do Subversion'
-    assert_text_present 'Motiro vers'
+    assert_text_present 'Antigas'
     assert_text_present 'Funcionalidades planejadas'
     
     click "//a[@id='en']"
@@ -85,7 +85,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Edit (requires authentication)'
     assert_text_present 'Upcoming events'
     assert_text_present 'Latest news from Subversion'
-    assert_text_present 'Motiro version'
+    assert_text_present 'Older'
     assert_text_present 'Planned features'
   end
   

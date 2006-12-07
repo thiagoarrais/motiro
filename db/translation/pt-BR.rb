@@ -29,6 +29,7 @@
 'Planned features' => 'Funcionalidades planejadas',
 'version' => 'versão',
 'Add' => 'Adicionar',
+'Older' => 'Antigas',
 
 # Subversion revision details page
 'Revision %s' => 'Revisão %s',
@@ -40,6 +41,7 @@
 'Event' => 'Evento',
 'Date' => 'Data',
 'Note' => 'Observação',
+'Event added' => 'Evento registrado',
 'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
 
 # Wiki edition page
