@@ -1,7 +1,0 @@
-<% if current_user.nil? then %>
-  <span class='disabled'><%= 'Add'.t -%></span>
-<% else %>
-  <%= link_to( 'Add'.t,
-               :controller => 'events',
-               :action => 'new') -%>
-<% end %>

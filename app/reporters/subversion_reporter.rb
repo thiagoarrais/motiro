@@ -35,8 +35,6 @@ end
 
 class SubversionReporter < MotiroReporter
   
-  use_toolbar 'report/more_toolbar'
-  
   def initialize(connection = SubversionConnection.new)
     @connection = connection
   end

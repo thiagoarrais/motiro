@@ -47,7 +47,7 @@ class ReportController < ApplicationController
   
   def list
     @title = @chief_editor.title_for @name
-    @toolbar = @chief_editor.toolbar_for @name
+    @toolbar_buttons = @chief_editor.buttons_for @name
   end
   
   def older
