@@ -1,0 +1,50 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+require 'rubygems'
+require 'xmlsimple'
+
+$:.push File.expand_path(File.dirname(__FILE__) + '/../lib')
+
+require  'darcs_repo'
+
+require 'test/unit'
+
+# What we expect from the `darcs' command line client
+class DarcsTest < Test::Unit::TestCase
+
+  def setup
+    @repo = DarcsRepository.new(:file)
+  end
+
+  def test_unified_diff
+    @repo.add_file('my_file.txt', 'file contents')
+    @repo.record('adds a file')
+    
+    output = `darcs changes --xml --repodir=#{@repo.url}`
+    hash = XmlSimple.xml_in(output)['patch'][0]['hash']
+    
+    output = `darcs diff -u --match 'hash #{hash}' --repodir=#{@repo.url}`
+    assert output.match(/^diff/)
+    assert output.match(/^--- old/)
+  end
+  
+  def teardown
+    @repo.destroy
+  end
+
+end
