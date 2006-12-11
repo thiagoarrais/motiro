@@ -16,37 +16,44 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require 'rubygems'
+require 'fileutils'
 require 'xmlsimple'
 
 $:.push File.expand_path(File.dirname(__FILE__) + '/../lib')
+$:.push File.expand_path(File.dirname(__FILE__) + '/../../app')
 
-require  'darcs_repo'
+require 'repoutils'
+require 'darcs_repo'
+require 'reporters/darcs_temp_repo'
 
 require 'test/unit'
 
 # What we expect from the `darcs' command line client
-class LocalDarcsTest < Test::Unit::TestCase
+class RemoteDarcsTest < Test::Unit::TestCase
 
+  include RepoUtils
+  
   def setup
-    @repo = DarcsRepository.new(:file)
+    @repo = DarcsRepository.new
+    @tmp = find_root_dir('ldarcs')
+    @previous_dir = Dir.pwd
+    FileUtils.mkdir_p(@tmp)
+    Dir.chdir(@tmp)
+    `darcs init`
+    Dir.chdir(@previous_dir)
   end
 
-  def test_unified_diff
+  def test_pulling
     @repo.add_file('my_file.txt', 'file contents')
     @repo.record('adds a file')
     
-    previous = Dir.pwd
-    Dir.chdir(@repo.url)
-    output = `darcs changes --xml`
-    hash = XmlSimple.xml_in(output)['patch'][0]['hash']
-    
-    output = `darcs diff -u --match 'hash #{hash}'`
-    Dir.chdir(previous)
-    assert output.match(/^diff/)
-    assert output.match(/^--- old/)
+    `darcs pull -a #{@repo.url} --repodir=#{@tmp}`
+    assert `darcs changes --repo=#{@tmp}`.match(/adds a file/)
   end
   
   def teardown
+    Dir.chdir(@previous_dir)
+    FileUtils.rm_rf(@tmp)
     @repo.destroy
   end
 

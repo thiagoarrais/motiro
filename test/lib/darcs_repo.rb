@@ -33,7 +33,7 @@ class DarcsRepository
     end
     @author = 'alceu.valenca@olinda.pe.br'
     mkdir_p(self.dir)
-    `darcs init --repodir=#{self.dir}`
+    run_on_repo { `darcs init` }
   end
   
   def add_file(name, contents)
@@ -43,7 +43,7 @@ class DarcsRepository
       file << contents
     end
     
-    `darcs add --repo=#{self.dir} #{file_path}`
+    run_on_repo { `darcs add #{file_path}` }
   end
   
   def record(patch_text)
@@ -51,7 +51,7 @@ class DarcsRepository
     File.open(temp_file, 'w') do |file|
       file << patch_text
     end
-    `darcs record -a --logfile=#{temp_file} --repodir=#{self.dir} --author=\"#{self.author}\" 2>&1`
+    run_on_repo { `darcs record -a --logfile=#{temp_file} --author=\"#{self.author}\" 2>&1` }
   end
   
   def destroy
@@ -60,6 +60,16 @@ class DarcsRepository
   end
   
 private
+
+  def run_on_repo
+    previous = Dir.pwd
+    begin
+      Dir.chdir(self.dir)
+      yield
+    ensure
+      Dir.chdir(previous)
+    end
+  end
 
   include RepoUtils
 
