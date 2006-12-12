@@ -32,13 +32,13 @@ class DarcsConnection
     @runner = ChdirRunner.new(temp_repo.path, runner)
   end
   
-  def changes(hashcode=nil)
-    command = 'darcs changes --xml '
-    if hashcode then
-      command += "--from-match=\"hash #{hashcode}\" " +
-                 "--to-match=\"hash #{hashcode}\""
-    else
-      command += "--last=#{@settings.package_size}"
+  def changes(options=nil)
+    command = 'darcs changes --xml'
+    if options.nil?
+      command += " --last=#{@settings.package_size}"
+    elsif :all != options
+      command += " --from-match=\"hash #{options}\"" +
+                 " --to-match=\"hash #{options}\""
     end
     @runner.run(command)
   end

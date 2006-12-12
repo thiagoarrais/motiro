@@ -31,7 +31,7 @@ class SubversionConnection
 
     if options.nil?
       command += " --limit=#{@settings.package_size}"
-    elsif :no_limit != options
+    elsif :all != options
       command += " -r#{options.to_s}"
     end
     

@@ -135,7 +135,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       connection = SubversionConnection.new(settings, runner)
       
-      connection.log(:no_limit)
+      connection.log(:all)
     end
   end
   

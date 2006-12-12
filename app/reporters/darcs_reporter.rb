@@ -37,6 +37,10 @@ class DarcsReporter < MotiroReporter
     parse_headlines(@connection.changes)
   end
   
+  def headlines
+    parse_headlines(@connection.changes(:all))
+  end
+  
   def headline(rid)
     parse_headlines(@connection.changes(rid)).first
   end
