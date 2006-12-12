@@ -78,6 +78,19 @@ class DarcsConnectionTest  < Test::Unit::TestCase
     end
   end
   
+  def test_diffing
+    FlexMock.use('1', '2') do |runner, repo_dir|
+      hashcode = '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz'
+      settings = StubConnectionSettingsProvider.new
+      repo_dir.should_receive(:path).once.returns(TMP)
+      runner.should_receive(:run).once.
+        with("darcs diff -u --match \"hash #{hashcode}\"", '', {}).
+        returns('')
+        
+      DarcsConnection.new(settings, runner, repo_dir).diff(hashcode)
+    end
+  end
+  
   def teardown
     FileUtils.rm_rf(TMP)
   end

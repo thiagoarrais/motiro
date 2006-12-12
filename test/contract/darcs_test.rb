@@ -40,7 +40,7 @@ class LocalDarcsTest < Test::Unit::TestCase
     output = `darcs changes --xml`
     hash = XmlSimple.xml_in(output)['patch'][0]['hash']
     
-    output = `darcs diff -u --match 'hash #{hash}'`
+    output = `darcs diff -u --match "hash #{hash}"`
     Dir.chdir(previous)
     assert output.match(/^diff/)
     assert output.match(/^--- old/)

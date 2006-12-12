@@ -46,5 +46,9 @@ class DarcsConnection
   def pull
     @runner.run("darcs pull -a #{@settings.repo_url}")
   end
+  
+  def diff(patch_hash)
+    @runner.run("darcs diff -u --match \"hash #{patch_hash}\"")
+  end
 
 end

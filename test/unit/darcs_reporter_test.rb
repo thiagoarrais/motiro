@@ -1,65 +1,36 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'darcs_excerpts'
 require 'reporters/darcs_reporter'
 
 class DarcsReporterTest  < Test::Unit::TestCase
 
-  P1 = <<END
-<changelog>
-<patch author='thiago.arrais@gmail.com' date='20060717200939' local_date='Mon Jul 17 17:09:39 BRT 2006' inverted='False' hash='20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz'>
-	<name>Some refactoring after the mess</name>
-</patch>
-</changelog>
-END
-
-  P2 = <<END
-<changelog>
-<patch author='thiago.arrais@gmail.com' date='20060813140540' local_date='Sun Aug 13 11:05:40 BRT 2006' inverted='False' hash='20060813140540-49d33-a640b3999077a8be03d81825ad7d40108c827250.gz'>
-        <name>Cheking for ghc --make output</name>
-        <comment>
-Still need testing on Windows. Much probably there are file system and/or
-linebreaking issues.</comment>
-</patch>
-</changelog>
-END
-
-  P3 = <<END
-<changelog>
-<patch author='thiago.arrais@gmail.com' date='20060822135332' local_date='Tue Aug 22 10:53:32 Hora oficial do Brasil 2006' inverted='False' hash='20060822135332-47d7b-f311f9b4f4f2d329d8de62efaa09c5d20cf08f8f.gz'>
-	<name> </name>
-</patch>
-</changelog>
-END
-
-  P4 = <<END
-<changelog>
-<patch author='thiago.arrais@gmail.com' date='20060717200939' local_date='Mon Jul 17 17:09:39 BRT 2006' inverted='False' hash='20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz'>
-	<name>Some refactoring after the mess</name>
-</patch>
-<patch author='thiago.arrais@gmail.com' date='20060813140540' local_date='Sun Aug 13 11:05:40 BRT 2006' inverted='False' hash='20060813140540-49d33-a640b3999077a8be03d81825ad7d40108c827250.gz'>
-        <name>Cheking for ghc --make output</name>
-        <comment>
-Still need testing on Windows. Much probably there are file system and/or
-linebreaking issues.</comment>
-</patch>
-</changelog>
-END
-
-  P_EMPTY = <<END
-<changelog>
-</changelog>
-END
-
   def setup
     @darcs_changes = ''
+    @darcs_diff = ''
         
     @darcs_connection = FlexMock.new('darcs connection')
 
-    @darcs_connection.mock_handle(:changes) do
-      @darcs_changes
-    end
-    
     @darcs_connection.mock_handle(:pull).zero_or_more_times
+    @darcs_connection.mock_handle(:changes) { @darcs_changes }
+    @darcs_connection.mock_handle(:diff) { @darcs_diff }
 
     @reporter = DarcsReporter.new(@darcs_connection)
   end
@@ -130,6 +101,46 @@ END
     assert_equal 2, hls.size
     assert_equal 'Some refactoring after the mess', hls[0].title
     assert_equal 'Cheking for ghc --make output', hls[1].title
+  end
+  
+  def test_reads_one_resource_name_and_diff
+    @darcs_changes = P5
+    @darcs_diff = P5DIFF
+    
+    hl = @reporter.latest_headlines[0]
+    
+    assert_equal 1, hl.changes.size
+
+    change = hl.changes[0]
+    assert_equal('net.sf.eclipsefp.haskell.ui/src/net/sf/eclipsefp/haskell/ui/preferences/BuildConsolePP.java',
+                 change.summary)
+    
+    assert change.diff.match /\A@@ -56,18 \+56,36 @@$/
+    assert change.diff.match /^-			public void widgetDefaultSelected\(SelectionEvent e\) \{\}\n\+			public void widgetDefaultSelected\(SelectionEvent e\) \{/
+    assert change.diff.match /@Override\n\n\Z/
+  end
+  
+  def test_reads_more_resource_names_and_diffs
+    @darcs_changes = P6
+    @darcs_diff = P6DIFF
+    
+    changes = @reporter.latest_headlines[0].changes
+    
+    assert_equal 2, changes.size
+
+    assert_equal('net.sf.eclipsefp.common.core/src/net/sf/eclipsefp/common/core/util/MultiplexedWriter.java',
+                 changes[0].summary)
+    assert_equal('net.sf.eclipsefp.common.core.test/src/net/sf/eclipsefp/common/core/test/util/MultiplexedWriterTest.java',
+                 changes[1].summary)
+
+    assert changes[0].diff.match /\A@@ -1,3 \+1,14 @@$/
+    assert changes[0].diff.match /^\+\tpublic void removeOutput\(Writer out\) \{$/
+    assert changes[0].diff.match /^\+\n \}\n\Z/
+
+    assert changes[1].diff.match /@@ -76,6 \+76,17 @@/
+    assert changes[1].diff.match /^\+\t\tmultiplexer.addOutput\(output\);/
+    assert changes[1].diff.match /Writer multiplexer = new MultiplexedWriter\(outputs\);\n\n\Z/
+
   end
   
 end
