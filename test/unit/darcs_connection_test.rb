@@ -23,8 +23,10 @@ require 'reporters/darcs_connection'
 
 class DarcsConnectionTest  < Test::Unit::TestCase
 
+  TMP = ENV['TEMP'] + '/tmprepo'
+  
   def setup
-    FileUtils.mkdir_p('/tmp/tmprepo')
+    FileUtils.mkdir_p(TMP)
   end
 
   def test_reads_settings
@@ -33,7 +35,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
                  :repo => 'http://motiro.sf.net/darcsrepo/trunk',
                  :package_size => 7)
       repo_dir.should_receive(:path).once.
-        returns('/tmp/tmprepo')
+        returns(TMP)
       runner.should_receive(:run).once.
         with('darcs changes --xml --last=7' +
                           ' --repo=http://motiro.sf.net/darcsrepo/trunk', '', {}).
@@ -51,7 +53,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new(
                  :repo => 'http://motiro.sf.net/darcsrepo/trunk')
       repo_dir.should_receive(:path).once.
-        returns('/tmp/tmprepo')
+        returns(TMP)
       runner.should_receive(:run).once.
         with('darcs changes --xml' +
                           " --from-match=\"hash #{hashcode}\"" +
@@ -66,7 +68,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
   end
   
   def teardown
-    FileUtils.rm_rf('/tmp/tmprepo')
+    FileUtils.rm_rf(TMP)
   end
 
 end
