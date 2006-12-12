@@ -15,33 +15,22 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'stringio'
-
 require 'ports/runner'
-require 'ports/chdir_runner'
 
-require 'reporters/darcs_settings'
-require 'reporters/darcs_temp_repo'
+class ChdirRunner
 
-class DarcsConnection
-
-  def initialize(settings=DarcsSettingsProvider.new,
-                 runner=Runner.new,
-                 temp_repo = DarcsTempRepo.new)
-    @settings = settings
-    @runner = ChdirRunner.new(temp_repo.path, runner)
+  def initialize(dir, runner=Runner.new)
+    @dir, @runner = dir, runner
   end
   
-  def changes(hashcode=nil)
-    command = 'darcs changes --xml '
-    if hashcode then
-      command += "--from-match=\"hash #{hashcode}\" " +
-                 "--to-match=\"hash #{hashcode}\""
-    else
-      command += "--last=#{@settings.package_size}"
+  def run(command, input='', env={})
+    prevdir = Dir.pwd
+    begin
+      Dir.chdir(@dir)
+      @runner.run(command, input, env)
+    ensure
+      Dir.chdir(prevdir)
     end
-    command += " --repo=#{@settings.repo_url}"
-    @runner.run(command)
   end
 
 end

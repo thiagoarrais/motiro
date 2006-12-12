@@ -1,8 +1,31 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require File.dirname(__FILE__) + '/../test_helper'
+
+require 'fileutils'
 
 require 'reporters/darcs_connection'
 
 class DarcsConnectionTest  < Test::Unit::TestCase
+
+  def setup
+    FileUtils.mkdir_p('/tmp/tmprepo')
+  end
 
   def test_reads_settings
     FlexMock.use('1', '2') do |runner, repo_dir|
@@ -12,9 +35,8 @@ class DarcsConnectionTest  < Test::Unit::TestCase
       repo_dir.should_receive(:path).once.
         returns('/tmp/tmprepo')
       runner.should_receive(:run).once.
-        with('darcs changes --xml --last=7 ' +
-                           '--repo=http://motiro.sf.net/darcsrepo/trunk ' +
-                           '--repodir="/tmp/tmprepo"').
+        with('darcs changes --xml --last=7' +
+                          ' --repo=http://motiro.sf.net/darcsrepo/trunk', '', {}).
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)
@@ -34,8 +56,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
         with('darcs changes --xml' +
                           " --from-match=\"hash #{hashcode}\"" +
                           " --to-match=\"hash #{hashcode}\"" +
-                          ' --repo=http://motiro.sf.net/darcsrepo/trunk' +
-                          ' --repodir="/tmp/tmprepo"').
+                          ' --repo=http://motiro.sf.net/darcsrepo/trunk', '', {}).
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)
@@ -44,4 +65,8 @@ class DarcsConnectionTest  < Test::Unit::TestCase
     end
   end
   
+  def teardown
+    FileUtils.rm_rf('/tmp/tmprepo')
+  end
+
 end
