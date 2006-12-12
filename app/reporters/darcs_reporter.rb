@@ -16,6 +16,7 @@ class DarcsReporter < MotiroReporter
   end
   
   def latest_headlines
+    @connection.pull
     parse_headlines(@connection.changes)
   end
   

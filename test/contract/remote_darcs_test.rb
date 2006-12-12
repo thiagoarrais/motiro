@@ -47,8 +47,9 @@ class RemoteDarcsTest < Test::Unit::TestCase
     @repo.add_file('my_file.txt', 'file contents')
     @repo.record('adds a file')
     
-    `darcs pull -a #{@repo.url} --repodir=#{@tmp}`
-    assert `darcs changes --repo=#{@tmp}`.match(/adds a file/)
+    Dir.chdir(@tmp)
+    `darcs pull -a #{@repo.url}`
+    assert `darcs changes`.match(/adds a file/)
   end
   
   def teardown

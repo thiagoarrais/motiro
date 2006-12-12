@@ -58,6 +58,8 @@ END
     @darcs_connection.mock_handle(:changes) do
       @darcs_changes
     end
+    
+    @darcs_connection.mock_handle(:pull).zero_or_more_times
 
     @reporter = DarcsReporter.new(@darcs_connection)
   end
@@ -109,6 +111,15 @@ END
     hl = @reporter.latest_headline
     
     assert_equal 'Untitled patch', hl.description
+  end
+  
+  def test_pulls_before_reporting
+    FlexMock.use do |conn|
+      conn.should_receive(:pull).once
+      conn.should_receive(:changes).returns P_EMPTY
+      
+      DarcsReporter.new(conn).latest_headlines
+    end
   end
   
   def test_multiple_headlines

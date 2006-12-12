@@ -37,8 +37,7 @@ class DarcsConnectionTest  < Test::Unit::TestCase
       repo_dir.should_receive(:path).once.
         returns(TMP)
       runner.should_receive(:run).once.
-        with('darcs changes --xml --last=7' +
-                          ' --repo=http://motiro.sf.net/darcsrepo/trunk', '', {}).
+        with('darcs changes --xml --last=7', '', {}).
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)
@@ -57,13 +56,25 @@ class DarcsConnectionTest  < Test::Unit::TestCase
       runner.should_receive(:run).once.
         with('darcs changes --xml' +
                           " --from-match=\"hash #{hashcode}\"" +
-                          " --to-match=\"hash #{hashcode}\"" +
-                          ' --repo=http://motiro.sf.net/darcsrepo/trunk', '', {}).
+                          " --to-match=\"hash #{hashcode}\"", '', {}).
         returns('')
         
       connection = DarcsConnection.new(settings, runner, repo_dir)
       
       connection.changes(hashcode)
+    end
+  end
+  
+  def test_pulling
+    FlexMock.use('1', '2') do |runner, repo_dir|
+      settings = StubConnectionSettingsProvider.new(
+                 :repo => 'http://motiro.sf.net/darcsrepo/trunk')
+      repo_dir.should_receive(:path).once.returns(TMP)
+      runner.should_receive(:run).once.
+        with('darcs pull -a http://motiro.sf.net/darcsrepo/trunk', '', {}).
+        returns('')
+        
+      DarcsConnection.new(settings, runner, repo_dir).pull
     end
   end
   

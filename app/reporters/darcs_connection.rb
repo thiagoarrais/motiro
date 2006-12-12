@@ -40,8 +40,11 @@ class DarcsConnection
     else
       command += "--last=#{@settings.package_size}"
     end
-    command += " --repo=#{@settings.repo_url}"
     @runner.run(command)
+  end
+  
+  def pull
+    @runner.run("darcs pull -a #{@settings.repo_url}")
   end
 
 end
