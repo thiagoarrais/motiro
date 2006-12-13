@@ -20,7 +20,7 @@ class DiffTableBuilder
     end
     
     def start_line(left_line_num, right_line_num=left_line_num)
-        @mod_groups << SpacingGroup.instance if @left_line_to_start != 1
+        @mod_groups << SpacingGroup.instance if @left_line_to_start != 1 || @right_line_to_start != 1
         @left_line_to_start = left_line_num
         @right_line_to_start = right_line_num
         @start_new_group = true
@@ -30,7 +30,7 @@ class DiffTableBuilder
       'deletion' => 'del',
       'unchanged' => 'unch'}.each do |k,v|
         eval "def push_#{k}(text); " +
-             "get_current_group(:#{v}).push_#{k}(html_escape(text)); " +
+               "get_current_group(:#{v}).push_#{k}(html_escape(text)); " +
              "end"
     end
     
