@@ -1,1 +1,1 @@
-MOTIRO_VERSION = '0.5.4-dev'
+MOTIRO_VERSION = '0.5.4'
