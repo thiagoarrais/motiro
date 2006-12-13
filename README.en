@@ -140,6 +140,12 @@ What you need to do is:
 
    % ruby script/ticker stop
    
+   Under Windows, you'll want to try:
+   
+   % ruby script/ticker run
+   
+   and stop it by hitting Ctrl-C.
+   
 5. Boot the server
 ------
 

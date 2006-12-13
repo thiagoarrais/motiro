@@ -150,6 +150,12 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 
    % ruby script/ticker stop
    
+   Em plataforma Windows, é melhor tentar:
+   
+   % ruby script/ticker run
+   
+   e para parar é só apertar Ctrl-C.
+   
 5. Iniciar o servidor
 ------
 
