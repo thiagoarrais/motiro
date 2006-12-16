@@ -52,5 +52,8 @@
 'Quick reference' => 'Referência rápida',
 'Title' => 'Título',
 'address' => 'endereço',
-'label' => 'rótulo'
+'label' => 'rótulo',
+
+# Older headlines page
+'Author' => 'Autor'
 }
