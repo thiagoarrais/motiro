@@ -44,7 +44,7 @@ class SubversionReporter < MotiroReporter
   end
   
   def headlines
-    build_headlines_from(@connection.log(:no_limit))
+    build_headlines_from(@connection.log(:all))
   end
   
   def headline(rid)
