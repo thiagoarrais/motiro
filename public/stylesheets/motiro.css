@@ -1,7 +1,8 @@
 body {
     font: normal 10pt Verdana,sans-serif;
-    background-color: #FFF; 
-    text-align:center;   
+    background-color: #f0f0f0; 
+    text-align: left;
+    padding: 1em 2em;   
 }
 
 #notice {
@@ -13,12 +14,6 @@ body {
     color: #ffffff;
 }
 
-#content {
-    width: 780px;
-    margin: 0 auto;
-    text-align:left;   
-}
-
 #summary {
     font: smaller courier;
 }
@@ -27,9 +22,20 @@ body {
     display: none;
 }
 
+#rightside {
+    float: right;
+}
+
+#description {
+    background-color: #FFF;
+    margin: 4px 4px 4px 4px;
+    padding: 0 .8em .4em .8em;
+    border: 1px solid #679cd2;
+    margin-right: 332px;
+}
+
 div.channel {
-    width: 378px;
-    float: left;
+    width: 316px;
     margin: 4px 4px 4px 4px;
 }
 
@@ -37,11 +43,13 @@ div.channel-title {
     font-weight: bold;
     margin:0;
     padding: 0 2px 1px 8px;
-    color: #000
+    color: #000;
+    background: #a0ccee;
 }
             
 div.channel-body-outer {
     padding: 0 9px 0 9px;
+    background: #a0ccee;
 }
 
 a.feed {
@@ -175,38 +183,6 @@ textarea {
     clear: left;
 }
 
-div#subversion div.channel-title {
-    background: #E3A1C4
-}
-
-div#subversion div.channel-body-outer {
-    background: #E3A1C4
-}
-
-div#events div.channel-title {
-    background: #FFBD00
-}
-
-div#events div.channel-body-outer {
-    background: #FFBD00
-}
-
-div#darcs div.channel-title {
-    background: #E3A1C4
-}
-
-div#darcs div.channel-body-outer {
-    background: #E3A1C4
-}
-
-div#nextrelease div.channel-title {
-    background: #5CE28B
-}
-
-div#nextrelease div.channel-body-outer {
-    background: #5CE28B
-}
-
 span.warning {
 	border: 1px solid #F33;
 	background: #FFA;
@@ -226,3 +202,6 @@ span.warning {
 	left: 174px;
 	z-index: 6;
 }
+
+a:link { color: #3333f0 }
+a:visited { color: #88d }

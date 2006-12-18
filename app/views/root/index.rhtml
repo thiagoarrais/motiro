@@ -1,13 +1,5 @@
 <% @title = "Motiro: #{'Welcome'.t}" %>
-      <div id="description" class="window">
-        <div class = "inner">
-          <%= render_component(:controller => 'wiki',
-                               :action =>  'show',
-                               :params => { :page_name => 'MainPage',
-                                            :context => 'partial',
-                                            :locale => @locale }) %>
-        </div>
-      </div>
+  <div id="rightside">
   <% ReporterFetcher.new.active_reporters.each do |reporter| %>
     <div class="channel" id="<%= reporter.name -%>">
       <%= render_component(:controller => 'report',
@@ -29,5 +21,13 @@
                                           :locale => @locale }) %>
       </div>
     </div>
+  </div>
+  </div>
+  <div id="description">
+    <%= render_component(:controller => 'wiki',
+                         :action =>  'show',
+                         :params => { :page_name => 'MainPage',
+                                      :context => 'partial',
+                                      :locale => @locale }) %>
   </div>
     
