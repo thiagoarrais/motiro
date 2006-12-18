@@ -1,27 +1,27 @@
 <% @title = "Motiro: #{'Welcome'.t}" %>
   <div id="rightside">
-  <% ReporterFetcher.new.active_reporters.each do |reporter| %>
-    <div class="channel" id="<%= reporter.name -%>">
-      <%= render_component(:controller => 'report',
-                           :action =>  'list',
-                           :params => { :reporter => reporter.name,
-                                        :locale => @locale }) %>
-    </div>
-  <% end %>
-  <div class="channel" id="nextrelease">
-    <div class='channel-title'>
-      <p><%= 'Planned features'.t -%></p>
-    </div>
-    <div class='channel-body-outer'>
-      <div class='inner'>
-        <%= render_component(:controller => 'wiki',
-                             :action =>  'show',
-                             :params => { :page_name => 'NextRelease',
-                                          :context => 'partial',
-                                          :locale => @locale }) %>
-      </div>
-    </div>
-  </div>
+    <% ReporterFetcher.new.active_reporters.each do |reporter| %>
+	  <div class="channel" id="<%= reporter.name -%>">
+	    <%= render_component(:controller => 'report',
+	                         :action =>  'list',
+	                         :params => { :reporter => reporter.name,
+	                                      :locale => @locale }) %>
+	  </div>
+	<% end %>
+	<div class="channel" id="nextrelease">
+	  <div class='channel-title'>
+	    <p><%= 'Planned features'.t -%></p>
+	  </div>
+	  <div class='channel-body-outer'>
+	    <div class='inner'>
+	      <%= render_component(:controller => 'wiki',
+	                           :action =>  'show',
+	                           :params => { :page_name => 'NextRelease',
+	                                        :context => 'partial',
+	                                        :locale => @locale }) %>
+	    </div>
+	  </div>
+	</div>
   </div>
   <div id="description">
     <%= render_component(:controller => 'wiki',
