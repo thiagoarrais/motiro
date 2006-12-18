@@ -109,9 +109,7 @@ class AccountAcceptanceTest < SeleniumTestCase
   
   def test_edition_disabled_without_authentication
     open('/en')
-    assert_element_present "//span[@class = 'disabled']"
-    assert_equal "Edit (requires authentication)",
-    get_text("//span[@class = 'disabled']")
+    assert_element_present "//span[contains(text(), 'requires authentication') and @class = 'disabled']"
   end
   
   def test_edition_enabled_when_authenticated
