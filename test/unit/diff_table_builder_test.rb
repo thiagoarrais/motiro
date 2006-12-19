@@ -12,7 +12,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +
                     "style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
@@ -32,7 +32,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -53,7 +53,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -78,7 +78,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 0 1px;'>" +
@@ -90,7 +90,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>1</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>2</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 0 1px 1px 1px;'>" +
@@ -115,7 +115,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -127,7 +127,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>1</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +
                     "style='border-width: 0 1px 0 0;'>&nbsp;" +
@@ -138,7 +138,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>2</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>2</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>This line remains the same</pre>" +
@@ -161,7 +161,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 0 1px;'>" +
@@ -173,7 +173,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>1</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>2</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 0 1px 1px 1px;'>" +
@@ -183,7 +183,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                     "style='border-width: 0 0 0 1px;'>&nbsp;</td>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>3</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>This line remains the same</pre>" +
@@ -208,7 +208,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>div.channel-title {</pre>" +
@@ -218,7 +218,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>6</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>7</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -230,7 +230,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>7</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>8</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>    margin:0 0 0 0;</pre>" +
@@ -262,7 +262,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>div.channel-title {</pre>" +
@@ -272,7 +272,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>6</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>7</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -284,7 +284,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>7</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>8</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>    margin:0 0 0 0;</pre>" +
@@ -304,7 +304,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='border:solid gray; " +
                            "border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>13</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>div.channel-body-outer {</pre>" +
@@ -314,7 +314,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>13</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>14</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -326,7 +326,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>14</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>15</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>}</pre>" +
@@ -358,7 +358,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>6</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>div.channel-title {</pre>" +
@@ -368,7 +368,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>6</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>7</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -380,7 +380,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>7</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>&nbsp;" +
                 "</td>\n" +
@@ -400,7 +400,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
             "    <td style='border:solid gray; " +
                            "border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>13</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>div.channel-body-outer {</pre>" +
@@ -410,7 +410,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>14</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>14</td>\n" +
             "    <td class='left changed' " +
                     "style='border-width: 1px 1px 1px 1px;'>" +
@@ -422,7 +422,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                 "</td>\n" +
             "    <td class='line_number'>15</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>15</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
                   "<pre>}</pre>" +
@@ -441,7 +441,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     @builder.push_unchanged '        <h1><%= h(@headline.title) -%></h1>'
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>1</td>\n" +
             "    <td class='left' style='border-width: 0 1px 0 0;'>" +
     "<pre>        &lt;h1&gt;&lt;%= h(@headline.title) -%&gt;&lt;/h1&gt;</pre>" +
@@ -462,7 +462,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     expected_diff_table =
     expected_diff_table =
             "<table class='diff 'cellspacing='0'>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +
                     "style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
@@ -470,7 +470,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
                     "style='border-width: 1px 1px 0 0;'>&nbsp;</td>\n" +
             "    <td class='line_number'>1</td>\n" +
             "  </tr>\n" +
-            "  <tr>\n" +
+            "  <tr style='background: #FFF'>\n" +
             "    <td class='line_number'>&nbsp;</td>\n" +
             "    <td class='left' " +
                     "style='border-width: 0 1px 0 0;'>&nbsp;</td>\n" +
@@ -494,13 +494,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
       "<table class='diff 'cellspacing='0'>\n" + 
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>1</td>\n" +
       "    <td class='left' style='border-width: 0 1px 0 0;'>&nbsp;</td>\n" +
       "    <td class='right' style='border-width: 0 0 0 0;'>&nbsp;</td>\n" +
       "    <td class='line_number'>1</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>&nbsp;</td>\n" +
       "    <td class='left' style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
       "    <td class='right changed' style='border-width: 1px 1px 1px 0;'><pre>import java.io.IOException;</pre></td>\n" +
@@ -512,7 +512,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>51</td>\n" +
       "    <td class='left' style='border-width: 0 1px 0 0;'><pre>\t\t}</pre></td>\n" +
       "    <td class='right' style='border-width: 0 0 0 0;'><pre>\t\t}</pre></td>\n" +
@@ -532,13 +532,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
       "<table class='diff 'cellspacing='0'>\n" + 
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>&nbsp;</td>\n" +
       "    <td class='left' style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
       "    <td class='right changed' style='border-width: 1px 1px 1px 0;'><pre>added line</pre></td>\n" +
       "    <td class='line_number'>1</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>1</td>\n" +
       "    <td class='left' style='border-width: 0 1px 0 0;'><pre>old line number 1</pre></td>\n" +
       "    <td class='right' style='border-width: 0 0 0 0;'><pre>old line number 1</pre></td>\n" +
@@ -550,7 +550,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>&nbsp;</td>\n" +
       "    <td class='left' style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
       "    <td class='right changed' style='border-width: 1px 1px 1px 0;'><pre>new line 62</pre></td>\n" +
@@ -570,13 +570,13 @@ class DiffTableBuilderTest < Test::Unit::TestCase
     
     expected_diff_table =
       "<table class='diff 'cellspacing='0'>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>&nbsp;</td>\n" +
       "    <td class='left' style='border-width: 1px 1px 1px 1px;'>&nbsp;</td>\n" +
       "    <td class='right changed' style='border-width: 1px 1px 1px 0;'><pre>added line</pre></td>\n" +
       "    <td class='line_number'>1</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>1</td>\n" +
       "    <td class='left' style='border-width: 0 1px 0 0;'><pre>old line number 1</pre></td>\n" +
       "    <td class='right' style='border-width: 0 0 0 0;'><pre>old line number 1</pre></td>\n" +
@@ -588,7 +588,7 @@ class DiffTableBuilderTest < Test::Unit::TestCase
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "    <td style='border:solid gray; border-width: 1px 0 1px 0;'>&nbsp;</td>\n" +
       "  </tr>\n" +
-      "  <tr>\n" +
+      "  <tr style='background: #FFF'>\n" +
       "    <td class='line_number'>50</td>\n" +
       "    <td class='left' style='border-width: 0 1px 0 0;'><pre>\t\t</pre></td>\n" +
       "    <td class='right' style='border-width: 0 0 0 0;'><pre>\t\t</pre></td>\n" +

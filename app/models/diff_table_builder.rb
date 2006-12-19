@@ -84,7 +84,7 @@ class Group
         result = ''
         0.upto(num_lines - 1) do |i|
             
-            result += "  <tr>\n"
+            result += "  <tr style='background: #FFF'>\n"
             result += render_counter(:left, i)
             result += render_left_cell(i)
             result += render_right_cell(i)
