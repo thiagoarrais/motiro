@@ -1,8 +1,7 @@
 <% @title = "Motiro - Subversion - #{'Revision %s' / @revision_id}" %>
 <% if ! @partial then %>
-      <div id="description" class="window">
-        <div class="inner">
-          <h1><%= 'Revision %s' / @revision_id -%></h1>
+    <div class="pagetext">
+      <h1><%= 'Revision %s' / @revision_id -%></h1>
 <% end %>
 <%= Page.new(:text => @headline.description(Translator.for(@locale))).
       render_html %>
@@ -13,12 +12,11 @@
             <% end %>
           </div>
 <% if !@partial then %>
-        </div>
-      </div>
     </div>
     <div id="changes">
       <% @headline.changes.each do |change| %>
         <%= change.render_diff %>
       <% end %>
+    </div>
 <% end %>
   

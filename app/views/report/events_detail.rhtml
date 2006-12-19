@@ -1,14 +1,12 @@
 <% @title = "Motiro - #{'Event'.t}" %>
 <% if ! @partial then %>
-      <div id="description" class="window">
-        <div class="inner">
-          <h1><%= h(@headline.title(Translator.for(@locale))) -%></h1>
+    <div class="pagetext">
+      <h1><%= h(@headline.title(Translator.for(@locale))) -%></h1>
 <% end %>
 <%= Page.new(:text => @headline.description(Translator.for(@locale))).
       render_html %>
 <% if ! @partial then %>
-        </div>
-      </div>
+    </div>
 <% end %>
 
     

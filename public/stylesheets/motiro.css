@@ -38,11 +38,15 @@ div.authorization_cell {
     float: right;
 }
 
-#description {
+div.pagetext {
     background-color: #FFF;
-    margin: 4px 332px 4px 0;
+    margin: 4px 0 4px 0;
     padding: 0 .8em .4em .8em;
     border: 1px solid #679cd2;
+}
+
+#mainpage {
+    margin: 4px 332px 4px 0;
 }
 
 div.channel {
