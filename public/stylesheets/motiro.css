@@ -25,6 +25,13 @@ body {
 #header {
     margin: 0 332px 0 0;
     padding: 0;
+    position: relative;
+    height: 3em;
+}
+
+div.authorization_cell {
+    width: 9.1em;
+    float: left;
 }
 
 #rightside {
@@ -33,7 +40,7 @@ body {
 
 #description {
     background-color: #FFF;
-    margin: 4px 332px 4px 4px;
+    margin: 4px 332px 4px 0;
     padding: 0 .8em .4em .8em;
     border: 1px solid #679cd2;
     margin-right: 332px;
@@ -161,6 +168,7 @@ table.oldernews .relative { border-left-width: 0; }
       
 input {
     border: solid 1px #80aacc;
+    margin: .2em 0 0 0;
 }
 
 input.button {

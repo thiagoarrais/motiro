@@ -7,39 +7,29 @@
                   :id => 'passwords_do_not_match', :class => 'warning',
                   :style=> 'display:none' %>
   <%= start_form_tag :controller => 'account', :action=> 'login' %>
-    <table>
-      <tr>
-        <td><label for="user_login"><%= 'User'.t -%></label></td>
-        <td><label for="user_password"><%= 'Password'.t -%></label></td>
-        <td class="password_confirm" style="display: none">
-          <label for="user_password_confirmation"><%= 'Confirmation'.t -%></label>
-        </td>
-        <td>
-          <input type="checkbox" id="chk_new_user"
-                 name="chk_new_user" class="checkbox"
-                 onClick="tooglePasswordConfirmation(document.forms[0].chk_new_user.checked)" />
-            <%= 'New user?'.t -%>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <%= text_field 'user', 'login', :size => 12,
-                                          :value => flash[:desired_login] -%>
-        </td>
-        <td>
-          <%= password_field 'user', 'password', :size => 12 -%>
-        </td>
-        <td class="password_confirm" style="display: none">
-          <%= password_field 'user', 'password_confirmation', :size => 12,
-                             :disabled => true -%>
-        </td>
-        <td>
-          <input type='hidden' name='return_to' value="<%= request.env['REQUEST_URI'] -%>"/>
-          <input class='button' type="submit"
-                 name="login" value="Login &#187;" />
-        </td>
-      </tr>
-    </table>
+    <div class="authorization_cell">
+      <%= content_tag :label, 'User'.t, :for=> 'user_login'%><br />
+      <%= text_field 'user', 'login', :size => 12,
+                                      :value => flash[:desired_login] %>
+    </div>
+    <div class="authorization_cell">
+      <%= content_tag :label, 'Password'.t, :for=> 'user_password'%><br />
+      <%= password_field 'user', 'password', :size => 12 %>
+    </div>
+    <div id="password_confirm" class="authorization_cell" style="display: none;">
+      <%= content_tag :label, 'Confirmation'.t, :for=> 'user_password_confirmation'%>
+      <%= password_field 'user', 'password_confirmation',
+                         :size => 12,
+                         :disabled => true %>
+    </div>
+    <div class="authorization_cell">
+      <input type="checkbox" id="chk_new_user"
+             name="chk_new_user" class="checkbox"
+             onClick="tooglePasswordConfirmation(document.forms[0].chk_new_user.checked)" />
+      <%= 'New user?'.t %><br />
+      <input type='hidden' name='return_to' value="<%= request.env['REQUEST_URI'] -%>"/>
+      <input class='button' type="submit" name="login" value="Login &#187;" />
+    </div>
     <%= observe_field 'user_login',
                       :function => "if (document.getElementById('chk_new_user').checked) { new Ajax.Updater('authentication_errors', '#{url_for :controller => 'account', :action => 'availability'}', {asynchronous:true, evalScripts:true, parameters:'desired_login=' + value})}",
                       :with => 'desired_login',

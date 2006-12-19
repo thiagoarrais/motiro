@@ -15,16 +15,14 @@ function showOnly(divId) {
 }
 
 function tooglePasswordConfirmation(show) {
-	var cells = getElementsBySelector("td.password_confirm");
+	var elem = document.getElementById('password_confirm');
 	var state = show ? 'block' : 'none';
 	var action = show ? '#{url_for :controller => 'account', :action => 'signup'}' : '#{url_for :controller => 'account', :action => 'login'}' ;
             
 	document.getElementById("user_password_confirmation").disabled = !show;
 	document.forms[0].action = action;
 
-	for(i=0; i < cells.length; i++) {
-		cells[i].style.display = state;
-	}
+	elem.style.display = state;
 }
 
 function check_password_confirmation() {
