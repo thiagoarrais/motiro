@@ -1,3 +1,20 @@
+#  Motiro - A project tracking tool
+#  Copyright (C) 2006  Thiago Arrais
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 require 'acceptance/live_mode_test'
 
 class WikiAcceptanceTest < SeleniumTestCase
@@ -186,6 +203,30 @@ class WikiAcceptanceTest < SeleniumTestCase
     open edition_page
 
     assert_element_not_present 'txtAuthorized'
+  end
+  
+  def test_describing_feature_adds_to_main_page_channel
+    open '/en'
+
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(2000)
+
+    feature_title = 'Tagging wiki pages as feature suggestions'
+    
+    open '/wiki/new/feature'
+    
+    type 'txtTitle', feature_title
+    type 'txaEditor', 'Maybe being able to tag some wiki pages as feature suggestions will be a good idea'
+    
+    click 'btnSave'
+    wait_for_page_to_load(2000)
+    
+    open '/en'
+    
+    assert_text_present feature_title         
   end
 
 end
