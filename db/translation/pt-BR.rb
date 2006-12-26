@@ -45,6 +45,7 @@
 'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
 
 # Wiki edition page
+'Insert page title here' => 'Digite o título aqui',
 'Save modifications' => 'Salvar modificações',
 'Discard' => 'Descartar',
 'Quick reference' => 'Referência rápida',

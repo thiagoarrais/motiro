@@ -103,4 +103,47 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'MyFirstMotiroPage3', trd_page.name
   end
   
+  def test_uses_place_holder_title_when_nil
+    page = Page.new
+    
+    assert_equal PLACE_HOLDER_TITLE.t, page.title
+  end
+  
+  def test_uses_place_holder_title_when_empty
+    page = Page.new(:title => '')
+    
+    assert_equal PLACE_HOLDER_TITLE.t, page.title    
+  end
+  
+  def test_translates_default_title
+    Locale.set 'pt-br'
+    
+    assert_equal 'Digite o título aqui', Page.new.title  
+  end
+  
+  def test_saves_default_title_based_on_page_kind_when_title_is_place_holder
+    common_page = Page.new
+    
+    common_page.save
+    assert_equal 'Common page', common_page.title
+    
+    feature_page = Page.new(:kind => 'feature')
+    feature_page.save
+    assert_equal 'Feature page', feature_page.title
+  end
+  
+  def test_numbers_titles_when_already_used
+    Page.new.save
+    
+    snd_page = Page.new
+    snd_page.save
+    
+    assert_equal 'Common page 2', snd_page.title
+    
+    trd_page = Page.new
+    trd_page.save       
+
+    assert_equal 'Common page 3', trd_page.title
+  end
+  
 end

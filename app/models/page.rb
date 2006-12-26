@@ -18,6 +18,8 @@
 require 'rubygems'
 require 'mediacloth'
 
+PLACE_HOLDER_TITLE = 'Insert page title here'
+
 class Page < ActiveRecord::Base
 
   include MediaCloth
@@ -28,10 +30,16 @@ class Page < ActiveRecord::Base
   def after_initialize
     self.editors ||= ''
     self.title ||= ''
+    self.text ||= '' 
     self.kind ||= 'common'
+    self.title = self.title == '' ? PLACE_HOLDER_TITLE.t : self.title 
   end
   
   def before_save
+    if read_attribute(:title) == PLACE_HOLDER_TITLE.t
+      write_attribute(:title, title_from_kind)  
+    end
+    
     write_attribute(:name, self.name)
   end
   
@@ -56,13 +64,21 @@ class Page < ActiveRecord::Base
 private
   
   def name_from_title
-    result = target_name = title.downcase.gsub(/ /, '_').camelize
+    sequence(title.downcase.gsub(/ /, '_').camelize, 'name')
+  end
+  
+  def title_from_kind
+    sequence(kind.capitalize + ' page ', 'title')
+  end
+  
+  def sequence(target, attr)
+    result = target.strip
     suffix = 2
-    while !self.class.find_by_name(result).nil?
-      result = target_name + suffix.to_s
+    while self.class.find(:first, :conditions => "#{attr} = '#{result}'")
+      result = target + suffix.to_s
       suffix += 1
     end
-    return result
+    return result    
   end
   
   def my_parser
