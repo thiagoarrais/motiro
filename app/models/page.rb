@@ -30,10 +30,18 @@ class Page < ActiveRecord::Base
     self.kind ||= 'common'
   end
   
+  def before_save
+    write_attribute(:name, self.name)
+  end
+  
   def render_html(locale_code=nil)
     translator = Translator.for(locale_code)
     wiki_text = translator.localize(text).delete("\r")
     wiki_to_html(wiki_text)
+  end
+  
+  def name
+    read_attribute(:name) || name_from_title
   end
   
   def use_parser(parser)
@@ -45,6 +53,16 @@ class Page < ActiveRecord::Base
   end
   
 private
+  
+  def name_from_title
+    result = target_name = title.downcase.gsub(/ /, '_').camelize
+    suffix = 2
+    while !self.class.find_by_name(result).nil?
+      result = target_name + suffix.to_s
+      suffix += 1
+    end
+    return result
+  end
   
   def my_parser
     @parser ||= WikiParser.new

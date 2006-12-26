@@ -71,5 +71,36 @@ class PageTest < Test::Unit::TestCase
     
     assert_equal 0, page.editors.size
   end
-
+  
+  def test_page_name_is_title_camelized
+    page = Page.new(:title => 'How to write a Motiro page')
+    
+    assert_equal 'HowToWriteAMotiroPage', page.name
+  end
+  
+  def test_user_entered_page_name_takes_precedence_over_camelized_title
+    page = Page.new(:name => 'MyFirstPageName')
+    page.title = 'My first page title'
+    
+    assert_equal 'MyFirstPageName', page.name  
+    
+    page = Page.new(:title => 'My second page title')
+    page.name = 'MySecondPageName'
+    
+    assert_equal 'MySecondPageName', page.name
+  end
+  
+  def test_resolve_clashing_page_names
+    fst_page = Page.new(:title => 'My first Motiro page', :text => '')
+    assert_equal 'MyFirstMotiroPage', fst_page.name
+    fst_page.save
+    
+    snd_page = Page.new(:title => 'My first Motiro page', :text => '')
+    assert_equal 'MyFirstMotiroPage2', snd_page.name
+    snd_page.save
+    
+    trd_page = Page.new(:title => 'My first Motiro page')
+    assert_equal 'MyFirstMotiroPage3', trd_page.name
+  end
+  
 end
