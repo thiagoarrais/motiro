@@ -47,12 +47,16 @@
 # Wiki edition page
 'Save modifications' => 'Salvar modificações',
 'Discard' => 'Descartar',
-'Who should be able to edit this page?' => 'Quem pode editar esta página?',
-'(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
 'Quick reference' => 'Referência rápida',
 'Title' => 'Título',
 'address' => 'endereço',
 'label' => 'rótulo',
+'Page properties' => 'Propriedades da página',
+'This page is a' => 'Esta página é uma',
+'common wiki page' => 'página wiki comum',
+'feature suggestion' => 'sugestão de recurso', 
+'Who should be able to edit this page?' => 'Quem pode editar esta página?',
+'(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
 
 # Older headlines page
 'Author' => 'Autor'

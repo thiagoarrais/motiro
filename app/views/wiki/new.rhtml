@@ -1,0 +1,45 @@
+      <div id="editor" class="window">
+        <div class = "inner">
+          <%= start_form_tag :action => 'save' %>
+            <%= text_field 'page', 'title', :id => 'txtTitle' %>
+            <%= text_area 'page', 'text', :id => 'txaEditor', :rows => '30' %>
+            <%= submit_tag 'Save modifications'.t, :class => 'button',
+                                                  :name => 'btnSave' %>
+            <%= submit_tag 'Discard'.t, :class => 'button',
+                                       :name => 'btnDiscard' %>
+            <%= hidden_field_tag 'page_name', @page.name %>
+          <%= end_form_tag %>
+        </div>
+      </div>
+      <div id='wiki_reference' class='window'>
+        <div class='inner'>
+          <h2><%= 'Quick reference'.t -%></h2>
+          <p>
+            <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
+            <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
+          </p>
+        </div>
+      </div>
+      <div id="page_properties" class="window">
+        <div class="inner">
+          <h2><%= 'Page properties'.t -%></h2>
+          <p>
+            <%= 'This page is a'.t -%>
+            <%= select('page', 'kind',  [['common wiki page'.t, 'common'],
+                                         ['feature suggestion'.t, 'feature']],
+                                        {},
+                                        :id => 'cmbType') %>
+          </p>
+            <% if current_user.can_change_editors?(@page) %>
+              <p>
+                <label for='txtAuthorized'>
+                  <%= 'Who should be able to edit this page?'.t -%>
+                </label>
+                <%= text_field('page', 'editors',
+                               :id => 'txtAuthorized', :class => 'text') %><br />
+                <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
+              </p>
+            <% end %>
+        </div>
+      </div>
+      

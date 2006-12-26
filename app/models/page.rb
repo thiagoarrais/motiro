@@ -26,7 +26,8 @@ class Page < ActiveRecord::Base
                                :foreign_key => 'original_author_id'
   
   def after_initialize
-    self.editors = '' unless self.editors
+    self.editors ||= ''
+    self.kind ||= 'common'
   end
   
   def render_html(locale_code=nil)

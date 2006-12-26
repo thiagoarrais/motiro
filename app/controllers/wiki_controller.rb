@@ -20,6 +20,7 @@ class WikiController < EditionController
   layout :choose_layout
 
   before_filter :login_required
+  before_filter :fetch_page
   before_filter :check_edit_access, :only => [:edit, :save]
   
   def choose_layout
@@ -37,8 +38,11 @@ class WikiController < EditionController
     @default_page_provider = DefaultPageProvider.new
   end
   
-  def check_edit_access
+  def fetch_page
     @page = find_page(params[:page_name])
+  end
+  
+  def check_edit_access
     unless current_user.can_edit?(@page)
       flash[:not_authorized] = true
       redirect_to :action => 'show', :page_name => @page.name
@@ -50,6 +54,10 @@ class WikiController < EditionController
     
   def edit
     render(:layout => 'wiki_edit')
+  end
+  
+  def new
+    render(:layout => 'application')
   end
     
   def do_save
@@ -68,7 +76,6 @@ class WikiController < EditionController
   end
   
   def show
-    @page = find_page(params[:page_name])
     @rendered_page = @page.render_html(current_locale)
   end
     

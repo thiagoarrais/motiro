@@ -184,6 +184,9 @@ input.checkbox {
 
 input#txtTitle {
     font-size: x-large;
+    font-family: courier;
+    margin-top: .2em;
+    margin-bottom: .4em;
 }
 
 textarea {
@@ -192,7 +195,22 @@ textarea {
 }
 
 div#editor div.inner {
-    background-color: #fff; 
+    background-color: #e8f2f2; 
+}
+
+div#page_properties {
+    margin: 0;
+    margin-right: 20.2em;
+}
+
+div#wiki_reference {
+    margin: 0;
+    float: right;
+    width: 18.4em;
+}
+
+div#page_properties div.inner {
+    background-color: #e8f2f2; 
 }
 
 #footer {
