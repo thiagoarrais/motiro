@@ -57,6 +57,7 @@ class WikiController < EditionController
   end
   
   def new
+    @page.kind = params[:kind]
     render(:layout => 'application')
   end
     

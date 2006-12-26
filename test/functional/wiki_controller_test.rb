@@ -165,6 +165,14 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :content => /nothing to be read here/
   end
   
+  def test_auto_selects_page_kind
+    log_as 'bob'
+    
+    get :new, :kind => 'feature'
+    assert_tag :tag => 'option', :attributes => { :value => 'feature',
+                                                  :selected => 'selected' }    
+  end
+  
 private
 
   def log_as(user_name)

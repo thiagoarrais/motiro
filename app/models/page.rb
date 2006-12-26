@@ -27,6 +27,7 @@ class Page < ActiveRecord::Base
   
   def after_initialize
     self.editors ||= ''
+    self.title ||= ''
     self.kind ||= 'common'
   end
   
