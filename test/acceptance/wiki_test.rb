@@ -37,7 +37,7 @@ class WikiAcceptanceTest < SeleniumTestCase
     
     wait_for_page_to_load(1000)
     
-    assert_equal 'Motiro', get_text('//h1')
+    assert_element_present "//h1[text() = 'Motiro']"
     assert_text_present 'This is project motiro'
   end
   
