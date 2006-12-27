@@ -128,9 +128,10 @@ class WikiControllerTest < Test::Unit::TestCase
           with_any_args.
           and_return(page).
           once
+        page.should_receive(:title).and_return('Mocked page').once
         page.should_receive(:render_html).
           with('en').
-          and_return("<div>You've been mocked!").
+          and_return("You've been mocked!").
           once
         
         @controller = WikiController.new(provider)
@@ -146,6 +147,7 @@ class WikiControllerTest < Test::Unit::TestCase
           with_any_args.
           and_return(page).
           once
+        page.should_receive(:title).and_return('Mocked page').once
         page.should_receive(:render_html).
           with('en-US').
           and_return("<div>You've been mocked!</div>").
@@ -179,6 +181,15 @@ class WikiControllerTest < Test::Unit::TestCase
     get :edit, :page_name => 'BrandNewPage'
     assert_tag :tag => 'input', :attributes => { :type => 'text',
                                                  :value => 'Brand new page' }
+  end
+  
+  def test_shows_page_title_as_level_one_header
+    non_matching_title_page = pages('non_matching_title_page')
+    get :show, :page_name => pages('test_page').name
+    assert_tag :tag => 'h1', :content => 'Test page'
+    
+    get :show, :page_name => non_matching_title_page.name
+    assert_tag :tag => 'h1', :content => non_matching_title_page.title
   end
   
 private

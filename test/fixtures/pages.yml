@@ -27,3 +27,21 @@ nobodys_page:
   original_author_id:
   editors: ""
   text: This page was created before the wiki access control was in place
+  
+test_page:
+  id: 5
+  name: TestPage
+  kind: common
+  original_author_id: 1000001
+  editors: ""
+  title: 
+  text: This is the page text
+  
+non_matching_title_page:
+  id: 6
+  name: NonMatchingTitlePage
+  kind: common
+  original_author_id: 1000001
+  editors: ""
+  title: The title does not match the name
+  text: This is the page text
