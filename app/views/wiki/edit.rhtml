@@ -1,13 +1,13 @@
+    <%= start_form_tag :action => 'save' %>
       <div id="editor" class="window">
         <div class = "inner">
-          <%= start_form_tag :action => 'save' %>
-            <%= text_field 'page', 'title', :id => 'txtTitle' %>
-            <%= text_area 'page', 'text', :id => 'txaEditor', :rows => '30' %>
-            <%= submit_tag 'Save modifications'.t, :class => 'button',
-                                                  :name => 'btnSave' %>
-            <%= submit_tag 'Discard'.t, :class => 'button',
-                                       :name => 'btnDiscard' %>
-          <%= end_form_tag %>
+          <%= hidden_field_tag('page_name', params[:page_name]) if params[:page_name] %>
+          <%= text_field 'page', 'title', :id => 'txtTitle' %>
+          <%= text_area 'page', 'text', :id => 'txaEditor', :rows => '30' %>
+          <%= submit_tag 'Save modifications'.t, :class => 'button',
+                                                 :name => 'btnSave' %>
+          <%= submit_tag 'Discard'.t, :class => 'button',
+                                      :name => 'btnDiscard' %>
         </div>
       </div>
       <div id='wiki_reference' class='window'>
@@ -41,4 +41,5 @@
             <% end %>
         </div>
       </div>
+    <%= end_form_tag %>
       

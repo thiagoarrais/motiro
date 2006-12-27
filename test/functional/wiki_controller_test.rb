@@ -173,6 +173,14 @@ class WikiControllerTest < Test::Unit::TestCase
                                                   :selected => 'selected' }    
   end
   
+  def test_inserts_page_name_as_title_on_edition
+    log_as 'bob'
+    
+    get :edit, :page_name => 'BrandNewPage'
+    assert_tag :tag => 'input', :attributes => { :type => 'text',
+                                                 :value => 'Brand new page' }
+  end
+  
 private
 
   def log_as(user_name)

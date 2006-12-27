@@ -146,4 +146,10 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'Common page 3', trd_page.title
   end
   
+  def test_generates_page_title_based_on_name
+    page = Page.new(:name => 'YetAnotherMotiroPage')
+    
+    assert_equal 'Yet another motiro page', page.title
+  end
+  
 end

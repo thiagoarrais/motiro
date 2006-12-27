@@ -53,12 +53,12 @@ class WikiController < EditionController
   end
     
   def edit
-    render(:layout => 'wiki_edit')
+    render(:layout => 'application')
   end
   
   def new
     @page.kind = params[:kind]
-    render(:layout => 'application')
+    render(:action => 'edit', :layout => 'application')
   end
     
   def do_save
@@ -76,10 +76,6 @@ class WikiController < EditionController
     end
   end
   
-  def show
-    @rendered_page = @page.render_html(current_locale)
-  end
-    
 private
 
   def find_page(name)

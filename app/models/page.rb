@@ -29,10 +29,10 @@ class Page < ActiveRecord::Base
   
   def after_initialize
     self.editors ||= ''
-    self.title ||= ''
-    self.text ||= '' 
+    self.title ||= title_from_name || PLACE_HOLDER_TITLE.t
+    self.text ||= ''
     self.kind ||= 'common'
-    self.title = self.title == '' ? PLACE_HOLDER_TITLE.t : self.title 
+    self.title = PLACE_HOLDER_TITLE.t if self.title.empty?
   end
   
   def before_save
@@ -69,6 +69,11 @@ private
   
   def title_from_kind
     sequence(kind.capitalize + ' page ', 'title')
+  end
+  
+  def title_from_name
+    name = read_attribute(:name)
+    name && name.underscore.gsub(/_/, ' ').capitalize
   end
   
   def sequence(target, attr)
