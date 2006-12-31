@@ -1,0 +1,30 @@
+<div class='channel-title'>
+  <p><%= 'Recently changed suggestions'.t -%></p>
+</div>
+<div class='channel-body-outer'>
+  <div class='inner'>
+    <div class='toolbar channel_toolbar'>
+      <%= link_to('Older'.t, :controller => 'report',
+                             :action => 'older', :reporter => @name) -%> |
+      <%=  if current_user.nil?
+             content_tag(:span, 'Add'.t, :class => 'disabled')
+           else
+             link_to('Add'.t, :controller => 'wiki', :action => 'new', :kind => 'feature')
+           end -%>
+    </div> 
+<% @pages.each do |page| %>
+    <p>
+      <%= link_to( page.title, { :controller => 'wiki', :action => 'show',
+                                 :page_name => page.name } )%>
+      <br/>
+      <% if page.last_editor && page.modified_at %>
+        <font size="-1">
+          <i><%= 'Modified by'.t %> <%= page.last_editor.login %></i>
+          (<%= page.modified_at %>)
+        </font>
+      <% end %>
+    </p>
+    <hr/>
+<% end %>
+  </div>
+</div>

@@ -37,9 +37,14 @@ ActionController::Routing::Routes.draw do |map|
               :controller => 'report',
               :action => 'rss'
               
-  map.connect 'wiki/new/:kind',
+  map.connect 'wiki/new/:kind/:locale',
               :controller => 'wiki',
               :action => 'new',
+              :defaults => locale_defaults.merge(:kind => 'common')
+
+  map.connect 'wiki/last/:kind/:locale',
+              :controller => 'wiki',
+              :action => 'last',
               :defaults => locale_defaults.merge(:kind => 'common')
 
   map.connect 'wiki/:action/:page_name/:locale', :controller => 'wiki',

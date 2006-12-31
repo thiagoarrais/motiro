@@ -45,3 +45,38 @@ non_matching_title_page:
   editors: ""
   title: The title does not match the name
   text: This is the page text
+  
+list_last_modified_features_page:
+  id: 7
+  name: ListLastModifiedFeatures
+  kind: feature
+  original_author_id: 1000001
+  modified_at: 2033-12-27 16:47:00
+  last_editor_id: 1000001
+  editors: ""
+  title: List last modified features
+  text: Motiro should list the last modified feature suggestion pages on the
+        main page
+
+provide_rss_feed_for_last_modified_pages_page:
+  id: 8
+  name: ProvideRSSFeedForLastModifiedPages
+  kind: feature
+  original_author_id: 1000001
+  modified_at: 2033-12-27 12:33:48
+  last_editor_id: 1000004
+  editors: ""
+  title: Provide RSS feed for last modified pages
+  text: There could be an RSS feed for the last modified pages
+  
+events_are_just_special_pages_too_page:
+  id: 9
+  name: EventsAreJustSpecialWikiPagesToo
+  kind: feature
+  original_author_id: 1000001
+  modified_at: 2033-12-25 18:43:31
+  last_editor_id: 1000005
+  editors: ""
+  title: Events are just special wiki pages too
+  text: Event descriptions can be treated just like other regular wiki pages,
+        in the same way that feature suggestion pages are

@@ -8,6 +8,13 @@
 	                                      :locale => @locale }) %>
 	  </div>
 	<% end %>
+    <div class="channel" id="features">
+	  <%= render_component(:controller => 'wiki',
+	                       :action =>  'last',
+	                       :params => { :kind => 'feature',
+	                                    :context => 'partial',
+	                                    :locale => @locale }) %>
+	</div>
 	<div class="channel" id="nextrelease">
 	  <div class='channel-title'>
 	    <p><%= 'Planned features'.t -%></p>

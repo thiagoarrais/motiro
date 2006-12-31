@@ -24,33 +24,44 @@ class Page < ActiveRecord::Base
 
   include MediaCloth
   
+  belongs_to :last_editor, :class_name => 'User',
+                           :foreign_key => 'last_editor_id'
   belongs_to :original_author, :class_name => 'User',
                                :foreign_key => 'original_author_id'
   
   def after_initialize
     self.editors ||= ''
-    self.title ||= title_from_name || PLACE_HOLDER_TITLE.t
     self.text ||= ''
-    self.kind ||= 'common'
-    self.title = PLACE_HOLDER_TITLE.t if self.title.empty?
+    self.kind = 'common' if kind.nil? || kind.empty?
+    
+    write_attribute(:title, self.title)
+    write_attribute(:name, self.name)
   end
   
   def before_save
-    if read_attribute(:title) == PLACE_HOLDER_TITLE.t
+    if title == PLACE_HOLDER_TITLE.t
       write_attribute(:title, title_from_kind)  
     end
     
     write_attribute(:name, self.name)
   end
   
+  def name
+    result = read_attribute(:name)
+    return name_from_title if result.nil? || result.empty?
+    return result
+  end
+  
+  def title
+    result = read_attribute(:title)
+    return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
+    return result
+  end
+  
   def render_html(locale_code=nil)
     translator = Translator.for(locale_code)
     wiki_text = translator.localize(text).delete("\r")
     wiki_to_html(wiki_text)
-  end
-  
-  def name
-    read_attribute(:name) || name_from_title
   end
   
   def use_parser(parser)
@@ -73,6 +84,7 @@ private
   
   def title_from_name
     name = read_attribute(:name)
+    name = nil if name.nil? || name.empty?
     name && name.underscore.gsub(/_/, ' ').capitalize
   end
   

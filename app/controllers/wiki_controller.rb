@@ -19,7 +19,7 @@ class WikiController < EditionController
 
   layout :choose_layout
 
-  before_filter :login_required
+  before_filter :login_required, :except => [:show, :last]
   before_filter :fetch_page
   before_filter :check_edit_access, :only => [:edit, :save]
   
@@ -59,6 +59,11 @@ class WikiController < EditionController
   def new
     @page.kind = params[:kind]
     render(:action => 'edit', :layout => 'application')
+  end
+  
+  def last
+    @pages = Page.find(:all, :conditions => ['kind = ?', params[:kind]],
+                       :order => 'modified_at DESC')
   end
     
   def do_save
