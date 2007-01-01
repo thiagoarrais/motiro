@@ -33,9 +33,6 @@ class Page < ActiveRecord::Base
     self.editors ||= ''
     self.text ||= ''
     self.kind = 'common' if kind.nil? || kind.empty?
-    
-    write_attribute(:title, self.title)
-    write_attribute(:name, self.name)
   end
   
   def before_save
@@ -46,13 +43,15 @@ class Page < ActiveRecord::Base
     write_attribute(:name, self.name)
   end
   
-  def name
+  def name; name_before_type_cast; end
+  def name_before_type_cast
     result = read_attribute(:name)
     return name_from_title if result.nil? || result.empty?
     return result
   end
   
-  def title
+  def title; title_before_type_cast; end
+  def title_before_type_cast
     result = read_attribute(:title)
     return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
     return result
