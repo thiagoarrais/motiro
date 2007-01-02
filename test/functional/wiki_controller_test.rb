@@ -198,6 +198,33 @@ class WikiControllerTest < Test::Unit::TestCase
                  Regexp.new(pages('list_last_modified_features_page').title)
   end
   
+  def test_saves_last_editor_and_modification_date
+    log_as 'john'
+    
+    post :save, :btnSave => true, 
+                :page => { :title => 'Page written by John',
+                           :text => 'Anyone can change it',
+                           :kind => 'feature',
+                           :editors => '' }
+    
+    page = Page.find_by_name('PageWrittenByJohn')
+    
+    assert_equal users('john'), page.last_editor
+    assert_in_delta Time.now, page.modified_at, 1.0
+    
+    log_as 'bob'
+    
+    post :save, :page_name => 'PageWrittenByJohn',
+                :btnSave => true, 
+                :page => { :title => 'Page written by John',
+                           :text => 'Bob changed the text',
+                           :kind => 'feature',
+                           :editors => '' }
+    page = Page.find_by_name('PageWrittenByJohn')
+    
+    assert_equal users('bob'), page.last_editor
+  end
+  
 private
 
   def log_as(user_name)

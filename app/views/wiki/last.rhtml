@@ -19,8 +19,8 @@
       <br/>
       <% if page.last_editor && page.modified_at %>
         <font size="-1">
-          <i><%= 'Modified by'.t %> <%= page.last_editor.login %></i>
-          (<%= page.modified_at %>)
+          <i><%= page.last_editor.login %></i>
+          (<%= page.modified_at.relative_to_now %>)
         </font>
       <% end %>
     </p>

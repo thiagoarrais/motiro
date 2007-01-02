@@ -3,8 +3,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 class HeadlineTest < Test::Unit::TestCase
   fixtures :headlines, :changes
   
-  def midnight_17_july_2006; Time.local(2006, 07, 17, 00, 00, 00); end
-  
   def test_create
     headline = Headline.find(1)
     
@@ -146,60 +144,6 @@ class HeadlineTest < Test::Unit::TestCase
                                               a_headline.description])
                                               
     assert_equal 1, hls.size
-  end
-  
-  def test_time_ago_in_weeks
-    a_headline = Headline.new(:happened_at => [2006, 07, 1, 15, 32, 27])
-    
-    assert_equal '2 weeks ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-
-  def test_time_ago_in_days
-    a_headline = Headline.new(:happened_at => [2006, 07, 15, 00, 00, 00])
-    
-    assert_equal '2 days ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_exactly_one_day_ago
-    a_headline = Headline.new(:happened_at => [2006, 07, 16, 00, 00, 00])
-    
-    assert_equal 'Yesterday', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_time_ago_in_hours
-    a_headline = Headline.new(:happened_at => [2006, 07, 16, 22, 50, 00])
-    
-    assert_equal '1 hour ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-
-  def test_less_than_one_minute_ago
-    a_headline = Headline.new(:happened_at => [2006, 07, 16, 23, 59, 43])
-    
-    assert_equal 'Less than one minute ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_time_ago_in_months
-    a_headline = Headline.new(:happened_at => [2006, 03, 16, 23, 59, 43])
-    
-    assert_equal '4 months ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_time_ago_in_years
-    a_headline = Headline.new(:happened_at => [2003, 03, 16, 23, 59, 43])
-    
-    assert_equal '3 years ago', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_time_from_now
-    a_headline = Headline.new(:happened_at => [2006, 07, 20, 00, 00, 00])
-    
-    assert_equal '3 days from now', a_headline.relative_to_now(midnight_17_july_2006)
-  end
-  
-  def test_one_day_from_now
-    a_headline = Headline.new(:happened_at => [2006, 07, 18, 12, 00, 00])
-    
-    assert_equal 'Tomorrow', a_headline.relative_to_now(midnight_17_july_2006)
   end
   
   def test_empty_title_for_empty_description

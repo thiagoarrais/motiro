@@ -54,6 +54,7 @@ end
 include Globalize
 
 require_dependency 'import_translations'
+require_dependency 'relative_time'
 
 require 'core/version'
 require 'core/wiki_page_not_found'
