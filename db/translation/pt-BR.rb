@@ -21,6 +21,7 @@
 'Not available' => 'Não está disponível',
 'Passwords do not match' => 'Senhas não conferem',
 'Sign out' => 'Sair',
+'Last update by %s at %s' => 'Última atualização por %s em %s',
 'Edit' => 'Editar',
 '(requires authentication)' => '(identifique-se, por favor)',
 '(not authorized)' => '(não autorizado)',

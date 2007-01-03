@@ -129,6 +129,8 @@ class WikiControllerTest < Test::Unit::TestCase
           and_return(page).
           once
         page.should_receive(:title).and_return('Mocked page').once
+        page.should_receive(:last_editor).and_return(nil).zero_or_more_times
+        page.should_receive(:modified_at).and_return(nil).zero_or_more_times
         page.should_receive(:render_html).
           with('en').
           and_return("You've been mocked!").
@@ -148,6 +150,8 @@ class WikiControllerTest < Test::Unit::TestCase
           and_return(page).
           once
         page.should_receive(:title).and_return('Mocked page').once
+        page.should_receive(:last_editor).and_return(nil).zero_or_more_times
+        page.should_receive(:modified_at).and_return(nil).zero_or_more_times
         page.should_receive(:render_html).
           with('en-US').
           and_return("<div>You've been mocked!</div>").
@@ -223,6 +227,23 @@ class WikiControllerTest < Test::Unit::TestCase
     page = Page.find_by_name('PageWrittenByJohn')
     
     assert_equal users('bob'), page.last_editor
+  end
+  
+  def test_shows_modification_editor_and_date_on_wiki_pages
+    log_as 'john'
+    
+    post :save, :page_name => 'AnotherBoringWikiPage',
+                :btnSave => true, 
+                :page => { :title => 'Another boring wiki page',
+                           :text => 'Some boring text',
+                           :kind => 'common',
+                           :editors => '' }
+                           
+    expected_time = Time.now.to_s(:rfc822).slice(0, 19) # Wed, 03 Jan 2007 00
+    assert_redirected_to :action => 'show', :page_name => 'AnotherBoringWikiPage'
+    follow_redirect
+    assert_tag :content => /john/
+    assert_tag :content => Regexp.new(expected_time)
   end
   
 private
