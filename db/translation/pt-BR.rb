@@ -26,6 +26,7 @@
 '(requires authentication)' => '(identifique-se, por favor)',
 '(not authorized)' => '(não autorizado)',
 'Latest news from %s' => 'Últimas notícias do %s',
+'Recently changed suggestions' => 'Últimas sugestões modificadas',
 'Upcoming events' => 'Próximos eventos',
 'Planned features' => 'Funcionalidades planejadas',
 'version' => 'versão',
