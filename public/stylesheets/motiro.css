@@ -92,6 +92,8 @@ div.editbar {
     border-top: 1px dotted #9C9C9C;
 }
 
+div.editbar p { margin-top: 0 }
+
 div.channel_toolbar {
     border-bottom: 1px dotted #9C9C9C;
 }
