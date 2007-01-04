@@ -61,11 +61,6 @@ class WikiController < EditionController
     render(:action => 'edit', :layout => 'application')
   end
   
-  def last
-    @pages = Page.find(:all, :conditions => ['kind = ?', params[:kind]],
-                       :order => 'modified_at DESC')
-  end
-    
   def do_save
     params[:page].delete(:original_author_id)
     params[:page].delete(:editors) unless current_user.can_change_editors?(@page)

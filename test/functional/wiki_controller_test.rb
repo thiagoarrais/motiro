@@ -196,12 +196,6 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'h1', :content => non_matching_title_page.title
   end
   
-  def test_lists_last_changed_feature_pages
-    get :last, :kind => 'feature'
-    assert_tag :content =>
-                 Regexp.new(pages('list_last_modified_features_page').title)
-  end
-  
   def test_saves_last_editor_and_modification_date
     log_as 'john'
     

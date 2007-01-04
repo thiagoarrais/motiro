@@ -5,6 +5,9 @@ require 'root_controller'
 class RootController; def rescue_action(e) raise e end; end
 
 class RootControllerTest < Test::Unit::TestCase
+
+  fixtures :users, :pages
+
   def setup
     @controller = RootController.new
     @request    = ActionController::TestRequest.new
@@ -106,6 +109,12 @@ class RootControllerTest < Test::Unit::TestCase
     
     assert_equal('en-US', assigns(:locale))
     assert_equal('en-US', Locale.active.code)
+  end
+  
+  def test_lists_last_changed_feature_pages
+    get :index
+    assert_tag :tag => 'div', :attributes => {:id => 'features'},
+               :content => Regexp.new(pages('list_last_modified_features_page').title)
   end
   
 end
