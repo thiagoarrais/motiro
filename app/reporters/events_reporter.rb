@@ -16,15 +16,18 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require 'core/cache_reporter'
+require 'core/reporter'
+
 require 'stub_hash'
 
-class EventsReporter < CacheReporter
+class EventsReporter < MotiroReporter
   title 'Upcoming events'
-  caching :off
   add button[:add_events]
+
+  caching :off
   
   def initialize
-    super({:name => 'events'})
+    @reporter = CacheReporter.new(self)
   end
   
   def store_event(params)
@@ -43,6 +46,10 @@ class EventsReporter < CacheReporter
     headline.save
     
     return headline
+  end
+  
+  def method_missing(name, *args)
+    @reporter.send(name, *args)
   end
   
 end

@@ -113,8 +113,6 @@ public
     return latest_headlines.first
   end
   
-  def latest_headlines; end
-  
   add button[:older]
   
 end
