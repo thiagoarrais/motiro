@@ -36,6 +36,14 @@ private
     "  link_to( 'Add'.t, :controller => 'events', :action => 'new'); " +
     "end;"
 
+  NEW_FEATURE_BUTTON = 
+    "if current_user.nil?; " +
+    "  content_tag('span', 'Add'.t, :class => 'disabled'); " +
+    "else; " +
+    "  link_to( 'Add'.t, :controller => 'wiki', " + 
+                        ":action => 'new', :kind => 'feature'); " +
+    "end;"
+
 public
   
   def self.reporter_name
@@ -74,7 +82,17 @@ public
   #         end
   def self.button
     @@buttons ||= { :older => OLDER_BUTTON,
-                    :add_events => ADD_EVENTS_BUTTON }
+                    :add_events => ADD_EVENTS_BUTTON,
+                    :new_feature => NEW_FEATURE_BUTTON }
+  end
+  
+  # Turns caching on and off for the reporter
+  # 
+  # Usage : class MyReporter < MotiroReporter
+  #           caching :off
+  #         end
+  def self.caching(switch)
+    define_method :cache? do; :off != switch; end
   end
   
   def name
@@ -88,6 +106,8 @@ public
   def buttons
     self.class.read_inheritable_attribute 'buttons' || []
   end
+  
+  def cache?; true; end
 
   def latest_headline
     return latest_headlines.first

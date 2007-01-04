@@ -15,36 +15,36 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'reporters/svn_settings'
-require 'models/headline'
+require_dependency 'reporters/svn_settings'
+require_dependency 'models/headline'
 
-require 'core/cache_reporter'
-require 'core/reporter_fetcher'
-require 'core/settings'
+require_dependency 'core/cache_reporter_fetcher'
+require_dependency 'core/reporter_fetcher'
+require_dependency 'core/settings'
 
 # The ChiefEditor is the guy that makes all the reporters work
 class ChiefEditor
   
-  def initialize(settings=SettingsProvider.new, fetcher=ReporterFetcher.new)
-    @settings = settings
+  def initialize(conf=SettingsProvider.new, fetcher=ReporterFetcher.new)
     @reporters = Hash.new
-    @strategy = create_strategy
     
+    fetcher = CacheReporterFetcher.new(fetcher, conf) unless
+      conf.update_interval == 0
     fetcher.active_reporters.each do |reporter|
       self.employ(reporter)
     end
   end
   
   def latest_news_from(reporter_name)
-    @strategy.latest_news_from(reporter_name)
+    @reporters[reporter_name].latest_headlines
   end
   
   def news_from(reporter_name)
-    @strategy.news_from(reporter_name)
+    @reporters[reporter_name].headlines
   end
   
   def headline_with(reporter_name, rid)
-    @strategy.headline_with(reporter_name, rid)
+    @reporters[reporter_name].headline(rid)
   end
   
   def title_for(reporter_name)
@@ -60,66 +60,6 @@ class ChiefEditor
   # Adds the given reporter to the set of reporters employed by the editor
   def employ(reporter)
     @reporters.update(reporter.name => reporter)
-  end
-  
-  private
-  
-  def create_strategy
-    if (@settings.update_interval == 0) then
-      return LiveEditorStrategy.new(@reporters)
-    else
-      return CachedEditorStrategy.new(@settings)
-    end 
-  end
-  
-end
-
-class LiveEditorStrategy
-  
-  def initialize(reporter_map)
-    @reporters = reporter_map
-  end
-  
-  def latest_news_from(reporter_name)
-    reporter = @reporters[reporter_name]
-    return reporter.latest_headlines
-  end
-  
-  def news_from(reporter_name)
-    reporter = @reporters[reporter_name]
-    return reporter.headlines
-  end
-  
-  def headline_with(reporter_name, rid)
-    reporter = @reporters[reporter_name]
-    return reporter.headline(rid)
-  end
-  
-end
-
-class CachedEditorStrategy
-  
-  def initialize(settings)
-    @settings = settings
-  end
-  
-  def latest_news_from(name)
-    return reporter_with(name).latest_headlines
-  end    
-  
-  def news_from(name)
-    Headline.find_all(['reported_by = ?', name],
-                      'happened_at DESC')    
-  end
-  
-  def headline_with(name, rid)
-    return reporter_with(name).headline(rid)
-  end
-  
-  private
-  
-  def reporter_with(name)
-    return CacheReporter.new(name, @settings)
   end
   
 end

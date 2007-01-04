@@ -15,37 +15,40 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'core/settings'
 require 'core/reporter'
+require 'core/settings'
 
-# A cache reporter is a reporter that just repeats news discovered by real
-# reporters
-#
-# Every cache reporter has a real reporter that it tries to mimic. This type
-# of reporter will go to the news database and retrieve all news that its real
-# correspondent reported.
-class CacheReporter < MotiroReporter
-  
-  def initialize(reporter, settings=SettingsProvider.new,
-                 headlines_source=Headline)
-    @headlines_source = headlines_source
+DEFAULT_AUTHOR = 'someone'
+DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
+
+class FeaturesReporter < MotiroReporter
+  title 'Recently changed suggestions'
+  add button[:new_feature]
+  caching :off
+
+  def initialize(settings=SettingsProvider.new)
     @settings = settings
-    @source_reporter = reporter
   end
   
   def latest_headlines
-    @headlines_source.latest(@settings.package_size, name)
+    to_headlines Page.find(:all, :conditions => "kind = 'feature'",
+                           :order => 'modified_at DESC',
+                           :limit => @settings.package_size)
   end
   
   def headlines
-    @headlines_source.find_all(['reported_by = ?', name], 'happened_at DESC')
+    to_headlines Page.find(:all, :conditions => "kind = 'feature'",
+                           :order => 'modified_at DESC')
   end
   
-  def headline(rid)
-    @headlines_source.find_with_reporter_and_rid(name, rid)
+private
+
+  def to_headlines(pages)
+    pages.map do |page|
+      Headline.new(:author => page.last_editor ? page.last_editor.login : DEFAULT_AUTHOR,
+                   :happened_at => page.modified_at || DEFAULT_TIME,
+                   :description => page.title)
+    end
   end
-  
-  def name; @source_reporter.name; end
-  def channel_title; @source_reporter.channel_title; end
-  
+
 end

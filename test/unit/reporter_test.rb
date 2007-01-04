@@ -27,6 +27,10 @@ class TwoButtonReporter < MotiroReporter
   add button[:add_events]
 end
 
+class NonCachingReporter < MotiroReporter
+  caching :off
+end
+
 class MotiroReporterTest < Test::Unit::TestCase
   
   def test_default_title
@@ -59,6 +63,11 @@ class MotiroReporterTest < Test::Unit::TestCase
     assert_equal [ MotiroReporter.button[:older],
                    MotiroReporter.button[:add_events] ],
                  TwoButtonReporter.new.buttons
+  end
+  
+  def test_switch_headline_caching
+    assert ! NonCachingReporter.new.cache?
+    assert MyDefaultReporter.new.cache?
   end
   
 end

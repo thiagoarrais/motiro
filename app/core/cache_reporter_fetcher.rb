@@ -15,34 +15,19 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'core/cache_reporter'
-require 'stub_hash'
+require_dependency 'core/cache_reporter'
+require_dependency 'core/settings'
 
-class EventsReporter < CacheReporter
-  title 'Upcoming events'
-  caching :off
-  add button[:add_events]
-  
-  def initialize
-    super({:name => 'events'})
+class CacheReporterFetcher
+
+  def initialize(fetcher, settings=SettingsProvider.new)
+    @fetcher, @settings = fetcher, settings
   end
   
-  def store_event(params)
-    headline = Headline.new(params)
-    
-    previous_hl = 0
-    until previous_hl.nil?
-      id = (rand * 100000).to_i
-      previous_hl = Headline.find(:first,
-        :conditions => ["reported_by = 'events' and rid = ?", "e#{id}"])
+  def active_reporters
+    @fetcher.active_reporters.map do |reporter|
+      reporter.cache? ? CacheReporter.new(reporter, @settings) : reporter
     end
-    
-    headline.rid = "e#{id}"
-    headline.reported_by = name
-    
-    headline.save
-    
-    return headline
   end
   
 end

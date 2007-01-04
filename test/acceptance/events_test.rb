@@ -259,9 +259,9 @@ class EventsAcceptanceTest < SeleniumTestCase
     click 'login'
     wait_for_page_to_load(1500)
         
-    assert_element_present "//a[text() = 'Add']"
+    assert_element_present "//div[@id='events']//a[text() = 'Add']"
 
-    click "//a[text() = 'Add']"
+    click "//div[@id='events']//a[text() = 'Add']"
     wait_for_page_to_load(1500)
     
     assert_equal get_title, 'Motiro - Events'

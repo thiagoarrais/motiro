@@ -15,34 +15,8 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'core/cache_reporter'
-require 'stub_hash'
-
-class EventsReporter < CacheReporter
-  title 'Upcoming events'
-  caching :off
-  add button[:add_events]
-  
-  def initialize
-    super({:name => 'events'})
+class Hash
+  def method_missing(name, *args)
+    self[name]
   end
-  
-  def store_event(params)
-    headline = Headline.new(params)
-    
-    previous_hl = 0
-    until previous_hl.nil?
-      id = (rand * 100000).to_i
-      previous_hl = Headline.find(:first,
-        :conditions => ["reported_by = 'events' and rid = ?", "e#{id}"])
-    end
-    
-    headline.rid = "e#{id}"
-    headline.reported_by = name
-    
-    headline.save
-    
-    return headline
-  end
-  
 end
