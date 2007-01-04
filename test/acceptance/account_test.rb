@@ -85,7 +85,7 @@ class AccountAcceptanceTest < SeleniumTestCase
     type 'user_password', 'mccartney'
     
     click 'login'
-    wait_for_page_to_load(1500)
+    wait_for_page_to_load(2000)
     
     assert_text_present 'Welcome, paul'
   end
