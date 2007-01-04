@@ -1,5 +1,5 @@
 #  Motiro - A project tracking tool
-#  Copyright (C) 2006  Thiago Arrais
+#  Copyright (C) 2006-2007  Thiago Arrais
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
