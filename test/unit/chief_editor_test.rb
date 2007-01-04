@@ -221,5 +221,14 @@ class ChiefEditorTest < Test::Unit::TestCase
     end
   end
   
+  def test_returns_reporter
+    settings = StubConnectionSettingsProvider.new
+    reporter = {:name => 'stub', :cache? => false}
+    fetcher = {:active_reporters => [reporter]}
+    
+    editor = ChiefEditor.new(settings, fetcher)
+    assert_equal reporter, editor.reporter_with('stub')
+  end
+  
   #TODO should signal when the reporter is not registered
 end

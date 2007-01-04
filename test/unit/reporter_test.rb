@@ -70,4 +70,10 @@ class MotiroReporterTest < Test::Unit::TestCase
     assert MyDefaultReporter.new.cache?
   end
   
+  def test_generates_request_params_from_rid
+    expected_params =  { :controller => 'report', :action => 'show',
+                         :reporter => 'my_default', :id => 'd25' }
+    assert_equal(expected_params, MyDefaultReporter.new.params_for('d25'))
+  end
+  
 end

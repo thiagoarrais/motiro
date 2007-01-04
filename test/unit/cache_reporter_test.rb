@@ -83,4 +83,14 @@ class CacheReporterTest < Test::Unit::TestCase
     assert_equal title, r.channel_title 
   end
   
+  def test_mimics_underlying_reporter_request_parameter_generation
+    FlexMock.use do |reporter|
+      reporter.should_receive(:params_for).with('reporter_id').once.
+        and_return({})
+  
+      r = CacheReporter.new(reporter)
+      assert_equal({}, r.params_for('reporter_id')) 
+    end
+  end
+
 end

@@ -6,22 +6,20 @@
                  :locale => @locale },
                :class => 'feed' )
   %>
-  <p><%= h(@title) %></p>
+  <p><%= h(@reporter.channel_title) %></p>
 </div>
 <div class='channel-body-outer'>
   <div class='inner'>
-  <% if ! @toolbar_buttons.empty? then %>
+  <% buttons = @reporter.buttons
+     if ! buttons.empty? then %>
     <div class='toolbar channel_toolbar'>
-      <%= @toolbar_buttons.map { |b| instance_eval(b) }. join(' | ') -%>
+      <%= buttons.map { |b| instance_eval(b) }. join(' | ') -%>
     </div> 
   <% end %>
 <% @headlines.each do |headline|%>
     <p>
       <%= link_to( h(headline.title(Translator.for(@locale))),
-                   { :controller => 'report',
-                     :action => 'show',
-                     :reporter => @name,
-                     :id => headline.rid } )%>
+                   @reporter.params_for(headline.rid) )%>
       <br/>
       <font size="-1">
         <i><%= h(headline.author) %></i>

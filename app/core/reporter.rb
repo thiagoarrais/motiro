@@ -107,6 +107,10 @@ public
     self.class.read_inheritable_attribute 'buttons' || []
   end
   
+  def params_for(rid)
+    {:controller => 'report', :action => 'show', :reporter => name, :id => rid}
+  end
+  
   def cache?; true; end
 
   def latest_headline

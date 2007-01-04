@@ -228,5 +228,17 @@ class WikiAcceptanceTest < SeleniumTestCase
     
     assert_text_present feature_title         
   end
+  
+  def test_links_to_recently_changed_features_on_main_page
+    open '/en'
+    
+    list_page = pages('list_last_modified_features_page')
+    assert_element_present "//a[text() = '#{list_page.title}']"
+    click "//a[text() = '#{list_page.title}']"
+    wait_for_page_to_load(2000)
+    
+    assert_text_present list_page.title
+    assert_text_present list_page.text
+  end
 
 end

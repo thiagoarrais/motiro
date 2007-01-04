@@ -41,11 +41,16 @@ class FeaturesReporter < MotiroReporter
                            :order => 'modified_at DESC')
   end
   
+  def params_for(page_name)
+    {:controller => 'wiki', :action => 'show', :page_name => page_name}
+  end
+  
 private
 
   def to_headlines(pages)
     pages.map do |page|
-      Headline.new(:author => page.last_editor ? page.last_editor.login : DEFAULT_AUTHOR,
+      Headline.new(:rid => page.name,
+                   :author => page.last_editor ? page.last_editor.login : DEFAULT_AUTHOR,
                    :happened_at => page.modified_at || DEFAULT_TIME,
                    :description => page.title)
     end

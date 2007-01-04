@@ -26,6 +26,7 @@ class ReportController < ApplicationController
   before_filter do |me|
     me.instance_eval do
       @name = params[:reporter]
+      @reporter = @chief_editor.reporter_with(@name)
     end
   end
 
@@ -45,14 +46,8 @@ class ReportController < ApplicationController
     return nil
   end
   
-  def list
-    @title = @chief_editor.title_for @name
-    @toolbar_buttons = @chief_editor.buttons_for @name
-  end
-  
   def older
     @headlines = @chief_editor.news_from @name
-    @title = @chief_editor.title_for @name
   end
   
   def show

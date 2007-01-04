@@ -47,5 +47,6 @@ class CacheReporter < MotiroReporter
   
   def name; @source_reporter.name; end
   def channel_title; @source_reporter.channel_title; end
+  def params_for(rid); @source_reporter.params_for(rid); end
   
 end

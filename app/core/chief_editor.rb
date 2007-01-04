@@ -43,6 +43,10 @@ class ChiefEditor
     @reporters[reporter_name].headlines
   end
   
+  def reporter_with(reporter_name)
+    @reporters[reporter_name]
+  end
+  
   def headline_with(reporter_name, rid)
     @reporters[reporter_name].headline(rid)
   end
