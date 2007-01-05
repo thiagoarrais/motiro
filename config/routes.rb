@@ -30,8 +30,8 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'list'
   
   map.connect 'report/:reporter/:id',
-              :controller => 'report',
-              :action => 'show'
+              :controller => 'report', :action => 'show',
+              :requirements => { :id => /.*/ }
 
   map.connect 'feed/:reporter',
               :controller => 'report',
