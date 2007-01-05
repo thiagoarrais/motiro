@@ -27,6 +27,10 @@ class EventsAcceptanceTest < SeleniumTestCase
     Headline.destroy_all
   end
   
+  def day; 'use_hiddendiscard_hourtrueorderyearmonthdayhourminuteseconddiscard_typetrueprefixheadline[happened_at(3i)][day]'; end
+  def month; 'headline[happened_at(2i)]'; end
+  def year; 'headline[happened_at(1i)]'; end
+  
   def test_no_error_on_development_mode
     open '/report/events?locale=en'
     assert_text_present 'Upcoming events'
@@ -45,9 +49,9 @@ class EventsAcceptanceTest < SeleniumTestCase
     type 'txaEditor', event_title + "\n\n" +
                                  "Our next release will be awesome! " +
                                  "Let's get together somewhere to celebrate"
-    select 'headline[happened_at(3i)]', '26'
-    select 'headline[happened_at(2i)]', 'value=4'
-    select 'headline[happened_at(1i)]', '2006'
+    select day, '26'
+    select month, 'value=4'
+    select year, '2006'
     
     click 'btnSave'
     wait_for_page_to_load 5000
@@ -136,9 +140,9 @@ class EventsAcceptanceTest < SeleniumTestCase
     type 'txaEditor', event_title + "\n\n" +
                       "And here comes the detailed description"
 
-    select 'headline[happened_at(3i)]', '26'
-    select 'headline[happened_at(2i)]', 'value=7'
-    select 'headline[happened_at(1i)]', '2006'
+    select day, '26'
+    select month, 'value=7'
+    select year, '2006'
     
     click 'btnSave'
     wait_for_page_to_load(2000)
@@ -170,9 +174,9 @@ class EventsAcceptanceTest < SeleniumTestCase
                       "\n\n--- pt-br ----------\n\n" +
                       portuguese_title + "\n\n" + portuguese_description
 
-    select 'headline[happened_at(3i)]', '21'
-    select 'headline[happened_at(2i)]', 'value=8'
-    select 'headline[happened_at(1i)]', '2006'
+    select day, '21'
+    select month, 'value=8'
+    select year, '2006'
     
     click 'btnSave'
     wait_for_page_to_load(2000)
