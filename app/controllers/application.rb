@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
   include LoginSystem
   include ApplicationHelper
   
-  model :user
-  
   before_filter :set_locale
   
   def set_locale
