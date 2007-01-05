@@ -19,7 +19,7 @@ class AccountController < ApplicationController
       else
         flash.now['notice']  = "Login unsuccessful"
 
-        @login = @params[:user_login]
+        @login = params[:user_login]
       end
     end
   end

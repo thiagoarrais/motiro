@@ -1,4 +1,4 @@
-    <%= start_form_tag :action => 'save' %>
+    <% form_tag :action => 'save' do %>
       <div id="editor" class="window">
         <div class = "inner">
           <%= hidden_field_tag('page_name', params[:page_name]) if params[:page_name] %>
@@ -41,5 +41,5 @@
             <% end %>
         </div>
       </div>
-    <%= end_form_tag %>
+    <% end %>
       

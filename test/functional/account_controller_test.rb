@@ -20,7 +20,7 @@ class AccountControllerTest < Test::Unit::TestCase
     @request.session[:return_to] = "/bogus/location"
 
     login_as 'bob', 'test'
-    assert_session_has :user
+    assert(@response.has_session_object?(:user))
 
     assert_equal @bob, @response.session[:user]
     
@@ -46,7 +46,7 @@ class AccountControllerTest < Test::Unit::TestCase
   def test_invalid_login
     login_as 'bob', 'not_correct'
      
-    assert_session_has_no :user
+    assert(!@response.has_session_object?(:user))
   end
   
   def test_login_logoff
@@ -54,7 +54,7 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_not_nil session[:user]
 
     get :logout
-    assert_session_has_no :user
+    assert(!@response.has_session_object?(:user))
   end
   
   def test_signup_and_login
@@ -62,7 +62,7 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_not_nil session[:user]
     
     get :logout
-    assert_session_has_no :user
+    assert(!@response.has_session_object?(:user))
     
     login_as 'paul', 'mccartney'
     assert_not_nil session[:user]

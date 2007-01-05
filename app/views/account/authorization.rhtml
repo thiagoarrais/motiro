@@ -6,7 +6,7 @@
   <%= content_tag :span, 'Passwords do not match'.t,
                   :id => 'passwords_do_not_match', :class => 'warning',
                   :style=> 'display:none' %>
-  <%= start_form_tag :controller => 'account', :action=> 'login' %>
+  <% form_tag :controller => 'account', :action=> 'login' do %>
     <div class="authorization_cell">
       <%= content_tag :label, 'User'.t, :for=> 'user_login'%><br />
       <%= text_field 'user', 'login', :size => 12,
@@ -39,7 +39,7 @@
       <%= observe_field field, :frequency => 1,
                                :function => "check_password_confirmation()" %>
     <% end%>
-  <%= end_form_tag %>
+  <% end %>
 <% else %>
   <%= 'Welcome'.t -%>, <%= current_user.login -%>
   [<%= link_to 'Sign out'.t,
