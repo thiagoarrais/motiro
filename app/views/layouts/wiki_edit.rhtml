@@ -1,7 +1,7 @@
 <%= render :partial => 'layouts/top' %>
       <div id="editor" class="window">
         <div class = "inner">
-          <%= start_form_tag :action => 'save' %>
+          <% form_tag :action => 'save' do %>
             <%= submit_tag 'Save modifications'.t, :class => 'button',
                                                   :name => 'btnSave' %>
             <%= submit_tag 'Discard'.t, :class => 'button',
@@ -11,7 +11,7 @@
                           :id => 'txaEditor',
                           :rows => '30' %>
             <%= @content_for_layout %>
-          <%= end_form_tag %>
+          <% end %>
         </div>
       </div>
       <div class='window'>
