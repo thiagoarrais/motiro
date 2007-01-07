@@ -34,23 +34,22 @@ To get your own Motiro portal up and running, you will need the following:
 
 1.  SQLite 3 or later
 2.  Ruby 1.8.2 or later
-3.  Rails 1.1.6 or later
-4.  Subversion client (svn) if you are planning to use the Subversion reporter
-5.  Darcs client (darcs) if you are planning to use the Darcs reporter
-6.  Xml-Simple 1.0.9 or later (available as Ruby Gem: xml-simple)
-7.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
-8.  Daemons 1.0.3 (available as Ruby Gem: daemons)
-9.  Platform 0.4.0 (available as Ruby Gem: platform)
-10. Open4 0.9.1 (available as Ruby Gem: open4)
-11. POpen4 0.1.1 (available as Ruby Gem: POpen4)
-12. SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
-13. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
+3.  Subversion client (svn) if you are planning to use the Subversion reporter
+4.  Darcs client (darcs) if you are planning to use the Darcs reporter
+5.  Xml-Simple 1.0.9 or later (available as Ruby Gem: xml-simple)
+6.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
+7.  Daemons 1.0.3 (available as Ruby Gem: daemons)
+8.  Platform 0.4.0 (available as Ruby Gem: platform)
+9.  Open4 0.9.1 (available as Ruby Gem: open4)
+10. POpen4 0.1.1 (available as Ruby Gem: POpen4)
+11. SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
+12. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
     (available as Ruby Gem: flexmock)
    
 If you are running Motiro with an Windows platform, you'll also need:
 
-14. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
-15. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
+13. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
+14. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
    
 What you need to do is:
 
@@ -70,7 +69,7 @@ What you need to do is:
    correctly. Fortunately, Motiro comes prepackaged with migration scripts for
    this purpose. You will need to ask rake to run them:
 
-   % rake migrate
+   % rake db:migrate
 
    And that's it. Now, if you'd like, you can run the test suite to test your
    installation. This is highly recommended practice because it verifies if

@@ -35,24 +35,23 @@ Para ter seu portal Motiro rodando, você vai precisar de:
 
 1.  SQLite 3 ou superior
 2.  Ruby 1.8.2 ou superior
-3.  Rails 1.1.6 ou superior
-4.  Cliente Subversion (svn) se quiser usar o repórter Subversion
-5.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
-6.  Xml-Simple 1.0.9 ou superior (disponível como Ruby Gem: xml-simple)
-7.  MediaCloth 0.0.2 ou superior (disponível como Ruby Gem: mediacloth)
-8.  Daemons 1.0.3 (disponível como Ruby Gem: daemons)
-9.  Platform 0.4.0 (disponível como Ruby Gem: platform)
-10. Open4 0.9.1 (disponível como Ruby Gem: open4)
-11. POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
-12. SQLite3-Ruby 1.1.0 ou superior (disponível como Ruby Gem: sqlite3-ruby)   
-13. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
+3.  Cliente Subversion (svn) se quiser usar o repórter Subversion
+4.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
+5.  Xml-Simple 1.0.9 ou superior (disponível como Ruby Gem: xml-simple)
+6.  MediaCloth 0.0.2 ou superior (disponível como Ruby Gem: mediacloth)
+7.  Daemons 1.0.3 (disponível como Ruby Gem: daemons)
+8.  Platform 0.4.0 (disponível como Ruby Gem: platform)
+9.  Open4 0.9.1 (disponível como Ruby Gem: open4)
+10. POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
+11. SQLite3-Ruby 1.1.0 ou superior (disponível como Ruby Gem: sqlite3-ruby)   
+12. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
     Gem: flexmock)
    
 Se você estiver rodando o Motiro sobre uma plataforma Windows, vai precisar
 também de:
 
-14. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
-15. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
+13. Win32-process 0.5.1 ou superior (disponível como Ruby Gem: win32-process)
+14. Windows-pr 0.5.4 ou superior (disponível como Ruby Gem: windows-pr)
 
 Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 
@@ -76,7 +75,7 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    pré-cozidos para este propósito. Você só vai precisar pedir ao rake para
    rodá-los:
 
-   % rake migrate
+   % rake db:migrate
 
    E é isso. Agora, se você quiser, pode rodar a suíte de testes para testar sua
    instalação. Esta é uma atitude altamente recomendada para verificar a
