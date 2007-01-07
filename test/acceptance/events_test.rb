@@ -27,7 +27,7 @@ class EventsAcceptanceTest < SeleniumTestCase
     Headline.destroy_all
   end
   
-  def day; 'use_hiddendiscard_hourtrueorderyearmonthdayhourminuteseconddiscard_typetrueprefixheadline[happened_at(3i)][day]'; end
+  def day; "//select[contains(@name, 'happened_at(3i)')]"; end
   def month; 'headline[happened_at(2i)]'; end
   def year; 'headline[happened_at(1i)]'; end
   
