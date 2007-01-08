@@ -86,6 +86,14 @@ class ReportControllerTest < Test::Unit::TestCase
     assert_template "report/#{reporter_name}_detail"
   end
   
+  def test_include_headline_date_on_guid
+    gita = headlines('gita')
+    
+    get :rss, { :reporter => gita.reported_by }
+    
+    assert @response.body.match(/#{gita.happened_at.strftime('%Y%m%d%H%M%S')}<\/guid>/)
+  end
+  
   #TODO what happens if there are no cached headlines?
   #TODO more headlines registered than the package size
   

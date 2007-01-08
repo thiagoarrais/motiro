@@ -23,7 +23,8 @@ xml.rss 'version' => '2.0',
     	        xml.description headline.description(Translator.for(@locale)).medialize
     	        xml.pubDate h(headline.happened_at.to_s(:rfc822))
     	        xml.dc :creator, h(headline.author)
-    	        xml.guid permalink
+    	        xml.guid(permalink + '.' +
+    	                   headline.happened_at.strftime('%Y%m%d%H%M%S')) 
     	    end
     	end
     end
