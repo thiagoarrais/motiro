@@ -1,0 +1,20 @@
+Test XML
+========
+
+Adds testing facilities for XML such as assert_xml_tag. XPATH can be used to
+find elements inside a document. 
+
+The latest version is available at
+
+https://svn.sourceforge.net/svnroot/motiro/trunk/vendor/plugins/test_xml
+
+For suggestions, comments and bug reports contact the author at
+thiago.arrais@gmail.com
+
+License
+=======
+
+Copyright (c) 2007 Thiago Arrais, distributed under the terms of the
+MIT-LICENSE
+
+Originally developed as part of Motiro - http://motiro.railsplayground.com

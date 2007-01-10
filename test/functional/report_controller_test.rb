@@ -91,7 +91,7 @@ class ReportControllerTest < Test::Unit::TestCase
     
     get :rss, { :reporter => gita.reported_by }
     
-    assert @response.body.match(/#{gita.happened_at.strftime('%Y%m%d%H%M%S')}<\/guid>/)
+    assert_xml_element "//guid[contains(text(), '#{gita.happened_at.strftime('%Y%m%d%H%M%S')}')]"
   end
   
   #TODO what happens if there are no cached headlines?
