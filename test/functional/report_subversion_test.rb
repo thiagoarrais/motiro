@@ -44,6 +44,7 @@ class ReportSubversionTest < Test::Unit::TestCase
     assert_xml_element("//rss/channel/generator[text() = 'Motiro']")
     assert_xml_element("//rss/channel/item/title[text() = '#{commit_title}']")
     assert_xml_element("//rss/channel/item/description[contains(text(), 'This revision creates')]")
+    assert_xml_element("//rss/channel/item/*[local-name() = 'creator' and text() = '#{@repo.username}']")
   end
 
   def test_translates_rss_feed
@@ -61,5 +62,5 @@ class ReportSubversionTest < Test::Unit::TestCase
     assert_xml_element("//rss/channel/item/title[text() = '#{portuguese_msg}']")
     assert_no_xml_element("//rss/channel/item/title[text() = '#{english_msg}']")
   end
-
+  
 end

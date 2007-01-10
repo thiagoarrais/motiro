@@ -27,9 +27,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
   def test_report_html
     open '/report/subversion?locale=en'
     assert_text_present 'Latest news from Subversion'
-    click "//img[starts-with(@src, '/images/rss.png')]"
-    wait_for_page_to_load(500)
-    assert_location 'exact:http://localhost:3000/feed/subversion?locale=en'
+    assert_element_present "//a[@href = '/feed/subversion?locale=en']/img[starts-with(@src, '/images/rss.png')]"
   end
   
   def test_subversion_on_main
