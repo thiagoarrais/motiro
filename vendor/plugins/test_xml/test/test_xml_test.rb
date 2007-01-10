@@ -18,15 +18,23 @@ END
   
   def setup
     @response = ActionController::TestResponse.new
+    @response.body = SHALLOW_ELEMENT_XML
   end
 
   def test_find_xml_tag_by_xpath
-    @response.body = SHALLOW_ELEMENT_XML
     assert_raise Test::Unit::AssertionFailedError do
       assert_xml_element '//absent'
     end
 
     assert_xml_element '//element'
+  end
+  
+  def test_expect_not_to_find_xml_tag
+    assert_raise Test::Unit::AssertionFailedError do
+      assert_no_xml_element '//element'
+    end
+
+    assert_no_xml_element '//absent'
   end
 
 end

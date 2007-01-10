@@ -6,8 +6,17 @@ require 'rexml/rexml'
 module XmlAssertions
 
   def assert_xml_element(xpath)
-    doc = REXML::Document.new(@response.body)
-    assert REXML::XPath.first(doc, xpath), "expected element, but found no element matching #{xpath} in #{@response.body.inspect}"
+    assert_not_nil find_xml_element(xpath), "expected element, but found no element matching #{xpath} in #{@response.body.inspect}"
+  end
+  
+  def assert_no_xml_element(xpath)
+    assert_nil find_xml_element(xpath), "expected no element, but found element matching #{xpath} in #{@response.body.inspect}"
+  end
+  
+private
+
+  def find_xml_element(xpath)
+    REXML::XPath.first(REXML::Document.new(@response.body), xpath)
   end
 
 end

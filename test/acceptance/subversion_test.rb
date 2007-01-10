@@ -15,7 +15,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'acceptance/live_mode_test'
+require 'live_mode_test'
 
 class SubversionAcceptanceTest < SeleniumTestCase
   
@@ -47,22 +47,6 @@ class SubversionAcceptanceTest < SeleniumTestCase
     open '/en'
     assert_text_present 'Latest news from Subversion'
     assert_text_present commit_msg
-  end
-  
-  def test_report_rss
-    commit_title = 'Created my project'
-    commit_msg = "#{commit_title}\n" +
-                     "\n" +
-                     "This revision creates a brand new directory where we \n" +
-                     "will keep our project files"
-    
-    @repo.mkdir('myproject', commit_msg)
-    
-    open('/feed/subversion')
-    assert_text('//rss/channel/title', 'Motiro - Subversion')
-    assert_text '//rss/channel/generator', 'Motiro'
-    assert_text '//rss/channel/item/title', commit_title
-    assert_text('//rss/channel/item/description', /This revision creates/)
   end
   
   def test_records_revision_description
@@ -310,32 +294,6 @@ class SubversionAcceptanceTest < SeleniumTestCase
     assert_text_not_present('foi originalmente')
   end
 
-  def test_if_text_on_rss_feed_is_translated
-    english_msg = "I changed something in the source code repository"
-    portuguese_msg = "Mudei algo no repositorio de codigo fonte"
-    commit_msg = english_msg + "\n\n--- pt-br ----\n\n" + portuguese_msg
-    
-    @repo.mkdir('myproject', commit_msg)
-    
-    open '/report/subversion?locale=en'
-    click "//img[starts-with(@src, '/images/rss.png')]"
-    wait_for_page_to_load(1000)
-    assert_equal english_msg, get_text("//rss/channel/item/title")
-    link = get_text("//rss/channel/item/link")
-    open link
-    assert_text_present 'I changed something in the source code repository'
-    assert_text_not_present 'Mudei algo no repositorio de codigo fonte'
-
-    open '/report/subversion?locale=pt-br'
-    click "//img[starts-with(@src, '/images/rss.png')]"
-    wait_for_page_to_load(1000)
-    assert_equal portuguese_msg, get_text("//rss/channel/item/title")
-    link = get_text("//rss/channel/item/link")
-    open link
-    assert_text_present 'Mudei algo no repositorio de codigo fonte'
-    assert_text_not_present 'I changed something in the source code repository'
-  end
-  
   def test_formats_page_as_wiki_text
     commit_msg = "This is the comment title\n" +
                  "\n" +
