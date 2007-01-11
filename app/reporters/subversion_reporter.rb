@@ -15,14 +15,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'xmlsimple'
+require 'rexml/rexml'
 
-require 'date'
 require 'reporters/svn_connection'
-
 require 'models/headline'
-
 require 'core/reporter'
 
 class String
@@ -158,9 +154,9 @@ private
 
     begin
       raw_info = @connection.info(resource_path, revision_num)
-      info = XmlSimple.xml_in(raw_info)
+      info = REXML::Document.new(raw_info).root
           
-      return info['entry'].first['kind']
+      return info.elements['entry'].attributes['kind']
     rescue
       return nil
     end
