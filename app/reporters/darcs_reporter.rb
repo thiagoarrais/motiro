@@ -15,15 +15,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'xmlsimple'
-
-require 'date'
+require 'rexml/rexml'
 
 require 'models/headline'
-
 require 'core/reporter'
-
 require 'reporters/darcs_connection'
 
 class DarcsReporter < MotiroReporter
@@ -59,7 +54,7 @@ class DarcsReporter < MotiroReporter
 private
 
   def parse_headlines(xml_input)
-    patches = XmlSimple.xml_in(xml_input)['patch'] || []
+    patches = REXML::Document.new(xml_input).root.elements || []
     patches.collect do |patch_info|
       parse_headline(patch_info)
     end
@@ -67,17 +62,16 @@ private
   
   def parse_headline(info)
     headline = Headline.new
-    headline.author = author_from_darcs_id(info['author'])
+    headline.author = author_from_darcs_id(info.attributes['author'])
 
-    name = info['name'].first
-    comments = info['comment']
-    description = if name.empty? then 'Untitled patch'
-                                 else name; end
-    description += "\n" + comments.first if comments
+    name = info.elements['name'].text
+    comments = info.elements['comment']
+    description = if name.strip.empty? then 'Untitled patch'; else name; end
+    description += "\n" + comments.text if comments
     
     headline.description = description
-    headline.happened_at = time_from_darcs_date(info['date'])
-    headline.rid =  info['hash']
+    headline.happened_at = time_from_darcs_date(info.attributes['date'])
+    headline.rid =  info.attributes['hash']
     headline.reported_by = self.name
     
     parse_changes(headline, @connection.diff(headline.rid))
