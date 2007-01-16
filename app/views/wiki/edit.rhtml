@@ -5,9 +5,11 @@
           <%= text_field 'page', 'title', :id => 'txtTitle' %>
           <%= text_area 'page', 'text', :id => 'txaEditor', :rows => '30' %>
           <%= submit_tag 'Save modifications'.t, :class => 'button',
-                                                 :name => 'btnSave' %>
+                                                 :name => 'btnSave',
+                                                 :id => 'btnSave' %>
           <%= submit_tag 'Discard'.t, :class => 'button',
-                                      :name => 'btnDiscard' %>
+                                      :name => 'btnDiscard',
+                                      :id => 'btnDiscard' %>
         </div>
       </div>
       <div id='wiki_reference' class='window'>
@@ -21,25 +23,34 @@
       </div>
       <div id="page_properties" class="window">
         <div class="inner">
+          <div id="loading">Loading...</div>
           <h2><%= 'Page properties'.t -%></h2>
           <p>
             <%= 'This page is a'.t -%>
             <%= select('page', 'kind',  [['common wiki page'.t, 'common'],
-                                         ['feature suggestion'.t, 'feature']],
+                                         ['feature suggestion'.t, 'feature'],
+                                         ['event description'.t, 'event']],
                                         {},
                                         :id => 'cmbType') %>
           </p>
-            <% if current_user.can_change_editors?(@page) %>
-              <p>
-                <label for='txtAuthorized'>
-                  <%= 'Who should be able to edit this page?'.t -%>
-                </label>
-                <%= text_field('page', 'editors',
-                               :id => 'txtAuthorized', :class => 'text') %><br />
-                <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
-              </p>
-            <% end %>
+          <div id="extra_properties">
+            <%= render :partial => 'properties' -%>
+          </div>
+          <% if current_user.can_change_editors?(@page) %>
+            <p>
+              <label for='txtAuthorized'>
+                <%= 'Who should be able to edit this page?'.t %>
+              </label>
+              <%= text_field('page', 'editors',
+                             :id => 'txtAuthorized', :class => 'text') %><br />
+              <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
+            </p>
+          <% end %>
         </div>
       </div>
     <% end %>
-      
+    <%= observe_field('cmbType', :url => { :action => 'properties' },
+                                 :with => 'kind',
+                                 :update => 'extra_properties',
+                                 :loading => "extraPropertiesLoading()",
+                                 :loaded => "extraPropertiesLoaded()") %>      

@@ -20,12 +20,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   fixtures :users, :pages
   
   def test_edit_main_page
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1000)
+    log_as_bob
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1000)
@@ -40,13 +35,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_translates_edition_page
-    open '/en'
-    
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as_bob
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1500)
@@ -74,13 +63,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_does_not_save_modifications_when_discard_button_pressed
-    open '/en'
-    
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as_bob
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1500)
@@ -97,13 +80,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_blocks_edition_for_unauthorized_users
-    open '/en'
-    
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as_bob
     
     open '/wiki/edit/TestPage'
     
@@ -129,13 +106,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_original_author_can_change_authorization_list
-    open '/en'
-
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as_bob
     
     open '/wiki/edit/' + pages('bob_and_erics_page').name
     
@@ -171,13 +142,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_records_original_author_for_pages_without_author
-    open '/en'
-
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as_bob
 
     edition_page = '/wiki/edit/' + pages('nobodys_page').name
     open edition_page
@@ -204,13 +169,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_describing_feature_adds_to_main_page_channel
-    open '/en'
-
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(2000)
+    log_as_bob
 
     feature_title = 'Tagging wiki pages as feature suggestions'
     
@@ -237,6 +196,55 @@ class WikiAcceptanceTest < SeleniumTestCase
     
     assert_text_present list_page.title
     assert_text_present list_page.text
+  end
+  
+  def test_new_events_page_shows_fields_for_date
+    log_as_bob
+    
+    open '/wiki/new/event/en'
+    
+    assert_text_present 'This event is planned for'
+    assert_element_present "//select/option[text() = 'February']"
+  end
+  
+  def test_wiki_new_page_loads_events_extra_fields_asynchronously
+    log_as_bob
+
+    open '/wiki/new'
+    
+    select 'cmbType', 'value=event'
+    wait_for_not_visible 'loading'
+    assert_element_present "//select/option[text() = '2007']"
+    assert_editable "//input[@id = 'btnSave']"
+    assert_editable "//input[@id = 'btnDiscard']"
+    
+    select 'cmbType', 'value=common'
+    wait_for_not_visible 'loading'
+    assert_element_not_present "//select/option[text() = '2007']"
+  end
+  
+private
+
+  def log_as_bob
+    open '/en'
+
+    type 'user_login', 'bob'
+    type 'user_password', 'test'
+    
+    click 'login'
+    wait_for_page_to_load(2000)
+  end
+  
+  def wait_for_visible(elem_id)
+    wait_for_condition(visible(elem_id), 2000)
+  end
+
+  def wait_for_not_visible(elem_id)
+    wait_for_condition("! " + visible(elem_id), 2000)
+  end
+  
+  def visible(elem_id)
+    "selenium.browserbot.getCurrentWindow().document.getElementById('#{elem_id}').style.display != 'none'"  
   end
 
 end

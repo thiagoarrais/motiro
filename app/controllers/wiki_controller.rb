@@ -24,7 +24,7 @@ class WikiController < EditionController
   before_filter :check_edit_access, :only => [:edit, :save]
   
   def choose_layout
-    return 'wiki_show' unless params[:context] == 'partial'
+    return 'wiki_show' unless params[:context] == 'partial' || params[:action] == 'properties'
     return nil
   end
     
@@ -59,6 +59,10 @@ class WikiController < EditionController
   def new
     @page.kind = params[:kind]
     render(:action => 'edit', :layout => 'application')
+  end
+  
+  def properties
+    sleep 2
   end
   
   def do_save

@@ -14,6 +14,42 @@ function showOnly(divId) {
     }
 }
 
+function submitButtons() {
+  return new Array(document.getElementById("btnSave"),
+                   document.getElementById("btnDiscard"));
+}
+
+function disableSubmit() {
+    var btns = submitButtons();
+    for(i=0; i < btns.length; i++) {
+        btns[i].disabled = true;
+        btns[i].oldColor = btns[i].style.color;
+        btns[i].style.color = '#90c0e0';
+    }
+}
+
+function enableSubmit() {
+    var btns = submitButtons();
+    for(i=0; i < btns.length; i++) {
+        btns[i].disabled = false;
+        btns[i].style.color = btns[i].oldColor;
+    }
+}
+
+function loadingNotice() {
+    return document.getElementById("loading");
+}
+
+function extraPropertiesLoading() {
+    disableSubmit();
+    loadingNotice().style.display = 'block';
+}
+
+function extraPropertiesLoaded() {
+    enableSubmit();
+    loadingNotice().style.display = 'none';
+}
+
 function tooglePasswordConfirmation(show) {
 	var elem = document.getElementById('password_confirm');
 	var state = show ? 'block' : 'none';

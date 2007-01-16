@@ -205,6 +205,14 @@ div#page_properties {
     margin-right: 20.2em;
 }
 
+div#loading {
+    display: none;
+    background-color: #123bd7;
+    color: #fff;
+    float: right;
+    padding: 0.2em;
+}
+
 div#wiki_reference {
     margin: 0;
     float: right;

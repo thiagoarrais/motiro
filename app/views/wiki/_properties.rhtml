@@ -1,0 +1,4 @@
+<% if 'event' == params['kind'] %>
+  <%= 'This event is planned for'.t -%>
+  <%= date_select 'headline', 'happened_at'  %>
+<% end %>
