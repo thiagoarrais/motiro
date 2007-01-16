@@ -17,7 +17,7 @@
 
 require 'live_mode_test'
 
-class EventsAcceptanceTest < SeleniumTestCase
+class EventsAcceptanceTest < AcceptanceTestCase
   
   include LiveModeTestCase
   
@@ -37,11 +37,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_create_event_and_show_headline
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
     
     event_title = "Let's celebrate the success of another release"
     
@@ -95,11 +91,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_translates_event_creation_page
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
 
     open '/events/new?locale=en'
     
@@ -128,11 +120,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_first_line_on_event_description_becomes_main_page_summary
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
   
     open '/events/new?locale=en'
     
@@ -155,11 +143,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_translates_event
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
   
     open '/events/new?locale=en'
     
@@ -203,11 +187,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_render_events_as_wiki_text
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
   
     open '/events/new'
     
@@ -229,11 +209,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   end
   
   def test_discard_button_does_not_save
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
+    log_as(:bob)
   
     open '/events/new'
     
@@ -256,12 +232,7 @@ class EventsAcceptanceTest < SeleniumTestCase
   def test_edition_enabled_when_authenticated
     #TODO refactor this to a declarative style
     #see http://www.testing.com/cgi-bin/blog/2005/12/19
-    open('/en')
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-        
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as(:bob)
         
     assert_element_present "//div[@id='events']//a[text() = 'Add']"
 

@@ -15,30 +15,18 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class AccountAcceptanceTest < SeleniumTestCase
+class AccountAcceptanceTest < AcceptanceTestCase
   
   fixtures :users
   fixtures :headlines
   
   def test_welcomes_user
-    open('/en')
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1000)
-    
+    log_as(:bob)
     assert_text_present 'Welcome, bob'
   end
   
   def test_switches_languages_when_logged_in
-    open '/en'
-    
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_as(:bob)
     
     assert_text_present 'Welcome, bob'
     assert_element_present "//a[text() = 'Edit']"
@@ -78,14 +66,8 @@ class AccountAcceptanceTest < SeleniumTestCase
     
     assert_text_present 'Welcome, paul'
     
-    open '/account/logout'
-    open '/en'
-    
-    type 'user_login', 'paul'
-    type 'user_password', 'mccartney'
-    
-    click 'login'
-    wait_for_page_to_load(2000)
+    log_out
+    log_as(:paul, 'mccartney')
     
     assert_text_present 'Welcome, paul'
   end
@@ -115,12 +97,7 @@ class AccountAcceptanceTest < SeleniumTestCase
   def test_edition_enabled_when_authenticated
     #TODO refactor this to a declarative style
     #see http://www.testing.com/cgi-bin/blog/2005/12/19
-    open('/en')
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(1000)
+    log_as(:bob)
     
     assert_location 'exact:http://localhost:3000/en'
     
@@ -167,12 +144,7 @@ class AccountAcceptanceTest < SeleniumTestCase
   end
   
   def test_signout_redirects_to_previous_page
-    open '/en'
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load 1500
+    log_as(:bob)
     
     click 'signout'
     wait_for_page_to_load 1500

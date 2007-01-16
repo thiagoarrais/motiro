@@ -15,12 +15,12 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class WikiAcceptanceTest < SeleniumTestCase
+class WikiAcceptanceTest < AcceptanceTestCase
 
   fixtures :users, :pages
   
   def test_edit_main_page
-    log_as_bob
+    log_as(:bob)
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1000)
@@ -35,7 +35,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_translates_edition_page
-    log_as_bob
+    log_as(:bob)
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1500)
@@ -63,7 +63,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_does_not_save_modifications_when_discard_button_pressed
-    log_as_bob
+    log_as(:bob)
     
     click "//a[text() = 'Edit']"
     wait_for_page_to_load(1500)
@@ -80,7 +80,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_blocks_edition_for_unauthorized_users
-    log_as_bob
+    log_as(:bob)
     
     open '/wiki/edit/TestPage'
     
@@ -89,14 +89,8 @@ class WikiAcceptanceTest < SeleniumTestCase
     click 'btnSave'
     wait_for_page_to_load(1500)
     
-    open '/account/logout'
-    open '/en'
-    
-    type 'user_login', 'john'
-    type 'user_password', 'lennon'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_out
+    log_as(:john)
     
     open '/wiki/show/TestPage'
     assert_text_present 'Edit (not authorized)'
@@ -106,7 +100,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_original_author_can_change_authorization_list
-    log_as_bob
+    log_as(:bob)
     
     open '/wiki/edit/' + pages('bob_and_erics_page').name
     
@@ -114,26 +108,15 @@ class WikiAcceptanceTest < SeleniumTestCase
     click 'btnSave'
     wait_for_page_to_load(1500)
     
-    open '/account/logout'
-    open '/en'
-    
-    type 'user_login', 'john'
-    type 'user_password', 'lennon'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_out
+    log_as(:john)
     
     open '/wiki/edit/' + pages('bob_and_erics_page').name
     assert_element_present 'txaEditor'
   end
   
   def test_only_original_author_can_change_authorization_list
-    open '/en'
-
-    type 'user_login', 'eric'
-    type 'user_password', 'clapton'
-    
-    click 'login'
+    log_as(:eric)
     wait_for_page_to_load(1500)
     
     open '/wiki/edit/' + pages('bob_and_erics_page').name
@@ -142,7 +125,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_records_original_author_for_pages_without_author
-    log_as_bob
+    log_as(:bob)
 
     edition_page = '/wiki/edit/' + pages('nobodys_page').name
     open edition_page
@@ -153,15 +136,8 @@ class WikiAcceptanceTest < SeleniumTestCase
     click 'btnSave'
     wait_for_page_to_load(1500)
     
-    open '/account/logout'
-
-    open '/en'
-
-    type 'user_login', 'john'
-    type 'user_password', 'lennon'
-    
-    click 'login'
-    wait_for_page_to_load(1500)
+    log_out
+    log_as(:john)
 
     open edition_page
 
@@ -169,7 +145,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_describing_feature_adds_to_main_page_channel
-    log_as_bob
+    log_as(:bob)
 
     feature_title = 'Tagging wiki pages as feature suggestions'
     
@@ -199,7 +175,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_new_events_page_shows_fields_for_date
-    log_as_bob
+    log_as(:bob)
     
     open '/wiki/new/event/en'
     
@@ -208,7 +184,7 @@ class WikiAcceptanceTest < SeleniumTestCase
   end
   
   def test_wiki_new_page_loads_events_extra_fields_asynchronously
-    log_as_bob
+    log_as(:bob)
 
     open '/wiki/new'
     
@@ -223,28 +199,4 @@ class WikiAcceptanceTest < SeleniumTestCase
     assert_element_not_present "//select/option[text() = '2007']"
   end
   
-private
-
-  def log_as_bob
-    open '/en'
-
-    type 'user_login', 'bob'
-    type 'user_password', 'test'
-    
-    click 'login'
-    wait_for_page_to_load(2000)
-  end
-  
-  def wait_for_visible(elem_id)
-    wait_for_condition(visible(elem_id), 2000)
-  end
-
-  def wait_for_not_visible(elem_id)
-    wait_for_condition("! " + visible(elem_id), 2000)
-  end
-  
-  def visible(elem_id)
-    "selenium.browserbot.getCurrentWindow().document.getElementById('#{elem_id}').style.display != 'none'"  
-  end
-
 end

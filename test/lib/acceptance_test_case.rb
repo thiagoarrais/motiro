@@ -15,13 +15,29 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require File.dirname(__FILE__) + '/../test_helper'
-require 'acceptance_test_case'
+require File.dirname(__FILE__) + "/../../vendor/selenium/selenium"
 
-require File.join(File.dirname(__FILE__), 'main_page_test')
-require File.join(File.dirname(__FILE__), 'subversion_test')
-require File.join(File.dirname(__FILE__), 'events_test')
-require File.join(File.dirname(__FILE__), 'wiki_test')
-require File.join(File.dirname(__FILE__), 'darcs_test')
-require File.join(File.dirname(__FILE__), 'account_test')
+require 'selenium_extensions'
 
+class AcceptanceTestCase < SeleniumTestCase
+
+  include SeleniumExtensions
+
+  TEST_PASSWORDS = { :bob => 'test', :john => 'lennon', :eric => 'clapton',
+                     :existingbob => 'test', :longbob => 'longtest' }
+  
+  def log_as(user, passwd=nil)
+    open('/en')
+
+    type('user_login', user.to_s)
+    type('user_password', passwd || TEST_PASSWORDS[user])
+    
+    click 'login'
+    wait_for_page_to_load(2000)
+  end
+  
+  def log_out
+    open '/account/logout'  
+  end
+
+end

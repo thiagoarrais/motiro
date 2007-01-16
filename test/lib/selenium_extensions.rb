@@ -15,13 +15,18 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require File.dirname(__FILE__) + '/../test_helper'
-require 'acceptance_test_case'
+module SeleniumExtensions
 
-require File.join(File.dirname(__FILE__), 'main_page_test')
-require File.join(File.dirname(__FILE__), 'subversion_test')
-require File.join(File.dirname(__FILE__), 'events_test')
-require File.join(File.dirname(__FILE__), 'wiki_test')
-require File.join(File.dirname(__FILE__), 'darcs_test')
-require File.join(File.dirname(__FILE__), 'account_test')
+  def wait_for_visible(elem_id)
+    wait_for_condition(visible(elem_id), 2000)
+  end
 
+  def wait_for_not_visible(elem_id)
+    wait_for_condition("! " + visible(elem_id), 2000)
+  end
+  
+  def visible(elem_id)
+    "selenium.browserbot.getCurrentWindow().document.getElementById('#{elem_id}').style.display != 'none'"  
+  end
+
+end
