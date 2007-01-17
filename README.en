@@ -32,7 +32,7 @@ GET IT RUNNING
 
 To get your own Motiro portal up and running, you will need the following:
 
-1.  SQLite 3 or later
+1.  SQLite 3.3.10 or later
 2.  Ruby 1.8.2 or later
 3.  Subversion client (svn) if you are planning to use the Subversion reporter
 4.  Darcs client (darcs) if you are planning to use the Darcs reporter

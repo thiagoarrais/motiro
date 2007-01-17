@@ -199,4 +199,6 @@ class WikiAcceptanceTest < AcceptanceTestCase
     assert_element_not_present "//select/option[text() = '2007']"
   end
   
+  #TODO should show date field when editing pre-recorded event page
+  
 end

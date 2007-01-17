@@ -39,7 +39,8 @@ class WikiController < EditionController
   end
   
   def fetch_page
-    @page = find_page(params[:page_name])
+    type = params[:page] ? params[:page][:type] : nil
+    @page = find_page(params[:page_name], type)
   end
   
   def check_edit_access
@@ -80,9 +81,9 @@ class WikiController < EditionController
   
 private
 
-  def find_page(name)
+  def find_page(name, type)
     @real_page_provider.find_by_name(name) ||
-    @default_page_provider.find_by_name(name)
+    @default_page_provider.find_by_name_and_type(name, type)
   end
     
 end

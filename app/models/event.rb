@@ -15,14 +15,4 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class DefaultPageProvider
-
-  def find_by_name_and_type(name, type)
-    class_name = type || 'Page'
-    page = class_name.constantize.new(:name => name)
-    page.text = WIKI_NOT_FOUND_TEXT
-    page.text = CONGRATS_TEXT if 'MainPage' == name
-    return page
-  end
-
-end
+class Event < Page; end

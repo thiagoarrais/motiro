@@ -1,4 +1,5 @@
 <% if 'event' == params['kind'] %>
   <%= 'This event is planned for'.t -%>
-  <%= date_select 'headline', 'happened_at'  %>
+  <%= date_select 'page', 'happens_at'  %>
+  <%= hidden_field 'page', 'type', :value => 'Event' %>
 <% end %>
