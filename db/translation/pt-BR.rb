@@ -44,6 +44,7 @@
 'Date' => 'Data',
 'Note' => 'Observação',
 'Event added' => 'Evento registrado',
+'This event is planned for' => 'Este evento está planejado para',
 'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
 
 # Wiki edition page
