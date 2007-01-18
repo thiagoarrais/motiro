@@ -80,3 +80,19 @@ events_are_just_special_pages_too_page:
   title: Events are just special wiki pages too
   text: Event descriptions can be treated just like other regular wiki pages,
         in the same way that feature suggestion pages are
+        
+release_event:
+  id: 10
+  name: FourteenthRelease
+  kind: event
+  type: Event
+  original_author_id: 1000004 #john
+  modified_at: 2007-01-18 13:28:47
+  last_editor_id: 1000004 #john
+  editors: ""
+  happens_at: 2007-01-24
+  title: Fourteenth release
+  text: The 0.6.1 release will be a bug fixing one and will introduce editable
+        event pages. This is included as part of the everything is a wiki page
+        motto.
+ 

@@ -240,6 +240,14 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :content => Regexp.new(expected_time)
   end
   
+  def test_displays_date_edition_field_when_editing_events
+    log_as 'bob'
+    
+    get :edit, :page_name => pages('release_event').name
+    
+    assert_xml_element "//select[@id = 'page_happens_at_1i']"
+  end
+  
 private
 
   def log_as(user_name)
