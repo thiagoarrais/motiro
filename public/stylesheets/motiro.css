@@ -202,7 +202,8 @@ div#editor div.inner {
 
 div#page_properties {
     margin: 0;
-    margin-right: 20.2em;
+    float: left;
+    width: 42em;
 }
 
 div#loading {
@@ -215,8 +216,7 @@ div#loading {
 
 div#wiki_reference {
     margin: 0;
-    float: right;
-    width: 18.4em;
+    margin-left: 43.6em;
 }
 
 div#page_properties div.inner {

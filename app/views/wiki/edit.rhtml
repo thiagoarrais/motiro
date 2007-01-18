@@ -12,15 +12,6 @@
                                       :id => 'btnDiscard' %>
         </div>
       </div>
-      <div id='wiki_reference' class='window'>
-        <div class='inner'>
-          <h2><%= 'Quick reference'.t -%></h2>
-          <p>
-            <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
-            <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
-          </p>
-        </div>
-      </div>
       <div id="page_properties" class="window">
         <div class="inner">
           <div id="loading">Loading...</div>
@@ -46,6 +37,15 @@
               <%= '(Usernames separated by spaces. Blank for everyone)'.t -%>
             </p>
           <% end %>
+        </div>
+      </div>
+      <div id='wiki_reference' class='window'>
+        <div class='inner'>
+          <h2><%= 'Quick reference'.t -%></h2>
+          <p>
+            <b><%= 'Title'.t -%>:</b> <code>= <i><%= 'Title'.t -%></i> =</code><br/>
+            <b><%= 'Link'.t -%>:</b> <code>[<i><%= 'address'.t -%></i> <i><%= 'label'.t -%></i>]</code>
+          </p>
         </div>
       </div>
     <% end %>
