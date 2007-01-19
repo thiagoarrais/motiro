@@ -33,7 +33,7 @@ FAZENDO A COISA RODAR
 
 Para ter seu portal Motiro rodando, você vai precisar de:
 
-1.  SQLite 3.3.10 ou superior
+1.  SQLite 3.3.8 ou superior
 2.  Ruby 1.8.2 ou superior
 3.  Cliente Subversion (svn) se quiser usar o repórter Subversion
 4.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
