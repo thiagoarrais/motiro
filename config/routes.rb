@@ -47,9 +47,9 @@ ActionController::Routing::Routes.draw do |map|
               :action => 'last',
               :defaults => locale_defaults.merge(:kind => 'common')
 
-  map.connect 'wiki/properties/:locale',
+  map.connect 'wiki/:action/:locale',
               :controller => 'wiki',
-              :action => 'properties',
+              :requirements => { :action => /properties_(show|edit)/ },
               :defaults => locale_defaults
 
   map.connect 'wiki/:action/:page_name/:locale', :controller => 'wiki',

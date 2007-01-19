@@ -25,7 +25,7 @@
                                         :id => 'cmbType') %>
           </p>
           <div id="extra_properties">
-            <%= render :partial => 'properties' -%>
+            <%= render :partial => 'properties_edit' -%>
           </div>
           <% if current_user.can_change_editors?(@page) %>
             <p>
@@ -49,7 +49,7 @@
         </div>
       </div>
     <% end %>
-    <%= observe_field('cmbType', :url => { :action => 'properties' },
+    <%= observe_field('cmbType', :url => { :action => 'properties_edit' },
                                  :with => 'kind',
                                  :update => 'extra_properties',
                                  :loading => "extraPropertiesLoading()",

@@ -131,6 +131,7 @@ class WikiControllerTest < Test::Unit::TestCase
         page.should_receive(:title).and_return('Mocked page').once
         page.should_receive(:last_editor).and_return(nil).zero_or_more_times
         page.should_receive(:modified_at).and_return(nil).zero_or_more_times
+        page.should_receive(:kind).and_return('common').zero_or_more_times
         page.should_receive(:render_html).
           with('en').
           and_return("You've been mocked!").
@@ -152,6 +153,7 @@ class WikiControllerTest < Test::Unit::TestCase
         page.should_receive(:title).and_return('Mocked page').once
         page.should_receive(:last_editor).and_return(nil).zero_or_more_times
         page.should_receive(:modified_at).and_return(nil).zero_or_more_times
+        page.should_receive(:kind).and_return('common').zero_or_more_times
         page.should_receive(:render_html).
           with('en-US').
           and_return("<div>You've been mocked!</div>").
@@ -248,6 +250,18 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//select[@id = 'page_happens_at_1i']"
   end
   
+  def test_displays_date_when_detailing_events
+    get :show, :page_name => pages('release_event').name
+    
+    assert_tag :content => /This event was planned for  24 January 2007/
+  end
+
+  def test_does_not_try_to_display_date_when_detailing_common_pages
+    get :show, :page_name => pages('test_page').name
+    
+    assert_no_tag :content => /This event was planned for/
+  end
+
 private
 
   def log_as(user_name)
