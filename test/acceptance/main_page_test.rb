@@ -39,7 +39,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
   def test_events_on_main
     open('/en')
     assert_element_present "//div[@id = 'events']"
-    assert get_text("//div[@id = 'events']").match(/Upcoming events/)
+    assert get_text("//div[@id = 'events']").match(/Scheduled events/)
   end
   
   def test_planned_features_on_main
@@ -67,7 +67,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Senha'
     assert_text_present 'instalou o Motiro corretamente'
     assert_text_present 'Editar (identifique-se, por favor)'
-    assert_text_present 'ximos eventos'
+    assert_text_present 'Eventos agendados'
     assert_text_present 'ltimas not' # TODO Últimas notícias do Subversion
     assert_text_present 'cias do Subversion'
     assert_text_present 'Antigas'
@@ -81,7 +81,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Password'
     assert_text_present 'Congratulations! Motiro was installed correctly'
     assert_text_present 'Edit (requires authentication)'
-    assert_text_present 'Upcoming events'
+    assert_text_present 'Scheduled events'
     assert_text_present 'Latest news from Subversion'
     assert_text_present 'Older'
     assert_text_present 'Planned features'

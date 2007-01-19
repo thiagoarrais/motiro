@@ -29,21 +29,6 @@ private
 
   OLDER_BUTTON = "link_to('Older'.t, :controller => 'report', " +
                                     ":action => 'older', :reporter => @name)"
-  ADD_EVENTS_BUTTON = 
-    "if current_user.nil?; " +
-    "  content_tag('span', 'Add'.t, :class => 'disabled'); " +
-    "else; " +
-    "  link_to( 'Add'.t, :controller => 'events', :action => 'new'); " +
-    "end;"
-
-  NEW_FEATURE_BUTTON = 
-    "if current_user.nil?; " +
-    "  content_tag('span', 'Add'.t, :class => 'disabled'); " +
-    "else; " +
-    "  link_to( 'Add'.t, :controller => 'wiki', " + 
-                        ":action => 'new', :kind => 'feature'); " +
-    "end;"
-
 public
   
   def self.reporter_name
@@ -81,9 +66,7 @@ public
   #           add_button buttons[:add_events]
   #         end
   def self.button
-    @@buttons ||= { :older => OLDER_BUTTON,
-                    :add_events => ADD_EVENTS_BUTTON,
-                    :new_feature => NEW_FEATURE_BUTTON }
+    @@buttons ||= { :older => OLDER_BUTTON }
   end
   
   # Turns caching on and off for the reporter

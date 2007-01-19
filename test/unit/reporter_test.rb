@@ -17,6 +17,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'core/reporter'
+
 class MyDefaultReporter < MotiroReporter; end
 
 class MyCustomReporter < MotiroReporter
@@ -24,7 +26,7 @@ class MyCustomReporter < MotiroReporter
 end
 
 class TwoButtonReporter < MotiroReporter
-  add button[:add_events]
+  add button[:new_event]
 end
 
 class NonCachingReporter < MotiroReporter
@@ -61,7 +63,7 @@ class MotiroReporterTest < Test::Unit::TestCase
   
   def test_two_button_reporter
     assert_equal [ MotiroReporter.button[:older],
-                   MotiroReporter.button[:add_events] ],
+                   MotiroReporter.button[:new_event] ],
                  TwoButtonReporter.new.buttons
   end
   

@@ -15,41 +15,14 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'core/cache_reporter'
-require 'core/reporter'
+require 'core/wiki_reporter'
 
-require 'stub_hash'
+class EventsReporter < WikiReporter
 
-class EventsReporter < MotiroReporter
-  title 'Upcoming events'
-  add button[:add_events]
+  title 'Scheduled events'
 
-  caching :off
+  def column; 'happens_at'; end
   
-  def initialize
-    @reporter = CacheReporter.new(self)
-  end
-  
-  def store_event(params)
-    headline = Headline.new(params)
-    
-    previous_hl = 0
-    until previous_hl.nil?
-      id = (rand * 100000).to_i
-      previous_hl = Headline.find(:first,
-        :conditions => ["reported_by = 'events' and rid = ?", "e#{id}"])
-    end
-    
-    headline.rid = "e#{id}"
-    headline.reported_by = name
-    
-    headline.save
-    
-    return headline
-  end
-  
-  def method_missing(name, *args)
-    @reporter.send(name, *args)
-  end
-  
+  def extract_happened_at(page); page.happens_at.to_t; end
+
 end

@@ -27,20 +27,14 @@ svn_demo_headline:
                The comment is a multiline comment that indicates the purpose
                of the revision.
   
-release_event:
+darcs_headline:
   id: 4
   author: bond
-  happened_at: 2006-04-26
-  reported_by: events
-  rid: e1
-  description: Next release planned for April, 26th
-               
-               Motiro's next release is planned for April 26th. Somethings
-               we will be working on for this release are
-               
-               - Fixing bugs on the subversion reporter
-               - Adding user authentication
-    
+  happened_at: 2007-01-19 17:24:45
+  reported_by: darcs
+  rid: 20070119172445-eac51-b3b78543778f54f5c691121ab4a8dc3179dc81e4
+  description: Modified a file
+
 meeting_event:
   id: 5
   author: motiro_maintainer

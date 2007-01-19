@@ -199,7 +199,7 @@ class ChiefEditorTest < Test::Unit::TestCase
       
       events_news = chief_editor.latest_news_from 'events'
       
-      assert_equal 2, events_news.size
+      assert_equal 1, events_news.size
       
       subversion_news = chief_editor.latest_news_from 'subversion'
       

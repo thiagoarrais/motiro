@@ -34,3 +34,15 @@ private
   end
 
 end
+
+class Date
+
+  def relative_to_now(reference_time=Time.now)
+    to_t.relative_to_now(reference_time)
+  end
+  
+  def to_t
+    Time.local(year, month, day, 23, 59, 59)
+  end
+
+end

@@ -35,10 +35,10 @@ class ReportControllerTest < Test::Unit::TestCase
   end
   
   def test_fetches_headlines_from_cache
-    get :list, {:reporter => 'events' }
+    get :list, { :reporter => 'subversion' }
     assert_response :success
     assert_not_nil assigns(:headlines)
-    expected = Headline.find(:all, :conditions => "reported_by = 'events'")
+    expected = Headline.find(:all, :conditions => "reported_by = 'subversion'")
     assert_equal expected.size, assigns(:headlines).size
   end
   
@@ -77,13 +77,6 @@ class ReportControllerTest < Test::Unit::TestCase
                  :id => svn_demo_headline.rid }
     
     assert_template "report/#{reporter_name}_detail"
-    
-    release_event = headlines('release_event')
-    reporter_name = release_event.reported_by
-    get :show, { :reporter => reporter_name,
-                 :id => release_event.rid }
-    
-    assert_template "report/#{reporter_name}_detail"
   end
   
   def test_include_headline_date_on_guid
@@ -100,7 +93,7 @@ class ReportControllerTest < Test::Unit::TestCase
 private
 
   def assert_template(expected)
-    assert_equal File.expand_path("#{__FILE__ + '/../../../'}/app/views/#{expected}.rhtml"),
+    assert_equal File.expand_path("#{__FILE__}/../../../app/views/#{expected}.rhtml"),
                  File.expand_path(@response.rendered_file)
   end
   
