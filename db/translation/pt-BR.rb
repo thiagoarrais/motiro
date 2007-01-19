@@ -59,7 +59,8 @@
 'Page properties' => 'Propriedades da página',
 'This page is a' => 'Esta página é uma',
 'common wiki page' => 'página wiki comum',
-'feature suggestion' => 'sugestão de recurso', 
+'feature suggestion' => 'sugestão de recurso',
+'event description' => 'descrição de evento', 
 'Who should be able to edit this page?' => 'Quem pode editar esta página?',
 '(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
 
