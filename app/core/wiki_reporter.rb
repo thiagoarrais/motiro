@@ -15,8 +15,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'page'
-
 require 'core/reporter'
 require 'core/settings'
 
@@ -27,10 +25,12 @@ class WikiReporter < MotiroReporter
 
   caching :off
 
-  DEFAULT_OPTS = { :settings => SettingsProvider.new, :page_provider => Page }
+  def default_opts
+    { :settings => SettingsProvider.new, :page_provider => Page }
+  end
   
   def initialize(opts={})
-    opts = DEFAULT_OPTS.merge(opts)
+    opts = default_opts.merge(opts)
     @settings, @page_provider = opts[:settings], opts[:page_provider]
   end
   
