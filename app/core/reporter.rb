@@ -63,7 +63,7 @@ public
   # A hash of buttons available for reporters
   # 
   # Usage : class MyReporter < MotiroReporter
-  #           add_button buttons[:add_events]
+  #           add_button buttons[:older]
   #         end
   def self.button
     @@buttons ||= { :older => OLDER_BUTTON }
