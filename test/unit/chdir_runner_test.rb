@@ -31,7 +31,7 @@ class ChdirRunnerTest < Test::Unit::TestCase
   def test_changes_dir_before_command_and_rollsback_after
     FlexMock.use do |runner|
       runner.should_receive(:run).with('my_command', '', {}).once.
-        returns { assert_equal(TMP, Dir.pwd) }
+        returns { assert_equal(e(TMP), e(Dir.pwd)) }
         
       prevdir = Dir.pwd
       
@@ -73,5 +73,7 @@ class ChdirRunnerTest < Test::Unit::TestCase
   def teardown
     Dir.chdir @prevdir
   end
+  
+  def e(path); File.expand_path(path); end
 
 end
