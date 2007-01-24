@@ -38,12 +38,12 @@ Para ter seu portal Motiro rodando, você vai precisar de:
 3.  Cliente Subversion (svn) se quiser usar o repórter Subversion
 4.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
 5.  MediaCloth 0.0.2 ou superior (disponível como Ruby Gem: mediacloth)
-6.  Daemons 1.0.3 (disponível como Ruby Gem: daemons)
+6.  Daemons 1.0.4 (disponível como Ruby Gem: daemons)
 7.  Platform 0.4.0 (disponível como Ruby Gem: platform)
 8.  Open4 0.9.1 (disponível como Ruby Gem: open4)
 9.  POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
-10. SQLite3-Ruby 1.1.0 ou superior (disponível como Ruby Gem: sqlite3-ruby)   
-11. FlexMock 0.3.2 ou superior para executar os testes (disponível como Ruby
+10. SQLite3-Ruby 1.2.0 ou superior (disponível como Ruby Gem: sqlite3-ruby)   
+11. FlexMock 0.4.3 ou superior para executar os testes (disponível como Ruby
     Gem: flexmock)
    
 Se você estiver rodando o Motiro sobre uma plataforma Windows, vai precisar
@@ -80,7 +80,7 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
    instalação. Esta é uma atitude altamente recomendada para verificar a
    adequabilidade do programa ao seu sistema. Talvez, se estiver se sentindo
    suficientemente confiante (eu nunca estou), você pode pular esta parte e ir
-   direto para o passo 4 e rodar o servidor web WEBrick para ver a coisa toda
+   direto para o passo 4 e rodar o servidor web para ver a coisa toda
    funcionando.
 
 3. Rodar a suíte de testes
@@ -157,12 +157,13 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 5. Iniciar o servidor
 ------
 
-   Para rodar o Motiro em um servidor WEBrick (um servidor escrito totalmente em
-   Ruby), você só vai precisar rodar mais um script Ruby. Você também pode
-   tentar alojar o Motiro em uma variedade de outros servidores, como Apache e
-   lighttpd. Mas, pelo bem da brevidade, eles não serão cobertos aqui.
+   Para rodar o Motiro em um servidor web escrito totalmente em Ruby (ou WEBrick
+   ou Mongrel, dependendo da sua instalação), você só vai precisar rodar mais um
+   script Ruby. Você também pode tentar alojar o Motiro em uma variedade de
+   outros servidores, como Apache e lighttpd. Mas, pelo bem da brevidade, eles
+   não serão cobertos aqui.
 
-   Para rodar o script que inicia o servidor WEBrick, basta navegar para onde o
+   Para rodar o script que inicia o servidor web, basta navegar para onde o
    Motiro foi desempacotado e dizer:
 
    ----------------------------------------------------------------------------
@@ -182,7 +183,7 @@ Depois de verificar seus pré-requisitos, o que você precisa fazer é:
 ------
 
    O Motiro sai da caixa pré-configurado para seu próprio desenvolvimento porque
-   nós usamos ele para acompanharmos nosso progresso, de verdade. Isto pode ser
+   nós o usamos para acompanharmos nosso progresso, de verdade. Isto pode ser
    satisfatório, se você estiver interessado em nos ver trabalhar. Porém a
    maioria das pessoas quer acompanhar seu próprio projeto, sua própria
    equipe.

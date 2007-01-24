@@ -37,12 +37,12 @@ To get your own Motiro portal up and running, you will need the following:
 3.  Subversion client (svn) if you are planning to use the Subversion reporter
 4.  Darcs client (darcs) if you are planning to use the Darcs reporter
 5.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
-6.  Daemons 1.0.3 (available as Ruby Gem: daemons)
+6.  Daemons 1.0.4 (available as Ruby Gem: daemons)
 7.  Platform 0.4.0 (available as Ruby Gem: platform)
 8.  Open4 0.9.1 (available as Ruby Gem: open4)
 9.  POpen4 0.1.1 (available as Ruby Gem: POpen4)
-10. SQLite3-Ruby 1.1.0 or later (available as Ruby Gem: sqlite3-ruby)
-11. FlexMock 0.1.7 or later if you want to run the tests (highly recommended)
+10. SQLite3-Ruby 1.2.0 or later (available as Ruby Gem: sqlite3-ruby)
+11. FlexMock 0.4.3 or later if you want to run the tests (highly recommended)
     (available as Ruby Gem: flexmock)
    
 If you are running Motiro with an Windows platform, you'll also need:
@@ -74,8 +74,7 @@ What you need to do is:
    installation. This is highly recommended practice because it verifies if
    your system is capable of running the program. Maybe, if you're feeling
    confident enough (I never am), you'd want to skip this part and jump
-   directly to step 4 to run the WEBrick web server and see the whole thing
-   running.
+   directly to step 4 to run the web server and see the whole thing running.
 
 3. Run the test suite
 ------
@@ -120,8 +119,9 @@ What you need to do is:
    
    If there is any error when you run these tests, please contact us on the
    development list, tell us which kind of system you are trying to run Motiro
-   on and from where did you get it. Do not forget to append your bug report
-   too.
+   on and from where did you get it. Feel free to add any information you wish
+   about yourself like name and location. Do not forget to append your bug
+   report too.
 
 4. Start the job scheduler
 ------
@@ -147,13 +147,13 @@ What you need to do is:
 5. Boot the server
 ------
 
-   To run Motiro within a WEBrick server (a pure Ruby server), you'll just
-   need to run another Ruby script. You may also try to run Motiro on a variety
-   of servers, like Apache and lighttpd. But, for the sake of brevity, those
-   won't be covered here.
+   To run Motiro within a pure Ruby web server (either WEBrick or Mongrel
+   depending on your setup), you'll just need to run another Ruby script. You
+   may also try to run Motiro on a variety of servers, like Apache and lighttpd.
+   But, for the sake of brevity, those won't be covered here.
 
-   To run the script that boots the WEBrick server, just cd to where you
-   unpacked Motiro and say:
+   To run the script that boots the web server, just cd to where you unpacked
+   Motiro and say:
 
    ----------------------------------------------------------------------------
    % ruby script/server
