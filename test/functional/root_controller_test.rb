@@ -13,6 +13,13 @@ class RootControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
+  
+  def test_version_number
+    get :index, :locale => 'en'
+    
+    assert_tag :content => /Motiro version 0.6.2/
+  end
+  
 
   def test_routes_language_specified_on_url
     assert_routing('/en', :controller => 'root',

@@ -19,11 +19,6 @@ class MainPageAcceptanceTest < SeleniumTestCase
   
   fixtures :pages
   
-  def test_version_number
-    open '/en'
-    assert_text_present 'Motiro version 0.6.1'
-  end
-  
   def test_report_html
     open '/report/subversion?locale=en'
     assert_text_present 'Latest news from Subversion'
