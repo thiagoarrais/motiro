@@ -15,15 +15,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'mediacloth'
-
 PLACE_HOLDER_TITLE = 'Insert page title here'
 
 class Page < ActiveRecord::Base
 
-  include MediaCloth
-  
   belongs_to :last_editor, :class_name => 'User',
                            :foreign_key => 'last_editor_id'
   belongs_to :original_author, :class_name => 'User',
@@ -58,9 +53,7 @@ class Page < ActiveRecord::Base
   end
   
   def render_html(locale_code=nil)
-    translator = Translator.for(locale_code)
-    wiki_text = translator.localize(text).delete("\r")
-    wiki_to_html(wiki_text)
+    renderer.render_html(text, locale_code)
   end
   
   def use_parser(parser)
@@ -95,6 +88,10 @@ private
       suffix += 1
     end
     return result    
+  end
+  
+  def renderer
+    @renderer ||= WikiRenderer.new
   end
   
   def my_parser
