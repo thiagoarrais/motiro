@@ -52,10 +52,6 @@ class Page < ActiveRecord::Base
     return result
   end
   
-  def render_html(locale_code=nil)
-    renderer.render_html(text, locale_code)
-  end
-  
   def use_parser(parser)
     @parser = parser
   end

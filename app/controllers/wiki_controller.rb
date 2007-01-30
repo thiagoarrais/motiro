@@ -33,7 +33,8 @@ class WikiController < EditionController
     return true    
   end
     
-  def initialize(page_provider=Page)
+  def initialize(page_provider=Page, renderer=WikiRenderer.new)
+    @renderer = renderer
     @real_page_provider = page_provider
     @default_page_provider = DefaultPageProvider.new
   end

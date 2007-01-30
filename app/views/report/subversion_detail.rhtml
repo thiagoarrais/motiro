@@ -3,8 +3,7 @@
     <div class="pagetext">
       <h1><%= 'Revision %s' / @revision_id -%></h1>
 <% end %>
-<%= Page.new(:text => @headline.description(Translator.for(@locale))).
-      render_html %>
+<%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
           <div id="summary">
             <% @headline.changes.each do |change| %>
                 <%= change.render_summary -%>

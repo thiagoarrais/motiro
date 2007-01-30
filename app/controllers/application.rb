@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   include LoginSystem
   include ApplicationHelper
   
-  before_filter :set_locale
+  before_filter :set_locale, :setup_renderer
   
   def set_locale
     default_locale = 'en-US'
@@ -25,7 +25,11 @@ class ApplicationController < ActionController::Base
       @locale = default_locale
       Locale.set @locale
     end
-    
+  end
+  
+  def setup_renderer
+    @@renderer ||= WikiRenderer.new
+    @renderer ||= @@renderer
   end
   
 end
