@@ -34,7 +34,7 @@ class WikiController < EditionController
   end
     
   def initialize(page_provider=Page, renderer=nil)
-    @renderer = renderer || WikiRenderer.new(my_url_generator, current_locale)
+    @renderer = renderer || create_renderer
     @real_page_provider = page_provider
     @default_page_provider = DefaultPageProvider.new
   end

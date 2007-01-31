@@ -28,10 +28,14 @@ class ApplicationController < ActionController::Base
   end
   
   def setup_renderer
-    @renderer = WikiRenderer.new(my_url_generator, current_locale)
+    @renderer = create_renderer
   end
   
 private
+  
+  def create_renderer
+    WikiRenderer.new(my_url_generator, current_locale)
+  end
 
   def my_url_generator
     @url_generator ||= WikiUrlGenerator.new(self)
