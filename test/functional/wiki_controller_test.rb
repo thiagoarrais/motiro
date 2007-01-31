@@ -122,8 +122,8 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_no_tag :tag => 'label', :attributes => { :for => 'txtAuthorized' }
   end
 
-  def test_asks_renderer_to_use_address_language
-    FlexMock.use('provider', 'page', 'renderer') do |provider, page, renderer|
+  def test_uses_language_provided_by_address
+    FlexMock.use('provider', 'page') do |provider, page|
         provider.should_receive(:find_by_name).
           with_any_args.
           and_return(page).
@@ -132,20 +132,18 @@ class WikiControllerTest < Test::Unit::TestCase
         page.should_receive(:last_editor).and_return(nil).zero_or_more_times
         page.should_receive(:modified_at).and_return(nil).zero_or_more_times
         page.should_receive(:kind).and_return('common').zero_or_more_times
-        page.should_receive(:text).and_return("You've been mocked!").once
-        renderer.should_receive(:render_html).once.
-          with("You've been mocked!", 'en').
-          and_return("<p>You've been mocked!</p>")
+        page.should_receive(:text).and_return("Você foi enganado!\n\n--- en -------\n\nYou've been mocked!").once
         
-        @controller = WikiController.new(provider, renderer)
+        @controller = WikiController.new(provider)
 
         get :show, {:page_name => 'TestPage', :locale => 'en'}
-        assert_response :success
+        assert_tag :content => /You've been mocked!/
+        assert_no_tag :content => /Você foi enganado!/
      end
   end
   
-  def test_askes_page_to_render_in_default_language
-    FlexMock.use('provider', 'page', 'renderer') do |provider, page, renderer|
+  def test_renders_page_in_default_language_when_not_specified
+    FlexMock.use('provider', 'page') do |provider, page|
         provider.should_receive(:find_by_name).
           with_any_args.
           and_return(page).
@@ -154,15 +152,13 @@ class WikiControllerTest < Test::Unit::TestCase
         page.should_receive(:last_editor).and_return(nil).zero_or_more_times
         page.should_receive(:modified_at).and_return(nil).zero_or_more_times
         page.should_receive(:kind).and_return('common').zero_or_more_times
-        page.should_receive(:text).and_return("You've been mocked!").once
-        renderer.should_receive(:render_html).once.
-          with("You've been mocked!", 'en-US').
-          and_return("<p>You've been mocked!</p>")
+        page.should_receive(:text).and_return("You've been mocked!\n\n--- pt-br ----\n\nVocê foi enganado!").once
         
-        @controller = WikiController.new(provider, renderer)
+        @controller = WikiController.new(provider)
 
         get :show, {:page_name => 'TestPage'}
-        assert_response :success
+        assert_tag :content => /You've been mocked!/
+        assert_no_tag :content => /Você foi enganado!/
      end
   end
   

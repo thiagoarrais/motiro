@@ -22,9 +22,12 @@ class WikiRenderer
 
   include MediaCloth
 
-  def render_html(text, locale_code=nil)
-    translator = Translator.for(locale_code)
-    wiki_text = translator.localize(text).delete("\r")
+  def initialize(locale_code=nil)
+    @translator = Translator.for(locale_code)
+  end
+  
+  def render_html(text)
+    wiki_text = @translator.localize(text).delete("\r")
     wiki_to_html(wiki_text)
   end
 

@@ -28,8 +28,7 @@ class ApplicationController < ActionController::Base
   end
   
   def setup_renderer
-    @@renderer ||= WikiRenderer.new
-    @renderer ||= @@renderer
+    @renderer = WikiRenderer.new(current_locale)
   end
   
 end

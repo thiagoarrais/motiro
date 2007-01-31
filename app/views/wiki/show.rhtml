@@ -1,4 +1,4 @@
 <%= content_tag :h1, @page.title %>
 <%= render :partial => 'properties_show' %>
-<%= @renderer.render_html(@page.text, current_locale) %>
+<%= @renderer.render_html(@page.text) %>
 <%= render :partial => 'editbar' %>

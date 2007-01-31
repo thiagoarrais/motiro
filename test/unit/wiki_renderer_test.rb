@@ -49,7 +49,7 @@ class WikiRendererTest < Test::Unit::TestCase
                 "Welcome to Motiro"
     assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_html(wiki_text)
     assert_equal "<p>Welcome to Motiro</p>",
-                 renderer.render_html(wiki_text, 'en')
+                 WikiRenderer.new('en').render_html(wiki_text)
   end
   
 end
