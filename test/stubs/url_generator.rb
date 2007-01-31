@@ -15,28 +15,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'mediacloth'
+class TestingUrlGenerator
 
-class WikiRenderer
-
-  include MediaCloth
-
-  def initialize(url_generator, locale_code=nil)
-    @url_generator = url_generator
-    @translator = Translator.for(locale_code)
-  end
-  
-  def render_html(text)
-    localized_text = @translator.localize(text).delete("\r")
-    expanded_text = expand_internal_links(localized_text)
-    wiki_to_html(expanded_text)
-  end
-  
-  def expand_internal_links(text)
-    text.gsub(/\[(\w+)\s+([^\]]+)\]/) do |md|
-      "[#{@url_generator.generate_url_for($1)} #{$2}]"
-    end
+  def generate_url_for(page_name)
+    "http://test.host/wiki/show/#{page_name}"
   end
 
 end

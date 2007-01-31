@@ -17,12 +17,14 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'stubs/url_generator' 
+
 class WikiRendererTest < Test::Unit::TestCase
 
   attr_reader :renderer
   
   def setup
-    @renderer = WikiRenderer.new
+    @renderer = WikiRenderer.new(url_generator)
   end
 
   def test_renders_title
@@ -49,7 +51,22 @@ class WikiRendererTest < Test::Unit::TestCase
                 "Welcome to Motiro"
     assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_html(wiki_text)
     assert_equal "<p>Welcome to Motiro</p>",
-                 WikiRenderer.new('en').render_html(wiki_text)
+                 WikiRenderer.new(url_generator, 'en').render_html(wiki_text)
   end
+  
+  def test_renders_internal_link
+    expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">go somewhere else</a></p>"
+    assert_equal expected, renderer.render_html('[AnotherPage go somewhere else]')
+  end
+  
+  def test_renders_multiple_internal_links
+    expected = "<p><a href=\"http://test.host/wiki/show/InternalPage\" rel=\"nofollow\">go there</a> <a href=\"http://test.host/wiki/show/OtherInternalPage\" rel=\"nofollow\">and there</a></p>"
+    assert_equal expected, renderer.render_html("[InternalPage go there] " +
+                                                "[OtherInternalPage and there]")
+  end
+
+private
+
+  def url_generator; TestingUrlGenerator.new; end
   
 end

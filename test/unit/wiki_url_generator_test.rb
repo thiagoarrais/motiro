@@ -15,27 +15,16 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'mediacloth'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiRenderer
+class WikiUrlGeneratorTest < Test::Unit::TestCase
 
-  include MediaCloth
-
-  def initialize(url_generator, locale_code=nil)
-    @url_generator = url_generator
-    @translator = Translator.for(locale_code)
-  end
-  
-  def render_html(text)
-    localized_text = @translator.localize(text).delete("\r")
-    expanded_text = expand_internal_links(localized_text)
-    wiki_to_html(expanded_text)
-  end
-  
-  def expand_internal_links(text)
-    text.gsub(/\[(\w+)\s+([^\]]+)\]/) do |md|
-      "[#{@url_generator.generate_url_for($1)} #{$2}]"
+  def test_delegates_generation_to_controller
+    FlexMock.use do |cont|
+      cont.should_receive(:server_url_for).once.returns('a').
+        with(:controller => 'wiki', :action => 'show', :page_name => 'MyPage')
+      
+      assert_equal 'a', WikiUrlGenerator.new(cont).generate_url_for('MyPage')
     end
   end
 
