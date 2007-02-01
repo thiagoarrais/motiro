@@ -64,6 +64,11 @@ class WikiRendererTest < Test::Unit::TestCase
     assert_equal expected, renderer.render_html("[InternalPage go there] " +
                                                 "[OtherInternalPage and there]")
   end
+  
+  def test_do_not_expand_links_when_there_is_a_break_inside_the_brackets
+    expected = "<p>[ThisIsNotALink\nto anywhere]</p>"
+    assert_equal expected, renderer.render_html("[ThisIsNotALink\nto anywhere]")
+  end
 
 private
 
