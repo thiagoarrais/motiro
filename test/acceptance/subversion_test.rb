@@ -155,7 +155,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     open '/report/subversion?locale=en'
     click "//a[text() = '#{commit_title}']"
-    wait_for_page_to_load(1000)
+    wait_for_page_to_load(2000)
     
     assert_text_present "Changes to file_number_one.txt"
     assert_text_present "this file will be renamed to file_number_two"

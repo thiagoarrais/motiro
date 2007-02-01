@@ -69,6 +69,11 @@ class WikiRendererTest < Test::Unit::TestCase
     expected = "<p>[ThisIsNotALink\nto anywhere]</p>"
     assert_equal expected, renderer.render_html("[ThisIsNotALink\nto anywhere]")
   end
+  
+  def test_expands_internal_links_with_address_only
+    expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">AnotherPage</a></p>"
+    assert_equal expected, renderer.render_html("[AnotherPage]")
+  end
 
 private
 

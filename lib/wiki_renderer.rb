@@ -34,8 +34,8 @@ class WikiRenderer
   end
   
   def expand_internal_links(text)
-    text.gsub(/\[(\w+)[ \t]+([^\]]+)\]/) do |md|
-      "[#{@url_generator.generate_url_for($1)} #{$2}]"
+    text.gsub(/\[(\w+)([ \t]+([^\]]+))?\]/) do |substr|
+      "[#{@url_generator.generate_url_for($1)} #{$2 ? $2: $1}]"
     end
   end
 
