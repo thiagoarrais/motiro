@@ -74,6 +74,11 @@ class WikiRendererTest < Test::Unit::TestCase
     expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">AnotherPage</a></p>"
     assert_equal expected, renderer.render_html("[AnotherPage]")
   end
+  
+  def test_recover_from_unmatched_opening_bracket_inside_link_text
+    assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\" rel=\"nofollow\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
+                 renderer.render_html("[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]")
+  end
 
 private
 
