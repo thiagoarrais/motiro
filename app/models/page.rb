@@ -25,9 +25,15 @@ class Page < ActiveRecord::Base
                                :foreign_key => 'original_author_id'
   
   def after_initialize
-    self.editors ||= ''
-    self.text ||= ''
-    self.kind = 'common' if kind.nil? || kind.empty?
+    default('', :editors, :text, :name, :title)
+    default('common', :kind)
+  end
+  
+  def default(value, *attrs)
+    attrs.each do |attr|
+      cur = send(attr)
+      send("#{attr}=".to_sym, value) if cur == 'NULL' || cur.nil? || cur.empty?
+    end
   end
   
   def before_save
