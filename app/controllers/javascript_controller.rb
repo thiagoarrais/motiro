@@ -17,4 +17,5 @@
 
 # Placeholder controller for javascript templates
 class JavascriptController < ApplicationController
+  caches_page :motiro, :niftycube
 end
