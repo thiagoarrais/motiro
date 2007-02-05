@@ -3,5 +3,5 @@
   | <%= link_to 'Português', params.merge(:locale => 'pt-BR'), { :id => 'pt-BR' } -%>
 </div>
 <div>
-  <%= render_component :controller => 'account', :action => 'authorization' %>
+  <%= render :partial => 'account/authorization' %>
 </div>

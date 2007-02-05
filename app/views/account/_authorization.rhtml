@@ -1,6 +1,7 @@
 <% if current_user.nil? then %>
   <div id="authentication_errors">
-	<%= render_component :action => 'availability',
+	<%= render_component :controller => 'account',
+	                     :action => 'availability',
 	                     :params => { :desired_login => flash[:desired_login] }%>
   </div>
   <%= content_tag :span, 'Passwords do not match'.t,
