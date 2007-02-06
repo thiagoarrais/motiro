@@ -75,10 +75,10 @@ class AccountControllerTest < Test::Unit::TestCase
   
   def test_check_for_availability
     post :availability, :desired_login => 'bob'
-    assert assigns(:not_available)
+    assert assigns(:login_not_available)
     
     post :availability, :desired_login => 'paul'
-    assert !assigns(:not_available)
+    assert !assigns(:login_not_available)
   end
   
 private
