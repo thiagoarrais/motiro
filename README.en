@@ -47,8 +47,8 @@ To get your own Motiro portal up and running, you will need the following:
    
 If you are running Motiro with an Windows platform, you'll also need:
 
-12. Win32-process 0.5.1 or later (available as Ruby Gem: win32-process)
-13. Windows-pr 0.5.4 or later (available as Ruby Gem: windows-pr)
+12. Win32-process 0.5.2 or later (available as Ruby Gem: win32-process)
+13. Windows-pr 0.6.3 or later (available as Ruby Gem: windows-pr)
    
 What you need to do is:
 
