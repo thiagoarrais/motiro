@@ -32,7 +32,7 @@ class Page < ActiveRecord::Base
   def default(value, *attrs)
     attrs.each do |attr|
       cur = send(attr)
-      send("#{attr}=".to_sym, value) if cur == 'NULL' || cur.nil? || cur.empty?
+      send("#{attr}=".to_sym, value) if cur.nil? || cur.empty?
     end
   end
   
