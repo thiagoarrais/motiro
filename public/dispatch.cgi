@@ -1,4 +1,4 @@
-#!/home/thiagob/programas/ruby-1.8.4/bin/ruby
+#!/usr/bin/env ruby
 
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 

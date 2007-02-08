@@ -1,7 +1,7 @@
 class AddPageOriginalAuthor < ActiveRecord::Migration
 
   def self.up
-    add_column 'pages', 'original_author_id', :integer, :default => :null
+    add_column 'pages', 'original_author_id', :integer
   end
     
 

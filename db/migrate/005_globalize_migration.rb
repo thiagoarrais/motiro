@@ -28,7 +28,7 @@ class GlobalizeMigration < ActiveRecord::Migration
     end
 
     add_index :globalize_translations, [ :tr_key, :language_id ]
-    add_index :globalize_translations, [ :table_name, :item_id, :language_id ]
+    add_index :globalize_translations, [ :table_name, :item_id, :language_id ], :name => 'translations_idx'
 
     create_table :globalize_languages, :force => true do |t|
       t.column :iso_639_1, :string, :limit => 2
