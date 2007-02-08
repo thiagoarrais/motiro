@@ -2,7 +2,7 @@
 module RepoUtils
 
   def find_root_dir(prefix='svn')
-    tmpdir = ENV['TEMP']
+    tmpdir = TEMP_DIR
     return find_free_dir_under(tmpdir, prefix)
   end
 

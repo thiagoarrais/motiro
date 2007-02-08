@@ -21,21 +21,19 @@ require 'ports/chdir_runner'
 
 class ChdirRunnerTest < Test::Unit::TestCase
 
-  TMP = ENV['TEMP']
-  
   def setup
     @prevdir = Dir.pwd
-    assert_not_equal(TMP, @prevdir)
+    assert_not_equal(TEMP_DIR, @prevdir)
   end
   
   def test_changes_dir_before_command_and_rollsback_after
     FlexMock.use do |runner|
       runner.should_receive(:run).with('my_command', '', {}).once.
-        returns { assert_equal(e(TMP), e(Dir.pwd)) }
+        returns { assert_equal(e(TEMP_DIR), e(Dir.pwd)) }
         
       prevdir = Dir.pwd
       
-      cdrunner = ChdirRunner.new(TMP, runner)
+      cdrunner = ChdirRunner.new(TEMP_DIR, runner)
       cdrunner.run('my_command')
       
       assert_equal(prevdir, Dir.pwd)
@@ -50,7 +48,7 @@ class ChdirRunnerTest < Test::Unit::TestCase
       prevdir = Dir.pwd
       
       begin
-        cdrunner = ChdirRunner.new(TMP, runner)
+        cdrunner = ChdirRunner.new(TEMP_DIR, runner)
         cdrunner.run('my_command')
       rescue
         #just ignore the expected error
@@ -65,7 +63,7 @@ class ChdirRunnerTest < Test::Unit::TestCase
       runner.should_receive(:run).with('my_command', '', {}).once.
         returns('expectedd output')
         
-      cdrunner = ChdirRunner.new(TMP, runner)
+      cdrunner = ChdirRunner.new(TEMP_DIR, runner)
       assert_equal 'expectedd output', cdrunner.run('my_command')
     end
   end

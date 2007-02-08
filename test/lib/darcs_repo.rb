@@ -47,7 +47,7 @@ class DarcsRepository
   end
   
   def record(patch_text)
-    temp_file = ENV['TEMP'] + '/darcs-msg.motiro'
+    temp_file = TEMP_DIR + '/darcs-msg.motiro'
     File.open(temp_file, 'w') do |file|
       file << patch_text
     end

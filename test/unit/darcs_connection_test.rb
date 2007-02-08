@@ -23,7 +23,7 @@ require 'reporters/darcs_connection'
 
 class DarcsConnectionTest  < Test::Unit::TestCase
 
-  TMP = ENV['TEMP'] + '/tmprepo'
+  TMP = TEMP_DIR + '/tmprepo'
   
   def setup
     FileUtils.mkdir_p(TMP)
