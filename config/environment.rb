@@ -7,7 +7,7 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-TEMP_DIR = RAILS_ROOT + '/tmp'
+TEMP_DIR = File.expand_path(RAILS_ROOT + '/tmp')
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
