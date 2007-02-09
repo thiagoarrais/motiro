@@ -54,13 +54,11 @@ class ReportController < ApplicationController
     id = params[:id]
     context = params[:context] || 'full'
     
-    begin
-      @revision_id = id
-      @headline = @chief_editor.headline_with(@name, id)
-      @partial = context == 'partial'
-      
-      render(:action => "#{@name}_detail")
-    rescue
+    @revision_id = id
+    @partial = context == 'partial'
+    @headline = @chief_editor.headline_with(@name, id)
+    
+    unless @headline
       logger.error("Tried to access invalid headline #{id} from #{@name}")
       flash[:notice] = 'The article %s from the %s reporter could not be found' / id / @name.capitalize
       redirect_to(:controller => 'root', :action => 'index')

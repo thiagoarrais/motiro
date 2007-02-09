@@ -33,7 +33,8 @@
 'Add' => 'Adicionar',
 'Older' => 'Antigas',
 
-# Subversion revision details page
+# Source revision details page
+'Revision details' => 'Detalhes de revisão', 
 'Revision %s' => 'Revisão %s',
 'Changes to %s' => 'Alterações em %s',
 'The article %s from the %s reporter could not be found' => 'Não foi possível encontrar o artigo %s do repórter %s',

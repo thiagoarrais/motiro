@@ -70,15 +70,6 @@ class ReportControllerTest < Test::Unit::TestCase
     assert_redirected_to :controller => 'root', :action => 'index'
   end
   
-  def test_renders_with_appropriate_template
-    svn_demo_headline = headlines('svn_demo_headline')
-    reporter_name = svn_demo_headline.reported_by
-    get :show, { :reporter => reporter_name,
-                 :id => svn_demo_headline.rid }
-    
-    assert_template "report/#{reporter_name}_detail"
-  end
-  
   def test_include_headline_date_on_guid
     gita = headlines('gita')
     

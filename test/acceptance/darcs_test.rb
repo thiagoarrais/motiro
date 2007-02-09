@@ -54,6 +54,7 @@ class DarcsAcceptanceTest < SeleniumTestCase
     click "//a[text() = '#{patch_title}']"
     wait_for_page_to_load(2000)
     
+    assert_equal "Revision details - #{patch_title} (Motiro)", get_title
     assert_text_present 'This is a short description of some problems faced'
     assert_text_present 'for future investigation'
   end

@@ -56,7 +56,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     click "//a[text() = \"#{commit_title}\"]"
     wait_for_page_to_load(2000)
     
-    assert_equal get_title, 'Motiro - Subversion - Revision r1'
+    assert_equal "Revision details - #{commit_title} (Motiro)", get_title 
     assert_element_present "//h1[text() = 'Revision r1']"
     assert_text_present commit_title
     assert_text_present 'This project dir will hold everything needed to build and'
@@ -211,14 +211,14 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     open '/report/subversion/r1?locale=en'
     
-    assert_equal 'Motiro - Subversion - Revision r1', get_title
+    assert_equal "Revision details - #{commit_title} (Motiro)", get_title 
     assert_text_present 'Revision r1'
     assert_element_present "//h2[text()='Changes to daughter.txt']"
     
     click "//a[@id='pt-BR']"
     wait_for_page_to_load(1000)
     
-    assert get_title =~ /Motiro - Subversion - Revis/
+    assert get_title =~ /Detalhes de revis.o - #{commit_title} \(Motiro\)/
     # Revisão r1
     assert_text_present 'Revis'
     assert_text_present 'o r1'
