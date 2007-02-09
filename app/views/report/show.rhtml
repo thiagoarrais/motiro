@@ -3,19 +3,23 @@
     <div class="pagetext">
       <h1><%= 'Revision %s' / truncate(@revision_id) -%></h1>
 <% end %>
-<%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
+<% cache(:action => 'show', :action_suffix => 'summary') do %>
+  <%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
           <div id="summary">
             <% @headline.changes.each do |change| %>
                 <%= change.render_summary -%>
                 <br/>
             <% end %>
           </div>
+<% end %>
 <% if !@partial then %>
     </div>
+  <% cache(:action => 'show', :action_suffix => 'changes') do %>
     <div id="changes">
       <% @headline.changes.each do |change| %>
         <%= change.render_diff %>
       <% end %>
     </div>
+  <% end %>
 <% end %>
   
