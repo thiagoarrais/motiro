@@ -73,7 +73,7 @@ class DarcsRepositoryTest < Test::Unit::TestCase
     repo.add_file(file_name, 'unimportant')
     
     assert File.exists?(repo.dir + '/' + file_name)
-    output = `darcs whatsnew --no-summary --repo=#{repo.dir} 2>&1`
+    output = `darcs whatsnew --no-summary --look-for-adds --repo=#{repo.dir} 2>&1`
     assert output.match(/addfile/)
     assert output.match(/#{file_name}/)
     
