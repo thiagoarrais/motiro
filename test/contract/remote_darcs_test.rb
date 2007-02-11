@@ -17,7 +17,6 @@
 
 require 'rubygems'
 require 'fileutils'
-require 'xmlsimple'
 
 $:.push File.expand_path(File.dirname(__FILE__) + '/../lib')
 $:.push File.expand_path(File.dirname(__FILE__) + '/../../app')

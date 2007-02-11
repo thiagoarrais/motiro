@@ -1,9 +1,10 @@
+TEMP_DIR = File.expand_path(File.dirname(__FILE__) + '/../../tmp') unless defined? TEMP_DIR
+
 # Utilities for local repositories
 module RepoUtils
 
   def find_root_dir(prefix='svn')
-    tmpdir = TEMP_DIR
-    return find_free_dir_under(tmpdir, prefix)
+    find_free_dir_under(TEMP_DIR, prefix)
   end
 
   def find_free_dir_under(parent_dir, prefix)
@@ -16,7 +17,7 @@ module RepoUtils
       end
     end
 
-    return parent_dir + '/' + prefix + suffix.to_s
+    parent_dir + '/' + prefix + suffix.to_s
   end
 
 end

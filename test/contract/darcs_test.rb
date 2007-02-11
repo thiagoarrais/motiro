@@ -15,13 +15,11 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'xmlsimple'
-
 $:.push File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require  'darcs_repo'
 
+require 'rexml/document'
 require 'test/unit'
 
 # What we expect from the `darcs' command line client
@@ -38,9 +36,9 @@ class LocalDarcsTest < Test::Unit::TestCase
     previous = Dir.pwd
     Dir.chdir(@repo.url)
     output = `darcs changes --xml`
-    hash = XmlSimple.xml_in(output)['patch'][0]['hash']
+    hash = REXML::Document.new(output).root.elements['patch'].attributes['hash']
     
-    output = `darcs diff -u --match "hash #{hash}"`
+    output = `darcs diff -u --match="hash #{hash}"`
     Dir.chdir(previous)
     assert output.match(/^diff/)
     assert output.match(/^--- old/)

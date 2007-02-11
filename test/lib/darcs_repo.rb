@@ -43,7 +43,7 @@ class DarcsRepository
       file << contents
     end
     
-    run_on_repo { `darcs add #{file_path}` }
+    run_on_repo { `darcs add #{name}` }
   end
   
   def record(patch_text)
@@ -51,7 +51,8 @@ class DarcsRepository
     File.open(temp_file, 'w') do |file|
       file << patch_text
     end
-    run_on_repo { `darcs record -a --logfile=#{temp_file} --author=\"#{self.author}\" 2>&1` }
+
+    run_on_repo { `darcs record -a --logfile="#{temp_file}" --author="#{self.author}" 2>&1` }
   end
   
   def destroy
