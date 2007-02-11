@@ -1,4 +1,6 @@
-<%= content_tag :h1, @page.title %>
-<%= render :partial => 'properties_show' %>
-<%= @renderer.render_html(@page.text) %>
+<% cache(:controller=> 'wiki', :action => 'show', :page => @page.name) do %>
+  <%= content_tag :h1, @page.title %>
+  <%= render :partial => 'properties_show' %>
+  <%= @renderer.render_html(@page.text) %>
+<% end %>
 <%= render :partial => 'editbar' %>

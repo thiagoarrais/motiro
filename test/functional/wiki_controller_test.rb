@@ -123,16 +123,11 @@ class WikiControllerTest < Test::Unit::TestCase
   end
 
   def test_uses_language_provided_by_address
-    FlexMock.use('provider', 'page') do |provider, page|
+    FlexMock.use do |provider|
         provider.should_receive(:find_by_name).
           with_any_args.
-          and_return(page).
+          and_return(mocked_page).
           once
-        page.should_receive(:title).and_return('Mocked page').once
-        page.should_receive(:last_editor).and_return(nil).zero_or_more_times
-        page.should_receive(:modified_at).and_return(nil).zero_or_more_times
-        page.should_receive(:kind).and_return('common').zero_or_more_times
-        page.should_receive(:text).and_return("Você foi enganado!\n\n--- en -------\n\nYou've been mocked!").once
         
         @controller = WikiController.new(provider)
 
@@ -143,17 +138,12 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_renders_page_in_default_language_when_not_specified
-    FlexMock.use('provider', 'page') do |provider, page|
+    FlexMock.use do |provider|
         provider.should_receive(:find_by_name).
           with_any_args.
-          and_return(page).
+          and_return(mocked_page).
           once
-        page.should_receive(:title).and_return('Mocked page').once
-        page.should_receive(:last_editor).and_return(nil).zero_or_more_times
-        page.should_receive(:modified_at).and_return(nil).zero_or_more_times
-        page.should_receive(:kind).and_return('common').zero_or_more_times
-        page.should_receive(:text).and_return("You've been mocked!\n\n--- pt-br ----\n\nVocê foi enganado!").once
-        
+
         @controller = WikiController.new(provider)
 
         get :show, {:page_name => 'TestPage'}
@@ -262,6 +252,12 @@ private
 
   def log_as(user_name)
     @request.session[:user] = users(user_name)
+  end
+  
+  def mocked_page
+    Page.new(:name => 'MockedPage', :title => 'Mocked page',
+             :last_editor => nil, :modified_at => nil, :kind => 'common',
+             :text => "You've been mocked!\n\n--- pt-br ----\n\nVocê foi enganado!")
   end
   
 end
