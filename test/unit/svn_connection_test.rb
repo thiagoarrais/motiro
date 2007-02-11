@@ -39,7 +39,32 @@ class SubversionConnectionTest < Test::Unit::TestCase
       connection.log
     end
   end
-  
+
+  def test_issues_commands_with_credentials
+    FlexMock.use do |runner|
+      settings = StubConnectionSettingsProvider.new(
+                   :repo => 'http://rapidsvn.tigris.org/svn/rapidsvn/trunk',
+                   :repo_user => 'guest',
+                   :repo_password => 'with spaces')
+      
+      runner.should_receive(:run).once.
+        with("svn --username='guest' --password='with spaces' log http://rapidsvn.tigris.org/svn/rapidsvn/trunk -v --limit=5",
+             "t\n", 'LC_MESSAGES' => 'C')
+      runner.should_receive(:run).once.
+        with("svn --username='guest' --password='with spaces' info -r18 --xml http://rapidsvn.tigris.org/svn/rapidsvn/trunk/trunk/file_a.txt",
+             "t\n", 'LC_MESSAGES' => 'C')
+      runner.should_receive(:run).once.
+        with("svn --username='guest' --password='with spaces' diff http://rapidsvn.tigris.org/svn/rapidsvn/trunk -r17:18",
+             "t\n", 'LC_MESSAGES' => 'C')
+      
+      connection = SubversionConnection.new(settings, runner)
+      
+      connection.log
+      connection.info('/trunk/file_a.txt', 18)
+      connection.diff(18)
+    end
+  end
+
   def test_limit_query_size
     FlexMock.use do |runner|
       settings = StubConnectionSettingsProvider.new :package_size => 3

@@ -23,6 +23,14 @@ subversion:
 # Tells the reporter where to find your project's repository
 # Default: https://svn.sourceforge.net/svnroot/motiro
   repo: https://svn.sourceforge.net/svnroot/motiro
+
+# subversion/{user,password}
+#
+# Credentials to use for authentication with Subversion server. Uncomment and set
+# them only if your server requires authorization for read access. Motiro's
+# doesn't so they are commented out here. 
+#   user: harry
+#   password: harryssecret
   
 # Darcs specific settings
 # Uncomment the lines below to activate darcs reporting

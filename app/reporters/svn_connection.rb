@@ -27,7 +27,7 @@ class SubversionConnection
   end
   
   def log(options=nil)
-    command = "svn log #{@settings.repo_url} -v"
+    command = "log #{@settings.repo_url} -v"
 
     if options.nil?
       command += " --limit=#{@settings.package_size}"
@@ -35,24 +35,25 @@ class SubversionConnection
       command += " -r#{options.to_s}"
     end
     
-    @runner.run(command)
+    svn(command)
   end
   
   def diff(rev_id)
-    cached_result = @diff_cache[rev_id]
-    
-    if cached_result.nil?
-      command = "svn diff #{@settings.repo_url} -r#{rev_id.to_i - 1}:#{rev_id}"
-      
-      cached_result = @runner.run command
-      @diff_cache[rev_id] = cached_result
-    end
-    
-    return cached_result
+    @diff_cache[rev_id] ||= svn("diff #{@settings.repo_url} -r#{rev_id.to_i - 1}:#{rev_id}")
   end
   
   def info(path, rev_id)
-    @runner.run("svn info -r#{rev_id} --xml #{@settings.repo_url}#{path}")
+    svn("info -r#{rev_id} --xml #{@settings.repo_url}#{path}")
+  end
+  
+private
+
+  def svn(command)
+    credentials = @settings.repo_user ?
+                    "--username='#{@settings.repo_user}' --password='#{@settings.repo_password}' " :
+                    ''
+    
+    @runner.run("svn " + credentials + command)
   end
   
 end                                                           
