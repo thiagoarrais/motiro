@@ -59,6 +59,20 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'MySecondPageName', page.name
   end
   
+  def test_converts_utf8_decorated_vowels_when_generating_name
+    assert_equal 'MinhaPagina', Page.new(:title => 'Minha página').name
+    assert_equal 'AaaaaEeeeIiiiiYyyOooooUuuuu',
+                 Page.new(:title => 'ãàáâä èéêë ĩìíîï ÿýý õòóôö ũùúûü').name
+    assert_equal 'AaaaaEeeeIiiiiYyOooooUuuuu',
+                 Page.new(:title => 'ÃÀÁÂÄ ÈÉÊË ĨÌÍÎÏ ÝŸ ÕÒÓÔÖ ŨÙÚÛÜ').name
+  end
+  
+  def test_converts_utf8_decorated_consonants_when_generating_name
+    assert_equal 'ElNino', Page.new(:title => 'El Niño').name
+    assert_equal 'NnCcSrlzNnCcSrlz',
+                 Page.new(:title => 'ñń ćç śŕĺź ÑŃ ÇĆ ŚŔĹŹ').name
+  end
+
   def test_resolve_clashing_page_names
     fst_page = Page.new(:title => 'My first Motiro page', :text => '')
     assert_equal 'MyFirstMotiroPage', fst_page.name

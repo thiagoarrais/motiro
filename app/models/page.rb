@@ -69,7 +69,7 @@ class Page < ActiveRecord::Base
 private
   
   def name_from_title
-    sequence(title.downcase.gsub(/ /, '_').camelize, 'name')
+    sequence(clean(title).downcase.gsub(/ /, '_').camelize, 'name')
   end
   
   def title_from_kind
@@ -98,6 +98,13 @@ private
   
   def my_parser
     @parser ||= WikiParser.new
+  end
+  
+private
+
+  def clean(text)
+    text.tr('ãàáâäÃÀÁÂÄèéêëÈÉÊËĩìíîïĨÌÍÎÏÿýÝŸõòóôöÕÒÓÔÖũùúûüŨÙÚÛÜñńÑŃćçÇĆśŕĺźŚŔĹŹ',
+            'aaaaaAAAAAeeeeEEEEiiiiiIIIIIyyYYoooooOOOOOuuuuuUUUUUnnNNccCCsrlzSRLZ')
   end
   
 end
