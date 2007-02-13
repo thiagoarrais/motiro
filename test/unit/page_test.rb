@@ -73,6 +73,13 @@ class PageTest < Test::Unit::TestCase
                  Page.new(:title => 'ñń ćç śŕĺź ÑŃ ÇĆ ŚŔĹŹ').name
   end
 
+  def test_drops_non_alpha_numeric_characters_when_generating_name
+    assert_equal 'ThisHasLotsOfPunctuation',
+                 Page.new(:title => 'This, has. lots! of? punctuation').name
+    assert_equal 'TitleWithSomeStrangeCharacters',
+                 Page.new(:title => 'Title%with$some&strange*characters').name
+  end
+
   def test_resolve_clashing_page_names
     fst_page = Page.new(:title => 'My first Motiro page', :text => '')
     assert_equal 'MyFirstMotiroPage', fst_page.name

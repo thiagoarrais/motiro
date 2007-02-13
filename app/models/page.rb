@@ -69,7 +69,7 @@ class Page < ActiveRecord::Base
 private
   
   def name_from_title
-    sequence(clean(title).downcase.gsub(/ /, '_').camelize, 'name')
+    sequence(drop_non_alpha(clean(title)).downcase.gsub(/ /, '_').camelize, 'name')
   end
   
   def title_from_kind
@@ -105,6 +105,10 @@ private
   def clean(text)
     text.tr('ãàáâäÃÀÁÂÄèéêëÈÉÊËĩìíîïĨÌÍÎÏÿýÝŸõòóôöÕÒÓÔÖũùúûüŨÙÚÛÜñńÑŃćçÇĆśŕĺźŚŔĹŹ',
             'aaaaaAAAAAeeeeEEEEiiiiiIIIIIyyYYoooooOOOOOuuuuuUUUUUnnNNccCCsrlzSRLZ')
+  end
+  
+  def drop_non_alpha(text)
+    text.gsub(%r{[^a-zA-Z0-9]}, ' ').gsub(%r{\s+}, ' ')
   end
   
 end
