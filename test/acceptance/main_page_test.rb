@@ -22,7 +22,7 @@ class MainPageAcceptanceTest < SeleniumTestCase
   def test_report_html
     open '/report/subversion?locale=en'
     assert_text_present 'Latest news from Subversion'
-    assert_element_present "//a[@href = '/feed/subversion?locale=en']/img[starts-with(@src, '/images/rss.png')]"
+    assert_element_present "//a[@href = '/feed/subversion/en']/img[starts-with(@src, '/images/rss.png')]"
   end
   
   def test_subversion_on_main

@@ -33,9 +33,10 @@ ActionController::Routing::Routes.draw do |map|
               :controller => 'report', :action => 'show',
               :requirements => { :id => /.*/ }
 
-  map.connect 'feed/:reporter',
+  map.connect 'feed/:reporter/:locale',
               :controller => 'report',
-              :action => 'rss'
+              :action => 'rss',
+              :defaults => locale_defaults
               
   map.connect 'wiki/new/:kind/:locale',
               :controller => 'wiki',

@@ -42,6 +42,12 @@ class ReportControllerTest < Test::Unit::TestCase
     assert_equal expected.size, assigns(:headlines).size
   end
   
+  def test_routes_localized_feeds
+    assert_routing('/feed/subversion/en-gb',
+                   :controller => 'report', :action => 'rss',
+                   :reporter => 'subversion', :locale => 'en-gb' )
+  end
+  
   def test_fetches_individual_headline_based_on_rid
     svn_demo_headline = headlines('svn_demo_headline')
     get :show, { :reporter => svn_demo_headline.reported_by,
