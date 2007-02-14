@@ -42,7 +42,7 @@ To get your own Motiro portal up and running, you will need the following:
 8.  Open4 0.9.1 (available as Ruby Gem: open4)
 9.  POpen4 0.1.1 (available as Ruby Gem: POpen4)
 10. SQLite3-Ruby 1.2.1 or later (available as Ruby Gem: sqlite3-ruby)
-11. FlexMock 0.4.5 or later if you want to run the tests (highly recommended)
+11. FlexMock 0.5 or later if you want to run the tests (highly recommended)
     (available as Ruby Gem: flexmock)
    
 If you are running Motiro with an Windows platform, you'll also need:
