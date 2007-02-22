@@ -8,28 +8,3 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
-
-require(File.join(File.dirname(__FILE__), 'app', 'core', 'version'))
-
-task :dist_tarball => [:test_units, :test_functional] do
-    parentdir = File.expand_path(File.dirname(__FILE__) + '/..')
-    `tar cvzf motiro-#{MOTIRO_VERSION}.tar.gz  .`
-end
-
-namespace :test do
-  desc "Run the tests under test/contract"
-  Rake::TestTask.new(:contracts) do |t|
-    t.libs << "test"
-    t.pattern = 'test/contract/**/*_test.rb'
-    t.verbose = true
-  end
-
-  desc "Run the meta-tests under test/meta"
-  Rake::TestTask.new(:meta) do |t|
-    t.libs << "test"
-    t.pattern = 'test/meta/**/*_test.rb'
-    t.verbose = true
-  end
-
-end
-
