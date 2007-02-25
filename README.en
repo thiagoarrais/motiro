@@ -1,5 +1,5 @@
 Motiro - A project tracking tool
-Copyright (C) 2006  Thiago Arrais
+Copyright (C) 2006, 2007  Thiago Arrais
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ To get your own Motiro portal up and running, you will need the following:
 4.  Darcs client (darcs) if you are planning to use the Darcs reporter
 5.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
 6.  Daemons 1.0.4 (available as Ruby Gem: daemons)
-7.  Platform 0.4.0 (available as Ruby Gem: platform)
+7.  Platform 0.4.0 (available as Ruby Gem: Platform)
 8.  Open4 0.9.1 (available as Ruby Gem: open4)
 9.  POpen4 0.1.1 (available as Ruby Gem: POpen4)
 10. SQLite3-Ruby 1.2.1 or later (available as Ruby Gem: sqlite3-ruby)

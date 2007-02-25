@@ -1,5 +1,5 @@
 Motiro - Uma ferramenta para acompanhamento de projetos
-Copyright (C) 2006  Thiago Arrais
+Copyright (C) 2006, 2007  Thiago Arrais
 
 Este programa é um software de livre distribuição, que pode ser
 copiado e distribuído sob os termos da Licença Pública Geral  GNU,
@@ -39,7 +39,7 @@ Para ter seu portal Motiro rodando, você vai precisar de:
 4.  Cliente Darcs (darcs) se quiser usar o repórter Darcs
 5.  MediaCloth 0.0.2 ou superior (disponível como Ruby Gem: mediacloth)
 6.  Daemons 1.0.4 (disponível como Ruby Gem: daemons)
-7.  Platform 0.4.0 (disponível como Ruby Gem: platform)
+7.  Platform 0.4.0 (disponível como Ruby Gem: Platform)
 8.  Open4 0.9.1 (disponível como Ruby Gem: open4)
 9.  POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
 10. SQLite3-Ruby 1.2.1 ou superior (disponível como Ruby Gem: sqlite3-ruby)
