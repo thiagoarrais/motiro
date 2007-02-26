@@ -1,0 +1,504 @@
+= Flex Mock -- Making Mock Easy
+
+FlexMock is a simple, but flexible, mock object library for Ruby unit
+testing.
+
+Version :: 0.5.0
+
+= Links
+
+<b>Documents</b>   :: http://onestepback.org/software/flexmock
+<b>RubyGems</b>    :: Install with: <b>gem install flexmock</b>
+<b>Download</b>    :: Download from RubyForge at http://rubyforge.org/frs/?group_id=170
+
+== Installation
+
+You can install FlexMock with the following command.
+
+ $ gem install flexmock
+
+== Simple Example
+
+We have a data acquisition class (+TemperatureSampler+) that reads a
+temperature sensor and returns an average of 3 readings.  We don't
+have a _real_ temperature to use for testing, so we mock one up with a
+mock object that responds to the +read_temperature+ message.
+
+Here's the complete example:
+
+  require 'test/unit'
+  require 'flexmock'
+
+  class TemperatureSampler
+    def initialize(sensor)
+      @sensor = sensor
+    end
+
+    def average_temp
+      total = (0...3).collect { @sensor.read_temperature }.inject { |i, s| i + s }
+      total / 3.0
+    end
+  end
+
+  class TestTemperatureSampler < Test::Unit::TestCase
+    include FlexMock::TestCase
+
+    def test_temperature_sampler
+      sensor = flexmock("temp")
+      sensor.should_receive(:read_temperature).times(3).and_return(10, 12, 14)
+
+      sampler = TemperatureSampler.new(sensor)
+      assert_equal 12, sampler.average_temp
+
+      # NOTE:
+      # all mocks created by the flexmock method will be
+      # automatically verified during the test teardown.
+    end
+  end
+
+== Quick Reference
+
+=== Expectation Declarators
+
+Expectation declarators are used to specify the expectations placed
+upon received method calls.  The following declarators may be used to
+create the proper expectations on a FlexMock object.
+
+* <b><tt>should_receive(<em>symbol</em>)</tt></b> -- Declares that a
+  message named <em>symbol</em> will be sent to the mock object.
+  Further refinements on this expected message (called an expectation)
+  may be chained to the +should_receive+ call.
+
+* <b><tt>should_expect</tt></b> -- Creates a mock recording object
+  that will translate received method calls into mock expectations.
+  The recorder is passed to a block supplied with the +should_expect+
+  method.  See examples below.
+
+* <b><tt>with(<em>arglist</em>)</tt></b> -- Declares that this
+  expectation matches messages that match the given argument list.
+  The <tt>===</tt> operator is used on a argument by argument basis to
+  determine matching.  This means that most literal values match
+  literally, class values match any instance of a class and regular
+  expression match any matching string (after a +to_s+ conversion).
+  See argument validators (below) for details on argument validation
+  options.
+
+* <b><tt>with_any_args</tt></b> -- Declares that this expectation
+  matches the message with any argument (default)
+
+* <b><tt>with_no_args</tt></b> -- Declares that this expectation
+  matches messages with no arguments
+
+* <b><tt>and_return(<em>value, ...</em>)</tt></b> -- Declares 
+  that the message will return the given value.
+  * If a single value is given, it will be returned for all matching calls.
+  * If multiple values are given, they will be returned in sequence
+    for each successive matching calls.  The last value will be 
+    repeatably returned if the number of matching calls exceeds the
+    number of values.
+  * If a block is given, its yielded value will be returned. (the 
+    block will receive all the arguments given to the mocked method)
+  * The default return value is nil. 
+
+* <b><tt>returns(<em>value, ...</em>)</tt></b> -- Alias for
+  <tt>and_return</tt>.
+
+* <b><tt>returns { |args| code ... }</tt></b> -- Declares that the
+  message will return whatever the block calculates.  The actual
+  arguments in the message will be passed to the block.
+
+* <b><tt>zero_or_more_times</tt></b> -- Declares that the message is
+  may be sent zero or more times (default, equivalent to
+  <tt>at_least.never</tt>).
+
+* <b><tt>once</tt></b> -- Declares that the message is only sent once.
+  <tt>at_least</tt> / <tt>at_most</tt> modifiers are allowed.
+
+* <b><tt>twice</tt></b> -- Declares that the message is only sent
+  twice.  <tt>at_least</tt> / <tt>at_most</tt> modifiers are allowed.
+
+* <b><tt>never</tt></b> -- Declares that the message is never sent.
+  <tt>at_least</tt> / <tt>at_most</tt> modifiers are allowed.
+
+* <b><tt>times(<em>n</em>)</tt></b> -- Declares that the message is
+  sent <em>n</em> times.  <tt>at_least</tt> / <tt>at_most</tt>
+  modifiers are allowed.
+
+* <b><tt>at_least</tt></b> -- Modifies the immediately following
+  message count declarator so that it means the message is sent at
+  least that number of times.  E.g. <tt>at_least.once</tt> means the
+  message is sent at least once during the test, but may be sent more
+  often.  Both <tt>at_least</tt> and <tt>at_most</tt> may be specified
+  on the same expectation.
+
+* <b><tt>at_most</tt></b> -- Similar to <tt>at_least</tt>, but puts an
+  upper limit on the number of messages.  Both <tt>at_least</tt> and
+  <tt>at_most</tt> may be specified on the same expectation.
+
+* <b><tt>ordered</tt></b> -- Declares that the message is ordered and
+  is expected to be received in a certain position in a sequence of
+  messages.  The message should arrive after and previously declared
+  ordered messages and prior to any following declared ordered
+  messages.  Unordered messages are ignored when considering the
+  message order.
+
+* <b><tt>ordered(<em>group</em>)</tt></b> -- Declare that the given
+  method belongs to an order group.  Methods within the group may be
+  received in any order.  Ordered messages outside the group must be
+  received either before or after the grouped messages.
+
+  For example, in the following, messages +flip+ and +flop+ may be
+  received in any order (because they are in the same group), but must
+  occur strictly after +start+ but before +end+.  The message
+  +any_time+ may be received at any time because it is not ordered.
+    
+        m = FlexMock.new
+        m.should_receive(:any_time)
+        m.should_receive(:start).ordered
+        m.should_receive(:flip).ordered(:flip_flop_group)
+        m.should_receive(:flop).ordered(:flip_flop_group)
+        m.should_receive(:end).ordered
+    
+=== Argument Validation
+
+The values passed to the +with+ declarator determine the criteria for
+matching expectations.  The first expectation found that matches the
+arguments in a mock method call will be used to validate that mock
+method call.
+
+The following rules are used for argument matching:
+
+* A +with+ parameter that is a class object will match any actual
+  argument that is an instance of that class.
+
+  Examples:
+
+     with(Integer)     will match    f(3)
+
+* A regular expression will match any actual argument that matches the
+  regular expression.  Non-string actual arguments are converted to
+  strings via +to_s+ before applying the regular expression.
+
+  Examples:
+
+    with(/^src/)      will match    f("src_object")
+    with(/^3\./)      will match    f(3.1415972)
+
+* Most other objects will match based on equal values.
+
+  Examples:
+
+      with(3)         will match    f(3)
+      with("hello")   will match    f("hello")
+  
+* If you wish to override the default matching behavior and force
+  matching by equality, you can use the FlexMock.eq convenience
+  method.  This is mostly used when you wish to match class objects,
+  since the default matching behavior for class objects is to match
+  instances, not themselves.
+
+  Examples:
+
+      with(eq(Integer))             will match       f(Integer)
+      with(eq(Integer))             will NOT match   f(3)
+
+  Note: If you do not use the FlexMock::TestCase Test Unit integration
+  module, or the FlexMock::ArgumentTypes module, you will have to
+  fully qualify the +eq+ method:
+
+      with(FlexMock.eq(Integer))    will match       f(Integer)
+      with(FlexMock.eq(Integer))    will NOT match   f(3)
+
+* If you wish to match _anything_, then use the <tt>FlexMock.any</tt>
+  method in the with argument list.
+
+  Examples (assumes either the FlexMock::TestCase or
+  FlexMock::ArgumentTypes mix-ins has been included):
+
+      with(any)             will match       f(3)
+      with(any)             will match       f("hello")
+      with(any)             will match       f(Integer)
+      with(any)             will match       f(nil)
+
+* If you wish to specify a complex matching criteria, use the
+  <tt>FlexMock.on(&block)</tt> with the logic contained in the block.
+
+  Examples (assumes FlexMock::ArguementTypes has been included):
+
+      with(on { |arg| (arg % 2) == 0 } )
+
+  will match any even integer.
+
+=== Stubbing Behavior in Existing Objects
+
+Sometimes it is useful to mock the behavior of one or two methods in an
+existing object without changing the behavior of the rest of the object. By
+using the +flexstub+ method, tests can now do exactly that.
+
+For example, suppose that a Dog object uses a Woofer object to
+bark. The code for Dog looks like this (we will leave the code for
+Woofer to your imagination):
+
+  class Dog
+    def initialize
+      @woofer = Woofer.new
+    end
+    def bark
+      @woofer.woof
+    end
+  end
+
+Now we want to test Dog, but using a real Woofer object in the test is
+a real pain (why? ... well because Woofer plays a sound file of a dog
+barking, and that's really annoying during testing).
+
+So, how can we create a Dog object with mocked Woofer?  All we need to
+do is stub out the +new+ method of the Woofer class object and tell to
+to return anything we want.
+
+Here's the test code:
+
+  class TestDogBarking < Test::Unit::TestCase
+    include FlexMock::TestCase
+
+    # Setup the tests by stubbing the +new+ method of 
+    # Woofer and return a mock woofer.
+    def setup
+      flexstub(Woofer).should_receive(:new).and_return {
+        flexmock("woofer") do |mock|
+          mock.should_receive(:woof).and_return(:grrrr)
+        end
+      }
+    end
+
+    def test_bark
+      assert_equal :grrrr, @dog.bark
+    end
+  end
+
+The nice thing about stub is that after the test is over, the stubbed
+out methods are returned to their normal state.  Outside the test
+everything is back to normal.
+
+The stub technique was inspired by the +Stuba+ library in the +Mocha+
+project.
+
+=== Stubbing Behavior in All Instances Created by a Class Object
+
+Sometimes you want to stub all instances created by a class object.
+For example, you might wish to work with Connection objects that have
+their "send" method stubbed out.  However, the code under test creates
+connections dynamically, so you can't stub them before the test is
+run.
+
+One approach is to stub the "new" method on the class object.  The
+stubbed implementation of "new" would create a mock object to be
+returned as the value of "new".  But since your stubbed implementation
+of "new" has no access to the original behavior of new, you can't
+really create stubs.
+
+The <tt>any_instance</tt> method allows you to easily add stub
+expectations to objects created by new.  Here's the Connection example
+using <tt>any_instance</tt>:
+
+      def test_connections
+        flexstub(Connection).any_instance do |new_con|
+          new_con.should_receive(:send).and_return(0)
+        end
+        connection = Connection.new
+        connection.send    # This calls the stubbed version of send.
+      end
+
+Note that FlexMock adds the stub expectations after the original +new+
+method has completed.  If the original version of +new+ yields the
+newly created instance to a block, that block will get an unstubbed
+version of the object.
+
+=== Class Interception
+
+<b>NOTE:</b> :: 
+  <em>Class Interception is now deprecated. It only worked in a
+  small number of cases. See the "Mocking Existing Objects"
+  example above for a much better approach to the same problem. 
+  The Class Interception API will probably disappear in a future 
+  version of FlexMock.</em>
+
+FlexMock now supports simple class interception. For the duration of a test, a
+mock class take the place of a named class inside the class to be tested.
+
+Example:
+
+Suppose we are testing class Foo, and Foo uses Bar internally.  We
+would like for Bar.new to return a mock object during the test.
+
+   def test_foo_with_an_intercepted_bar
+     my_mock = flexmock("my_mock").should_receive(....).mock
+     intercept(Bar).in(Foo).with(my_mock.mock_factory)
+
+     bar = Bar.new
+     bar.do_something
+   end
+
+== Examples
+
+=== Expect multiple queries and a single update
+
+The queries my have any arguments.  The update must have a specific
+argument of 5.
+
+   class TestDb
+     include FlexMock::TestCase         
+
+     def test_db
+       db = flexmock('db')
+       db.should_receive(:query).and_return([1,2,3])
+       db.should_receive(:update).with(5).and_return(nil).once
+       # test code here
+     end
+   end
+
+=== Expect all queries before any updates
+
+(This and following examples assume that the FlexMock::TestCase module
+is being used.)
+
+All the query message must occur before any of the update messages.
+
+   def test_query_and_update
+     db = flexmock('db')
+     db.should_receive(:query).and_return([1,2,3]).ordered
+     db.should_recieve(:update).and_return(nil).ordered
+     # test code here
+   end
+
+=== Expect several queries with different parameters
+
+The queries should happen after startup but before finish.  The
+queries themselves may happen in any order (because they are in the
+same order group).  The first two queries should happen exactly once,
+but the third query (which matches any query call with a four
+character parameter) may be called multiple times (but at least once).
+Startup and finish must also happen exactly once.
+
+Also note that we use the +with+ method to match different arguement
+values to figure out what value to return.
+
+   def test_ordered_queries
+     db = flexmock('db')
+     db.should_receive(:startup).once.ordered
+     db.should_receive(:query).with("CPWR").and_return(12.3).
+       once.ordered(:queries)
+     db.should_receive(:query).with("MSFT").and_return(10.0).
+       once.ordered(:queries)
+     db.should_receive(:query).with(/^....$/).and_return(3.3).
+       at_least.once.ordered(:queries)
+     db.should_receive(:finish).once.ordered
+     # test code here
+   end
+
+=== Same as above, but using the Record Mode interface
+
+The record mode interface offers much the same features as the
++should_receive+ interface introduced so far, but it allows the
+messages to be sent directly to a recording object rather than be
+specified indirectly using a symbol. 
+
+   def test_ordered_queries_in_record_mode
+     db = flexmock('db')
+     db.should_expect do |rec|
+       rec.startup.once.ordered
+       rec.query("CPWR") { 12.3 }.once.ordered(:queries)
+       rec.query("MSFT") { 10.0 }.once.ordered(:queries)
+       rec.query("^....$/) { 3.3 }.at_least.once.ordered(:queries)
+       rec.finish)once.ordered
+     end
+     # test code here using +db+.
+   end
+
+=== Using Record Mode to record a known, good algorithm for testing
+
+Record mode is nice when you have a known, good algorithm that can use
+a recording mock object to record the steps.  Then you compare the
+execution of a new algorithm to behavior of the old using the recorded
+expectations in the mock.  For this you probably want to put the
+recorder in _strict_ mode so that the recorded expectations use exact
+matching on argument lists, and strict ordering of the method calls.
+
+<b>Note:</b> This is most useful when there are no queries on the mock
+objects, because the query responses cannot be programmed into the
+recorder object.
+
+  def test_build_xml
+    builder = flexmock('builder')
+    builder.should_expect do |rec|
+      rec.should_be_strict
+      known_good_way_to_build_xml(rec)  # record the messages
+    end
+    new_way_to_build_xml(builder)       # compare to new way
+  end
+
+=== Expect multiple calls, returning a different value each time
+
+Sometimes you need to return different values for each call to a
+mocked method.  This example shifts values out of a list for this
+effect.
+
+   def test_multiple_gets
+     file = flexmock('file')
+     file.should_receive(:gets).with_no_args.
+        and_return("line 1\n", "line 2\n")
+     # test code here
+   end
+
+=== Ignore uninteresting messages
+
+Generally you need to mock only those methods that return an
+interesting value or wish to assert were sent in a particular manner.
+Use the +should_ignore_missing+ method to turn on missing method
+ignoring.
+
+   def test_an_important_message
+     m = flexmock('m')
+     m.should_recieve(:an_important_message).and_return(1).once
+     m.should_ignore_missing
+     # test code here
+   end
+
+<b>Note:</b> The original +mock_ignore_missing+ is now an alias for
++should_ignore_missing+.
+
+== Classic +mock_handle+ Interface
+
+FlexMock still supports the simple +mock_handle+ interface used in the
+original version of FlexMock.  +mock_handle+ is equivalent to the
+following:
+
+  def mock_handle(sym, expected_count=nil, &block)
+    self.should_receive(sym).times(expected_count).returns(&block)
+  end
+
+== Other Mock Objects
+
+ruby-mock      :: http://www.b13media.com/dev/ruby/mock.html
+test-unit-mock :: http://www.deveiate.org/code/Test-Unit-Mock.shtml
+mocha/stubba   :: http://mocha.rubyforge.org/
+== License
+
+Copyright 2003, 2004, 2005, 2006 by Jim Weirich (jim@weirichhouse.org).
+All rights reserved.
+
+Permission is granted for use, copying, modification, distribution,
+and distribution of modified versions of this work as long as the
+above copyright notice is included.
+
+= Other stuff
+
+Author::   Jim Weirich <jim@weirichhouse.org>
+Requires:: Ruby 1.8.x or later
+
+== Warranty
+
+This software is provided "as is" and without any express or
+implied warranties, including, without limitation, the implied
+warranties of merchantibility and fitness for a particular
+purpose.
