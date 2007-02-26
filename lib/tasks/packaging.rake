@@ -21,8 +21,6 @@ require 'rake/gempackagetask'
 require File.expand_path(File.dirname(__FILE__) + '/../../app/core/version')
 
 PKG_NAME = 'motiro'
-PKG_FILE_NAME = "#{PKG_NAME}-#{MOTIRO_VERSION}"
-RELEASE_NAME = "#{PKG_NAME}-#{MOTIRO_VERSION}"
 
 spec = Gem::Specification.new do |s|
   s.name = PKG_NAME
@@ -33,7 +31,7 @@ spec = Gem::Specification.new do |s|
   s.files = Dir.glob('**/*', File::FNM_DOTMATCH).reject do |f| 
      [ /\.$/, /database\.sqlite/, /^(tmp|log)/, /(^|\/)\./,
        /\.log$/, /^pkg/, /\.svn/, /^vendor\/rails/, 
-       /\~$/, /motiro(db|test)\.sqlite/,
+       /\~$/, /motiro(db|test)\.sqlite$/,
        /^db\/(development_structure\.sql|schema.rb)/,
        /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
   end
@@ -43,6 +41,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://www.motiro.org"  
   s.rubyforge_project = "motiro"
   s.platform = Gem::Platform::RUBY 
+  s.executables = ['motiro']
   
   s.add_dependency("rails", "= 1.2.2")
   s.add_dependency("mediacloth", ">= 0.0.2")
@@ -52,6 +51,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency("POpen4", ">= 0.1.1")
   s.add_dependency("sqlite3-ruby", ">= 1.2.1")
   s.add_dependency("flexmock", ">= 0.5")
+  s.add_dependency("rails-app-installer", ">= 0.2.0")
 end
 
 Rake::GemPackageTask.new(spec) do |p|
