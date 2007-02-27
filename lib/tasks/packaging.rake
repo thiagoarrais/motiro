@@ -17,45 +17,50 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rake/gempackagetask'
 require File.expand_path(File.dirname(__FILE__) + '/../../app/core/version')
 
-PKG_NAME = 'motiro'
+unless MOTIRO_VERSION.include? 'dev'
 
-spec = Gem::Specification.new do |s|
-  s.name = PKG_NAME
-  s.version = MOTIRO_VERSION
-  s.summary = "Simple project tracking tool"
-  s.has_rdoc = false
-  
-  s.files = Dir.glob('**/*', File::FNM_DOTMATCH).reject do |f| 
-     [ /\.$/, /database\.sqlite/, /^(tmp|log)/, /(^|\/)\./,
-       /\.log$/, /^pkg/, /\.svn/, /^vendor\/rails/, 
-       /\~$/, /motiro(db|test)\.sqlite$/,
-       /^db\/(development_structure\.sql|schema.rb)/,
-       /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
+  require 'rake/gempackagetask'
+
+  PKG_NAME = 'motiro'
+
+  spec = Gem::Specification.new do |s|
+    s.name = PKG_NAME
+    s.version = MOTIRO_VERSION
+    s.summary = "Simple project tracking tool"
+    s.has_rdoc = false
+
+    s.files = Dir.glob('**/*', File::FNM_DOTMATCH).reject do |f| 
+      [ /\.$/, /database\.sqlite/, /^(tmp|log)/, /(^|\/)\./,
+        /\.log$/, /^pkg/, /\.svn/, /^vendor\/rails/, 
+        /\~$/, /motiro(db|test)\.sqlite$/,
+        /^db\/(development_structure\.sql|schema.rb)/,
+        /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
+    end
+    s.require_path = '.'
+    s.author = "Thiago Arrais"
+    s.email = "thiago.arrais@gmail.com"
+    s.homepage = "http://www.motiro.org"  
+    s.rubyforge_project = "motiro"
+    s.platform = Gem::Platform::RUBY 
+    s.executables = ['motiro']
+
+    s.add_dependency("rails", "= 1.2.2")
+    s.add_dependency("mediacloth", ">= 0.0.2")
+    s.add_dependency("daemons", ">= 1.0.4")
+    s.add_dependency("Platform", ">= 0.4.0")
+    s.add_dependency("open4", ">= 0.9.1")
+    s.add_dependency("POpen4", ">= 0.1.1")
+    s.add_dependency("sqlite3-ruby", ">= 1.2.1")
+    s.add_dependency("flexmock", ">= 0.5")
+    s.add_dependency("rails-app-installer", ">= 0.2.0")
   end
-  s.require_path = '.'
-  s.author = "Thiago Arrais"
-  s.email = "thiago.arrais@gmail.com"
-  s.homepage = "http://www.motiro.org"  
-  s.rubyforge_project = "motiro"
-  s.platform = Gem::Platform::RUBY 
-  s.executables = ['motiro']
-  
-  s.add_dependency("rails", "= 1.2.2")
-  s.add_dependency("mediacloth", ">= 0.0.2")
-  s.add_dependency("daemons", ">= 1.0.4")
-  s.add_dependency("Platform", ">= 0.4.0")
-  s.add_dependency("open4", ">= 0.9.1")
-  s.add_dependency("POpen4", ">= 0.1.1")
-  s.add_dependency("sqlite3-ruby", ">= 1.2.1")
-  s.add_dependency("flexmock", ">= 0.5")
-  s.add_dependency("rails-app-installer", ">= 0.2.0")
-end
 
-Rake::GemPackageTask.new(spec) do |p|
-  p.gem_spec = spec
-  p.need_tar = true
-  p.need_zip = true
+  Rake::GemPackageTask.new(spec) do |p|
+    p.gem_spec = spec
+    p.need_tar = true
+    p.need_zip = true
+  end
+
 end
