@@ -33,11 +33,12 @@ unless MOTIRO_VERSION.include? 'dev'
 
     s.files = Dir.glob('**/*', File::FNM_DOTMATCH).reject do |f| 
       [ /\.$/, /database\.sqlite/, /^(tmp|log)/, /(^|\/)\./,
-        /\.log$/, /^pkg/, /\.svn/, /^vendor\/rails/, 
+        /\.log$/, /^pkg/, /\.svn/, /^vendor\//, 
         /\~$/, /motiro(db|test)\.sqlite$/,
         /^db\/(development_structure\.sql|schema.rb)/,
         /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
+    s.files += Dir.glob('vendor/plugins/**/*')
     s.require_path = '.'
     s.author = "Thiago Arrais"
     s.email = "thiago.arrais@gmail.com"
