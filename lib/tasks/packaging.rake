@@ -39,7 +39,7 @@ unless MOTIRO_VERSION.include? 'dev'
         %r{public/javascript($|/)},
         /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
-    s.files += Dir.glob('vendor/plugins/**/*')
+    s.files += Dir.glob('vendor/plugins/**/*') << 'log/.keepdir'
     s.require_path = '.'
     s.author = "Thiago Arrais"
     s.email = "thiago.arrais@gmail.com"
