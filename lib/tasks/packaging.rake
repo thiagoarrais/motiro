@@ -36,6 +36,7 @@ unless MOTIRO_VERSION.include? 'dev'
         /\.log$/, /^pkg/, /\.svn/, /^vendor\//, 
         /\~$/, /motiro(db|test)\.sqlite$/,
         /^db\/(development_structure\.sql|schema.rb)/,
+        %r{public/javascript($|/)},
         /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
     s.files += Dir.glob('vendor/plugins/**/*')
@@ -58,10 +59,34 @@ unless MOTIRO_VERSION.include? 'dev'
     s.add_dependency("rails-app-installer", ">= 0.2.0")
   end
 
-  Rake::GemPackageTask.new(spec) do |p|
+  packaging = Rake::GemPackageTask.new(spec) do |p|
     p.gem_spec = spec
-    p.need_tar = true
-    p.need_zip = true
+  end
+  
+  task :tarball => packaging.package_dir_path do
+    files = Dir.glob('vendor/**/*').reject do |f|
+      f =~ %r{^vendor/plugins}
+    end
+	
+    files.each do |fn|
+      f = File.join(packaging.package_dir_path, fn)
+      fdir = File.dirname(f)
+      mkdir_p(fdir) if !File.exist?(fdir)
+      if File.directory?(fn)
+        mkdir_p(f)
+      else
+        rm_f f
+        safe_ln(fn, f)
+      end
+    end
+	
+    safe_ln(File.join(packaging.package_dir_path, 'db/motirodb.sqlite.initial'),
+            File.join(packaging.package_dir_path, 'db/motirodb.sqlite'))
+    rm_f(File.join(packaging.package_dir_path, 'db/motirodb.sqlite.initial'))
+    
+    chdir(packaging.package_dir) do
+	  sh %{tar cvzf #{packaging.package_name}.tar.gz #{packaging.package_name}}
+	end
   end
 
 end
