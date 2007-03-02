@@ -35,11 +35,21 @@ class Headline < ActiveRecord::Base
          :limit => num)
   end
   
+  def self.latest_filled_headline_rid_for(reporter)
+    hls = find(:all, :conditions => ["reported_by = ?", reporter],
+                     :order => 'happened_at DESC')
+    hls.each do |hl|
+      return hl.rid if hl.filled?
+    end
+    
+    nil
+  end
+  
   def self.find_with_reporter_and_rid(reporter_name, rid)
     find(:first,
          :conditions => ["reported_by = ? and rid = ?",
     reporter_name, rid])        
-  end    
+  end
   
   def happened_at=(date_components)
     if date_components.is_a? Time
@@ -70,8 +80,7 @@ class Headline < ActiveRecord::Base
   end
   
   def cached?
-    cached_lines = Headline.find(:all,
-                                 :conditions => similar_to_self)
+    cached_lines = Headline.find(:all, :conditions => similar_to_self)
     
     return false if cached_lines.empty?
     

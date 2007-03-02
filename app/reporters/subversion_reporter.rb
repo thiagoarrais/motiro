@@ -35,8 +35,9 @@ class SubversionReporter < MotiroReporter
     @connection = connection
   end
   
-  def latest_headlines
-    build_headlines_from(@connection.log)
+  def latest_headlines(from_rid=nil)
+    from_rid ||= 'r0'
+    build_headlines_from(@connection.log(:history_from => from_rid))
   end
   
   def headlines
@@ -46,7 +47,7 @@ class SubversionReporter < MotiroReporter
   def headline(rid)
     revision_id = rid.match(/^r(.+)/)[1]
     
-    output = @connection.log(revision_id)
+    output = @connection.log(:only => revision_id)
     
     result_headline, remain = build_headline_from(output)
     

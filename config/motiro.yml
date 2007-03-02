@@ -1,7 +1,7 @@
 # package_size
 #
-# Tells the reporter how many headlines to produce by run
-# It is also used as the number of latest headlines to be shown
+# How many headlines should be shown for each reporter?
+#
 # Default: 5
 package_size: 5
 
@@ -13,7 +13,9 @@ package_size: 5
 #
 # Set to 0 to send them out everytime a request arrives and to not record
 # anything locally (useful for testing and debugging)
-update_interval: 10
+#
+# Default: 40
+update_interval: 40
 
 # Subversion specific settings
 subversion:

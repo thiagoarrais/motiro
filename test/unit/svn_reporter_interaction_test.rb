@@ -1,5 +1,3 @@
-#  tick_daemon.rb based on the Rails' Daemon Generator by Kyle Maxwell
-#
 #  Motiro - A project tracking tool
 #  Copyright (C) 2006-2007  Thiago Arrais
 #  
@@ -17,25 +15,24 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require File.dirname(__FILE__) + "/../config/environment"
+require File.dirname(__FILE__) + '/../test_helper'
 
-require 'core/reporter_driver'
-require 'core/settings'
+require 'reporters/subversion_reporter'
 
-interval = SettingsProvider.new.update_interval
-driver = ReporterDriver.new
-log = File.new(
-  File.expand_path(File.dirname(__FILE__) + '/../log/ticker.log'),
-  File::CREAT|File::APPEND|File::WRONLY)
+class SubversionReporterInteractionTest < Test::Unit::TestCase
 
-if interval > 0
-  log.puts %{Reporters looking for new headlines every #{interval} minutes}
-  loop do
-    log.puts %{Sendind reporters out at #{Time.now.to_s}}
-    log.flush
-    begin; driver.tick; rescue; end
-    sleep(60 * interval)
+  def test_asks_for_specific_revision
+    FlexMock.use do |conn|
+      conn.should_receive(:log).with(:only => '113').returns('').once
+      SubversionReporter.new(conn).headline('r113')
+    end
   end
-end
+  
+  def test_asks_for_non_cached_revisions_only
+    FlexMock.use do |conn|
+      conn.should_receive(:log).with(:history_from => 'r206').returns('').once
+      SubversionReporter.new(conn).latest_headlines('r206')
+    end
+  end
 
-log.close
+end

@@ -26,13 +26,16 @@ class SubversionConnection
     @diff_cache = Hash.new
   end
   
-  def log(options=nil)
+  def log(options={:history_from => 'r0'})
     command = "log #{@settings.repo_url} -v"
 
-    if options.nil?
-      command += " --limit=#{@settings.package_size}"
-    elsif :all != options
-      command += " -r#{options.to_s}"
+    if options.respond_to? :[]
+      if options[:history_from]
+        r = options[:history_from]
+        command += " -rHEAD:#{r[1..r.length].succ} --limit=#{@settings.package_size}"
+      elsif options[:only]
+        command += " -r#{options[:only].to_s}"
+      end
     end
     
     svn(command)

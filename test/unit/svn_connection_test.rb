@@ -31,7 +31,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
                    :repo => 'svn://svn.berlios.de/motiro')
       
       runner.should_receive(:run).once.
-        with('svn log svn://svn.berlios.de/motiro -v --limit=5',
+        with('svn log svn://svn.berlios.de/motiro -v -rHEAD:1 --limit=5',
              "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
@@ -48,7 +48,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
                    :repo_password => 'with spaces')
       
       runner.should_receive(:run).once.
-        with("svn --username='guest' --password='with spaces' log http://rapidsvn.tigris.org/svn/rapidsvn/trunk -v --limit=5",
+        with("svn --username='guest' --password='with spaces' log http://rapidsvn.tigris.org/svn/rapidsvn/trunk -v -rHEAD:1 --limit=5",
              "t\n", 'LC_MESSAGES' => 'C')
       runner.should_receive(:run).once.
         with("svn --username='guest' --password='with spaces' info -r18 --xml http://rapidsvn.tigris.org/svn/rapidsvn/trunk/trunk/file_a.txt",
@@ -70,7 +70,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new :package_size => 3
       
       runner.should_receive(:run).once.
-        with('svn log http://svn.fake.domain.org/fake_repo -v --limit=3',
+        with('svn log http://svn.fake.domain.org/fake_repo -v -rHEAD:1 --limit=3',
              "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(settings, runner)
@@ -89,8 +89,8 @@ class SubversionConnectionTest < Test::Unit::TestCase
       
       connection = SubversionConnection.new(settings, runner)
       
-      connection.log(7)
-      connection.log('7')
+      connection.log(:only => 7)
+      connection.log(:only => '7')
     end
   end
   
@@ -140,7 +140,7 @@ class SubversionConnectionTest < Test::Unit::TestCase
   def test_uses_english_locale_and_temporarily_accepts_ssl_certificate
     FlexMock.use do |runner|
       runner.should_receive(:run).once.
-        with('svn log http://svn.fake.domain.org/fake_repo -v --limit=5',
+        with('svn log http://svn.fake.domain.org/fake_repo -v -rHEAD:1 --limit=5',
              "t\n", 'LC_MESSAGES' => 'C')
       
       connection = SubversionConnection.new(StubConnectionSettingsProvider.new,
@@ -161,6 +161,20 @@ class SubversionConnectionTest < Test::Unit::TestCase
       connection = SubversionConnection.new(settings, runner)
       
       connection.log(:all)
+    end
+  end
+  
+  def test_log_history_from_some_revision
+    FlexMock.use do |runner|
+      settings = StubConnectionSettingsProvider.new
+
+      runner.should_receive(:run).once.
+        with('svn log http://svn.fake.domain.org/fake_repo -v -rHEAD:13 --limit=5',
+             "t\n", 'LC_MESSAGES' => 'C')
+
+      connection = SubversionConnection.new(settings, runner)
+
+      connection.log(:history_from => 'r12')
     end
   end
   

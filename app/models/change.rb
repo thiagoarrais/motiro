@@ -76,8 +76,7 @@ class Change < ActiveRecord::Base
   end
   
   def filled?
-    return !self.resource_kind.nil? &&
-     ('dir' == self.resource_kind || !self.diff.nil?)
+    !self.resource_kind.nil? && ('dir' == self.resource_kind || !self.diff.nil?)
   end
   
   def use_differ(differ)

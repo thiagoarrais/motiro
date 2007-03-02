@@ -18,3 +18,8 @@ svn_demo_add_tags_change:
   summary: A /tags
   resource_kind: dir
   
+dia_em_que_a_terra_parou_change:
+  id: 5
+  headline_id: 2
+  summary: M /trunk/my_small_file.txt
+  resource_kind: file

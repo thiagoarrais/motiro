@@ -231,6 +231,15 @@ class HeadlineTest < Test::Unit::TestCase
     assert_equal(1, hls.size)
   end
   
+  def test_retrieves_latest_filled_headline
+    hl = headlines(:svn_demo_headline)
+    assert_equal hl.rid, Headline.latest_filled_headline_rid_for(hl.reported_by)
+  end
+  
+  def test_returns_nil_for_latest_rid_when_none_found
+    assert_nil Headline.latest_filled_headline_rid_for('not_a_reporter')
+  end
+  
 private
     
   def create_headline_with_changes(*changes)
