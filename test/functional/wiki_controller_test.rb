@@ -247,6 +247,14 @@ class WikiControllerTest < Test::Unit::TestCase
     
     assert_no_tag :content => /This event was planned for/
   end
+  
+  def test_shows_breadcrumbs_trail_for_common_wiki_pages
+    test_page = pages('test_page')
+    get :show, :page_name => test_page.name
+    
+    assert_xml_element "//div[@id = 'crumbs' and contains(text(), 'You are here')]/a[@href = '/' and text() = 'Home']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{test_page.name}' and text() = '#{test_page.title}']"
+  end
 
 private
 

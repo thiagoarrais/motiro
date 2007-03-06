@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   include LoginSystem
   include ApplicationHelper
   
-  before_filter :set_locale, :setup_renderer, :check_desired_login_available
+  before_filter :set_locale, :setup_renderer, :check_desired_login_available, :drop_top_crumbs
   
   def set_locale
     default_locale = 'en-US'
@@ -53,6 +53,10 @@ class ApplicationController < ActionController::Base
       @login_not_available = ! User.find_by_login(desired_login).nil?
     end
     true
+  end
+  
+  def drop_top_crumbs
+    @crumbs = [{ 'Home'.t => {:controller => 'root', :action => 'index'} }]
   end
   
 private

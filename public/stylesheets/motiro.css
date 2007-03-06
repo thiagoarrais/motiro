@@ -52,6 +52,13 @@ div.channel div.pagetext, div.pagetext div.pagetext {
     border: 0;
 }
 
+div#crumbs {
+    border-bottom: solid #d0d0d0 1px;
+    margin-bottom: -1em;
+    padding: .2em 0 .2em 0;
+    color: #808080
+}
+
 #mainpage {
     margin: 4px 332px 4px 0;
 }

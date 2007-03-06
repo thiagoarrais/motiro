@@ -20,7 +20,7 @@ class WikiController < EditionController
   layout :choose_layout
 
   before_filter :login_required, :except => [:show, :last]
-  before_filter :fetch_page
+  before_filter :fetch_page, :drop_crumbs
   before_filter :check_edit_access, :only => [:edit, :save]
   
   cache_sweeper :page_sweeper, :only =>  [:edit, :save]
@@ -44,6 +44,11 @@ class WikiController < EditionController
   def fetch_page
     type = params[:page] ? params[:page][:type] : nil
     @page = find_page(params[:page_name], type)
+  end
+  
+  def drop_crumbs
+    @crumbs <<{ @page.title => {:controller => 'wiki', :action => 'show',
+                                :page_name => @page.name} }   
   end
   
   def check_edit_access

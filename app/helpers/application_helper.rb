@@ -38,10 +38,23 @@ module ApplicationHelper
   
   def pagetext(title, &block)
     content = capture(&block)
-    concat(tag(:div, {:class => 'pagetext'}, true), block.binding)
-    concat(content_tag(:h1, title), block.binding)
-    concat(content, block.binding)
-    concat('</div>', block.binding)
+    b = Builder::XmlMarkup.new
+    xml = b.div(:class => 'pagetext') do
+      b.div(:id => 'crumbs') do
+         b.text!('You are here: '.t)
+         last = @crumbs.delete_at(@crumbs.length - 1)
+         @crumbs.each do |h|
+           b.a(h.keys.first,
+               :href => url_for(h.values.first.update(:only_path => true)))
+           b << ' > '
+         end
+         b.a(last.keys.first,
+             :href => url_for(last.values.first.update(:only_path => true)))
+      end
+      b.h1(title)
+      b << content
+    end
+    concat(xml, block.binding)
   end
 
 end

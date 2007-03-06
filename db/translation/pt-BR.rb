@@ -32,6 +32,7 @@
 'version' => 'versão',
 'Add' => 'Adicionar',
 'Older' => 'Antigas',
+'You are here: ' => 'Você está aqui: ',
 
 # Source revision details page
 'Revision details' => 'Detalhes de revisão', 
