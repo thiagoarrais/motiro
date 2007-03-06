@@ -1,6 +1,5 @@
 <% @title = "#{'Revision details'.t} - #{@headline.title(Translator.for(@locale))} (Motiro)" %>
-<% pagetext do %>
-      <h1><%= 'Revision %s' / truncate(@revision_id) -%></h1>
+<% pagetext('Revision %s' / truncate(@revision_id)) do %>
   <% cache(:action => 'show', :suffix => 'summary', :locale => @locale) do %>
     <%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
           <div id="summary">

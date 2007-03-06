@@ -26,8 +26,8 @@ class WikiController < EditionController
   cache_sweeper :page_sweeper, :only =>  [:edit, :save]
 
   def choose_layout
-    return 'wiki_show' unless params[:context] == 'partial' || params[:action] == 'properties_edit'
-    return nil
+    return if params[:context] == 'partial' || params[:action] == 'properties_edit'
+    return 'application'
   end
     
   def protect?(action)

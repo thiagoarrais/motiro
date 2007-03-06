@@ -45,6 +45,13 @@ div.pagetext {
     border: 1px solid #679cd2;
 }
 
+div.channel div.pagetext, div.pagetext div.pagetext {
+    background-color: #FFF;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 #mainpage {
     margin: 4px 332px 4px 0;
 }

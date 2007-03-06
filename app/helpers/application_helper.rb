@@ -36,9 +36,10 @@ module ApplicationHelper
                                                  :action => script_name) })
   end
   
-  def pagetext(&block)
+  def pagetext(title, &block)
     content = capture(&block)
     concat(tag(:div, {:class => 'pagetext'}, true), block.binding)
+    concat(content_tag(:h1, title), block.binding)
     concat(content, block.binding)
     concat('</div>', block.binding)
   end
