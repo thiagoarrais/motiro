@@ -47,6 +47,11 @@ class WikiController < EditionController
   end
   
   def drop_crumbs
+    unless 'common' == @page.kind 
+      @crumbs <<{ @page.kind.pluralize.capitalize.t  =>
+                  {:controller => 'report', :action => 'older',
+                   :reporter => @page.kind.pluralize}}
+    end
     @crumbs <<{ @page.title => {:controller => 'wiki', :action => 'show',
                                 :page_name => @page.name} }   
   end

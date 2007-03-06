@@ -255,6 +255,15 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//div[@id = 'crumbs' and contains(text(), 'You are here')]/a[@href = '/' and text() = 'Home']"
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{test_page.name}' and text() = '#{test_page.title}']"
   end
+  
+  def test_shows_breadcrumbs_trail_for_special_wiki_pages
+    release_event = pages('release_event')
+    get :show, :page_name => release_event.name
+    
+    assert_xml_element "//div[@id = 'crumbs' and contains(text(), 'You are here')]/a[@href = '/' and text() = 'Home']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/older/events' and text() = 'Events']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{release_event.name}' and text() = '#{release_event.title}']"
+  end
 
 private
 

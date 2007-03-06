@@ -32,7 +32,12 @@
 'version' => 'versão',
 'Add' => 'Adicionar',
 'Older' => 'Antigas',
+
+# Breadcrumbs for revision and wiki pages
 'You are here: ' => 'Você está aqui: ',
+'Home' => 'Início',
+'Features' => 'Sugestões',
+'Events' => 'Eventos',
 
 # Source revision details page
 'Revision details' => 'Detalhes de revisão', 
