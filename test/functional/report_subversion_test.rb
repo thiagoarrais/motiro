@@ -46,6 +46,19 @@ class ReportSubversionTest < Test::Unit::TestCase
     assert_xml_element("//rss/channel/item/description[contains(text(), 'This revision creates')]")
     assert_xml_element("//rss/channel/item/*[local-name() = 'creator' and text() = '#{@repo.username}']")
   end
+  
+  def test_do_not_show_page_text_div_on_feed
+    commit_title = 'Created my project'
+    commit_msg = "#{commit_title}\n" +
+                     "\n" +
+                     "This revision creates a brand new directory where we \n" +
+                     "will keep our project files"
+    
+    @repo.mkdir('myproject', commit_msg)
+    
+    get :rss, :reporter => 'subversion'
+    assert_no_xml_element("//description[contains(text(), 'pagetext')]")
+  end
 
   def test_translates_rss_feed
     english_msg = "I changed something in the source code repository"

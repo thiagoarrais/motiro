@@ -41,7 +41,7 @@ class ReportController < ApplicationController
   end
   
   def determine_layout
-    return 'application' if params[:id] and params[:context] != 'partial' or
+    return 'application' if params[:id] or
                             params[:action] == 'older'
     return nil
   end
@@ -52,10 +52,8 @@ class ReportController < ApplicationController
   
   def show
     id = params[:id]
-    context = params[:context] || 'full'
     
     @revision_id = id
-    @partial = context == 'partial'
     @headline = @chief_editor.headline_with(@name, id)
     
     unless @headline

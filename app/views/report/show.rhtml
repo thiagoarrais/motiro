@@ -1,8 +1,6 @@
 <% @title = "#{'Revision details'.t} - #{@headline.title(Translator.for(@locale))} (Motiro)" %>
-<% if ! @partial then %>
     <div class="pagetext">
       <h1><%= 'Revision %s' / truncate(@revision_id) -%></h1>
-<% end %>
 <% cache(:action => 'show', :suffix => 'summary', :locale => @locale) do %>
   <%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
           <div id="summary">
@@ -12,7 +10,6 @@
             <% end %>
           </div>
 <% end %>
-<% if !@partial then %>
     </div>
   <% cache(:action => 'show', :suffix => 'changes', :locale => @locale) do %>
     <div id="changes">
@@ -21,5 +18,4 @@
       <% end %>
     </div>
   <% end %>
-<% end %>
   
