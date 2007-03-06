@@ -35,6 +35,13 @@ module ApplicationHelper
                                 "src" => url_for(:controller => 'javascript',
                                                  :action => script_name) })
   end
+  
+  def pagetext(&block)
+    content = capture(&block)
+    concat(tag(:div, {:class => 'pagetext'}, true), block.binding)
+    concat(content, block.binding)
+    concat('</div>', block.binding)
+  end
 
 end
 

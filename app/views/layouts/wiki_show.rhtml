@@ -1,5 +1,5 @@
 <%= render :partial => 'layouts/top' %>
-  <div class="pagetext">
+<% pagetext do %>
     <%= @content_for_layout %>
-  </div>
+<% end %>
 <%= render :partial => 'layouts/bottom' %>
