@@ -1,26 +1,26 @@
 <% @title = @reporter.channel_title %>
 <% pagetext(@title) do %>
-          <table class="oldernews">
-            <thead>
-             <tr>
-                <th class="date"><%= 'Date'.t -%></th>
-                <th class="relative"/>
-                <th><%= 'Author'.t -%></th>
-                <th><%= 'Title'.t -%></th>
-              </tr>
-            </thead>
-            <tbody>
-            <% i = 0 %>
-            <% @headlines.each do |headline| %>
-              <% i += 1 %>
-              <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
-                <td class="date"><%= headline.happened_at-%></td>
-                <td class="relative"><%= headline.happened_at.relative_to_now %></td>
-                <td><%= headline.author %></td>
-                <td><%= link_to( h(headline.title(Translator.for(@locale))),
-                                 @reporter.params_for(headline.rid) )%></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+  <table class="oldernews">
+    <thead>
+     <tr>
+        <th class="date"><%= 'Date'.t -%></th>
+        <th class="relative"/>
+        <th><%= 'Author'.t -%></th>
+        <th><%= 'Title'.t -%></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% i = 0 %>
+    <% @headlines.each do |headline| %>
+      <% i += 1 %>
+      <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
+        <td class="date"><%= headline.happened_at-%></td>
+        <td class="relative"><%= headline.happened_at.relative_to_now %></td>
+        <td><%= headline.author %></td>
+        <td><%= link_to( h(headline.title(Translator.for(@locale))),
+                         @reporter.params_for(headline.rid) )%></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>
