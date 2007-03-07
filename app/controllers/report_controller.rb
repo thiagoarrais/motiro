@@ -36,6 +36,8 @@ class ReportController < ApplicationController
     end
   end
   
+  before_filter :drop_crumbs
+  
   def initialize(chief_editor=ChiefEditor.new)
     @chief_editor = chief_editor
   end
@@ -44,6 +46,12 @@ class ReportController < ApplicationController
     return 'application' if params[:id] or
                             params[:action] == 'older'
     return nil
+  end
+  
+  def drop_crumbs
+    @crumbs << { @reporter.channel_title =>
+                 {:controller => 'report', :action => 'older',
+                  :reporter => @name}}
   end
   
   def older
@@ -60,7 +68,12 @@ class ReportController < ApplicationController
       logger.error("Tried to access invalid headline #{id} from #{@name}")
       flash[:notice] = 'The article %s from the %s reporter could not be found' / id / @name.capitalize
       redirect_to(:controller => 'root', :action => 'index')
+      return
     end            
+
+    @crumbs << { @headline.title(Translator.for(@locale)) =>
+                 {:controller => 'report', :action => 'show',
+                  :reporter => @name, :id => @headline.rid}}
   end
   
 end

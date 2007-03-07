@@ -59,7 +59,7 @@ class ReportControllerTest < Test::Unit::TestCase
   def test_calling_show_with_an_id_delegates_to_chief_editor
     FlexMock.use do |editor|
       editor.should_receive(:reporter_with).with('subversion').
-        and_return(nil)
+        and_return(SubversionReporter.new)
       editor.should_receive(:headline_with).with('subversion', '3').
         returns(headlines('svn_demo_headline')).
         once
@@ -87,6 +87,16 @@ class ReportControllerTest < Test::Unit::TestCase
   #TODO what happens if there are no cached headlines?
   #TODO more headlines registered than the package size
   
+  def test_shows_breadcrumbs_trail_for_special_wiki_pages
+    svn_demo = headlines('svn_demo_headline')
+    get :show, :reporter => svn_demo.reported_by, :id => svn_demo.rid
+    
+    assert_xml_element "//div[@id = 'crumbs' and contains(text(), 'You are here')]/a[@href = '/' and text() = 'Home']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/older/subversion' and text() = 'Latest news from Subversion']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/subversion/#{svn_demo.rid}' and text() = '#{svn_demo.title}']"
+  end
+
+
 private
 
   def assert_template(expected)
