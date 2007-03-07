@@ -1,13 +1,13 @@
 <% @title = "#{'Revision details'.t} - #{@headline.title(Translator.for(@locale))} (Motiro)" %>
-<% pagetext('Revision %s' / truncate(@revision_id)) do %>
-  <% cache(:action => 'show', :suffix => 'summary', :locale => @locale) do %>
+<% cache(:action => 'show', :suffix => 'summary', :locale => @locale) do %>
+  <% pagetext('Revision %s' / truncate(@revision_id)) do %>
     <%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
-          <div id="summary">
-            <% @headline.changes.each do |change| %>
-                <%= change.render_summary -%>
-                <br/>
-            <% end %>
-          </div>
+    <div id="summary">
+      <% @headline.changes.each do |change| %>
+        <%= change.render_summary -%>
+        <br/>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
 <% cache(:action => 'show', :suffix => 'changes', :locale => @locale) do %>
