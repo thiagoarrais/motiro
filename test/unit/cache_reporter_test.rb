@@ -44,8 +44,9 @@ class CacheReporterTest < Test::Unit::TestCase
       settings = StubConnectionSettingsProvider.new(:package_size => 6)
       underlying_reporter = {:name => 'mail_list'}
       
-      mock_headline_class.should_receive(:find_all).
-        with(['reported_by = ?', 'mail_list'], 'happened_at DESC').
+      mock_headline_class.should_receive(:find).
+        with(:all, :conditions => ['reported_by = ?', 'mail_list'],
+                   :order => 'happened_at DESC').
         once
 
       reporter = CacheReporter.new(underlying_reporter, settings, mock_headline_class)

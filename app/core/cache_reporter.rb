@@ -38,7 +38,8 @@ class CacheReporter < MotiroReporter
   end
   
   def headlines
-    @headlines_source.find_all(['reported_by = ?', name], 'happened_at DESC')
+    @headlines_source.find(:all, :conditions => ['reported_by = ?', name],
+                                 :order => 'happened_at DESC')
   end
   
   def headline(rid)

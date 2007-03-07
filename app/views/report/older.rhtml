@@ -1,6 +1,5 @@
 <% @title = @reporter.channel_title %>
-      <div id="revisions" class="window">
-        <div class="inner">
+<% pagetext(@title) do %>
           <table class="oldernews">
             <thead>
              <tr>
@@ -24,5 +23,4 @@
             <% end %>
             </tbody>
           </table>
-        </div>
-      </div>
+<% end %>
