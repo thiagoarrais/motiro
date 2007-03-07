@@ -50,7 +50,7 @@ module ApplicationHelper
          end
          b.a(last.keys.first,
              :href => url_for(last.values.first.update(:only_path => true)))
-      end
+      end unless params[:context] == 'partial'
       b.h1(title)
       b << content
     end

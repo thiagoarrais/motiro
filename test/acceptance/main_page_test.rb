@@ -82,4 +82,11 @@ class MainPageAcceptanceTest < SeleniumTestCase
     assert_text_present 'Planned features'
   end
   
+  def test_do_not_display_breadcrumbs_on_main_page
+    open('/')
+    
+    assert_text_not_present 'You are here'
+    assert_text_not_present 'Home'
+  end
+  
 end
