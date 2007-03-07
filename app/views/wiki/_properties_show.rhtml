@@ -2,5 +2,4 @@
   <%= image_tag 'calendar.png' -%>
   <%= 'This event was planned for'.t -%>
   <%= @page.happens_at.localize('%d %B %Y (%A)') -%>
-  (<%= @page.happens_at.relative_to_now -%>)
 <% end %>
