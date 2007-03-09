@@ -28,14 +28,9 @@ class AccountController < ApplicationController
   def login
     case request.method
       when :post
-      if session[:user] = User.authenticate( params[:user][:login],
+      unless session[:user] = User.authenticate( params[:user][:login],
                                              params[:user][:password] )
-
-        flash['notice']  = "Login successful"
-      else
         flash[:login_failure]  = true
-
-        @login = params[:user_login]
       end
       redirect_back_or_default params[:return_to]
     end
