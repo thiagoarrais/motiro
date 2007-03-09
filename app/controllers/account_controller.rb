@@ -32,12 +32,12 @@ class AccountController < ApplicationController
                                              params[:user][:password] )
 
         flash['notice']  = "Login successful"
-        redirect_back_or_default params[:return_to]
       else
-        flash.now['notice']  = "Login unsuccessful"
+        flash[:login_failure]  = true
 
         @login = params[:user_login]
       end
+      redirect_back_or_default params[:return_to]
     end
   end
   

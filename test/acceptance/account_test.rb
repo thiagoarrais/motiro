@@ -15,6 +15,9 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+require File.dirname(__FILE__) + '/../test_helper'
+require 'acceptance_test_case'
+
 class AccountAcceptanceTest < AcceptanceTestCase
   
   fixtures :users
@@ -152,4 +155,32 @@ class AccountAcceptanceTest < AcceptanceTestCase
     assert_location "exact:http://localhost:3000/en"
   end
   
+  def test_login_failure_shows_error_on_main_page
+    check_if_login_failure_shows_error_on_page('/', 'Latest news from Subversion')
+  end
+  
+  def test_login_failure_shows_error_on_other_pages
+    rid = headlines('gita').rid
+    check_if_login_failure_shows_error_on_page(
+      "/report/subversion/#{rid}",
+      "Revision #{rid}")
+  end
+  
+private
+
+  def check_if_login_failure_shows_error_on_page(addr, text)
+    open(addr)
+
+    assert_text_not_present('Incorrect username or password')
+
+    type('user_login', 'failure')
+    type('user_password', 'invalid')
+    click('login')
+    
+    wait_for_page_to_load(1500)
+    
+    assert_text_present(text)
+    assert_text_present('Incorrect username or password')
+  end
+
 end

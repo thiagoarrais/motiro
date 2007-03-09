@@ -29,6 +29,11 @@
       <input type='hidden' name='return_to' value="<%= request.env['REQUEST_URI'] -%>"/>
       <input class='button' type="submit" name="login" value="Login &#187;" />
     </div>
+    <% if flash[:login_failure] %>
+      <%= content_tag(:span,
+                      'Incorrect username or password. Please try again.'.t,
+                      :class => 'warning') -%>
+    <% end %>
     <%= observe_field 'user_login',
                       :function => "if (document.getElementById('chk_new_user').checked) { new Ajax.Updater('authentication_errors', '#{url_for :controller => 'account', :action => 'availability'}', {asynchronous:true, evalScripts:true, parameters:'desired_login=' + value})}",
                       :with => 'desired_login',
