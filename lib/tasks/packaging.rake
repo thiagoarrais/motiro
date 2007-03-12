@@ -39,7 +39,8 @@ unless MOTIRO_VERSION.include? 'dev'
         %r{public/javascript($|/)},
         /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
-    s.files += Dir.glob('vendor/plugins/**/*') << 'log/.keepdir'
+    s.files += Dir.glob('vendor/plugins/**/*') <<
+               'log/.keepdir' << 'vendor/motiro-installer.rb'
     s.require_path = '.'
     s.author = "Thiago Arrais"
     s.email = "thiago.arrais@gmail.com"
@@ -56,7 +57,7 @@ unless MOTIRO_VERSION.include? 'dev'
     s.add_dependency("POpen4", ">= 0.1.1")
     s.add_dependency("sqlite3-ruby", ">= 1.2.1")
     s.add_dependency("flexmock", ">= 0.5")
-    s.add_dependency("rails-app-installer", ">= 0.2.0")
+    s.add_dependency("rails-app-installer", "= 0.2.0")
   end
 
   packaging = Rake::GemPackageTask.new(spec) do |p|
