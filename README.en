@@ -21,169 +21,148 @@ Motiro is a portal for keeping track of progress on software projects. It
 allows developers to stop at a single place to get the information they need
 about their project's situation.
 
-The instructions here are intended for getting you started with Motiro and
-running a first test to see what you can possibly get out of it. For real-life
-production use, you will probably need a different setup. Please contact us
-at the English development mailing list for further help. Subscription is free
-and available at http://lists.sourceforge.net/mailman/listinfo/motiro-devel-en
+The instructions here are intended to get you started with Motiro and running a
+first test to see what you can possibly get out of it. For real-life production
+use, you will probably need a different setup. Please contact us at the English
+development mailing list for further help. Subscription is free and available at
+http://lists.sourceforge.net/mailman/listinfo/motiro-devel-en
 
 GET IT RUNNING
 =====
 
-To get your own Motiro portal up and running, you will need the following:
+Motiro is developed and tested more often on some flavours of Linux -- specially
+Debian, Ubuntu, Fedora and Gentoo. These probably should be the best available
+systems to host Motiro, but it has been tested and seems to work pretty well on
+top of Microsoft Windows or Mac OS X.
 
-1.  SQLite 3.3.8 or later
-2.  Ruby 1.8.2 or later
-3.  Subversion client (svn) if you are planning to use the Subversion reporter
-4.  Darcs client (darcs) if you are planning to use the Darcs reporter
-5.  MediaCloth 0.0.2 or later (available as Ruby Gem: mediacloth)
-6.  Daemons 1.0.4 (available as Ruby Gem: daemons)
-7.  Platform 0.4.0 (available as Ruby Gem: Platform)
-8.  Open4 0.9.1 (available as Ruby Gem: open4)
-9.  POpen4 0.1.1 (available as Ruby Gem: POpen4)
-10. SQLite3-Ruby 1.2.1 or later (available as Ruby Gem: sqlite3-ruby)
-11. FlexMock 0.5 or later if you want to run the tests (highly recommended)
-    (available as Ruby Gem: flexmock)
-   
-If you are running Motiro with an Windows platform, you'll also need:
+If you manage to test Motiro on another platform or happen to find any problem
+with those listed above, we we'll be happy to receive your bug report.
 
-12. Win32-process 0.5.2 or later (available as Ruby Gem: win32-process)
-13. Windows-pr 0.6.3 or later (available as Ruby Gem: windows-pr)
-   
-What you need to do is:
-
-1. Download and unpack the Motiro distribution files
+1. Strawberries or chocolate?
 ------
 
-   You probably already did it to read this. Just choose any place inside your
-   system and unpack the contents of the archive, or get the latest source from
-   our Subversion repository at https://svn.sourceforge.net/svnroot/motiro But
-   keep in mind that the repository is a 'live' version, updated with our latest
-   revisions and may present errors at some times.
+Motiro is available for download in two main flavours: Ruby Gem and the good old
+tarball (tar.gz). Each one of the solutions works as well as the other one and
+both are very easy to install, but ease is a very subjective matter that depends
+on what you prefer and know. You probably already have downloaded the tarball to
+read this, but you may want to use the Gem version anyway.
 
-2. Setup the database
+The Gem will solve most dependencies automatically and will probably demand less
+effort to set up, but will install some libraries into your system that may be a
+little harder to remove in the future (nothing impossible, though). If you like
+to have greater control over what is inside your system, maybe you will want to
+use the tarball. It has few dependencies and everything is placed inside a
+single directory instead of spread across your system.
+
+2. Requirements
 ------
 
-   What you'll need to get your databases ready is setting up their schemas
-   correctly. Fortunately, Motiro comes prepackaged with migration scripts for
-   this purpose. You will need to ask rake to run them:
+Motiro is written in Ruby and, in order to run it, you will need the Ruby
+interpreter 1.8.2 or later. Development is mainly based on versions 1.8.2 and
+1.8.4, therefore those should be the most stable ones, but any later one should
+work.
 
-   % rake db:migrate
+For the default installation, in addition to the Ruby interpreter, you will also
+need other freely available software. The programs labelled (tar) will only need
+to be installed manually if you choose to install from the tarball. When using
+the Gem installation these dependencies will be solved automatically for you,
+but those with no label need to be installed by everyone.
 
-   And that's it. Now, if you'd like, you can run the test suite to test your
-   installation. This is highly recommended practice because it verifies if
-   your system is capable of running the program. Maybe, if you're feeling
-   confident enough (I never am), you'd want to skip this part and jump
-   directly to step 4 to run the web server and see the whole thing running.
+  * SQLite 3
+  * Subversion command line client (svn) (only if you will be using a Subversion
+    repository)
+  * Darcs command line client (darcs) (only if you will be using a Darcs
+    repository)
+  * (tar) POpen4 0.1.1 (available as Ruby Gem: POpen4)
+  * (tar) SQLite3-Ruby 1.2.1 or later (available as Ruby Gem: sqlite3-ruby)
 
-3. Run the test suite
+After making sure your system has all those requirements, you may proceed with
+the installation. Choose your installation method and proceed to the appropriate
+section.
+
+3. Installing the Gem
 ------
 
-   Motiro comes with a built-in test suite. This is the full test suite we use
-   during development to make sure we don't slip out of the track. To run it,
-   just cd to where you unpacked Motiro and say:
+In order to install the Gem and have your own local Motiro, you will only need
+two commands:
 
-   ----------------------------------------------------------------------------
-   % rake test:units
-   (in /home/thiago/devel/motiro)
-   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
-   Started
-   ........
-   Finished in 0.088411 seconds.
+$ gem install motiro --include-dependencies
+$ motiro install <somewhere in your system>
 
-   8 tests, 26 assertions, 0 failures, 0 errors
-   
-   % rake test:functionals
-   (in /home/thiago/devel/motiro)
-   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.0/lib/rake/rake_test_loader
-   Started
-   .
-   Finished in 0.056199 seconds.
+This will automatically download Motiro together with any library dependencies
+that may be needed and install it. While running the first command, you may be
+asked to choose the version for some Gems. Just select one that happens to be
+compatible with your platform.
 
-   1 tests, 1 assertions, 0 failures, 0 errors
-   
-   % rake test:contracts
-   (in /home/thiago/devel/motiro)
-   Loaded suite /usr/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader
-   Started
-   .
-   Finished in 0.200615 seconds.
+After that, Motiro will be installed in your chosen place and you can make as
+many copies as you want to. Just repeat the command motiro install for different
+locations.
 
-   1 tests, 1 assertions, 0 failures, 0 errors
-   ----------------------------------------------------------------------------
+After the second command, you will be told the local port number that Motiro
+chose to run on. If you don't mind pointing your favourite browser to
+http://localhost:<port>, you will be able to enjoy your Motiro right away. To
+activate the reporter that collects information from your source-code
+repository, proceed to the section 5 - Making it work for you.
 
-   You are likely to get much more dots outputed as well as messages than that,
-   if you are running a recent version. Don't get lost: you only need to check
-   the summary on the last line. If any test happens to fail, an error message
-   will be printed and the last line will report it.
-   
-   If there is any error when you run these tests, please contact us on the
-   development list, tell us which kind of system you are trying to run Motiro
-   on and from where did you get it. Feel free to add any information you wish
-   about yourself like name and location. Do not forget to append your bug
-   report too.
-
-4. Start the job scheduler
+4. Installing the tarball
 ------
 
-   Motiro uses a separate daemon program responsible for automatically
-   fetching the news periodically. You can use the script/ticker script to
-   start and stop the daemon. 
-   
-   To start the scheduler, try cd'ing to where you installed Motiro and doing:
+After double-checking if you have all the requirements, the next step needed to
+install from a tarball is downloading the file. As soon as you get your hands on
+the archived package, choose an appropriate location in your system and unpack
+Motiro.
 
-   % ruby script/ticker start
+That is all you need. You will only need to run one command to finally see your
+Motiro running and try to edit some pages:
 
-   Analogously, to stop the scheduler, try:
+$ ruby script/server
 
-   % ruby script/ticker stop
-   
-   Under Windows, you'll want to try:
-   
-   % ruby script/ticker run
-   
-   and stop it by hitting Ctrl-C.
-   
-5. Boot the server
+This will start a web server on port 3000. From now on, you just need to point
+your preferred browser to http://localhost:3000 and enjoy your installation.
+After testing if everything is in place, you will most probably want to make
+Motiro show news from your project's source code repository.
+
+5. Making it work for you
 ------
 
-   To run Motiro within a pure Ruby web server (either WEBrick or Mongrel
-   depending on your setup), you'll just need to run another Ruby script. You
-   may also try to run Motiro on a variety of servers, like Apache and lighttpd.
-   But, for the sake of brevity, those won't be covered here.
+Motiro comes pre-configured to its own development needs because we actually use
+it to keep track of our progress. Seriously.
 
-   To run the script that boots the web server, just cd to where you unpacked
-   Motiro and say:
+This may be satisfactory if you are interested in watching us work. But most
+people want to keep track of their own project, their own team.
 
-   ----------------------------------------------------------------------------
-   % ruby script/server
-   => Booting WEBrick...
-   => Rails application started on http://0.0.0.0:3000
-   => Ctrl-C to shutdown server; call with --help for options
-   [2006-03-06 14:23:32] INFO  WEBrick 1.3.1
-   [2006-03-06 14:23:32] INFO  ruby 1.8.4 (2005-12-24) [i386-mswin32]
-   [2006-03-06 14:23:32] INFO  WEBrick::HTTPServer#start: pid=2096 port=3000
-   ----------------------------------------------------------------------------
+To customize Motiro to your needs, you will need to edit the configuration file
+config/motiro.yml. For example, suppose you are trying to keep an eye on the
+development of the Ruby on Rails framework. You can make Motiro look at their
+Subversion repository by changing the repo line to
 
-   In order to finally see Motiro in action, point your favorite browser to
-   http://localhost:3000 and you're done.
+repo: http://dev.rubyonrails.org/svn/rails
 
-6. Configure to your project
+All you need to do is change the Motiro repository address for yours.   
+
+6. Starting the job scheduler
 ------
 
-   Motiro comes pre-configured to its own development needs because we actually
-   use it to keep track of our progress. This may be satisfactory, if you are
-   interested in watching us work. But most people want to keep track of their
-   own project, their own team.
-   
-   To customize Motiro to your needs, you will need to edit the configuration
-   file 'config/motiro.yml'. For example, suppose you are trying to keep an eye
-   on the development of the Ruby on Rails framework. You can make Motiro look
-   at their subversion repository by changing the 'repo' line to:
+Motiro uses an independent daemon that runs on background to update the
+information from the revision control repository. In order to start and stop the
+daemon, you can use the script script/ticker.
 
-   repo: http://dev.rubyonrails.org/svn/rails
+To start the scheduler, try going where you installed Motiro and saying
 
-   For further information about customizing your Motiro, please contact us.
+% ruby script/ticker start
+
+Analogously, to stop it, you do
+
+% ruby script/ticker stop
+
+On Windows platforms, you are better off starting the scheduler with
+
+% ruby script/ticker run
+
+and stopping it by hitting Ctrl-C.
+
+After a few minutes the reporter will have finished his job and the latest code
+revisions will be available on your Motiro.
 
 FURTHER INFO AND TROUBLESHOOTING
 ====
