@@ -15,7 +15,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class WikiController < EditionController
+class WikiController < ApplicationController
 
   layout :choose_layout
 
@@ -75,7 +75,17 @@ class WikiController < EditionController
     render(:action => 'edit', :layout => 'application')
   end
   
-  def do_save
+  def save
+    if params['btnSave']
+      really_save
+    else
+      redirect_to :controller => 'root', :action => 'index'
+    end
+  end
+  
+private
+
+  def really_save
     params[:page].delete(:original_author_id)
     params[:page].delete(:editors) unless current_user.can_change_editors?(@page)
 
@@ -91,8 +101,6 @@ class WikiController < EditionController
       redirect_to :action => 'show', :page_name => @page.name
     end
   end
-  
-private
 
   def find_page(name, type)
     @real_page_provider.find_by_name(name) ||
