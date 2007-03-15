@@ -58,12 +58,18 @@ class Page < ActiveRecord::Base
     return result
   end
   
-  def use_parser(parser)
-    @parser = parser
-  end
-  
   def is_open_to_all?
     0 == editors.strip.size
+  end
+  
+  def revise(author, time, attrs)
+    self.original_author ||= author
+    self.last_editor, self.modified_at = author, time
+    self.editors = attrs[:editors] if author.can_change_editors?(self)
+    self.kind, self.title, self.text = attrs[:kind], attrs[:title], attrs[:text]
+    
+    save
+    self
   end
   
 private
@@ -94,10 +100,6 @@ private
   
   def renderer
     @renderer ||= WikiRenderer.new
-  end
-  
-  def my_parser
-    @parser ||= WikiParser.new
   end
   
 private

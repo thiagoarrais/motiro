@@ -86,14 +86,7 @@ class WikiController < ApplicationController
 private
 
   def really_save
-    params[:page].delete(:original_author_id)
-    params[:page].delete(:editors) unless current_user.can_change_editors?(@page)
-
-    @page.original_author ||= current_user
-    @page.last_editor = current_user
-    @page.modified_at = Time.now
-    @page.attributes = params[:page]
-    @page.save
+    @page.revise(current_user, Time.now, params[:page])
 
     if 'MainPage' == @page.name
       redirect_to :controller => 'root', :action => 'index'

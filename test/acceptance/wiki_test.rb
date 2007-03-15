@@ -66,7 +66,7 @@ class WikiAcceptanceTest < AcceptanceTestCase
     log_as(:bob)
     
     click "//a[text() = 'Edit']"
-    wait_for_page_to_load(1500)
+    wait_for_page_to_load(2000)
     
     type 'txaEditor', "= This title does not show =\n\n" +
                       "Neither does this text"
@@ -87,7 +87,7 @@ class WikiAcceptanceTest < AcceptanceTestCase
     type 'txaEditor', 'Original Text'
     type 'txtAuthorized', 'bob eric'
     click 'btnSave'
-    wait_for_page_to_load(1500)
+    wait_for_page_to_load(2000)
     
     log_out
     log_as(:john)
@@ -106,7 +106,7 @@ class WikiAcceptanceTest < AcceptanceTestCase
     
     type 'txtAuthorized', 'bob eric john'
     click 'btnSave'
-    wait_for_page_to_load(1500)
+    wait_for_page_to_load(2000)
     
     log_out
     log_as(:john)
@@ -134,7 +134,7 @@ class WikiAcceptanceTest < AcceptanceTestCase
     
     type 'txaEditor', 'New edited text for Nobody\'s Page'
     click 'btnSave'
-    wait_for_page_to_load(1500)
+    wait_for_page_to_load(2000)
     
     log_out
     log_as(:john)

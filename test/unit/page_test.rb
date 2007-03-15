@@ -18,7 +18,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class PageTest < Test::Unit::TestCase
-  fixtures :pages
+  fixtures :pages, :users
 
   def test_is_open_to_all
     attrs = { :name => 'SomePage', :text => 'Page text' }
@@ -140,6 +140,50 @@ class PageTest < Test::Unit::TestCase
     page = Page.new(:name => 'YetAnotherMotiroPage')
     
     assert_equal 'Yet another motiro page', page.title
+  end
+  
+  def test_revising_new_page_should_record_original_author_id_and_editors
+    john = users(:john)
+    time = Time.local(2007, 3, 15, 17, 3, 22)
+    page = Page.new(:name => 'BrandNew').revise(john, time,
+                                                :kind => 'feature',
+                                                :title => 'Brand new page',
+                                                :text => 'This is a new page',
+                                                :editors => 'john bob eric')
+                 
+    assert_equal john, page.last_editor
+    assert_equal john, page.original_author
+    assert_equal time, page.modified_at
+    assert_equal 'feature', page.kind
+    assert_equal 'Brand new page', page.title
+    assert_equal 'This is a new page', page.text
+    assert_equal 'john bob eric', page.editors
+  end
+  
+  def test_revising_old_page_should_not_record_original_author_id
+    john = users('john')
+    time = Time.local(2007, 3, 15, 17, 3, 22)
+    page = pages(:bob_and_erics_page).revise(john, time,
+                                             :title => "Bob and Eric's page",
+                                             :text => 'Do not touch')
+                 
+    assert_equal john, page.last_editor
+    assert_equal users('bob'), page.original_author
+    assert_equal time, page.modified_at
+    assert_equal "Bob and Eric's page", page.title
+    assert_equal 'Do not touch', page.text
+  end
+  
+  def test_only_original_author_should_be_able_to_change_editors_list
+    john = users('john')
+    editors = pages(:bob_and_erics_page).editors 
+    page = pages(:bob_and_erics_page).revise(john, Time.local(2007, 3, 15, 17),
+                                             :title => "Bob and Eric's page",
+                                             :text => 'Do not touch',
+                                             :editors => 'john lennon')
+                 
+    assert_not_equal 'john lennon', editors
+    assert_equal editors, page.editors
   end
   
 end
