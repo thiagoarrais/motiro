@@ -186,4 +186,25 @@ class PageTest < Test::Unit::TestCase
     assert_equal editors, page.editors
   end
   
+  def test_keeps_revision_record
+    page = Page.new(:name => 'RevisedPage')
+    
+    page.revise(users('john'), Time.local(2007, 3, 15, 9, 15, 53),
+                :title => 'Revised page',
+                :text => 'Page revision number 1',
+                :editors => '')
+    assert_equal 1, page.revisions.size
+
+    page.revise(users('john'), Time.local(2007, 3, 15, 10, 19, 36),
+                :title => 'Revised page',
+                :text => 'Page revision number 2',
+                :editors => '')
+    
+    assert_equal 2, page.revisions.size
+    assert_equal 'Page revision number 1', page.revisions[0].text
+  end
+  
+  #TODO test if editors get recorded correctly into the revision when not
+  #     provided by the http request (i.e.: no editors in revise's hash)
+
 end
