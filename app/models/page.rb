@@ -67,11 +67,12 @@ class Page < ActiveRecord::Base
     rev = Revision.new(:created_by => author, :created_at => time)
     self.original_author ||= author
     self.last_editor, self.modified_at = author, time
-    self.editors = rev.editors =
-      attrs[:editors] if author.can_change_editors?(self)
+    self.editors = attrs[:editors] if author.can_change_editors?(self)
     self.kind, self.title, self.text = 
       attrs[:kind], attrs[:title], attrs[:text]
-    rev.kind, rev.title, rev.text = self.kind, self.title, self.text
+    %w{kind title text editors}.each do |at|
+      rev.send("#{at}=", self.send(at))
+    end
     self.revisions << rev
     
     save

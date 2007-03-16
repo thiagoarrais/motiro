@@ -187,12 +187,7 @@ class PageTest < Test::Unit::TestCase
   end
   
   def test_keeps_revision_record
-    page = Page.new(:name => 'RevisedPage')
-    
-    page.revise(users('john'), Time.local(2007, 3, 15, 9, 15, 53),
-                :title => 'Revised page',
-                :text => 'Page revision number 1',
-                :editors => '')
+    page = create_page_with_one_revision
     assert_equal 1, page.revisions.size
 
     page.revise(users('john'), Time.local(2007, 3, 15, 10, 19, 36),
@@ -204,7 +199,24 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'Page revision number 1', page.revisions[0].text
   end
   
-  #TODO test if editors get recorded correctly into the revision when not
-  #     provided by the http request (i.e.: no editors in revise's hash)
+  def test_copy_previous_editors_list_when_not_provided
+    page = create_page_with_one_revision
+    previous_editors = page.editors
+    
+    page.revise(users('bob'), Time.now, :title => page.title,
+                                        :text => 'Bob was here')
+    
+    assert_equal previous_editors, page.editors
+    assert_equal previous_editors, page.revisions.first.editors
+    assert_equal previous_editors, page.revisions.last.editors
+  end
+  
+  def create_page_with_one_revision
+    Page.new(:name => 'RevisedPage').revise(
+      users('john'), Time.local(2007, 3, 15, 9, 15, 53),
+      :title => 'Revised page',
+      :text => 'Page revision number 1',
+      :editors => '')
+  end
 
 end
