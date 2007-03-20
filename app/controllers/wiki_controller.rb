@@ -19,7 +19,7 @@ class WikiController < ApplicationController
 
   layout :choose_layout
 
-  before_filter :login_required, :only => [:new, :edit, :save]
+  before_filter :login_required, :except => [:show, :last]
   before_filter :fetch_page, :drop_crumbs
   before_filter :check_edit_access, :only => [:edit, :save]
   
