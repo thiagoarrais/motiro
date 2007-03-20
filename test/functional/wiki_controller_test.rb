@@ -264,6 +264,27 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/older/events' and text() = 'Events']"
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{release_event.name}' and text() = '#{release_event.title}']"
   end
+  
+  def test_shows_history_summary_for_wiki_pages
+    log_as :bob
+    post :save, :page_name => 'RevisedPage',
+                :btnSave => true, 
+                :page => { :title => 'The title will be changed',
+                           :text => 'Some boring text',
+                           :kind => 'common',
+                           :editors => '' }
+    post :save, :page_name => 'RevisedPage',
+                :btnSave => true, 
+                :page => { :title => 'The title was changed',
+                           :text => 'Some boring text',
+                           :kind => 'common',
+                           :editors => '' }
+    
+    get :history, :page_name => 'RevisedPage'
+    
+    assert_tag :content => /The title will be changed/
+    assert_tag :content => /The title was changed/
+  end
 
 private
 

@@ -1,0 +1,24 @@
+<% pagetext('Page history for %s' / @page.title) do %>
+  <table class="oldernews">
+    <thead>
+     <tr>
+        <th class="date"><%= 'Date'.t -%></th>
+        <th class="relative"/>
+        <th><%= 'Author'.t -%></th>
+        <th><%= 'Title'.t -%></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% i = 0 %>
+    <% @page.revisions.each do |rev| %>
+      <% i += 1 %>
+      <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
+        <td class="date"><%= rev.created_at-%></td>
+        <td class="relative"><%= rev.created_at.relative_to_now %></td>
+        <td><%= rev.created_by.login %></td>
+        <td><%= rev.title %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

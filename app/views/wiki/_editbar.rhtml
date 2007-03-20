@@ -23,4 +23,7 @@
                      :action => 'edit',
                      :page_name => @page.name } )%>
   <% end %>
+  |
+  <%= link_to('Page history'.t, :controller => 'wiki', :action => 'history',
+                                :page_name => @page.name) -%>
 </div>
