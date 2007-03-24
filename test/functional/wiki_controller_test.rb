@@ -26,7 +26,7 @@ class WikiControllerTest < Test::Unit::TestCase
 
   include TestConfiguration
   
-  fixtures :users, :pages
+  fixtures :users, :pages, :revisions
 
   def setup
     @controller = WikiController.new
@@ -279,17 +279,35 @@ class WikiControllerTest < Test::Unit::TestCase
                            :text => 'Some boring text',
                            :kind => 'common',
                            :editors => '' }
-    
+
+    log_out                       
+
     get :history, :page_name => 'RevisedPage'
     
-    assert_tag :content => /The title will be changed/
+    assert_tag :tag => 'a', :attributes => {
+                 :href => @controller.url_for(
+                   :controller => 'wiki', :action => 'show',
+                   :page_name => 'RevisedPage', :revision => '0')},
+               :content => /The title will be changed/
     assert_tag :content => /The title was changed/
+  end
+  
+  def test_displays_old_text_when_showing_revisions
+    get :show, :page_name => pages('changed_page').name, :revision => '0'
+    assert_tag :content => revisions('page_edition').text
+
+    get :show, :page_name => pages('changed_page').name, :revision => '1'
+    assert_tag :content => revisions('page_creation').text
   end
 
 private
 
   def log_as(user_name)
     @request.session[:user] = users(user_name)
+  end
+  
+  def log_out
+    @request.session[:user] = nil
   end
   
   def mocked_page

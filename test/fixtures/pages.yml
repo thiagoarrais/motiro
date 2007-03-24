@@ -96,3 +96,13 @@ release_event:
         event pages. This is included as part of the everything is a wiki page
         motto.
  
+changed_page:
+  id: 11
+  name: ChangedPage
+  kind: common
+  original_author_id: 1000004 #john
+  modified_at: 2007-01-22 13:21:26
+  last_editor_id: 1000005 #eric
+  editors: ""
+  title: This page has been edited since creation
+  text: Eric changed the text that John entered

@@ -1,5 +1,19 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
+page_creation:
   id: 1
-two:
+  page_id: 11
+  kind: common
+  modified_at: 2007-01-22 12:18:43
+  last_editor_id: 1000004 #john
+  editors: ""
+  title: This page has been created
+  text: John entered some text here
+
+page_edition:
   id: 2
+  page_id: 11
+  kind: common
+  modified_at: 2007-01-22 13:21:26
+  last_editor_id: 1000005 #eric
+  editors: ""
+  title: This page has been edited since creation
+  text: Eric changed the text that John entered

@@ -19,7 +19,7 @@ PLACE_HOLDER_TITLE = 'Insert page title here'
 
 class Page < ActiveRecord::Base
 
-  has_many :revisions
+  has_many :revisions, :order => 'modified_at DESC'
   belongs_to :last_editor, :class_name => 'User',
                            :foreign_key => 'last_editor_id'
   belongs_to :original_author, :class_name => 'User',
@@ -64,7 +64,7 @@ class Page < ActiveRecord::Base
   end
   
   def revise(author, time, attrs)
-    rev = Revision.new(:created_by => author, :created_at => time)
+    rev = Revision.new(:last_editor => author, :modified_at => time)
     self.original_author ||= author
     self.last_editor, self.modified_at = author, time
     self.editors = attrs[:editors] if author.can_change_editors?(self)
@@ -73,7 +73,7 @@ class Page < ActiveRecord::Base
     %w{kind title text editors}.each do |at|
       rev.send("#{at}=", self.send(at))
     end
-    self.revisions << rev
+    self.revisions.unshift(rev)
     
     save
     self

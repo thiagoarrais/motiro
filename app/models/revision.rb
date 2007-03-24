@@ -17,5 +17,9 @@
 
 class Revision < ActiveRecord::Base
   belongs_to :page
-  belongs_to :created_by, :class_name => 'User', :foreign_key => 'revisor_id'
+  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_id'
+  
+  def name
+    page.name
+  end
 end

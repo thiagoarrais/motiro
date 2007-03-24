@@ -11,13 +11,17 @@
     <tbody>
     <% i = 0 %>
     <% @page.revisions.each do |rev| %>
-      <% i += 1 %>
       <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
-        <td class="date"><%= rev.created_at-%></td>
-        <td class="relative"><%= rev.created_at.relative_to_now %></td>
-        <td><%= rev.created_by.login %></td>
-        <td><%= rev.title %></td>
+        <td class="date"><%= rev.modified_at-%></td>
+        <td class="relative"><%= rev.modified_at.relative_to_now %></td>
+        <td><%= rev.last_editor.login %></td>
+        <td><%= content_tag :a, rev.title,
+                            :href => server_url_for(:controller => 'wiki',
+                                                    :action => 'show',
+                                                    :page_name => @page.name,
+                                                    :revision => i) -%></td>
       </tr>
+      <% i += 1 %>
     <% end %>
     </tbody>
   </table>

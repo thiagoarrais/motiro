@@ -83,6 +83,10 @@ class WikiController < ApplicationController
     end
   end
   
+  def show
+    @page = @page.revisions[params[:revision].to_i] if params[:revision]
+  end
+  
 private
 
   def really_save

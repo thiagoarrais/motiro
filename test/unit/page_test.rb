@@ -18,7 +18,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class PageTest < Test::Unit::TestCase
-  fixtures :pages, :users
+  fixtures :pages, :revisions, :users
 
   def test_is_open_to_all
     attrs = { :name => 'SomePage', :text => 'Page text' }
@@ -196,7 +196,8 @@ class PageTest < Test::Unit::TestCase
                 :editors => '')
     
     assert_equal 2, page.revisions.size
-    assert_equal 'Page revision number 1', page.revisions[0].text
+    assert_equal 'Page revision number 2', page.revisions.first.text
+    assert_equal 'Page revision number 1', page.revisions.last.text
   end
   
   def test_copy_previous_editors_list_when_not_provided
@@ -209,6 +210,12 @@ class PageTest < Test::Unit::TestCase
     assert_equal previous_editors, page.editors
     assert_equal previous_editors, page.revisions.first.editors
     assert_equal previous_editors, page.revisions.last.editors
+  end
+  
+  def test_most_recent_revision_comes_first
+    page = pages('changed_page')
+    assert_equal revisions('page_creation'), page.revisions[1]
+    assert_equal revisions('page_edition'), page.revisions[0]
   end
   
   def create_page_with_one_revision
