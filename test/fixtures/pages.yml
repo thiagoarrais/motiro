@@ -1,108 +1,58 @@
 main_page:
   id: 1
   name: MainPage
-  original_author_id: 1000001
-  editors:  ""
-  text: = Motiro =
-        
-        This is project motiro
 
 johns_page:
   id: 2
-  original_author_id: 1000004
   name: John_s
-  editors: john
-  text: This is John's page
   
 bob_and_erics_page:
   id: 3
   name: Bob_and_Eric_s
-  original_author_id: 1000001 #bob
-  editors: bob eric
-  text: This is Bob and Eric's page
   
 nobodys_page:
   id: 4
   name: Unclaimed
-  original_author_id:
-  editors: ""
-  text: This page was created before the wiki access control was in place
   
 test_page:
   id: 5
   name: TestPage
   kind: common
-  original_author_id: 1000001
-  editors: ""
-  title: 
-  text: This is the page text
   
 non_matching_title_page:
   id: 6
-  name: NonMatchingTitlePage
   kind: common
-  original_author_id: 1000001
-  editors: ""
-  title: The title does not match the name
-  text: This is the page text
+  name: NonMatchingTitlePage
   
 list_last_modified_features_page:
   id: 7
-  name: ListLastModifiedFeatures
   kind: feature
-  original_author_id: 1000001
+  name: ListLastModifiedFeatures
   modified_at: 2033-12-27 16:47:00
-  last_editor_id: 1000001
-  editors: ""
-  title: List last modified features
-  text: Motiro should list the last modified feature suggestion pages on the
-        main page
 
 provide_rss_feed_for_last_modified_pages_page:
   id: 8
-  name: ProvideRSSFeedForLastModifiedPages
   kind: feature
-  original_author_id: 1000001
+  name: ProvideRSSFeedForLastModifiedPages
   modified_at: 2033-12-27 12:33:48
-  last_editor_id: 1000004
-  editors: ""
-  title: Provide RSS feed for last modified pages
-  text: There could be an RSS feed for the last modified pages
-  
+
 events_are_just_special_pages_too_page:
   id: 9
-  name: EventsAreJustSpecialWikiPagesToo
   kind: feature
-  original_author_id: 1000001
+  name: EventsAreJustSpecialWikiPagesToo
   modified_at: 2033-12-25 18:43:31
-  last_editor_id: 1000005
-  editors: ""
-  title: Events are just special wiki pages too
-  text: Event descriptions can be treated just like other regular wiki pages,
-        in the same way that feature suggestion pages are
-        
+
 release_event:
   id: 10
+  kind: event
   name: FourteenthRelease
   kind: event
   type: Event
-  original_author_id: 1000004 #john
-  modified_at: 2007-01-18 13:28:47
-  last_editor_id: 1000004 #john
-  editors: ""
   happens_at: 2007-01-24
-  title: Fourteenth release
-  text: The 0.6.1 release will be a bug fixing one and will introduce editable
-        event pages. This is included as part of the everything is a wiki page
-        motto.
+  modified_at: 2007-01-18 13:28:47
  
 changed_page:
   id: 11
   name: ChangedPage
   kind: common
-  original_author_id: 1000004 #john
   modified_at: 2007-01-22 13:21:26
-  last_editor_id: 1000005 #eric
-  editors: ""
-  title: This page has been edited since creation
-  text: Eric changed the text that John entered

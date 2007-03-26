@@ -127,7 +127,7 @@ class PageTest < Test::Unit::TestCase
     
     snd_page = Page.new
     snd_page.save
-    
+
     assert_equal 'Common page 2', snd_page.title
     
     trd_page = Page.new
@@ -217,6 +217,19 @@ class PageTest < Test::Unit::TestCase
     assert_equal revisions('page_creation'), page.revisions[1]
     assert_equal revisions('page_edition'), page.revisions[0]
   end
+  
+  def test_records_original_author_for_pages_without_author
+    page = pages('nobodys_page')
+    bob = users('bob')
+    assert_nil page.original_author
+    
+    page.revise(bob, Time.now, :title => page.title,
+                               :text => 'Bob was here')
+                                        
+    assert_equal bob, page.original_author                      
+  end
+  
+private
   
   def create_page_with_one_revision
     Page.new(:name => 'RevisedPage').revise(

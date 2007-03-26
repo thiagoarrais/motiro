@@ -19,11 +19,27 @@ PLACE_HOLDER_TITLE = 'Insert page title here'
 
 class Page < ActiveRecord::Base
 
-  has_many :revisions, :order => 'modified_at DESC'
-  belongs_to :last_editor, :class_name => 'User',
-                           :foreign_key => 'last_editor_id'
-  belongs_to :original_author, :class_name => 'User',
-                               :foreign_key => 'original_author_id'
+  has_many :revisions, :order => 'modified_at DESC, id DESC'
+  
+  def original_author
+    revisions.last && revisions.last.last_editor
+  end
+  
+  %w{modified_at last_editor text editors title}.each do |attr|
+    define_method attr do
+      new_revision[attr.to_sym] || revisions.first && revisions.first.send(attr)
+    end
+
+    define_method(attr + '=') do |value|
+      new_revision[attr.to_sym] = value
+    end
+  end
+
+  def title
+    result = new_revision[:title] || revisions.first && revisions.first.title
+    return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
+    return result
+  end
   
   def after_initialize
     default('', :editors, :text, :name, :title)
@@ -39,7 +55,11 @@ class Page < ActiveRecord::Base
   
   def before_save
     if title == PLACE_HOLDER_TITLE.t
-      write_attribute(:title, title_from_kind)  
+      new_revision[:title] = title_from_kind  
+    end
+    
+    unless new_revision.empty?
+      revisions.unshift(Revision.new(new_revision))
     end
     
     write_attribute(:name, self.name)
@@ -52,27 +72,24 @@ class Page < ActiveRecord::Base
     return result
   end
   
-  def title; title_before_type_cast; end
-  def title_before_type_cast
-    result = read_attribute(:title)
-    return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
-    return result
-  end
-  
   def is_open_to_all?
     0 == editors.strip.size
   end
   
   def revise(author, time, attrs)
-    rev = Revision.new(:last_editor => author, :modified_at => time)
-    self.original_author ||= author
-    self.last_editor, self.modified_at = author, time
-    self.editors = attrs[:editors] if author.can_change_editors?(self)
-    self.kind, self.title, self.text = 
-      attrs[:kind], attrs[:title], attrs[:text]
-    %w{kind title text editors}.each do |at|
-      rev.send("#{at}=", self.send(at))
+    new_revision.clear
+    unless original_author || revisions.size == 0
+      revisions.last.last_editor = author 
+      revisions.last.save
     end
+    rev = Revision.new(:last_editor => author, :modified_at => time)
+    rev.editors = if author.can_change_editors?(self)
+      attrs[:editors]
+    else
+      revisions.first.editors
+    end
+    self.kind = rev.kind = attrs[:kind]
+    rev.title, rev.text = attrs[:title], attrs[:text]
     self.revisions.unshift(rev)
     
     save
@@ -82,11 +99,11 @@ class Page < ActiveRecord::Base
 private
   
   def name_from_title
-    sequence(drop_non_alpha(clean(title)).downcase.gsub(/ /, '_').camelize, 'name')
+    sequence(Page, drop_non_alpha(clean(title)).downcase.gsub(/ /, '_').camelize, 'name')
   end
   
   def title_from_kind
-    sequence(kind.capitalize + ' page ', 'title')
+    sequence(Revision, kind.capitalize + ' page ', 'title')
   end
   
   def title_from_name
@@ -95,10 +112,10 @@ private
     name && name.underscore.gsub(/_/, ' ').capitalize
   end
   
-  def sequence(target, attr)
+  def sequence(finder, target, attr)
     result = target.strip
     suffix = 2
-    while self.class.find(:first, :conditions => "#{attr} = '#{result}'")
+    while finder.find(:first, :conditions => "#{attr} = '#{result}'")
       result = target + suffix.to_s
       suffix += 1
     end
@@ -118,6 +135,10 @@ private
   
   def drop_non_alpha(text)
     text.gsub(%r{[^a-zA-Z0-9]}, ' ').gsub(%r{\s+}, ' ')
+  end
+  
+  def new_revision
+    @new_revision ||= {}
   end
   
 end

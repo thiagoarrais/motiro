@@ -6,7 +6,7 @@ class RootController; def rescue_action(e) raise e end; end
 
 class RootControllerTest < Test::Unit::TestCase
 
-  fixtures :users, :pages
+  fixtures :users, :pages, :revisions
 
   def setup
     @controller = RootController.new
