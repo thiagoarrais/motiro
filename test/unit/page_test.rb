@@ -19,90 +19,88 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class PageTest < Test::Unit::TestCase
   fixtures :pages, :revisions, :users
+  
+  def bob; users('bob'); end
+  def now; Time.local(2007, 3, 27, 23, 41, 38); end
 
   def test_is_open_to_all
-    attrs = { :name => 'SomePage', :text => 'Page text' }
-    assert !Page.new(attrs.merge(:editors => 'john')).is_open_to_all?
-    assert  Page.new(attrs.merge(:editors => '')).is_open_to_all?
-    assert  Page.new(attrs.merge(:editors => '  ')).is_open_to_all?
-    assert !Page.new(attrs.merge(:editors => '  john ')).is_open_to_all?
-    assert  Page.new(attrs.merge(:editors => "\n")).is_open_to_all?
+    attrs = { :text => 'Page text' }
+    assert !revise_named_page(attrs.merge(:editors => 'john')).is_open_to_all?
+    assert  revise_named_page(attrs.merge(:editors => '')).is_open_to_all?
+    assert  revise_named_page(attrs.merge(:editors => '  ')).is_open_to_all?
+    assert !revise_named_page(attrs.merge(:editors => '  john ')).is_open_to_all?
+    assert  revise_named_page(attrs.merge(:editors => "\n")).is_open_to_all?
   end
   
   def test_fresh_page_is_open_to_all
-    page = Page.new(:name => 'FreshPage')
-    
-    assert page.is_open_to_all?
+    assert Page.new(:name => 'FreshPage').is_open_to_all?
   end
   
   def test_fresh_page_has_empty_editors_list
-    page = Page.new(:name => 'AnotherFreshPage')
-    
-    assert_equal 0, page.editors.size
+    assert_equal 0, Page.new(:name => 'AnotherFreshPage').editors.size
   end
   
   def test_page_name_is_title_camelized
-    page = Page.new(:title => 'How to write a Motiro page')
-    
-    assert_equal 'HowToWriteAMotiroPage', page.name
+    assert_equal 'HowToWriteAMotiroPage',
+                 revise_brand_new_page(:title => 'How to write a Motiro page').name
   end
   
   def test_user_entered_page_name_takes_precedence_over_camelized_title
     page = Page.new(:name => 'MyFirstPageName')
-    page.title = 'My first page title'
+    page.revise(bob, now, :title => 'My first page title')
     
     assert_equal 'MyFirstPageName', page.name  
-    
-    page = Page.new(:title => 'My second page title')
-    page.name = 'MySecondPageName'
-    
-    assert_equal 'MySecondPageName', page.name
   end
   
   def test_converts_utf8_decorated_vowels_when_generating_name
-    assert_equal 'MinhaPagina', Page.new(:title => 'Minha página').name
+    assert_equal 'MinhaPagina',
+                 revise_brand_new_page(:title => 'Minha página').name
     assert_equal 'AaaaaEeeeIiiiiYyyOooooUuuuu',
-                 Page.new(:title => 'ãàáâä èéêë ĩìíîï ÿýý õòóôö ũùúûü').name
+                 revise_brand_new_page(:title => 'ãàáâä èéêë ĩìíîï ÿýý õòóôö ũùúûü').name
     assert_equal 'AaaaaEeeeIiiiiYyOooooUuuuu',
-                 Page.new(:title => 'ÃÀÁÂÄ ÈÉÊË ĨÌÍÎÏ ÝŸ ÕÒÓÔÖ ŨÙÚÛÜ').name
+                 revise_brand_new_page(:title => 'ÃÀÁÂÄ ÈÉÊË ĨÌÍÎÏ ÝŸ ÕÒÓÔÖ ŨÙÚÛÜ').name
   end
   
   def test_converts_utf8_decorated_consonants_when_generating_name
-    assert_equal 'ElNino', Page.new(:title => 'El Niño').name
+    assert_equal 'ElNino', revise_brand_new_page(:title => 'El Niño').name
     assert_equal 'NnCcSrlzNnCcSrlz',
-                 Page.new(:title => 'ñń ćç śŕĺź ÑŃ ÇĆ ŚŔĹŹ').name
+                 revise_brand_new_page(:title => 'ñń ćç śŕĺź ÑŃ ÇĆ ŚŔĹŹ').name
   end
 
   def test_drops_non_alpha_numeric_characters_when_generating_name
     assert_equal 'ThisHasLotsOfPunctuation',
-                 Page.new(:title => 'This, has. lots! of? punctuation').name
+                 revise_brand_new_page(:title => 'This, has. lots! of? punctuation').name
     assert_equal 'TitleWithSomeStrangeCharacters',
-                 Page.new(:title => 'Title%with$some&strange*characters').name
+                 revise_brand_new_page(:title => 'Title%with$some&strange*characters').name
   end
 
-  def test_resolve_clashing_page_names
-    fst_page = Page.new(:title => 'My first Motiro page', :text => '')
+  def test_resolves_clashing_page_names
+    fst_page = revise_brand_new_page(:title => 'My first Motiro page', :text => '')
     assert_equal 'MyFirstMotiroPage', fst_page.name
     fst_page.save
     
-    snd_page = Page.new(:title => 'My first Motiro page', :text => '')
+    snd_page = revise_brand_new_page(:title => 'My first Motiro page', :text => '')
     assert_equal 'MyFirstMotiroPage2', snd_page.name
     snd_page.save
     
-    trd_page = Page.new(:title => 'My first Motiro page')
+    trd_page = revise_brand_new_page(:title => 'My first Motiro page')
     assert_equal 'MyFirstMotiroPage3', trd_page.name
   end
   
   def test_uses_place_holder_title_when_nil
-    page = Page.new
-    
-    assert_equal PLACE_HOLDER_TITLE.t, page.title
+    assert_equal PLACE_HOLDER_TITLE.t, Page.new.title
   end
   
   def test_uses_place_holder_title_when_empty
     page = Page.new(:title => '')
     
     assert_equal PLACE_HOLDER_TITLE.t, page.title    
+  end
+  
+  def test_uses_kind_based_title_when_revised_with_empty_title
+    page = revise_brand_new_page(:kind => 'feature', :title => '')
+    
+    assert_equal 'Feature page', page.title    
   end
   
   def test_translates_default_title
@@ -117,22 +115,17 @@ class PageTest < Test::Unit::TestCase
     common_page.save
     assert_equal 'Common page', common_page.title
     
-    feature_page = Page.new(:kind => 'feature')
-    feature_page.save
+    feature_page = revise_brand_new_page(:kind => 'feature')
     assert_equal 'Feature page', feature_page.title
   end
   
   def test_numbers_titles_when_already_used
-    Page.new.save
+    revise_brand_new_page({})
     
-    snd_page = Page.new
-    snd_page.save
-
+    snd_page = revise_brand_new_page({})
     assert_equal 'Common page 2', snd_page.title
     
-    trd_page = Page.new
-    trd_page.save       
-
+    trd_page = revise_brand_new_page({})
     assert_equal 'Common page 3', trd_page.title
   end
   
@@ -200,7 +193,7 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'Page revision number 1', page.revisions.last.text
   end
   
-  def test_copy_previous_editors_list_when_not_provided
+  def test_copies_previous_editors_list_when_not_provided
     page = create_page_with_one_revision
     previous_editors = page.editors
     
@@ -223,14 +216,31 @@ class PageTest < Test::Unit::TestCase
     bob = users('bob')
     assert_nil page.original_author
     
-    page.revise(bob, Time.now, :title => page.title,
-                               :text => 'Bob was here')
+    page.revise(bob, now, :title => page.title, :text => 'Bob was here')
                                         
     assert_equal bob, page.original_author                      
   end
   
+  def test_copies_previous_kind_when_not_provided
+    page = pages('list_last_modified_features_page')
+    
+    page.revise(bob, now, :text => 'New feature page text')
+    
+    assert_equal 'feature', page.kind
+  end
+  
+  #TODO it seems that event pages do not get their happens_at attribute revised
+  
 private
   
+  def revise_named_page(attrs)
+    Page.new(:name => 'SomePage').revise(bob, now, attrs)
+  end
+
+  def revise_brand_new_page(attrs)
+    Page.new(:name => nil).revise(bob, now, attrs)
+  end
+
   def create_page_with_one_revision
     Page.new(:name => 'RevisedPage').revise(
       users('john'), Time.local(2007, 3, 15, 9, 15, 53),

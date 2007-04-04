@@ -88,7 +88,8 @@ class Page < ActiveRecord::Base
     else
       revisions.first.editors
     end
-    self.kind = rev.kind = attrs[:kind]
+    self.kind = attrs[:kind] if attrs[:kind]
+    rev.kind = self.kind
     rev.title, rev.text = attrs[:title], attrs[:text]
     self.revisions.unshift(rev)
     
