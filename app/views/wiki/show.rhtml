@@ -1,7 +1,7 @@
 <% pagetext(@page.title) do %>
   <% cache(:controller=> 'wiki', :action => 'show',
-           :page => @page.name, :locale_suffix => @locale) do
-  %>
+           :page => @page.name, :locale_suffix => @locale,
+           :revision => @page_revision_id) do %>
     <%= render :partial => 'properties_show' %>
     <%= @renderer.render_html(@page.text) %>
   <% end %>

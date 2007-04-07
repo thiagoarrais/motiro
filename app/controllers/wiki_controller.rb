@@ -84,7 +84,10 @@ class WikiController < ApplicationController
   end
   
   def show
-    @page = @page.revisions[params[:revision].to_i] if params[:revision]
+    if params[:revision]
+      @page = @page.revisions[params[:revision].to_i]
+      @page_revision_id = @page.id
+    end
   end
   
 private
