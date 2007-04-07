@@ -19,7 +19,9 @@ class Revision < ActiveRecord::Base
   belongs_to :page
   belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_id'
   
-  def name
-    page.name
+  #Delegate methods to parent page
+  %w{name original_author}.each do |method|
+    define_method(method) { page.send(method) }
   end
+
 end

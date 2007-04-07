@@ -20,9 +20,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 class PageTest < Test::Unit::TestCase
   fixtures :pages, :revisions, :users
   
-  def bob; users('bob'); end
-  def now; Time.local(2007, 3, 27, 23, 41, 38); end
-
   def test_is_open_to_all
     attrs = { :text => 'Page text' }
     assert !revise_named_page(attrs.merge(:editors => 'john')).is_open_to_all?
@@ -254,14 +251,6 @@ class PageTest < Test::Unit::TestCase
   
 private
   
-  def revise_named_page(attrs)
-    Page.new(:name => 'SomePage').revise(bob, now, attrs)
-  end
-
-  def revise_brand_new_page(attrs)
-    Page.new(:name => nil).revise(bob, now, attrs)
-  end
-
   def create_page_with_one_revision
     Page.new(:name => 'RevisedPage').revise(
       users('john'), Time.local(2007, 3, 15, 9, 15, 53),
