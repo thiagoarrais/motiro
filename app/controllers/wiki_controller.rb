@@ -90,6 +90,11 @@ class WikiController < ApplicationController
     end
   end
   
+  def access_denied
+    redirect_to :controller => 'wiki', :action => 'show',
+                :page_name => params[:page_name] 
+  end
+  
 private
 
   def really_save

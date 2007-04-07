@@ -86,8 +86,8 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_authentication_required_for_edition
-     get :edit, { :page_name => 'TestPage' }
-     assert_redirected_to(:controller => 'account', :action => 'login')
+     get :edit, :page_name => 'TestPage'
+     assert_redirected_to(:action => 'show', :page_name => 'TestPage')
   end
   
   def test_only_original_author_can_change_editors_list
