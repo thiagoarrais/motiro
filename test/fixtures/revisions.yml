@@ -127,6 +127,7 @@ release_event_creation:
   last_editor_id: 1000004 #john
   editors: ""
   title: Fourteenth release
+  happens_at: 2007-01-24
   text: The 0.6.1 release will be a bug fixing one and will introduce editable
         event pages. This is included as part of the everything is a wiki page
         motto.

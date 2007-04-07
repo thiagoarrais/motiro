@@ -34,7 +34,7 @@ class Page < ActiveRecord::Base
       new_revision[attr.to_sym] = value
     end
   end
-
+  
   def title
     result = new_revision[:title] || revisions.first && revisions.first.title
     return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
@@ -77,6 +77,12 @@ class Page < ActiveRecord::Base
   end
   
   def revise(author, time, attrs)
+    #TODO ugly! ugly! ugly!
+    if !attrs[:happens_at] && attrs['happens_at(1i)'] && attrs['happens_at(2i)'] && attrs['happens_at(3i)'] 
+      attrs[:happens_at] =
+        Date.new(attrs['happens_at(1i)'].to_i, attrs['happens_at(2i)'].to_i,
+                 attrs['happens_at(3i)'].to_i)
+    end
     new_revision.clear
     unless original_author || revisions.size == 0
       revisions.last.last_editor = author 
@@ -89,7 +95,8 @@ class Page < ActiveRecord::Base
       revisions.first.editors
     end
     self.kind = attrs[:kind] if attrs[:kind]
-    rev.kind = self.kind
+    self.happens_at = attrs[:happens_at] if attrs[:happens_at]
+    rev.kind, rev.happens_at = self.kind, self.happens_at
     rev.title, rev.text = attrs[:title], attrs[:text]
     self.revisions.unshift(rev)
     

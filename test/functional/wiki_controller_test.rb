@@ -265,18 +265,18 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{release_event.name}' and text() = '#{release_event.title}']"
   end
   
-  def test_shows_history_summary_for_wiki_pages
+  def test_shows_history_summary_and_details_for_new_wiki_pages
     log_as :bob
     post :save, :page_name => 'RevisedPage',
                 :btnSave => true, 
                 :page => { :title => 'The title will be changed',
-                           :text => 'Some boring text',
+                           :text => 'Some very boring text',
                            :kind => 'common',
                            :editors => '' }
     post :save, :page_name => 'RevisedPage',
                 :btnSave => true, 
                 :page => { :title => 'The title was changed',
-                           :text => 'Some boring text',
+                           :text => 'A little more exciting text',
                            :kind => 'common',
                            :editors => '' }
 
@@ -290,6 +290,12 @@ class WikiControllerTest < Test::Unit::TestCase
                    :page_name => 'RevisedPage', :revision => '1')},
                :content => /The title will be changed/
     assert_tag :content => /The title was changed/
+
+    get :show, :page_name => 'RevisedPage', :revision => '1'
+    assert_tag :content => /Some very boring text/
+
+    get :show, :page_name => 'RevisedPage', :revision => '0'
+    assert_tag :content => /A little more exciting text/
   end
   
   def test_displays_old_text_when_showing_revisions
@@ -299,7 +305,7 @@ class WikiControllerTest < Test::Unit::TestCase
     get :show, :page_name => pages('changed_page').name, :revision => '1'
     assert_tag :content => revisions('page_creation').text
   end
-
+  
 private
 
   def log_as(user_name)

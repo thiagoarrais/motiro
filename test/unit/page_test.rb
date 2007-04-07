@@ -229,6 +229,27 @@ class PageTest < Test::Unit::TestCase
     assert_equal 'feature', page.kind
   end
   
+  def test_stores_revisions_for_happens_at
+    event = pages('release_event')
+    old_time = event.happens_at
+    new_time = Date.new(2007, 4, 4)
+    
+    event.revise(bob, now, :happens_at => new_time)
+    
+    assert_equal new_time, event.happens_at
+    assert_equal new_time, event.revisions.first.happens_at
+    assert_equal old_time, event.revisions.last.happens_at
+  end
+  
+  def test_rbab
+    date = Date.new(2007, 4, 4)
+    page = revise_brand_new_page(:kind => 'event',
+                                 :text => 'Something will happen',
+                                 :happens_at => date)
+    
+    assert_equal date, page.happens_at
+  end
+  
   #TODO it seems that event pages do not get their happens_at attribute revised
   
 private
