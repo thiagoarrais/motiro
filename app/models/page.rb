@@ -22,29 +22,32 @@ class Page < ActiveRecord::Base
   has_many :revisions, :order => 'modified_at DESC, id DESC'
   
   def original_author
-    revisions.last && revisions.last.last_editor
+    oldest(:last_editor)
   end
   
-  %w{modified_at last_editor text editors title}.each do |attr|
+  %w{modified_at last_editor}.each do |attr|
     define_method attr do
-      new_revision[attr.to_sym] || revisions.first && revisions.first.send(attr)
-    end
-
-    define_method(attr + '=') do |value|
-      new_revision[attr.to_sym] = value
+      most_recent(attr)
     end
   end
-  
+
   def title
-    result = new_revision[:title] || revisions.first && revisions.first.title
+    result = most_recent(:title)
     return title_from_name || PLACE_HOLDER_TITLE.t if result.nil? || result.empty?
     return result
   end
   
+  def editors
+    most_recent(:editors) || ''
+  end
+  
+  def text
+    most_recent(:text) ||
+      ('MainPage' == self.name ? CONGRATS_TEXT : WIKI_NOT_FOUND_TEXT)  
+  end
+  
   def after_initialize
-    default('', :editors, :name, :title)
-    default(CONGRATS_TEXT, :text) if 'MainPage' == self.name
-    default(WIKI_NOT_FOUND_TEXT, :text)
+    default('', :name)
     default('common', :kind)
   end
   
@@ -57,11 +60,7 @@ class Page < ActiveRecord::Base
   
   def before_save
     if title == PLACE_HOLDER_TITLE.t
-      new_revision[:title] = title_from_kind  
-    end
-    
-    unless new_revision.empty?
-      revisions.unshift(Revision.new(new_revision))
+      revisions.first.title = title_from_kind  
     end
     
     write_attribute(:name, self.name)
@@ -85,8 +84,7 @@ class Page < ActiveRecord::Base
         Date.new(attrs['happens_at(1i)'].to_i, attrs['happens_at(2i)'].to_i,
                  attrs['happens_at(3i)'].to_i)
     end
-    new_revision.clear
-    unless original_author || revisions.size == 0
+    unless revisions.size == 0 || original_author 
       revisions.last.last_editor = author 
       revisions.last.save
     end
@@ -132,10 +130,14 @@ private
     return result    
   end
   
-  def renderer
-    @renderer ||= WikiRenderer.new
+  def most_recent(attr)
+    revisions.first && revisions.first.send(attr)  
   end
   
+  def oldest(attr)
+    revisions.last && revisions.last.send(attr)  
+  end
+
 private
 
   def clean(text)
@@ -145,10 +147,6 @@ private
   
   def drop_non_alpha(text)
     text.gsub(%r{[^a-zA-Z0-9]}, ' ').gsub(%r{\s+}, ' ')
-  end
-  
-  def new_revision
-    @new_revision ||= {}
   end
   
 end

@@ -75,8 +75,7 @@ class WikiControllerTest < Test::Unit::TestCase
       page_provider.should_receive(:find_by_name).
           with('TestPage').
           once.
-          and_return(Page.new(:name => 'TestPage',
-                                :text => ''))
+          and_return(Page.new(:name => 'TestPage'))
       @controller = WikiController.new(page_provider)
 
       ensure_logged_in
@@ -317,9 +316,9 @@ private
   end
   
   def mocked_page
-    Page.new(:name => 'MockedPage', :title => 'Mocked page',
-             :last_editor => nil, :modified_at => nil, :kind => 'common',
-             :text => "You've been mocked!\n\n--- pt-br ----\n\nVocê foi enganado!")
+    Page.new(:name => 'MockedPage').
+      revise(bob, now, :title => 'Mocked page', :kind => 'common',
+                       :text => "You've been mocked!\n\n--- pt-br ----\n\nVocê foi enganado!")
   end
   
 end

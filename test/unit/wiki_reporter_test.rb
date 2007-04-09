@@ -35,6 +35,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class WikiReporterTest < Test::Unit::TestCase
 
+  fixtures :users
+  
   def button; MotiroReporter.button; end
 
   def test_title
@@ -68,9 +70,7 @@ class WikiReporterTest < Test::Unit::TestCase
       mod_time = Time.local(2007, 1, 19, 15, 23, 8)
       page_provider.should_receive(:find).
         zero_or_more_times.
-        and_return([Page.new(:name => 'FeaturePage',
-                             :last_editor => User.new(:login => 'arrais'),
-                             :modified_at => mod_time,
+        and_return([Page.new(:name => 'FeaturePage').revise(bob, mod_time, 
                              :title => 'Feature page')])
       hl = FeaturesReporter.new(:page_provider => page_provider).headlines[0]
       assert_equal mod_time, hl.happened_at
@@ -82,10 +82,9 @@ class WikiReporterTest < Test::Unit::TestCase
       planned_date = Date.civil(2007, 1, 19)
       page_provider.should_receive(:find).
         zero_or_more_times.
-        and_return([Page.new(:name => 'FeaturePage',
-                             :last_editor => User.new(:login => 'arrais'),
+        and_return([Page.new(:name => 'EventPage').revise(bob, now,
                              :happens_at => planned_date,
-                             :title => 'Feature page')])
+                             :title => 'Event page')])
       hl = EventsReporter.new(:page_provider => page_provider).headlines[0]
       assert_equal planned_date.to_t, hl.happened_at
     end

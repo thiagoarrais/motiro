@@ -107,9 +107,9 @@ class UserTest < Test::Unit::TestCase
     u = User.new(:login => 'john')
     attrs = { :name => 'TestPage', :text => '' }
 
-    assert  u.can_edit?(Page.new(attrs.merge(:editors => 'john')))
-    assert !u.can_edit?(Page.new(attrs.merge(:editors => 'eric')))
-    assert  u.can_edit?(Page.new(attrs.merge(:editors => '  ')))
+    assert  u.can_edit?(revise_brand_new_page(:editors => 'john'))
+    assert !u.can_edit?(revise_brand_new_page(:editors => 'eric'))
+    assert  u.can_edit?(revise_brand_new_page(:editors => '  '))
   end
   
   def test_original_author_can_always_edit_page
@@ -117,7 +117,7 @@ class UserTest < Test::Unit::TestCase
     john = users('john')
     bobs_page = pages('bob_and_erics_page')
     
-    bobs_page.editors = 'john'
+    bobs_page.revise(bob, now, :editors => 'john')
     assert john.can_edit?(bobs_page)
     assert bob.can_edit?(bobs_page)
   end

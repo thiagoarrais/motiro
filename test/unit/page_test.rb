@@ -96,10 +96,8 @@ class PageTest < Test::Unit::TestCase
     assert_equal PLACE_HOLDER_TITLE.t, Page.new.title
   end
   
-  def test_uses_place_holder_title_when_empty
-    page = Page.new(:title => '')
-    
-    assert_equal PLACE_HOLDER_TITLE.t, page.title    
+  def test_uses_place_holder_title_for_new_pages
+    assert_equal PLACE_HOLDER_TITLE.t, Page.new.title    
   end
   
   def test_uses_kind_based_title_when_revised_with_empty_title
@@ -115,9 +113,8 @@ class PageTest < Test::Unit::TestCase
   end
   
   def test_saves_default_title_based_on_page_kind_when_title_is_place_holder
-    common_page = Page.new
+    common_page = Page.new.revise(bob, now, :title => PLACE_HOLDER_TITLE.t)
     
-    common_page.save
     assert_equal 'Common page', common_page.title
     
     feature_page = revise_brand_new_page(:kind => 'feature')
