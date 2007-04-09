@@ -56,6 +56,7 @@ function tooglePasswordConfirmation(show) {
 	var action = show ? '#{url_for :controller => 'account', :action => 'signup'}' : '#{url_for :controller => 'account', :action => 'login'}' ;
             
 	document.getElementById("user_password_confirmation").disabled = !show;
+	document.getElementById("authentication_errors").style.display = state;
 	document.forms[0].action = action;
 
 	elem.style.display = state;
