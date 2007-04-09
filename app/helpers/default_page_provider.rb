@@ -20,8 +20,6 @@ class DefaultPageProvider
   def find_by_name_and_type(name, type)
     class_name = type || 'Page'
     page = class_name.constantize.new(:name => name)
-    page.text = WIKI_NOT_FOUND_TEXT
-    page.text = CONGRATS_TEXT if 'MainPage' == name
     return page
   end
 

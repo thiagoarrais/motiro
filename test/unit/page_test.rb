@@ -33,6 +33,14 @@ class PageTest < Test::Unit::TestCase
     assert Page.new(:name => 'FreshPage').is_open_to_all?
   end
   
+  def test_fresh_page_shows_default_text
+    assert_equal WIKI_NOT_FOUND_TEXT, Page.new(:name => 'FreshPage').text
+  end
+  
+  def test_default_text_for_main_page_shows_some_appraisal
+    assert_equal CONGRATS_TEXT, Page.new(:name => 'MainPage').text
+  end
+  
   def test_fresh_page_has_empty_editors_list
     assert_equal 0, Page.new(:name => 'AnotherFreshPage').editors.size
   end

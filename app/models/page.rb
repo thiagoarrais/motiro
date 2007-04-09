@@ -42,7 +42,9 @@ class Page < ActiveRecord::Base
   end
   
   def after_initialize
-    default('', :editors, :text, :name, :title)
+    default('', :editors, :name, :title)
+    default(CONGRATS_TEXT, :text) if 'MainPage' == self.name
+    default(WIKI_NOT_FOUND_TEXT, :text)
     default('common', :kind)
   end
   
