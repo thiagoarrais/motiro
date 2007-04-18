@@ -1,3 +1,8 @@
+# motiro.yml: Configuration for your Motiro installation
+# 
+# This is an YAML file, so leading whitespace does make a difference. Please
+# make sure to KEEP THE EXISTING WHITESPACE when uncommenting lines.
+
 # package_size
 #
 # How many headlines should be shown for each reporter?
@@ -20,24 +25,24 @@ update_interval: 40
 # Subversion specific settings
 subversion:
 
-# subversion/repo
-#
-# Tells the reporter where to find your project's repository
-# Default: https://svn.sourceforge.net/svnroot/motiro
+  # subversion/repo
+  #
+  # Tells the reporter where to find your project's repository
+  # Default: https://svn.sourceforge.net/svnroot/motiro
   repo: https://svn.sourceforge.net/svnroot/motiro
 
-# subversion/{user,password}
-#
-# Credentials to use for authentication with Subversion server. Uncomment and set
-# them only if your server requires authorization for read access. Motiro's
-# doesn't so they are commented out here. 
-#   user: harry
-#   password: harryssecret
+  # subversion/{user,password}
+  #
+  # Credentials to use for authentication with Subversion server. Uncomment and
+  # set them only if your server requires authorization for read access.
+  # Motiro's doesn't, so they are commented out here. 
+  # user: harry
+  # password: harryssecret
   
 # Darcs specific settings
 # Uncomment the lines below to activate darcs reporting
 # darcs:
 
-# darcs/repo
-# Tells the reporter where to find the project's central repository
-#   repo: http://motiro.sf.net/darcsrepos/trunk
+  # darcs/repo
+  # Tells the reporter where to find the project's central repository
+  # repo: http://motiro.sf.net/darcsrepos/trunk
