@@ -90,4 +90,13 @@ class WikiReporterTest < Test::Unit::TestCase
     end
   end
   
+  def test_respond_to_latest_headlines
+    FlexMock.use do |page_provider|
+      page_provider.should_receive(:find).zero_or_more_times.and_return([])
+
+      assert_equal 0, EventsReporter.new(:page_provider => page_provider).
+                        latest_headlines('something').size
+    end
+  end
+
 end

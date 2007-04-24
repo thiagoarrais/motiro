@@ -71,7 +71,7 @@ class DarcsReporterTest  < Test::Unit::TestCase
   def test_empty_change_log
     @darcs_changes = P_EMPTY
     
-    hls = @reporter.latest_headlines
+    hls = @reporter.latest_headlines('')
     
     assert_equal 0, hls.size
   end

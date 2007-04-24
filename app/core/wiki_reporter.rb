@@ -39,7 +39,7 @@ class WikiReporter < MotiroReporter
     klass.add(button_for_creating(klass.reporter_name.chop))
   end
 
-  def latest_headlines
+  def latest_headlines(rid='')
     to_headlines @page_provider.find(:all, find_opts.merge(
                                              :limit => @settings.package_size))
   end

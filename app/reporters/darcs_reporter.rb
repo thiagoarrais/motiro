@@ -27,7 +27,7 @@ class DarcsReporter < MotiroReporter
     @connection = conn
   end
   
-  def latest_headlines
+  def latest_headlines(rid='')
     @connection.pull
     parse_headlines(@connection.changes)
   end
