@@ -63,6 +63,7 @@ class Page < ActiveRecord::Base
       revisions.first.title = title_from_kind  
     end
     
+    write_attribute(:modified_at, self.modified_at)
     write_attribute(:name, self.name)
   end
   

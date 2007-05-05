@@ -252,7 +252,18 @@ class PageTest < Test::Unit::TestCase
     assert_equal date, page.happens_at
   end
   
-  #TODO it seems that event pages do not get their happens_at attribute revised
+  def test_writes_modification_time_to_own_table_too
+    written_page = revise_brand_new_page(:title => 'Modified page',
+                                         :kind => 'common',
+                                         :text => 'Modified now')
+    
+    assert_equal now, written_page.modified_at
+    
+    read_page = Page.find_by_modified_at_and_name(now, 'ModifiedPage')
+    
+    assert_not_nil read_page
+    assert_equal written_page, read_page
+  end
   
 private
   
