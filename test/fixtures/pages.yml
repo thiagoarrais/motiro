@@ -47,7 +47,6 @@ release_event:
   kind: event
   name: FourteenthRelease
   kind: event
-  type: Event
   happens_at: 2007-01-24
   modified_at: 2007-01-18 13:28:47
  

@@ -42,8 +42,7 @@ class WikiController < ApplicationController
   end
   
   def fetch_page
-    type = params[:page] ? params[:page][:type] : nil
-    @page = find_page(params[:page_name], type)
+    @page = find_page(params[:page_name])
   end
   
   def drop_crumbs
@@ -107,9 +106,9 @@ private
     end
   end
 
-  def find_page(name, type)
+  def find_page(name)
     @real_page_provider.find_by_name(name) ||
-    @default_page_provider.find_by_name_and_type(name, type)
+    @default_page_provider.find_by_name(name)
   end
     
 end

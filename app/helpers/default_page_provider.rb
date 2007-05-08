@@ -17,10 +17,8 @@
 
 class DefaultPageProvider
 
-  def find_by_name_and_type(name, type)
-    class_name = type || 'Page'
-    page = class_name.constantize.new(:name => name)
-    return page
+  def find_by_name(name)
+    Page.new(:name => name)
   end
 
 end
