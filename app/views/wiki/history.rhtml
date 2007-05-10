@@ -9,8 +9,9 @@
       </tr>
     </thead>
     <tbody>
-    <% i = 0 %>
-    <% @page.revisions.each do |rev| %>
+    <% i = @page.revisions.size %>
+    <% @page.revisions.reverse.each do |rev| %>
+      <% i -= 1 %>
       <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
         <td class="date"><%= rev.modified_at-%></td>
         <td class="relative"><%= rev.modified_at.relative_to_now %></td>
@@ -21,7 +22,6 @@
                                                     :page_name => @page.name,
                                                     :revision => i) -%></td>
       </tr>
-      <% i += 1 %>
     <% end %>
     </tbody>
   </table>

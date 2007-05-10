@@ -286,23 +286,23 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'a', :attributes => {
                  :href => @controller.url_for(
                    :controller => 'wiki', :action => 'show',
-                   :page_name => 'RevisedPage', :revision => '1')},
+                   :page_name => 'RevisedPage', :revision => '0')},
                :content => /The title will be changed/
     assert_tag :content => /The title was changed/
 
-    get :show, :page_name => 'RevisedPage', :revision => '1'
+    get :show, :page_name => 'RevisedPage', :revision => '0'
     assert_tag :content => /Some very boring text/
 
-    get :show, :page_name => 'RevisedPage', :revision => '0'
+    get :show, :page_name => 'RevisedPage', :revision => '1'
     assert_tag :content => /A little more exciting text/
   end
   
   def test_displays_old_text_when_showing_revisions
     get :show, :page_name => pages('changed_page').name, :revision => '0'
-    assert_tag :content => revisions('page_edition').text
+    assert_tag :content => revisions('page_creation').text
 
     get :show, :page_name => pages('changed_page').name, :revision => '1'
-    assert_tag :content => revisions('page_creation').text
+    assert_tag :content => revisions('page_edition').text
   end
   
 private

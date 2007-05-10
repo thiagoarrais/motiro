@@ -191,8 +191,8 @@ class PageTest < Test::Unit::TestCase
                 :editors => '')
     
     assert_equal 2, page.revisions.size
-    assert_equal 'Page revision number 2', page.revisions.first.text
-    assert_equal 'Page revision number 1', page.revisions.last.text
+    assert_equal 'Page revision number 2', page.revisions.last.text
+    assert_equal 'Page revision number 1', page.revisions.first.text
   end
   
   def test_copies_previous_editors_list_when_not_provided
@@ -209,8 +209,8 @@ class PageTest < Test::Unit::TestCase
   
   def test_most_recent_revision_comes_first
     page = pages('changed_page')
-    assert_equal revisions('page_creation'), page.revisions[1]
-    assert_equal revisions('page_edition'), page.revisions[0]
+    assert_equal revisions('page_creation'), page.revisions[0]
+    assert_equal revisions('page_edition'), page.revisions[1]
   end
   
   def test_records_original_author_for_pages_without_author
@@ -239,8 +239,8 @@ class PageTest < Test::Unit::TestCase
     event.revise(bob, now, :happens_at => new_time)
     
     assert_equal new_time, event.happens_at
-    assert_equal new_time, event.revisions.first.happens_at
-    assert_equal old_time, event.revisions.last.happens_at
+    assert_equal new_time, event.revisions.last.happens_at
+    assert_equal old_time, event.revisions.first.happens_at
   end
   
   def test_rbab

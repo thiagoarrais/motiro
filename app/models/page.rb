@@ -19,7 +19,7 @@ PLACE_HOLDER_TITLE = 'Insert page title here'
 
 class Page < ActiveRecord::Base
 
-  has_many :revisions, :order => 'modified_at DESC, id DESC'
+  has_many :revisions, :order => 'modified_at, id'
   
   def original_author
     oldest(:last_editor)
@@ -60,7 +60,7 @@ class Page < ActiveRecord::Base
   
   def before_save
     if title == PLACE_HOLDER_TITLE.t
-      revisions.first.title = title_from_kind  
+      revisions.last.title = title_from_kind  
     end
     
     write_attribute(:modified_at, self.modified_at)
@@ -86,20 +86,20 @@ class Page < ActiveRecord::Base
                  attrs['happens_at(3i)'].to_i)
     end
     unless revisions.size == 0 || original_author 
-      revisions.last.last_editor = author 
-      revisions.last.save
+      revisions.first.last_editor = author 
+      revisions.first.save
     end
     rev = Revision.new(:last_editor => author, :modified_at => time)
     rev.editors = if author.can_change_editors?(self)
       attrs[:editors]
     else
-      revisions.first.editors
+      revisions.last.editors
     end
     self.kind = attrs[:kind] if attrs[:kind]
     self.happens_at = attrs[:happens_at] if attrs[:happens_at]
     rev.kind, rev.happens_at = self.kind, self.happens_at
     rev.title, rev.text = attrs[:title], attrs[:text]
-    self.revisions.unshift(rev)
+    self.revisions << rev
     
     save
     self
@@ -132,14 +132,12 @@ private
   end
   
   def most_recent(attr)
-    revisions.first && revisions.first.send(attr)  
+    revisions.last && revisions.last.send(attr)  
   end
   
   def oldest(attr)
-    revisions.last && revisions.last.send(attr)  
+    revisions.first && revisions.first.send(attr)  
   end
-
-private
 
   def clean(text)
     text.tr('ãàáâäÃÀÁÂÄèéêëÈÉÊËĩìíîïĨÌÍÎÏÿýÝŸõòóôöÕÒÓÔÖũùúûüŨÙÚÛÜñńÑŃćçÇĆśŕĺźŚŔĹŹ',
