@@ -9,10 +9,8 @@
       </tr>
     </thead>
     <tbody>
-    <% i = @page.revisions.size %>
     <% @page.revisions.reverse.each do |rev| %>
-      <% i -= 1 %>
-      <tr class="<%= i % 2 == 0 ? 'odd' : 'even' -%>">
+      <tr class="<%= rev.position % 2 == 0 ? 'odd' : 'even' -%>">
         <td class="date"><%= rev.modified_at-%></td>
         <td class="relative"><%= rev.modified_at.relative_to_now %></td>
         <td><%= rev.last_editor.login %></td>
@@ -20,7 +18,7 @@
                             :href => server_url_for(:controller => 'wiki',
                                                     :action => 'show',
                                                     :page_name => @page.name,
-                                                    :revision => i) -%></td>
+                                                    :revision => rev.position) -%></td>
       </tr>
     <% end %>
     </tbody>

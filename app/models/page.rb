@@ -89,7 +89,8 @@ class Page < ActiveRecord::Base
       revisions.first.last_editor = author 
       revisions.first.save
     end
-    rev = Revision.new(:last_editor => author, :modified_at => time)
+    rev = Revision.new(:last_editor => author, :modified_at => time,
+                       :position => self.revisions.size)
     rev.editors = if author.can_change_editors?(self)
       attrs[:editors]
     else

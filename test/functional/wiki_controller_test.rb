@@ -305,6 +305,14 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :content => revisions('page_edition').text
   end
   
+  def test_shows_version_number_for_page_revisions
+    get :show, :page_name => pages('changed_page').name, :revision => '0'
+    assert_tag :content => 'Revision 0'
+
+    get :show, :page_name => pages('changed_page').name, :revision => '1'
+    assert_tag :content => 'Revision 1'
+  end
+  
 private
 
   def log_as(user_name)
