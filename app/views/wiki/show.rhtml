@@ -1,10 +1,7 @@
-<% pagetext(@page.title) do %>
+<% pagetext(@page.title, @page.respond_to?(:position) ? '(Revision %s)' / @page.position.to_s : nil) do %>
   <% cache(:controller=> 'wiki', :action => 'show',
            :page => @page.name, :locale_suffix => @locale,
            :revision => @page_revision_id) do %>
-    <% if @page.respond_to?(:position) %>
-      <div><%= 'Revision %s' / @page.position.to_s -%></div>
-    <% end %>
     <%= render :partial => 'properties_show' %>
     <%= @renderer.render_html(@page.text) %>
   <% end %>

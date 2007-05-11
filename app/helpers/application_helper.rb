@@ -36,7 +36,7 @@ module ApplicationHelper
                                                  :action => script_name) })
   end
   
-  def pagetext(title, &block)
+  def pagetext(title, revision=nil, &block)
     content = capture(&block)
     b = Builder::XmlMarkup.new
     xml = b.div(:class => 'pagetext') do
@@ -51,7 +51,11 @@ module ApplicationHelper
          b.a(last.keys.first,
              :href => url_for(last.values.first.update(:only_path => true)))
       end unless params[:context] == 'partial'
-      b.h1(title)
+      b.div(:class => 'page-title') do
+        b.span(title, :class => 'page-title')
+        b << ' '
+        b.span(revision, :id => 'revision') unless revision.nil?
+      end
       b << content
     end
     concat(xml, block.binding)
