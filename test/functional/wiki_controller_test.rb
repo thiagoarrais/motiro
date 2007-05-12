@@ -174,13 +174,15 @@ class WikiControllerTest < Test::Unit::TestCase
                                                  :value => 'Brand new page' }
   end
   
-  def test_shows_page_title_as_level_one_header
+  def test_shows_page_title_with_page_title_class
     non_matching_title_page = pages('non_matching_title_page')
     get :show, :page_name => pages('test_page').name
-    assert_tag :tag => 'h1', :content => 'Test page'
-    
+    assert_tag :tag => 'span', :content => 'Test page',
+               :attributes => { :class => 'page-title' }    
+
     get :show, :page_name => non_matching_title_page.name
-    assert_tag :tag => 'h1', :content => non_matching_title_page.title
+    assert_tag :tag => 'span', :content => non_matching_title_page.title,
+               :attributes => { :class => 'page-title' }    
   end
   
   def test_saves_last_editor_and_modification_date
@@ -307,10 +309,10 @@ class WikiControllerTest < Test::Unit::TestCase
   
   def test_shows_version_number_for_page_revisions
     get :show, :page_name => pages('changed_page').name, :revision => '0'
-    assert_tag :content => 'Revision 0'
+    assert_tag :content => '(Revision 0)'
 
     get :show, :page_name => pages('changed_page').name, :revision => '1'
-    assert_tag :content => 'Revision 1'
+    assert_tag :content => '(Revision 1)'
   end
   
 private

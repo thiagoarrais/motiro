@@ -57,7 +57,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     wait_for_page_to_load(2000)
     
     assert_equal "Revision details - #{commit_title} (Motiro)", get_title 
-    assert_element_present "//h1[text() = 'Revision r1']"
+    assert_element_present "//span[@class='page-title' and text() = 'Revision r1']"
     assert_text_present commit_title
     assert_text_present 'This project dir will hold everything needed to build and'
     assert_text_present 'deploy our project from source code'
