@@ -74,5 +74,6 @@
 # Older headlines and history pages
 'Author' => 'Autor',
 'Page history for %s' => 'Histórico da página %s',
-'Page history' => 'Histórico da página'
+'Page history' => 'Histórico da página',
+'(Revision %s)' => '(Revisão %s)'
 }
