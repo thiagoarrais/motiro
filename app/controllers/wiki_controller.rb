@@ -20,7 +20,7 @@ class WikiController < ApplicationController
   layout :choose_layout
 
   before_filter :login_required, :except => [:show, :last, :history]
-  before_filter :fetch_page, :drop_crumbs
+  before_filter :fetch_page, :fetch_revision
   before_filter :check_edit_access, :only => [:edit, :save]
   
   cache_sweeper :page_sweeper, :only =>  [:edit, :save]
@@ -43,16 +43,24 @@ class WikiController < ApplicationController
   
   def fetch_page
     @page = find_page(params[:page_name])
-  end
-  
-  def drop_crumbs
     unless 'common' == @page.kind 
       @crumbs <<{ @page.kind.pluralize.capitalize.t  =>
                   {:controller => 'report', :action => 'older',
                    :reporter => @page.kind.pluralize}}
     end
     @crumbs <<{ @page.title => {:controller => 'wiki', :action => 'show',
-                                :page_name => @page.name} }   
+                                :page_name => @page.name} }
+  end
+  
+  def fetch_revision
+    rev = params[:revision]
+    unless rev.nil?
+      @page = @page.revisions[rev.to_i]
+      @page_revision_id = @page.id
+      @crumbs << { 'Revision %s' / rev =>
+                   { :controller => 'wiki', :action => 'show',
+                     :page_name => @page.name, :revision => rev} }
+    end
   end
   
   def check_edit_access
@@ -79,13 +87,6 @@ class WikiController < ApplicationController
       really_save
     else
       redirect_to :controller => 'root', :action => 'index'
-    end
-  end
-  
-  def show
-    if params[:revision]
-      @page = @page.revisions[params[:revision].to_i]
-      @page_revision_id = @page.id
     end
   end
   

@@ -257,6 +257,13 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{test_page.name}' and text() = '#{test_page.title}']"
   end
   
+  def test_follows_breadcrumbs_trail_til_the_revision_number
+    page = pages('changed_page')
+    get :show, :page_name => page.name, :revision => '1'
+    
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/wiki/show/#{page.name}?revision=1' and text() = 'Revision 1']"
+  end
+
   def test_shows_breadcrumbs_trail_for_special_wiki_pages
     release_event = pages('release_event')
     get :show, :page_name => release_event.name
