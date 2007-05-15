@@ -7,7 +7,7 @@ page_creation:
   editors: ""
   title: This page has been created
   text: John entered some text here
-  position: 0
+  position: 1
 
 page_edition:
   id: 2
@@ -18,7 +18,7 @@ page_edition:
   editors: ""
   title: This page has been edited since creation
   text: Eric changed the text that John entered
-  position: 1
+  position: 2
 
 main_page_creation:
   id: 3

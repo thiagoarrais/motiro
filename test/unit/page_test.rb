@@ -269,12 +269,12 @@ class PageTest < Test::Unit::TestCase
     page = create_page_with_one_revision
     
     assert_equal 1, page.revisions.size
-    assert_equal 0, page.revisions[0].position
+    assert_equal 1, page.revisions[0].position
     
     page.revise(bob, now, :text => 'Modified text')
 
     assert_equal 2, page.revisions.size
-    assert_equal 1, page.revisions[1].position
+    assert_equal 2, page.revisions[1].position
   end
   
 private

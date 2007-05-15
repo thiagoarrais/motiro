@@ -55,7 +55,7 @@ class WikiController < ApplicationController
   def fetch_revision
     rev = params[:revision]
     unless rev.nil?
-      @page = @page.revisions[rev.to_i]
+      @page = @page.revisions[rev.to_i - 1]
       @page_revision_id = @page.id
       @crumbs << { 'Revision %s' / rev =>
                    { :controller => 'wiki', :action => 'show',
