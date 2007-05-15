@@ -324,8 +324,20 @@ class WikiControllerTest < Test::Unit::TestCase
 
   def tests_shows_number_of_available_revisions
     get :show, :page_name => pages('changed_page').name
-    
+
     assert_tag :content => 'Page history (2 revisions)'
+  end
+
+  def test_does_not_show_page_history_link_for_missing_or_edited_once_pages
+    get :show, :page_name => pages('test_page').name
+
+    assert_no_tag :content => 'Page history (1 revisions)'
+    assert_tag :content => /Page has no history yet/
+
+    get :show, :page_name => 'TestingBrandNewPage'
+
+    assert_no_tag :content => 'Page history (1 revisions)'
+    assert_no_tag :content => /Page has no history yet/
   end
 
 private
@@ -333,7 +345,7 @@ private
   def log_as(user_name)
     @request.session[:user] = users(user_name)
   end
-  
+
   def log_out
     @request.session[:user] = nil
   end
