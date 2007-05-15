@@ -18,15 +18,21 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class RevisionTest < Test::Unit::TestCase
-  fixtures :users
+  fixtures :users, :pages, :revisions
 
   def test_revisions_original_author_is_page_original_author
     p = revise_brand_new_page(:title => 'My Title', :text => 'Original content')
     p.revise(john, now, :text => 'Modified content')
-    
+
     assert_equal bob, p.original_author
     assert_equal bob, p.revisions.first.original_author
     assert_equal bob, p.revisions.last.original_author
+  end
+
+  def test_asking_revision_for_revisions_is_the_same_as_asking_parent_page
+    rev = revisions('page_creation')
+    
+    assert_equal rev.page.revisions, rev.revisions
   end
 
 end

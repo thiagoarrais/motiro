@@ -24,6 +24,7 @@
                      :page_name => @page.name } )%>
   <% end %>
   |
-  <%= link_to('Page history'.t, :controller => 'wiki', :action => 'history',
-                                :page_name => @page.name) -%>
+  <%= link_to('Page history (%d revisions)' / @page.revisions.size,
+              :controller => 'wiki', :action => 'history',
+              :page_name => @page.name) -%>
 </div>

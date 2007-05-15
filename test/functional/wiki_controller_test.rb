@@ -313,7 +313,7 @@ class WikiControllerTest < Test::Unit::TestCase
     get :show, :page_name => pages('changed_page').name, :revision => '2'
     assert_tag :content => revisions('page_edition').text
   end
-  
+
   def test_shows_version_number_for_page_revisions
     get :show, :page_name => pages('changed_page').name, :revision => '1'
     assert_tag :content => '(Revision 1)'
@@ -321,7 +321,13 @@ class WikiControllerTest < Test::Unit::TestCase
     get :show, :page_name => pages('changed_page').name, :revision => '2'
     assert_tag :content => '(Revision 2)'
   end
-  
+
+  def tests_shows_number_of_available_revisions
+    get :show, :page_name => pages('changed_page').name
+    
+    assert_tag :content => 'Page history (2 revisions)'
+  end
+
 private
 
   def log_as(user_name)
