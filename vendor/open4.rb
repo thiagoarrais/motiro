@@ -1,1 +1,1 @@
-require 'open4-0.9.1/lib/open4'
+require 'open4-0.9.3/lib/open4'
