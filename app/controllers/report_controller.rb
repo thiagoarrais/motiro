@@ -21,6 +21,7 @@ require_dependency 'core/chief_editor'
 
 class ReportController < ApplicationController
   
+  caches_page :rss
   layout :determine_layout
   
   before_filter do |me|

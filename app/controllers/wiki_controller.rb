@@ -23,7 +23,7 @@ class WikiController < ApplicationController
   before_filter :fetch_page, :fetch_revision
   before_filter :check_edit_access, :only => [:edit, :save]
   
-  cache_sweeper :page_sweeper, :only =>  [:edit, :save]
+  cache_sweeper :wiki_sweeper, :only =>  [:edit, :save]
 
   def choose_layout
     return if params[:context] == 'partial' || params[:action] == 'properties_edit'

@@ -68,7 +68,7 @@ private
   end
 
   def find_opts
-    { :conditions => "kind = '#{name.chop}'", :order => "#{column} DESC" }
+    { :conditions => "kind = '#{name.singularize}'", :order => "#{column} DESC" }
   end
   
   def to_headlines(pages)

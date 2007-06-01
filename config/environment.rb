@@ -31,7 +31,7 @@ Rails::Initializer.run do |config|
   config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"
 
   # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector
+  config.active_record.observers = :feed_observer
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc

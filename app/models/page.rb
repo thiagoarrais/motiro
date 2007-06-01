@@ -46,6 +46,10 @@ class Page < ActiveRecord::Base
       ('MainPage' == self.name ? CONGRATS_TEXT : WIKI_NOT_FOUND_TEXT)  
   end
   
+  def reported_by
+    self.kind.pluralize
+  end
+  
   def after_initialize
     default('', :name)
     default('common', :kind)
