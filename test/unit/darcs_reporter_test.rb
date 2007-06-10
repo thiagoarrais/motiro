@@ -41,7 +41,7 @@ class DarcsReporterTest  < Test::Unit::TestCase
     assert_equal 'thiago.arrais', hl.author
     assert_equal 'Some refactoring after the mess', hl.description
     assert_equal Time.utc(2006, 7, 17, 20, 9, 39), hl.happened_at
-    assert_equal '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz',
+    assert_equal '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da',
                  hl.rid
     assert_equal 'darcs', hl.reported_by
   end
@@ -49,7 +49,7 @@ class DarcsReporterTest  < Test::Unit::TestCase
   def test_fetches_headline_details
     @darcs_changes = P1
 
-    rid = '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da.gz'
+    rid = '20060717200939-49d33-c04fbb63892ae64cd96d1ad8f1ad2dd0a6e8e7da'
     hl = @reporter.headline(rid)
     
     assert_equal 'thiago.arrais', hl.author

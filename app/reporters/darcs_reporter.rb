@@ -71,7 +71,7 @@ private
     
     headline.description = description
     headline.happened_at = time_from_darcs_date(info.attributes['date'])
-    headline.rid =  info.attributes['hash']
+    headline.rid =  info.attributes['hash'].chomp('.gz')
     headline.reported_by = self.name
     
     parse_changes(headline, @connection.diff(headline.rid))
