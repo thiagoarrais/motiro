@@ -31,7 +31,7 @@ class ReportFeaturesTest < Test::Unit::TestCase
   end
 
   def test_links_to_feature_pages_from_rss_feed
-    get :rss, :reporter => 'features'
+    get :list, :reporter => 'features', :locale => 'en', :format => 'xml'
     assert_xml_element "//link[text() = 'http://test.host/wiki/show/ListLastModifiedFeatures']"
   end
   

@@ -43,8 +43,8 @@ class ReportControllerTest < Test::Unit::TestCase
   end
   
   def test_routes_localized_feeds
-    assert_routing('/feed/subversion/en-gb',
-                   :controller => 'report', :action => 'rss',
+    assert_routing('/report/subversion/en-gb.xml',
+                   :controller => 'report', :action => 'list', :format => 'xml',
                    :reporter => 'subversion', :locale => 'en-gb' )
   end
   
@@ -79,7 +79,7 @@ class ReportControllerTest < Test::Unit::TestCase
   def test_include_headline_date_on_guid
     gita = headlines('gita')
     
-    get :rss, { :reporter => gita.reported_by }
+    get :list, :reporter => gita.reported_by, :locale => 'en', :format => 'xml'
     
     assert_xml_element "//guid[contains(text(), '#{gita.happened_at.strftime('%Y%m%d%H%M%S')}')]"
   end
@@ -93,7 +93,7 @@ class ReportControllerTest < Test::Unit::TestCase
     
     assert_xml_element "//div[@id = 'crumbs' and contains(text(), 'You are here')]/a[@href = '/' and text() = 'Home']"
     assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/older/subversion' and text() = 'Latest news from Subversion']"
-    assert_xml_element "//div[@id = 'crumbs']/a[@href = '/report/subversion/#{svn_demo.rid}' and text() = '#{svn_demo.title}']"
+    assert_xml_element "//div[@id = 'crumbs']/a[@href = '#{@controller.url_for(:controller => 'report', :action => 'show', :reporter => 'subversion', :id => svn_demo.rid, :only_path => true)}' and text() = '#{svn_demo.title}']"
   end
 
   def test_shows_breadcrumbs_trail_for_older_news_page

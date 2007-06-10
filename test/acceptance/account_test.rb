@@ -116,7 +116,7 @@ class AccountAcceptanceTest < AcceptanceTestCase
   
   def test_returns_to_previous_page_after_logged_in
     gita = headlines('gita')
-    open "/report/#{gita.reported_by}/#{gita.rid}"
+    open "/show/#{gita.reported_by}/#{gita.rid}"
     
     assert_text_present gita.description
     
@@ -125,7 +125,7 @@ class AccountAcceptanceTest < AcceptanceTestCase
     click 'login'
     wait_for_page_to_load 1500
     
-    assert_location "exact:http://localhost:3000/report/#{gita.reported_by}/#{gita.rid}"
+    assert_location "exact:http://localhost:3000/show/#{gita.reported_by}/#{gita.rid}"
     assert_text_present gita.description
   end
   
@@ -162,7 +162,7 @@ class AccountAcceptanceTest < AcceptanceTestCase
   def test_login_failure_shows_error_on_other_pages
     rid = headlines('gita').rid
     check_if_login_failure_shows_error_on_page(
-      "/report/subversion/#{rid}",
+      "/show/subversion/#{rid}",
       "Revision #{rid}")
   end
   

@@ -22,7 +22,7 @@ class EventsAcceptanceTest < AcceptanceTestCase
   fixtures :users, :headlines
   
   def test_no_error_on_development_mode
-    open '/report/events?locale=en'
+    open '/report/events/en'
     assert_text_present 'Scheduled events'
   end
   

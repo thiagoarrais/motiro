@@ -1,9 +1,7 @@
 <div class='channel-title'>
   <%= link_to( image_tag('rss.png', :border => 0, :class => 'rss'),
-               { :controller => 'report',
-                 :action => 'rss',
-                 :reporter => @name,
-                 :locale => @locale },
+               { :controller => 'report', :action => 'list', :reporter => @name,
+                 :format => 'xml', :locale => @locale },
                :class => 'feed' )
   %>
   <p><%= h(@reporter.channel_title) %></p>

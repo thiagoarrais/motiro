@@ -25,18 +25,13 @@ ActionController::Routing::Routes.draw do |map|
               :controller => 'report',
               :action => 'older'
 
-  map.connect 'report/:reporter',
-              :controller => 'report',
-              :action => 'list'
-  
-  map.connect 'report/:reporter/:id',
-              :controller => 'report', :action => 'show'
-
-  map.connect 'feed/:reporter/:locale',
-              :controller => 'report',
-              :action => 'rss',
-              :defaults => locale_defaults
+  map.with_options(:controller => 'report', :action => 'list')  do |report|
+    report.connect 'report/:reporter/:locale'
+    report.connect 'report/:reporter/:locale.:format'
+  end
               
+  map.connect 'show/:reporter/:id', :controller => 'report', :action => 'show'
+  
   map.connect 'wiki/new/:kind/:locale',
               :controller => 'wiki',
               :action => 'new',

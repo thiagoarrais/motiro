@@ -39,7 +39,7 @@ class ReportSubversionTest < Test::Unit::TestCase
     
     @repo.mkdir('myproject', commit_msg)
     
-    get :rss, :reporter => 'subversion'
+    get :list, :reporter => 'subversion', :locale => 'en', :format => 'xml'
     assert_xml_element("//rss/channel/title[text() = 'Motiro - Subversion']")
     assert_xml_element("//rss/channel/generator[text() = 'Motiro']")
     assert_xml_element("//rss/channel/item/title[text() = '#{commit_title}']")
@@ -56,7 +56,7 @@ class ReportSubversionTest < Test::Unit::TestCase
     
     @repo.mkdir('myproject', commit_msg)
     
-    get :rss, :reporter => 'subversion'
+    get :list, :reporter => 'subversion', :locale => 'en', :format => 'xml'
     assert_no_xml_element("//description[contains(text(), 'pagetext')]")
   end
 
@@ -67,11 +67,11 @@ class ReportSubversionTest < Test::Unit::TestCase
     
     @repo.mkdir('myproject', commit_msg)
     
-    get :rss, :reporter => 'subversion', :locale => 'en'
+    get :list, :reporter => 'subversion', :locale => 'en', :format => 'xml'
     assert_xml_element("//rss/channel/item/title[text() = '#{english_msg}']")
     assert_no_xml_element("//rss/channel/item/title[text() = '#{portuguese_msg}']")
 
-    get :rss, :reporter => 'subversion', :locale => 'pt-br'
+    get :list, :reporter => 'subversion', :locale => 'pt-br', :format => 'xml'
     assert_xml_element("//rss/channel/item/title[text() = '#{portuguese_msg}']")
     assert_no_xml_element("//rss/channel/item/title[text() = '#{english_msg}']")
   end

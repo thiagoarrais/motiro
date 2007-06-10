@@ -21,7 +21,6 @@ require_dependency 'core/chief_editor'
 
 class ReportController < ApplicationController
   
-  caches_page :rss
   layout :determine_layout
   
   before_filter do |me|
@@ -31,12 +30,6 @@ class ReportController < ApplicationController
     end
   end
 
-  before_filter(:only => [:rss, :list]) do |me|
-    me.instance_eval do
-      @headlines = @chief_editor.latest_news_from @name
-    end
-  end
-  
   before_filter :drop_crumbs
   
   def initialize(chief_editor=ChiefEditor.new)
@@ -77,4 +70,15 @@ class ReportController < ApplicationController
                   :reporter => @name, :id => @headline.rid}}
   end
   
+  def list
+    @headlines = @chief_editor.latest_news_from(@name)
+    
+    respond_to do |format|
+      format.html
+      format.xml { render :action => 'rss' }
+    end
+    
+    cache_page(response.body, params)
+  end
+
 end

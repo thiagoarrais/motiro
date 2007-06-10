@@ -26,7 +26,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     @repo.mkdir('myproject', commit_msg)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     assert_text_present @repo.username
     assert_text_present commit_msg
   end
@@ -51,7 +51,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     @repo.mkdir(dir_name, commit_msg)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     assert_text_present commit_title
     click "//a[text() = \"#{commit_title}\"]"
     wait_for_page_to_load(2000)
@@ -76,7 +76,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     @repo.add_file(filename, file_contents)
     @repo.commit(commit_title)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(2000)
     
@@ -95,7 +95,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     @repo.put_file('a_file.txt', "These are the modified file contents\n" )
     @repo.commit(commit_title)
     
-    open '/report/subversion'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(1500)
     
@@ -108,7 +108,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     @repo.mkdir('projectroot', commit_msg)
     
-    open '/report/subversion/r104?locale=en'
+    open '/show/subversion/r104?locale=en'
     assert_equal "Motiro: Welcome", get_title
     assert_text "//div[@id='notice']", 'The article r104 from the Subversion reporter could not be found'
   end
@@ -118,7 +118,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     
     @repo.mkdir('trunk', commit_title)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(1000)
     
@@ -139,7 +139,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'files copied'
     @repo.copy('file_number_one.txt', 'file_number_two.txt', commit_title)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(2000)
     assert_text_present "Changes to file_number_two.txt"
@@ -153,7 +153,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'renamed file'
     @repo.move('file_number_one.txt', 'file_number_two.txt', commit_title)
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(2000)
     
@@ -170,7 +170,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added two files'
     @repo.commit(commit_title)
     
-    open '/report/subversion'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(1000)
     
@@ -191,7 +191,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added alive.txt'
     @repo.commit(commit_title)
     
-    open '/report/subversion'
+    open '/report/subversion/en'
     click "//a[text() = '#{commit_title}']"
     wait_for_page_to_load(1000)
     
@@ -209,7 +209,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added daughter.txt'
     @repo.commit(commit_title)
     
-    open '/report/subversion/r1?locale=en'
+    open '/show/subversion/r1?locale=en'
     
     assert_equal "Revision details - #{commit_title} (Motiro)", get_title 
     assert_text_present 'Revision r1'
@@ -233,12 +233,12 @@ class SubversionAcceptanceTest < SeleniumTestCase
     commit_title = 'added daughter.txt'
     @repo.commit(commit_title)
     
-    open '/report/subversion/r30?locale=en'
+    open '/show/subversion/r30?locale=en'
     
     assert_equal "Motiro: Welcome", get_title
     assert_text "//div[@id='notice']", 'The article r30 from the Subversion reporter could not be found'
 
-    open '/report/subversion/r30?locale=pt-BR'
+    open '/show/subversion/r30?locale=pt-BR'
     
     assert_text "//div[@id='notice']", /o foi poss/
     assert_text "//div[@id='notice']", /vel encontrar o artigo r30 do rep/
@@ -259,7 +259,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
 
     @repo.commit(commit_comment)
     
-    open '/report/subversion?locale=pt-BR'
+    open '/report/subversion/pt-BR'
 
     assert_text_not_present('lyrics')
 
@@ -271,7 +271,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
     assert_text_not_present('this')
     assert_text_not_present('originally released')
     
-    open '/report/subversion?locale=en'
+    open '/report/subversion/en'
     
     assert_text_not_present('letras')
     assert_text_not_present('musica')
@@ -293,7 +293,7 @@ class SubversionAcceptanceTest < SeleniumTestCase
                  
     @repo.mkdir('wikitest', commit_msg)
 
-    open '/report/subversion'
+    open '/report/subversion/en'
     click "//a[text() = 'This is the comment title']"
     wait_for_page_to_load(2000)
     
