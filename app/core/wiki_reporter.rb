@@ -76,7 +76,7 @@ private
       Headline.new(:rid => page.name,
                    :author => page.last_editor ? page.last_editor.login : DEFAULT_AUTHOR,
                    :happened_at => extract_happened_at(page) || DEFAULT_TIME,
-                   :description => page.title)
+                   :description => page.title + "\n\n" + page.text)
     end
   end
 

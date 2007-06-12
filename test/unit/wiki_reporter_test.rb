@@ -90,6 +90,19 @@ class WikiReporterTest < Test::Unit::TestCase
     end
   end
   
+  def test_provides_includes_page_text_in_headline_description
+    FlexMock.use do |page_provider|
+      page_provider.should_receive(:find).
+        zero_or_more_times.
+        and_return([Page.new(:name => 'SomePage').revise(bob, now, 
+                             :title => 'Some title',
+                             :text => 'Here goes some text for some wiki page')])
+      hl = FeaturesReporter.new(:page_provider => page_provider).headlines[0]
+      assert_equal "Some title\n\nHere goes some text for some wiki page", hl.description
+      assert_equal 'Some title', hl.title
+    end
+  end
+
   def test_respond_to_latest_headlines
     FlexMock.use do |page_provider|
       page_provider.should_receive(:find).zero_or_more_times.and_return([])
