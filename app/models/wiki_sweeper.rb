@@ -21,6 +21,8 @@ class WikiSweeper < ActionController::Caching::Sweeper
   
   def after_save(page)
     expire_fragment(/wiki\/show.*?#{page.name}/)
+    cache_dir = ActionController::Base.page_cache_directory
+    FileUtils.rm_r(Dir.glob(cache_dir+"/wiki/history/#{page.name}*")) rescue Errno::ENOENT
   end
 
 end

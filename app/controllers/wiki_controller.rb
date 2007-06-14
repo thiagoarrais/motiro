@@ -95,7 +95,8 @@ class WikiController < ApplicationController
   def history
     respond_to do |format|
       format.html
-      format.xml { render(:action => 'page_feed') }
+      format.xml { render(:action => 'page_feed')
+                   cache_page}
     end
   end
   
