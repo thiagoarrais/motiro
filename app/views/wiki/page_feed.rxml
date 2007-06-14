@@ -3,21 +3,22 @@ xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
 xml.rss 'version' => '2.0',
         'xmlns:dc' => 'http://purl.org/dc/elements/1.1/' do
     xml.channel do
-    	xml.title "Changes to %s" / @page.name
-    	xml.description
-    	xml.link server_url_for(:controller => 'root', :action => 'index')
-    	xml.language current_locale
-    	xml.generator 'Motiro'
-    	xml.pubDate @page.modified_at.to_s(:rfc822)
-    	xml.ttl '60'
+      xml.title "Changes to %s" / @page.name
+      xml.description
+      xml.link server_url_for(:controller => 'root', :action => 'index')
+      xml.language current_locale
+      xml.generator 'Motiro'
+      xml.pubDate @page.modified_at.to_s(:rfc822)
+      xml.ttl '60'
       @page.revisions.reverse[0..10].each do |rev|
-    	    xml.item do
-    	    	xml.title h(rev.title)
-    	        xml.description @renderer.render_html(rev.text)
-    	        xml.pubDate h(rev.modified_at.to_s(:rfc822))
-    	        xml.dc :creator, h(rev.last_editor.login)
-    	        xml.guid server_url_for(:action => 'show', :revision => rev.position) 
-    	    end
+        xml.item do
+          xml.title h(rev.title)
+          xml.description @renderer.render_html(rev.text)
+          xml.pubDate h(rev.modified_at.to_s(:rfc822))
+          xml.dc :creator, h(rev.last_editor.login)
+          xml.guid server_url_for(:action => 'show', :page_name => @page.name,
+                                  :revision => rev.position) 
+        end
     	end
     end
 end

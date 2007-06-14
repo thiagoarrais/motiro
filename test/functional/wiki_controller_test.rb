@@ -342,6 +342,27 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_no_tag :content => 'Page history (1 revisions)'
     assert_no_tag :content => /Page has no history yet/
   end
+  
+  def test_page_history_translates_and_renders_page_contents
+    page_name = pages('multilanguage_page').name
+    get :history, :page_name => page_name, :locale => 'en', :format => 'xml'
+
+    assert_xml_element "//item/description[contains(text(), 'This is the first English version')]"
+    assert_xml_element "//item/description[contains(text(), 'Here is some &lt;b&gt;bold&lt;/b&gt; text')]"
+    assert_xml_element "//item/description[contains(text(), 'This is the second English version')]"
+
+    get :history, :page_name => page_name, :locale => 'pt-br', :format => 'xml'
+    assert_xml_element "//item/description[contains(text(), 'Esta &#233; a primeira vers&#227;o em portugu&#234;s')]"
+    assert_xml_element "//item/description[contains(text(), 'Esta &#233; a segunda vers&#227;o em portugu&#234;s')]"
+  end
+  
+  def test_history_links_to_page_revision
+    page_name = pages('changed_page').name
+    get :history, :page_name => page_name, :format => 'xml'
+    
+    assert_xml_element "//item/guid[text() = '#{@controller.url_for(:action => 'show', :page_name => page_name, :revision => '2')}'']"
+    assert_xml_element "//item/guid[text() = '#{@controller.url_for(:action => 'show', :page_name => page_name, :revision => '1')}'']"
+  end
 
 private
 

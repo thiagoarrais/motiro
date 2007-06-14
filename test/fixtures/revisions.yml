@@ -133,4 +133,39 @@ release_event_creation:
   text: The 0.6.1 release will be a bug fixing one and will introduce editable
         event pages. This is included as part of the everything is a wiki page
         motto.
- 
+
+first_multilanguage_revision:
+  id: 15
+  page_id: 12
+  kind: common
+  modified_at: 2007-06-14 12:03:24
+  last_editor_id: 1000004 #john
+  editors: ""
+  title: Multi-language page
+  text: This is the first English version
+        
+        Here is some '''bold''' text.
+        
+        --- pt-br ------------
+        
+        Esta é a primeira versão em português
+        
+        Aqui está um pouco de texto em '''negrito'''.
+
+second_multilanguage_revision:
+  id: 16
+  page_id: 12
+  kind: common
+  modified_at: 2007-06-14 12:06:38
+  last_editor_id: 1000004 #john
+  editors: ""
+  title: Multi-language page
+  text: This is the second English version
+        
+        Here is some '''bold''' text.
+        
+        --- pt-br ------------
+        
+        Esta é a segunda versão em português
+        
+        Aqui está um pouco de texto em '''negrito'''.
