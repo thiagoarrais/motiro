@@ -26,7 +26,9 @@ class WikiController < ApplicationController
   cache_sweeper :wiki_sweeper, :only =>  [:edit, :save]
 
   def choose_layout
-    return if params[:context] == 'partial' || params[:action] == 'properties_edit'
+    return if params[:context] == 'partial' ||
+              params[:action] == 'properties_edit' ||
+              params[:format] == 'xml'
     return 'application'
   end
     
@@ -87,6 +89,13 @@ class WikiController < ApplicationController
       really_save
     else
       redirect_to :controller => 'root', :action => 'index'
+    end
+  end
+  
+  def history
+    respond_to do |format|
+      format.html
+      format.xml { render(:action => 'page_feed') }
     end
   end
   
