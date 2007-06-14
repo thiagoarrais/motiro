@@ -21,7 +21,6 @@ require_dependency 'core/chief_editor'
 
 class ReportController < ApplicationController
   
-  caches_page :list
   layout :determine_layout
   
   before_filter do |me|
@@ -76,7 +75,8 @@ class ReportController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.xml { render :action => 'rss' }
+      format.xml { render :action => 'rss'
+                   cache_page }
     end
   end
 
