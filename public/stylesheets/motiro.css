@@ -96,6 +96,11 @@ div.channel-body-outer {
     background: #a0ccee;
 }
 
+div.pagetext a.rss {
+    float: right;
+    margin: .3em;
+}
+
 a.feed {
     display: block;
     float: right;

@@ -40,6 +40,13 @@ module ApplicationHelper
     content = capture(&block)
     b = Builder::XmlMarkup.new
     xml = b.div(:class => 'pagetext') do
+      b.a(:href => url_for(:controller => 'wiki', :action => 'history',
+                           :page_name => @page.name, :locale => @locale,
+                           :format => 'xml'),
+          :class => 'rss') do
+        b << image_tag("rss.png", :border => 0, :class => 'rss',
+                                  :alt => 'Changes to %s' / @page.name) 
+      end unless @page.nil?
       b.div(:id => 'crumbs') do
          b.text!('You are here: '.t)
          last = @crumbs.delete_at(@crumbs.length - 1)
