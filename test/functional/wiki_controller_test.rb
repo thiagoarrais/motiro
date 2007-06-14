@@ -40,11 +40,14 @@ class WikiControllerTest < Test::Unit::TestCase
                                           :page_name => 'MainPage')
   end
 
-  def test_routes_to_specified_locale_page
-    assert_routing('/wiki/show/MainPage/en', :controller => 'wiki',
-                                             :action => 'show',
-                                             :page_name => 'MainPage',
-                                             :locale => 'en')
+  def test_routes_to_locale_extracted_from_page_name
+    assert_routing('/wiki/show/MyGoodPage-en-gb',
+                  {:controller => 'wiki', :action => 'show',
+                   :page_name => 'MyGoodPage', :locale => 'en-gb'}) 
+    assert_routing('/wiki/history/MyGoodPage-pt-br.xml',
+                  {:controller => 'wiki', :action => 'history',
+                   :page_name => 'MyGoodPage', :locale => 'pt-br',
+                   :format => 'xml'}) 
   end
   
   def test_blocks_edition
