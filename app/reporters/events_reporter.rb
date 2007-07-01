@@ -23,6 +23,4 @@ class EventsReporter < WikiReporter
 
   def column; 'happens_at'; end
   
-  def extract_happened_at(page); page.happens_at.to_t; end
-
 end

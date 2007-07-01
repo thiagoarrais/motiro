@@ -83,6 +83,7 @@ class WikiReporterTest < Test::Unit::TestCase
       page_provider.should_receive(:find).
         zero_or_more_times.
         and_return([Page.new(:name => 'EventPage').revise(bob, now,
+                             :kind => 'event',
                              :happens_at => planned_date,
                              :title => 'Event page')])
       hl = EventsReporter.new(:page_provider => page_provider).headlines[0]
@@ -90,7 +91,7 @@ class WikiReporterTest < Test::Unit::TestCase
     end
   end
   
-  def test_provides_includes_page_text_in_headline_description
+  def test_includes_page_text_in_headline_description
     FlexMock.use do |page_provider|
       page_provider.should_receive(:find).
         zero_or_more_times.

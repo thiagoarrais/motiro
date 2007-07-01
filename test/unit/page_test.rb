@@ -277,6 +277,52 @@ class PageTest < Test::Unit::TestCase
     assert_equal 2, page.revisions[1].position
   end
   
+  def test_converts_to_headline
+    page = revise_brand_new_page(:title => 'My page',
+                                 :kind => 'common',
+                                 :text => "This is my page and it is written \n" +
+                                          "in English, German and \n" +
+                                          "Portuguese\n\n" +
+                                          "--- de ------\n\n" +
+                                          "Dieses ist meine Seite und es ist \n" +
+                                          "auf Englisch, Deutsch und Portugiese \n " +
+                                          "geschrieben\n\n" +
+                                          "--- pt-br ------\n\n" +
+                                          "Esta é minha página e está escrita \n" +
+                                          "em inglês, alemão e português")
+    headline = page.to_headline
+    assert_equal page.last_editor.login, headline.author
+    assert_equal page.modified_at, headline.happened_at
+    assert_equal "My page\n\n" + 
+                 "This is my page and it is written \n" +
+                 "in English, German and \n" +
+                 "Portuguese\n\n" +
+                 "--- de ---\n\n" +
+                 "My page\n\n" +
+                 "Dieses ist meine Seite und es ist \n" +
+                 "auf Englisch, Deutsch und Portugiese \n " +
+                 "geschrieben\n\n" +
+                 "--- pt-br ---\n\n" +
+                 "My page\n\n" +
+                 "Esta é minha página e está escrita \n" +
+                 "em inglês, alemão e português", headline[:description]
+  end
+  
+  def test_event_page_uses_planned_date_as_headline_date
+    event_date = Date.new(2007, 7, 1)
+    event = revise_brand_new_page(:title => 'My event',
+                                  :kind => 'event',
+                                  :happens_at => event_date, 
+                                  :text => "Let's get together and feel alright")
+    assert_equal event_date.to_t, event.to_headline.happened_at
+  end
+  
+  def test_pages_without_editor_or_modification_time_are_reported_as_modified_by_someone_at_some_time
+    headline = Page.new(:name => 'VeryOldPage', :kind => 'common').to_headline
+    assert_equal DEFAULT_AUTHOR, headline.author
+    assert_equal DEFAULT_TIME, headline.happened_at
+  end
+  
 private
   
   def create_page_with_one_revision

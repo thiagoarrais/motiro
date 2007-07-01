@@ -16,13 +16,14 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 require File.dirname(__FILE__) + '/../test_helper'
+require 'report_controller'
 
 # Re-raise errors caught by the controller.
 class ReportController; def rescue_action(e) raise e end; end
 
 class ReportFeaturesTest < Test::Unit::TestCase
   
-  fixtures :pages
+  fixtures :pages, :revisions
 
   def setup
     @controller = ReportController.new
@@ -33,6 +34,11 @@ class ReportFeaturesTest < Test::Unit::TestCase
   def test_links_to_feature_pages_from_rss_feed
     get :list, :reporter => 'features', :locale => 'en', :format => 'xml'
     assert_xml_element "//link[text() = 'http://test.host/wiki/show/ListLastModifiedFeatures']"
+  end
+  
+  def test_shows_title_for_second_language
+    get :older, :reporter => 'features', :locale => 'pt-br'
+    assert_tag :content => /Translated page/
   end
   
 end

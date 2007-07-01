@@ -16,6 +16,8 @@
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 PLACE_HOLDER_TITLE = 'Insert page title here'
+DEFAULT_AUTHOR = 'someone'
+DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
 
 class Page < ActiveRecord::Base
 
@@ -110,7 +112,22 @@ class Page < ActiveRecord::Base
     self
   end
   
+  def to_headline
+    #TODO (for 0.7): headlines and pages should _really_ be the same thing
+    #                reporters should write ordinary wiki pages
+    Headline.new(:rid => name,
+                 :author => last_editor ? last_editor.login : DEFAULT_AUTHOR,
+                 :happened_at => (kind == 'event' ? happens_at.to_t : modified_at) || DEFAULT_TIME,
+                 :description => inject_title_into_text)
+  end
+  
 private
+  
+  def inject_title_into_text
+    title + "\n\n" +
+    text.gsub(/^--- (\S+) ----*[ \t\f]*\r?\n/,
+              "--- \\1 ---\n\n#{title}\n")
+  end
   
   def name_from_title
     sequence(Page, drop_non_alpha(clean(title)).downcase.gsub(/ /, '_').camelize, 'name')

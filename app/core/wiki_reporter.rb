@@ -18,9 +18,6 @@
 require 'core/reporter'
 require 'core/settings'
 
-DEFAULT_AUTHOR = 'someone'
-DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
-
 class WikiReporter < MotiroReporter
 
   caching :off
@@ -40,12 +37,13 @@ class WikiReporter < MotiroReporter
   end
 
   def latest_headlines(rid='')
-    to_headlines @page_provider.find(:all, find_opts.merge(
-                                             :limit => @settings.package_size))
+    @page_provider.find(:all, find_opts.merge(
+                                :limit => @settings.package_size)).
+      map {|p| p.to_headline}
   end
   
   def headlines
-    to_headlines @page_provider.find(:all, find_opts)
+    @page_provider.find(:all, find_opts).map {|p| p.to_headline}
   end
   
   def params_for(page_name)
@@ -53,8 +51,6 @@ class WikiReporter < MotiroReporter
   end
   
   def column; 'modified_at'; end
-  
-  def extract_happened_at(page); page.modified_at; end
   
 private
 
@@ -71,13 +67,4 @@ private
     { :conditions => "kind = '#{name.singularize}'", :order => "#{column} DESC" }
   end
   
-  def to_headlines(pages)
-    pages.map do |page|
-      Headline.new(:rid => page.name,
-                   :author => page.last_editor ? page.last_editor.login : DEFAULT_AUTHOR,
-                   :happened_at => extract_happened_at(page) || DEFAULT_TIME,
-                   :description => page.title + "\n\n" + page.text)
-    end
-  end
-
 end
