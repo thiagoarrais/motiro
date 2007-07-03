@@ -49,7 +49,7 @@ unless MOTIRO_VERSION.include? 'dev'
     s.platform = Gem::Platform::RUBY 
     s.executables = ['motiro']
 
-    s.add_dependency("rails", "= 1.2.2")
+    s.add_dependency("rails", "= 1.2.3")
     s.add_dependency("mediacloth", ">= 0.0.2")
     s.add_dependency("daemons", ">= 1.0.4")
     s.add_dependency("Platform", ">= 0.4.0")
@@ -58,6 +58,7 @@ unless MOTIRO_VERSION.include? 'dev'
     s.add_dependency("sqlite3-ruby", ">= 1.2.1")
     s.add_dependency("flexmock", ">= 0.5")
     s.add_dependency("rails-app-installer", "= 0.2.0")
+    s.add_dependency("diff-lcs", ">= 1.1.2")
   end
 
   packaging = Rake::GemPackageTask.new(spec) do |p|
