@@ -28,33 +28,35 @@ class Revision < ActiveRecord::Base
   end
   
   def diff(rev_num)
-    #position numbers are one-based, but we want zero-based when indexing the
-    #page revisions
-    other = page.revisions[rev_num - 1]
-    sdiffs = self.text.split($/).sdiff(other.text.split($/))
+    #position numbers are 1-based, but we want 0-based when indexing revisions
+    sdiffs = text.split($/).sdiff(page.revisions[rev_num - 1].text.split($/))
     chunks = []
-    chunk = Chunk.new
+    last_action = chunk = nil
     sdiffs.each do |sdiff|
+      if last_action.nil? || sdiff.action != last_action 
+        chunk = Chunk.new('=' == sdiff.action ? :unchanged : :modification)
+        chunks << chunk
+      end
+      last_action = sdiff.action
       chunk << Line.new(sdiff.old_element, sdiff.new_element)
     end
-    chunks << chunk
+
+    chunks
   end
 
 end
 
 class Chunk
-  attr_reader :lines
+  attr_reader :lines, :action
+  
+  def initialize(action)
+    @action = action
+  end
   
   def unchanged?
-    #TODO we're cheating here a little, of course
-    false
+    :unchanged == action
   end
 
-  def action
-    #TODO and here again... >:->
-    :modification
-  end
-  
   def <<(line)
     @lines ||= []
     @lines << line
