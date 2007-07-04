@@ -27,6 +27,9 @@ class Revision < ActiveRecord::Base
     define_method(method) { page.send(method) }
   end
   
+  LCS_ACTION_TO_SYMBOL = {'=' => :unchanged, '!' => :modification,
+                          '-' => :removal, '+' => :addition}
+  
   def diff(rev_num)
     #position numbers are 1-based, but we want 0-based when indexing revisions
     sdiffs = text.split($/).sdiff(page.revisions[rev_num - 1].text.split($/))
@@ -34,7 +37,7 @@ class Revision < ActiveRecord::Base
     last_action = chunk = nil
     sdiffs.each do |sdiff|
       if chunk_break_needed(last_action, sdiff.action) 
-        chunk = Chunk.new('=' == sdiff.action ? :unchanged : :modification)
+        chunk = Chunk.new(LCS_ACTION_TO_SYMBOL[sdiff.action])
         chunks << chunk
       end
       last_action = sdiff.action

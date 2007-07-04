@@ -136,5 +136,47 @@ class RevisionTest < Test::Unit::TestCase
     assert_nil chunks.first.lines.last.modified_text
     assert_equal 'And this one won\'t be changed', chunks.last.lines.first.original_text
   end
+  
+  def test_diffs_addition_only_chunk
+    page = revise_brand_new_page(:title => 'A good page',
+                                 :text => "This is the first line\n" +
+                                          "And this is the second one")
+    page.revise(bob, now, :title => 'A good page',
+                          :text => "This is the first line\n" +
+                                   "And this is the second one\n" +
+                                   "But it is not the last\n" +
+                                   "Because someone added other two")
+
+    chunks = page.revisions[0].diff(2)
+    assert_equal 2, chunks.size
+    assert  chunks.first.unchanged?
+    assert !chunks.last.unchanged?
+    assert_equal :addition, chunks.last.action
+    assert_equal 2, chunks.first.lines.size
+    assert_equal 2, chunks.last.lines.size
+    assert_nil chunks.last.lines.first.original_text
+    assert_equal 'But it is not the last', chunks.last.lines.first.modified_text
+  end
+
+  def test_diffs_removal_only_chunk
+    page = revise_brand_new_page(:title => 'A good page',
+                                 :text => "This is the first line\n" +
+                                          "This is the second line\n" +
+                                          "And this is the last one")
+    page.revise(bob, now, :title => 'A good page',
+                          :text => "This is the first line\n" +
+                                   "And this is the last one")
+
+    chunks = page.revisions[0].diff(2)
+    assert_equal 3, chunks.size
+    assert  chunks[0].unchanged?
+    assert !chunks[1].unchanged?
+    assert  chunks[2].unchanged?
+    chunk = chunks[1]
+    assert_equal :removal, chunk.action
+    assert_equal 1, chunk.lines.size
+    assert_equal 'This is the second line', chunk.lines.first.original_text
+    assert_nil chunk.lines.first.modified_text
+  end
 
 end
