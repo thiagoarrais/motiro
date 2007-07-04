@@ -34,5 +34,20 @@ class RevisionTest < Test::Unit::TestCase
     
     assert_equal rev.page.revisions, rev.revisions
   end
+  
+  def test_diffs_one_line_modification
+    fst_rev = pages('changed_page').revisions[0]
+    snd_rev = pages('changed_page').revisions[1]
+    
+    change_chunks = fst_rev.diff(2)
+    assert_equal 1, change_chunks.size
+    chunk = change_chunks.first
+    assert !chunk.unchanged?
+    assert_equal :modification, chunk.action
+    assert_equal 1, chunk.lines.size
+    line = chunk.lines.first
+    assert_equal fst_rev.text, line.original_text
+    assert_equal snd_rev.text, line.modified_text 
+  end
 
 end
