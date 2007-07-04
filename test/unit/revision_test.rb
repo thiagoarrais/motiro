@@ -96,5 +96,45 @@ class RevisionTest < Test::Unit::TestCase
     assert_equal 'And this is the third one', chunks[2].lines.first.original_text
     assert_equal 'And this is another modification', chunks[2].lines.first.modified_text
   end
+  
+  def test_diffs_right_unbalanced_modification
+    page = revise_brand_new_page(:title => 'A good page',
+                                 :text => "This is the first line\n" +
+                                          "This line will not be changed\n" +
+                                          "And this is the last one")
+    page.revise(bob, now, :title => 'A good page',
+                          :text => "This is the modified first line,\n" +
+                                   "But I also inserted a new one\n" +
+                                   "This line will not be changed\n" +
+                                   "And this is the last one")
+    chunks = page.revisions[0].diff(2)
+    assert_equal 2, chunks.size
+    assert !chunks.first.unchanged?
+    assert  chunks.last.unchanged?
+    assert_equal 2, chunks.first.lines.size
+    assert_equal 'This is the first line', chunks.first.lines.first.original_text
+    assert_equal 'This is the modified first line,', chunks.first.lines.first.modified_text
+    assert_nil chunks.first.lines.last.original_text
+    assert_equal 'But I also inserted a new one', chunks.first.lines.last.modified_text
+    assert_equal 'This line will not be changed', chunks.last.lines.first.original_text
+  end
+
+  def test_diffs_left_unbalanced_modification
+    page = revise_brand_new_page(:title => 'A good page',
+                                 :text => "This is the first line\n" +
+                                          "This line will be removed\n" +
+                                          "And this one won't be changed")
+    page.revise(bob, now, :title => 'A good page',
+                          :text => "This is the modified first line\n" +
+                                   "And this one won't be changed")
+    chunks = page.revisions[0].diff(2)
+    assert_equal 2, chunks.size
+    assert_equal 2, chunks.first.lines.size
+    assert_equal 'This is the first line', chunks.first.lines.first.original_text
+    assert_equal 'This is the modified first line', chunks.first.lines.first.modified_text
+    assert_equal 'This line will be removed', chunks.first.lines.last.original_text
+    assert_nil chunks.first.lines.last.modified_text
+    assert_equal 'And this one won\'t be changed', chunks.last.lines.first.original_text
+  end
 
 end

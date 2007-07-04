@@ -33,7 +33,7 @@ class Revision < ActiveRecord::Base
     chunks = []
     last_action = chunk = nil
     sdiffs.each do |sdiff|
-      if last_action.nil? || sdiff.action != last_action 
+      if chunk_break_needed(last_action, sdiff.action) 
         chunk = Chunk.new('=' == sdiff.action ? :unchanged : :modification)
         chunks << chunk
       end
@@ -42,6 +42,12 @@ class Revision < ActiveRecord::Base
     end
 
     chunks
+  end
+
+private
+
+  def chunk_break_needed(prev, curr)
+    prev.nil? || curr != prev && [prev, curr].include?('=')
   end
 
 end
