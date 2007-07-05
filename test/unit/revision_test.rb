@@ -46,7 +46,9 @@ class RevisionTest < Test::Unit::TestCase
     assert_equal :modification, chunk.action
     assert_equal 1, chunk.lines.size
     line = chunk.lines.first
+    assert_equal 1, line.original_position
     assert_equal fst_rev.text, line.original_text
+    assert_equal 1, line.modified_position
     assert_equal snd_rev.text, line.modified_text 
   end
   
@@ -65,7 +67,9 @@ class RevisionTest < Test::Unit::TestCase
     assert_equal 2, chunk.lines.size
     assert_equal 'This is the first line', chunk.lines.first.original_text
     assert_equal 'This is the modified first line', chunk.lines.first.modified_text
+    assert_equal 2, chunk.lines.last.original_position
     assert_equal 'And this is the second one', chunk.lines.last.original_text
+    assert_equal 2, chunk.lines.last.modified_position
     assert_equal 'And this is the modified second line', chunk.lines.last.modified_text
   end
   
@@ -114,8 +118,12 @@ class RevisionTest < Test::Unit::TestCase
     assert_equal 2, chunks.first.lines.size
     assert_equal 'This is the first line', chunks.first.lines.first.original_text
     assert_equal 'This is the modified first line,', chunks.first.lines.first.modified_text
+    assert_nil chunks.first.lines.last.original_position
     assert_nil chunks.first.lines.last.original_text
+    assert_equal 2, chunks.first.lines.last.modified_position
     assert_equal 'But I also inserted a new one', chunks.first.lines.last.modified_text
+    assert_equal 2, chunks.last.lines.first.original_position
+    assert_equal 3, chunks.last.lines.first.modified_position
     assert_equal 'This line will not be changed', chunks.last.lines.first.original_text
   end
 
@@ -153,8 +161,12 @@ class RevisionTest < Test::Unit::TestCase
     assert !chunks.last.unchanged?
     assert_equal :addition, chunks.last.action
     assert_equal 2, chunks.first.lines.size
+    assert_equal 2, chunks.first.lines.last.original_position
+    assert_equal 2, chunks.first.lines.last.modified_position
     assert_equal 2, chunks.last.lines.size
+    assert_nil chunks.last.lines.first.original_position
     assert_nil chunks.last.lines.first.original_text
+    assert_equal 3, chunks.last.lines.first.modified_position
     assert_equal 'But it is not the last', chunks.last.lines.first.modified_text
   end
 
@@ -175,8 +187,12 @@ class RevisionTest < Test::Unit::TestCase
     chunk = chunks[1]
     assert_equal :removal, chunk.action
     assert_equal 1, chunk.lines.size
+    assert_equal 2, chunk.lines.first.original_position
     assert_equal 'This is the second line', chunk.lines.first.original_text
+    assert_nil chunk.lines.first.modified_position
     assert_nil chunk.lines.first.modified_text
+    assert_equal 3, chunks[2].lines.first.original_position
+    assert_equal 2, chunks[2].lines.first.modified_position
   end
 
 end
