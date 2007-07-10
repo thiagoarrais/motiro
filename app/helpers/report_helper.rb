@@ -26,10 +26,10 @@ module ReportHelper
         change.chunked_diff.each do |chunk|
           b.tbody :class => chunk.action.to_s do
             chunk.lines.each do |line|
-              b.tr :style => 'background: #FFF' do
+              b.tr do
                 b.td(:class => 'line_number') {b << (line.original_position || '&nbsp;').to_s}
-                b.td(:class => 'left' ) {b.pre{b << (h(line.original_text) || '&nbsp;')}}
-                b.td(:class => 'right') {b.pre{b << (h(line.modified_text) || '&nbsp;')}}
+                b.td {b.pre{b << (h(line.original_text) || '&nbsp;')}}
+                b.td {b.pre{b << (h(line.modified_text) || '&nbsp;')}}
                 b.td(:class => 'line_number') {b << (line.modified_position || '&nbsp;').to_s}
               end
             end

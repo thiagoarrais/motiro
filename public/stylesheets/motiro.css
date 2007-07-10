@@ -149,8 +149,9 @@ div.channel_toolbar {
 table.diff {
     border: solid gray;
     border-width: 1px 0 1px 0;
+    border-collapse: collapse;
     font-family: monospace;
-    font-size: 0.72em;
+    font-size: 0.8em;
 }
 
 table.diff pre {
@@ -169,19 +170,32 @@ table.diff td {
     padding: 0 0.4em 0 0.4em;
 }
 
-table.diff td.left {
-    border:solid;
-    border-color: black gray black black;
-}
-
-table.diff td.right {
-    border:solid black;
-}
-
 table.diff td.line_number {
     text-align: center;
     border:solid gray;
     border-width: 0 1px 0 1px;
+}
+
+tbody.unchanged {
+    background: #FFF;
+}
+
+tbody.modification {
+    background: #ffffb8;
+    border: #606060 solid;
+    border-width: 1px 0 1px 0;
+}
+
+tbody.addition {
+    background: #b8ffb8;
+    border: #606060 solid;
+    border-width: 1px 0 1px 0;
+}
+
+tbody.deletion {
+    background: #ffb8b8;
+    border: #606060 solid;
+    border-width: 1px 0 1px 0;
 }
 
 table.oldernews {

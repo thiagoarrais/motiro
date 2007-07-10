@@ -23,6 +23,7 @@ class Change < ActiveRecord::Base
   
   def chunked_diff
     return nil unless has_diff?
+    return @chunked_diff if @chunked_diff
     @differ ||= DiffChunkBuilder.new
     diff.split("\n").each do |line|
       c = line[0,1]
@@ -40,7 +41,7 @@ class Change < ActiveRecord::Base
       end
     end
     
-    @differ.get_chunks
+    @chunked_diff = @differ.get_chunks
   end
   
   def to_s
