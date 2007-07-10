@@ -158,22 +158,30 @@ table.diff pre {
     margin: 0;
     padding: 0;
     text-align: left;
-}
-
-table.diff tr {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    border: 0;
+    white-space: pre-wrap;      /* CSS 3 */
+    white-space: -moz-pre-wrap; /* Mozilla, 1999+ */
+    white-space: -pre-wrap;     /* Opera 4-6 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE 5.5+ */
 }
 
 table.diff td {
     padding: .05em .4em .05em .4em;
 }
 
-table.diff td.line_number {
+table.diff col.line_number {
     text-align: center;
-    border:solid gray;
+    border: solid gray;
     border-width: 0 1px 0 1px;
+}
+
+table.diff col.left {
+    border-right: 1px solid gray;
+    width: 50%;
+}
+
+table.diff col.right {
+    width: 50%;
 }
 
 tbody.unchanged {
