@@ -25,6 +25,8 @@ class Chunk
   def unchanged?
     :unchanged == action
   end
+  
+  def separator?; false; end
 
   def <<(line)
     @lines ||= []
@@ -41,4 +43,14 @@ class Line
     @original_position = old_text && old_pos
     @modified_position = new_text && new_pos
   end
+end
+
+class Separator
+  attr_reader :num_lines
+
+  def initialize(num_lines)
+    @num_lines = num_lines
+  end
+  
+  def separator?; true; end
 end

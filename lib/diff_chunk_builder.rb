@@ -27,6 +27,7 @@ class DiffChunkBuilder
   def start_line(old_line_num, new_line_num=old_line_num)
     consume_unmatched_deletions
     needs_new_chunk!
+    @chunks << Separator.new(old_line_num - @old_line_num) unless @chunks.empty?
     @old_line_num, @new_line_num = old_line_num, new_line_num 
   end
 

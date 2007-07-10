@@ -167,7 +167,7 @@ table.diff tr {
 }
 
 table.diff td {
-    padding: 0 0.4em 0 0.4em;
+    padding: .05em .4em .05em .4em;
 }
 
 table.diff td.line_number {
@@ -196,6 +196,13 @@ tbody.deletion {
     background: #ffb8b8;
     border: #606060 solid;
     border-width: 1px 0 1px 0;
+}
+
+tbody.separator {
+   background: #d0d0c4;
+   text-align: center;
+   border: #606060 solid;
+   border-width: 1px 0 1px 0;
 }
 
 table.oldernews {

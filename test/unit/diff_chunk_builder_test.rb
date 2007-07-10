@@ -196,36 +196,37 @@ class DiffChunkBuilderTest < Test::Unit::TestCase
 
     chunks = @builder.get_chunks
 
-    assert_equal 4, chunks.size
+    assert_equal 5, chunks.size
     assert chunks[0].unchanged?
     assert_equal :modification, chunks[1].action
-    assert_equal :addition, chunks[2].action
-    assert chunks[3].unchanged?
+    assert chunks[2].separator?
+    assert_equal :addition, chunks[3].action
+    assert chunks[4].unchanged?
     assert_equal 1, chunks[0].lines.size
     assert_equal 2, chunks[1].lines.size
-    assert_equal 1, chunks[2].lines.size
+    assert_equal 4, chunks[2].num_lines
     assert_equal 1, chunks[3].lines.size
     assert_equal 6, chunks[0].lines.first.original_position
     assert_equal 7, chunks[1].lines.first.original_position
     assert_equal 8, chunks[1].lines.last.original_position
-    assert_nil chunks[2].lines.first.original_position
-    assert_equal 13, chunks[3].lines.first.original_position
+    assert_nil chunks[3].lines.first.original_position
+    assert_equal 13, chunks[4].lines.first.original_position
     assert_equal 'div.channel-title {', chunks[0].lines.first.original_text
     assert_equal '    margin:0;', chunks[1].lines.first.original_text
     assert_equal '    font: normal 8pt Verdana,sans-serif;', chunks[1].lines.last.original_text
-    assert_nil chunks[2].lines.first.original_text
-    assert_equal '}', chunks[3].lines.first.original_text
+    assert_nil chunks[3].lines.first.original_text
+    assert_equal '}', chunks[4].lines.first.original_text
 
     assert_equal 6, chunks[0].lines.first.modified_position
     assert_equal 7, chunks[1].lines.first.modified_position
     assert_nil chunks[1].lines.last.modified_position
-    assert_equal 13, chunks[2].lines.first.modified_position
-    assert_equal 14, chunks[3].lines.first.modified_position
+    assert_equal 13, chunks[3].lines.first.modified_position
+    assert_equal 14, chunks[4].lines.first.modified_position
     assert_equal 'div.channel-title {', chunks[0].lines.first.modified_text
     assert_equal '    font: bold 10pt Verdana,sans-serif;', chunks[1].lines.first.modified_text
     assert_nil chunks[1].lines.last.modified_text
-    assert_equal '    padding: 0 8px 0 8px;', chunks[2].lines.first.modified_text
-    assert_equal '}', chunks[3].lines.first.modified_text
+    assert_equal '    padding: 0 8px 0 8px;', chunks[3].lines.first.modified_text
+    assert_equal '}', chunks[4].lines.first.modified_text
   end
 
   def test_unmatching_line_numbers
@@ -245,20 +246,20 @@ class DiffChunkBuilderTest < Test::Unit::TestCase
 
     chunks = @builder.get_chunks
 
-    assert_equal 5, chunks.size
+    assert_equal 6, chunks.size
     assert_equal 6, chunks[0].lines.first.original_position
     assert_equal 7, chunks[1].lines.first.original_position
     assert_nil chunks[1].lines.last.original_position
-    assert_equal 13, chunks[2].lines.first.original_position
-    assert_equal 14, chunks[3].lines.first.original_position
-    assert_equal 15, chunks[4].lines.first.original_position
+    assert_equal 13, chunks[3].lines.first.original_position
+    assert_equal 14, chunks[4].lines.first.original_position
+    assert_equal 15, chunks[5].lines.first.original_position
 
     assert_equal 6, chunks[0].lines.first.modified_position
     assert_equal 7, chunks[1].lines.first.modified_position
     assert_equal 8, chunks[1].lines.last.modified_position
-    assert_equal 14, chunks[2].lines.first.modified_position
-    assert_equal 15, chunks[3].lines.first.modified_position
-    assert_equal 16, chunks[4].lines.first.modified_position
+    assert_equal 14, chunks[3].lines.first.modified_position
+    assert_equal 15, chunks[4].lines.first.modified_position
+    assert_equal 16, chunks[5].lines.first.modified_position
   end
   
 #TODO unch unch del

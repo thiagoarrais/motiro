@@ -24,13 +24,23 @@ module ReportHelper
       b.h2 'Changes to %s' / change.resource_name
       b.table :class => 'diff', :cellspacing => '0' do
         change.chunked_diff.each do |chunk|
-          b.tbody :class => chunk.action.to_s do
-            chunk.lines.each do |line|
+          if chunk.separator?
+            b.tbody :class => 'separator' do
               b.tr do
-                b.td(:class => 'line_number') {b << (line.original_position || '&nbsp;').to_s}
-                b.td {b.pre{b << (h(line.original_text) || '&nbsp;')}}
-                b.td {b.pre{b << (h(line.modified_text) || '&nbsp;')}}
-                b.td(:class => 'line_number') {b << (line.modified_position || '&nbsp;').to_s}
+                b.td('...', :class => 'line_number')
+                b.td('%d more lines' / chunk.num_lines, :colspan => '2')
+                b.td('...', :class => 'line_number')
+              end
+            end
+          else  
+            b.tbody :class => chunk.action.to_s do
+              chunk.lines.each do |line|
+                b.tr do
+                  b.td(:class => 'line_number') {b << (line.original_position || '&nbsp;').to_s}
+                  b.td {b.pre{b << (h(line.original_text) || '&nbsp;')}}
+                  b.td {b.pre{b << (h(line.modified_text) || '&nbsp;')}}
+                  b.td(:class => 'line_number') {b << (line.modified_position || '&nbsp;').to_s}
+                end
               end
             end
           end
