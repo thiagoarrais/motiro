@@ -29,7 +29,7 @@ subversion:
   #
   # Tells the reporter where to find your project's repository
   # Default: https://svn.sourceforge.net/svnroot/motiro
-  repo: https://svn.sourceforge.net/svnroot/motiro
+  repo: https://motiro.svn.sourceforge.net/svnroot/motiro
 
   # subversion/{user,password}
   #
