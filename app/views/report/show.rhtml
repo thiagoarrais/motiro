@@ -13,7 +13,7 @@
 <% cache(:action => 'show', :suffix => 'changes', :locale => @locale) do %>
   <div id="changes">
     <% @headline.changes.each do |change| %>
-      <%= change.render_diff %>
+      <%= render_diff(change) %>
     <% end %>
   </div>
 <% end %>

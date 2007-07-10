@@ -56,31 +56,3 @@ private
   end
 
 end
-
-class Chunk
-  attr_reader :lines, :action
-  
-  def initialize(action)
-    @action = action
-  end
-  
-  def unchanged?
-    :unchanged == action
-  end
-
-  def <<(line)
-    @lines ||= []
-    @lines << line
-  end
-end
-
-class Line
-  attr_reader :original_text, :original_position,
-              :modified_text, :modified_position
-  
-  def initialize(old_text, old_pos, new_text, new_pos)
-    @original_text, @modified_text = old_text, new_text
-    @original_position = old_text && old_pos
-    @modified_position = new_text && new_pos
-  end
-end

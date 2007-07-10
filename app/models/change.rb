@@ -21,33 +21,9 @@ class Change < ActiveRecord::Base
   
   include ERB::Util
   
-  def to_s
-    return summary
-  end
-  
-  def render_summary
-    if (has_diff?)
-      return "<a href='\#' onClick=\"showOnly('#{ref}')\">#{html_escape(summary)}</a>"
-    else
-      return summary
-    end
-  end
-  
-  def render_diff
-    if (has_diff?)
-      return "<div id='#{ref}' class='diff-window'>" +
-             "<center>" +
-             "<h2>#{'Changes to %s' / resource_name}</h2>\n" +
-             render_diff_table +
-             "</center>" +
-             "</div>"
-    else
-      return ''
-    end
-  end
-  
-  def render_diff_table
-    @differ ||= DiffTableBuilder.new
+  def chunked_diff
+    return nil unless has_diff?
+    @differ ||= DiffChunkBuilder.new
     diff.split("\n").each do |line|
       c = line[0,1]
       line_text = line[1, line.length - 1]
@@ -64,7 +40,19 @@ class Change < ActiveRecord::Base
       end
     end
     
-    return @differ.render_diff_table
+    @differ.get_chunks
+  end
+  
+  def to_s
+    return summary
+  end
+  
+  def render_summary
+    if (has_diff?)
+      return "<a href='\#' onClick=\"showOnly('#{ref}')\">#{html_escape(summary)}</a>"
+    else
+      return summary
+    end
   end
   
   def qualified_resource_name
@@ -76,21 +64,21 @@ class Change < ActiveRecord::Base
   end
   
   def filled?
-    !self.resource_kind.nil? && ('dir' == self.resource_kind || !self.diff.nil?)
+    self.resource_kind && ('dir' == self.resource_kind || has_diff?)
   end
   
   def use_differ(differ)
     @differ = differ
   end
   
-  private
+private
   
   def has_diff?
     return ! (diff.nil? or diff.empty?)
   end
   
   def ref
-    return "change" + summary.hash.to_s
+    "change" + summary.hash.to_s
   end
   
 end

@@ -19,41 +19,46 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ChangeTest < Test::Unit::TestCase
   
-  def test_render_diff_with_unset_diff
-    change = Change.new(:summary => 'A /directory', :diff => nil)
-    
-    assert_equal '', change.render_diff
+  def test_unset_diff
+    assert_nil Change.new(:summary => 'A /directory', :diff => nil).chunked_diff
   end
   
-  def test_render_diff_with_empty_diff
-    change = Change.new(:summary => 'A /directory', :diff => '')
-    
-    assert_equal '', change.render_diff
+  def test_empty_diff
+    assert_nil Change.new(:summary => 'A /directory', :diff => '').chunked_diff
   end
   
-  def test_render_diff_with_non_empty_diff
+  def test_parses_addition_only
     diff_output = "@@ -0,0 +1 @@\n" +
                   "+These are the file_contents"
     change = Change.new(:summary => 'A /a_file.txt', :diff => diff_output)
+#    
+#    actual_rendered_output = change.render_diff
+#    
+#    md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><h2>Changes to a_file.txt<\/h2>/
+#    
+#    assert_not_nil md
+#    
+#    remain = md.post_match
+#    
+#    md = remain.match /<\/div>\Z/
+#    
+#    assert_not_nil md
+    chunks = change.chunked_diff
     
-    actual_rendered_output = change.render_diff
-    
-    md = actual_rendered_output.match /\A<div id='((\w|\d|-)+)' class='diff-window'><center><h2>Changes to a_file.txt<\/h2>/
-    
-    assert_not_nil md
-    
-    remain = md.post_match
-    
-    md = remain.match /<\/div>\Z/
-    
-    assert_not_nil md
+    assert_equal 1, chunks.size
+    assert_equal :addition, chunks.first.action
+    assert_equal 1, chunks.first.lines.size
+    line = chunks.first.lines.first
+    assert_nil line.original_position
+    assert_nil line.original_text
+    assert_equal 1, line.modified_position
+    assert_equal 'These are the file_contents', line.modified_text
   end
   
   def test_passes_lines_numbers_to_differ
     FlexMock.use do |differ|
       differ.should_receive(:start_line).once.with(22, 34)
-      differ.should_receive(:render_diff_table).once.
-      and_return('rendered table')
+      differ.should_receive(:get_chunks).once.and_return('chunked diffs')
       differ.should_ignore_missing
       
       change = Change.new(:summary => 'A /a_file.txt',
@@ -61,7 +66,7 @@ class ChangeTest < Test::Unit::TestCase
                                    "+These are the file_contents")
       
       change.use_differ(differ)
-      assert_equal 'rendered table', change.render_diff_table
+      assert_equal 'chunked diffs', change.chunked_diff
     end
   end
   
@@ -81,20 +86,6 @@ class ChangeTest < Test::Unit::TestCase
     md = actual_rendered_output.match /\A<a href='\#' onClick="showOnly\('((\w|\d|-)+)'\)">A \/a_file.txt<\/a>\Z/
     
     assert_not_nil md
-  end
-  
-  def test_renders_summary_and_diff_using_the_same_ref
-    diff_output = "@@ -0,0 +1 @@\n" +
-                  "+These are the file_contents"
-    change = Change.new(:summary => 'A /a_file.txt', :diff => diff_output)
-    
-    md = change.render_summary.match /\A<a href='\#' onClick="showOnly\('((\w|\d|-)+)'\)/
-    summary_ref = md[1]
-    
-    md = change.render_diff.match /\A<div id='((\w|\d|-)+)'/
-    diff_ref = md[1]
-    
-    assert_equal summary_ref, diff_ref
   end
   
   def test_simple_prefixed_qualified_resource_name
