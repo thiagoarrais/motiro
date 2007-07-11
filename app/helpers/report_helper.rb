@@ -34,7 +34,7 @@ module ReportHelper
             b.tbody :class => 'separator' do
               b.tr do
                 b.td
-                b.td('%d more lines' / chunk.num_lines, :colspan => '2')
+                b.td('%s more lines' / chunk.num_lines.to_s, :colspan => '2')
                 b.td
               end
             end
