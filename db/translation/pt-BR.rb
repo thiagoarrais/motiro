@@ -75,7 +75,10 @@
 
 # Older headlines and history pages
 'Author' => 'Autor',
+'Page has no history yet' => 'Página ainda sem histórico',
 'Page history for %s' => 'Histórico da página %s',
+'Page history (%s revisions)' => 'Histórico da página (%s revisões)',
 'Page history' => 'Histórico da página',
-'(Revision %s)' => '(Revisão %s)'
+'(Revision %s)' => '(Revisão %s)',
+'Compare revisions' => 'Comparar revisões'
 }
