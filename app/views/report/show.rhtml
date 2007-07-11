@@ -4,7 +4,7 @@
     <%= @renderer.render_html(@headline.description(Translator.for(@locale))) %>
     <div id="summary">
       <% @headline.changes.each do |change| %>
-        <%= change.render_summary -%>
+        <%= render_summary(change) -%>
         <br/>
       <% end %>
     </div>

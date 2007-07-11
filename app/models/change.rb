@@ -15,11 +15,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'erb'
-
 class Change < ActiveRecord::Base
-  
-  include ERB::Util
   
   def chunked_diff
     return nil unless has_diff?
@@ -48,14 +44,6 @@ class Change < ActiveRecord::Base
     return summary
   end
   
-  def render_summary
-    if (has_diff?)
-      return "<a href='\#' onClick=\"showOnly('#{ref}')\">#{html_escape(summary)}</a>"
-    else
-      return summary
-    end
-  end
-  
   def qualified_resource_name
     return summary.match(/(\w )?([^\s]+)/)[2]
   end
@@ -68,18 +56,12 @@ class Change < ActiveRecord::Base
     self.resource_kind && ('dir' == self.resource_kind || has_diff?)
   end
   
-  def use_differ(differ)
-    @differ = differ
-  end
-  
-private
-  
   def has_diff?
     return ! (diff.nil? or diff.empty?)
   end
   
-  def ref
-    "change" + summary.hash.to_s
+  def use_differ(differ)
+    @differ = differ
   end
   
 end

@@ -70,24 +70,6 @@ class ChangeTest < Test::Unit::TestCase
     end
   end
   
-  def test_render_summary_with_unset_diff
-    change = Change.new(:summary => 'A /directory', :diff => nil)
-    
-    assert_equal 'A /directory', change.render_summary
-  end
-  
-  def test_render_summary_with_non_empty_diff
-    diff_output = "@@ -0,0 +1 @@\n" +
-                  "+These are the file_contents"
-    change = Change.new(:summary => 'A /a_file.txt', :diff => diff_output)
-    
-    actual_rendered_output = change.render_summary
-    
-    md = actual_rendered_output.match /\A<a href='\#' onClick="showOnly\('((\w|\d|-)+)'\)">A \/a_file.txt<\/a>\Z/
-    
-    assert_not_nil md
-  end
-  
   def test_simple_prefixed_qualified_resource_name
     change = Change.new(:summary => 'A /a_file.txt')
     assert_equal '/a_file.txt', change.qualified_resource_name

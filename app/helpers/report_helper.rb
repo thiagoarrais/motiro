@@ -19,7 +19,7 @@ module ReportHelper
 
   def render_diff(change)
     return '' unless change.chunked_diff
-    Builder::XmlMarkup.new.div(:id => "change" + change.summary.hash.to_s,
+    Builder::XmlMarkup.new.div(:id => ref(change),
                                :class => "diff-window") do |b|
       b.h2 'Changes to %s' / change.resource_name
       b.table :class => 'diff', :cellspacing => '0' do
@@ -55,4 +55,16 @@ module ReportHelper
     end
   end
 
+  def render_summary(change)
+    summary = html_escape(change.summary)
+    if (change.has_diff?)
+      "<a href='\#' onClick=\"showOnly('#{ref(change)}')\">#{summary}</a>"
+    else
+      summary
+    end
+  end
+
+  def ref(change)
+    "change" + change.summary.hash.to_s
+  end
 end
