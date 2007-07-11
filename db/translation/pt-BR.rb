@@ -71,6 +71,7 @@
 'event description' => 'descrição de evento', 
 'Who should be able to edit this page?' => 'Quem pode editar esta página?',
 '(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
+'(Comparing revisions %s and %s)' => '(Diferenças entre as revisões %s e %s)',
 
 # Older headlines and history pages
 'Author' => 'Autor',

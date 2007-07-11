@@ -298,8 +298,7 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'a', :attributes => {
                  :href => @controller.url_for(
                    :controller => 'wiki', :action => 'show',
-                   :page_name => 'RevisedPage', :revision => '1')},
-               :content => /The title will be changed/
+                   :page_name => 'RevisedPage', :revision => '1')}
     assert_tag :content => /The title was changed/
 
     get :show, :page_name => 'RevisedPage', :revision => '1'

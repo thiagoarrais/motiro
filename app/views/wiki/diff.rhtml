@@ -1,0 +1,4 @@
+<% pagetext(@page.title, '(Comparing revisions %s and %s)' / @old_revision_num / @new_revision_num) do %>
+  <%= render_diff_table(@old_revision.diff(@new_revision_num.to_i))%>
+  <%= render :partial => 'editbar' %>
+<% end %>

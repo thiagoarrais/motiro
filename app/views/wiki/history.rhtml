@@ -1,26 +1,34 @@
 <% pagetext('Page history for %s' / @page.title) do %>
-  <table class="oldernews">
-    <thead>
-     <tr>
-        <th class="date"><%= 'Date'.t -%></th>
-        <th class="relative"/>
-        <th><%= 'Author'.t -%></th>
-        <th><%= 'Title'.t -%></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @page.revisions.reverse.each do |rev| %>
-      <tr class="<%= rev.position % 2 == 0 ? 'odd' : 'even' -%>">
-        <td class="date"><%= rev.modified_at-%></td>
-        <td class="relative"><%= rev.modified_at.relative_to_now %></td>
-        <td><%= rev.last_editor.login %></td>
-        <td><%= content_tag :a, rev.title,
+  <% form_tag "/wiki/diff/#{params[:page_name]}", :method => 'get' do %>
+    <%= submit_tag 'Compare revisions'.t, :class => 'button',
+                                          :name => 'btnCompare' %>
+    <table class="oldernews">
+      <thead>
+       <tr>
+          <th/>
+          <th class="date"><%= 'Date'.t -%></th>
+          <th><%= 'Author'.t -%></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @page.revisions.reverse.each do |rev| %>
+        <tr class="<%= rev.position % 2 == 0 ? 'odd' : 'even' -%>">
+          <td>
+            <input type="radio" name="old_revision" value="<%= rev.position-%>" />
+            <input type="radio" name="new_revision" value="<%= rev.position-%>" />
+          </td>
+          <td class="date">
+            <%= content_tag :a, rev.modified_at,
                             :href => server_url_for(:controller => 'wiki',
                                                     :action => 'show',
                                                     :page_name => @page.name,
-                                                    :revision => rev.position) -%></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+                                                    :revision => rev.position) %>
+            (<%= rev.modified_at.relative_to_now -%>)
+          </td>
+          <td><%= rev.last_editor.login %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>

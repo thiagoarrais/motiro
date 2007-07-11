@@ -19,7 +19,7 @@ class WikiController < ApplicationController
 
   layout :choose_layout
 
-  before_filter :login_required, :except => [:show, :last, :history]
+  before_filter :login_required, :except => [:show, :last, :history, :diff]
   before_filter :fetch_page, :fetch_revision
   before_filter :check_edit_access, :only => [:edit, :save]
   
@@ -98,6 +98,12 @@ class WikiController < ApplicationController
       format.xml { render(:action => 'page_feed')
                    cache_page}
     end
+  end
+  
+  def diff
+    @old_revision_num = params[:old_revision]
+    @new_revision_num = params[:new_revision]
+    @old_revision = @page.revisions[@old_revision_num.to_i - 1]
   end
   
   def access_denied

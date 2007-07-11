@@ -152,6 +152,7 @@ table.diff {
     border-collapse: collapse;
     font-family: monospace;
     font-size: 0.8em;
+    margin: 0 0 1em 0;
 }
 
 table.diff pre {
@@ -214,6 +215,7 @@ tbody.separator {
 }
 
 table.oldernews {
+  margin: .8em 0;
   border-spacing: 0;
   text-align: left;
   font-size: .85em;
@@ -222,9 +224,9 @@ table.oldernews {
       
 table.oldernews tr.even { background-color: #fff; }
         
-table.oldernews tr.odd { background-color: #eee; }
+table.oldernews tr.odd { background-color: #e0eeff; }
       
-table.oldernews thead { background-color: #d0d0d0; }
+table.oldernews thead { background-color: #66a0e0; }
       
 table.oldernews tbody th { border: 1px #c9c9c9 solid; }
 

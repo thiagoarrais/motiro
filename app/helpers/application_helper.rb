@@ -67,6 +67,39 @@ module ApplicationHelper
     end
     concat(xml, block.binding)
   end
+  
+  def render_diff_table(chunks)
+    Builder::XmlMarkup.new.table :class => 'diff', :cellspacing => '0' do |b|
+      b.colgroup do
+        b.col :class => 'line_number'
+        b.col :class => 'left'
+        b.col :class => 'right'
+        b.col :class => 'line_number'
+      end
+      chunks.each do |chunk|
+        if chunk.separator?
+          b.tbody :class => 'separator' do
+            b.tr do
+              b.td
+              b.td('%s more lines' / chunk.num_lines.to_s, :colspan => '2')
+              b.td
+            end
+          end
+        else  
+          b.tbody :class => chunk.action.to_s do
+            chunk.lines.each do |line|
+              b.tr do
+                b.td {b << (line.original_position || '&nbsp;').to_s}
+                b.td {b.pre{b << (h(line.original_text) || '&nbsp;')}}
+                b.td {b.pre{b << (h(line.modified_text) || '&nbsp;')}}
+                b.td {b << (line.modified_position || '&nbsp;').to_s}
+              end
+            end
+          end
+        end
+      end
+    end
+  end
 
 end
 
