@@ -101,6 +101,7 @@ class WikiController < ApplicationController
   end
   
   def diff
+    redirect_to params.delete_if {|k,v| :btnCompare == k.to_sym} if params[:btnCompare]
     @old_revision_num = params[:old_revision]
     @new_revision_num = params[:new_revision]
     @old_revision = @page.revisions[@old_revision_num.to_i - 1]

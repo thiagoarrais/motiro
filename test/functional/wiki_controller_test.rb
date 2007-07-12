@@ -362,6 +362,17 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//item/guid[text() = '#{@controller.url_for(:action => 'show', :page_name => page_name, :revision => '2')}'']"
     assert_xml_element "//item/guid[text() = '#{@controller.url_for(:action => 'show', :page_name => page_name, :revision => '1')}'']"
   end
+  
+  def test_redirects_ugly_urls_to_pretty_ones
+    page_name = pages('changed_page').name
+    get :diff, :page_name => page_name, :btnCompare => 'Compare revisions',
+        :new_revision => 2, :old_revision=> 1
+    
+    assert_redirected_to "/wiki/diff/#{page_name}/1/2"
+    follow_redirect
+    
+    assert assigns(:old_revision)
+  end
 
 private
 
