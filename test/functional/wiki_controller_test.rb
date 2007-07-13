@@ -373,6 +373,24 @@ class WikiControllerTest < Test::Unit::TestCase
     
     assert assigns(:old_revision)
   end
+  
+  def test_shows_error_message_when_unable_to_find_specified_revision
+    page = pages('changed_page')
+    n = page.revisions.size
+    get :diff, :page_name => page.name, :new_revision => n,
+        :old_revision => n + 1
+    
+    assert_redirected_to :controller => 'wiki', :action => 'show',
+                         :page_name => page.name
+    assert_equal "#{page.name} has no revision #{n + 1}", flash[:notice]
+    
+    get :diff, :page_name => page.name,
+        :new_revision => n + 3, :old_revision => n
+
+    assert_redirected_to :controller => 'wiki', :action => 'show',
+                         :page_name => page.name
+    assert_equal "#{page.name} has no revision #{n + 3}", flash[:notice]
+  end
 
 private
 

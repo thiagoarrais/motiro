@@ -105,6 +105,12 @@ class WikiController < ApplicationController
     @old_revision_num = params[:old_revision]
     @new_revision_num = params[:new_revision]
     @old_revision = @page.revisions[@old_revision_num.to_i - 1]
+    new_revision = @page.revisions[@new_revision_num.to_i - 1]
+    unless @old_revision && new_revision
+      flash[:notice] = '%s has no revision %s' / @page.name /
+        (@old_revision.nil? ? @old_revision_num : @new_revision_num)
+      redirect_to :action => 'show', :page_name => params[:page_name]
+    end
   end
   
   def access_denied
