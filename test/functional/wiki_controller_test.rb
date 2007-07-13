@@ -325,9 +325,10 @@ class WikiControllerTest < Test::Unit::TestCase
   end
 
   def tests_shows_number_of_available_revisions
-    get :show, :page_name => pages('changed_page').name
+    page = pages('changed_page')
+    get :show, :page_name => page.name
 
-    assert_tag :content => 'Page history (2 revisions)'
+    assert_tag :content => "Page history (#{page.revisions.size} revisions)"
   end
 
   def test_does_not_show_page_history_link_for_missing_or_edited_once_pages
@@ -390,6 +391,17 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_redirected_to :controller => 'wiki', :action => 'show',
                          :page_name => page.name
     assert_equal "#{page.name} has no revision #{n + 3}", flash[:notice]
+  end
+  
+  def test_defaults_to_last_revision_diff
+    page = pages('changed_page')
+    n = page.revisions.size
+    get :history, :page_name => page.name
+    
+    assert_xml_element "//input[@type='radio' and @name='old_revision' and @value='#{n - 1}' and @checked='checked']"
+    assert_xml_element "//input[@type='radio' and @name='new_revision' and @value='#{n}' and @checked='checked']"
+    assert_no_xml_element "//input[@name='old_revision' and @value!='#{n - 1}' and @checked='checked']"
+    assert_no_xml_element "//input[@name='new_revision' and @value!='#{n}' and @checked='checked']"
   end
 
 private

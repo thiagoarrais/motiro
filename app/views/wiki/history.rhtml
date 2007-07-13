@@ -11,11 +11,14 @@
         </tr>
       </thead>
       <tbody>
+      <% last_position = @page.revisions.last.position %>
       <% @page.revisions.reverse.each do |rev| %>
         <tr class="<%= rev.position % 2 == 0 ? 'odd' : 'even' -%>">
           <td>
-            <input type="radio" name="old_revision" value="<%= rev.position-%>" />
-            <input type="radio" name="new_revision" value="<%= rev.position-%>" />
+            <input type="radio" name="old_revision" value="<%= rev.position-%>"
+              <%= 'checked="checked"' if last_position -1 == rev.position -%> />
+            <input type="radio" name="new_revision" value="<%= rev.position-%>"
+              <%= 'checked="checked"' if last_position == rev.position -%> />
           </td>
           <td class="date">
             <%= content_tag :a, rev.modified_at,
