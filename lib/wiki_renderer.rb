@@ -27,7 +27,7 @@ class WikiRenderer
     @translator = Translator.for(locale_code)
   end
   
-  def render_html(text)
+  def render_wiki_text(text)
     localized_text = @translator.localize(text).delete("\r")
     expanded_text = expand_internal_links(localized_text)
     wiki_to_html(expanded_text)

@@ -28,7 +28,7 @@ class WikiRendererTest < Test::Unit::TestCase
   end
 
   def test_renders_title
-    assert_equal "<h1>Motiro</h1>", renderer.render_html('= Motiro =')
+    assert_equal "<h1>Motiro</h1>", renderer.render_wiki_text('= Motiro =')
   end
   
   def test_breaks_paragraphs_on_linebreak_and_return_feed
@@ -36,48 +36,48 @@ class WikiRendererTest < Test::Unit::TestCase
     feed_return_text = "= Motiro =\r\n\r\nThis is project Motiro"
     expected_text = '<h1>Motiro</h1><p>This is project Motiro</p>'
 
-    assert_equal expected_text, renderer.render_html(line_break_only_text)
-    assert_equal expected_text, renderer.render_html(feed_return_text)
+    assert_equal expected_text, renderer.render_wiki_text(line_break_only_text)
+    assert_equal expected_text, renderer.render_wiki_text(feed_return_text)
   end
   
   def test_render_external_links
     expected = "<p><a href=\"http://nowhere.com\" rel=\"nofollow\">Nowhere</a></p>"
-    assert_equal expected, renderer.render_html('[http://nowhere.com Nowhere]')
+    assert_equal expected, renderer.render_wiki_text('[http://nowhere.com Nowhere]')
   end
   
   def test_renders_multiple_languages
     wiki_text = "Bem-vindo ao Motiro\n\n" +
                 "--- en ---\n" +
                 "Welcome to Motiro"
-    assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_html(wiki_text)
+    assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_wiki_text(wiki_text)
     assert_equal "<p>Welcome to Motiro</p>",
-                 WikiRenderer.new(url_generator, 'en').render_html(wiki_text)
+                 WikiRenderer.new(url_generator, 'en').render_wiki_text(wiki_text)
   end
   
   def test_renders_internal_link
     expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">go somewhere else</a></p>"
-    assert_equal expected, renderer.render_html('[AnotherPage go somewhere else]')
+    assert_equal expected, renderer.render_wiki_text('[AnotherPage go somewhere else]')
   end
   
   def test_renders_multiple_internal_links
     expected = "<p><a href=\"http://test.host/wiki/show/InternalPage\" rel=\"nofollow\">go there</a> <a href=\"http://test.host/wiki/show/OtherInternalPage\" rel=\"nofollow\">and there</a></p>"
-    assert_equal expected, renderer.render_html("[InternalPage go there] " +
-                                                "[OtherInternalPage and there]")
+    assert_equal expected, renderer.render_wiki_text("[InternalPage go there] " +
+                                                     "[OtherInternalPage and there]")
   end
   
   def test_do_not_expand_links_when_there_is_a_break_inside_the_brackets
     expected = "<p>[ThisIsNotALink\nto anywhere]</p>"
-    assert_equal expected, renderer.render_html("[ThisIsNotALink\nto anywhere]")
+    assert_equal expected, renderer.render_wiki_text("[ThisIsNotALink\nto anywhere]")
   end
   
   def test_expands_internal_links_with_address_only
     expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">AnotherPage</a></p>"
-    assert_equal expected, renderer.render_html("[AnotherPage]")
+    assert_equal expected, renderer.render_wiki_text("[AnotherPage]")
   end
   
   def test_recover_from_unmatched_opening_bracket_inside_link_text
     assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\" rel=\"nofollow\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
-                 renderer.render_html("[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]")
+                 renderer.render_wiki_text("[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]")
   end
 
 private
