@@ -185,7 +185,7 @@ class RevisionTest < Test::Unit::TestCase
     assert !chunks[1].unchanged?
     assert  chunks[2].unchanged?
     chunk = chunks[1]
-    assert_equal :removal, chunk.action
+    assert_equal :deletion, chunk.action
     assert_equal 1, chunk.lines.size
     assert_equal 2, chunk.lines.first.original_position
     assert_equal 'This is the second line', chunk.lines.first.original_text

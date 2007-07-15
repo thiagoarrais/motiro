@@ -28,7 +28,7 @@ class Revision < ActiveRecord::Base
   end
   
   LCS_ACTION_TO_SYMBOL = {'=' => :unchanged, '!' => :modification,
-                          '-' => :removal, '+' => :addition}
+                          '-' => :deletion, '+' => :addition}
   
   def diff(rev_num)
     #position numbers are 1-based, but we want 0-based when indexing revisions
