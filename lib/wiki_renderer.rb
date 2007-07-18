@@ -38,21 +38,25 @@ class WikiRenderer
   def render_wiki_diff(old_text, new_text)
     old_result = render_wiki_text(old_text).split    
     new_result = render_wiki_text(new_text).split
-    diffs = old_result.diff(new_result)
-    insertion_pt = nil
-    removed_text = []
-    inserted_text = []
-    diffs.first.each do |diff|
-      if '-' == diff.action
-        insertion_pt ||= diff.position
-        removed_text << old_result.delete_at(insertion_pt) 
-      else
-        inserted_text << diff.element
+    diffsets = old_result.diff(new_result)
+
+    diffsets.reverse.each do |dset|
+      insertion_pt = nil
+      removed_text = []
+      inserted_text = []
+      dset.each do |diff|
+        if '-' == diff.action
+          insertion_pt ||= diff.position
+          removed_text << old_result.delete_at(insertion_pt) 
+        else
+          inserted_text << diff.element
+        end
       end
+      old_result.insert(insertion_pt,
+        "<span class=\"deletion\">#{removed_text.join(' ')}</span>" +
+        "<span class=\"addition\">#{inserted_text.join(' ')}</span>")
     end
-    old_result.insert(insertion_pt,
-      "<span class=\"deletion\">#{removed_text.join(' ')}</span>" +
-      "<span class=\"addition\">#{inserted_text.join(' ')}</span>")
+
     old_result.join(' ')
   end
   

@@ -90,6 +90,18 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_diff(previous, current)
   end
   
+  def test_emphasizes_diffs_in_multiple_changes
+    previous = "There is going to be more than one change inside this text"
+    current  = "There has been more than one change outside this text"
+    
+    assert_equal '<p>There <span class="deletion">is going to be</span>' +
+                 '<span class="addition">has been</span> more than one ' +
+                 'change <span class="deletion">inside</span>' +
+                 '<span class="addition">outside</span> ' +
+                 'this text</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
   #TODO multiple text changes
   #TODO first and last words
   #TODO across multiple lines
