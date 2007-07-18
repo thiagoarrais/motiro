@@ -17,6 +17,8 @@
 
 require 'rubygems'
 require 'mediacloth'
+require 'diff/lcs'
+require 'diff/lcs/array'
 
 class WikiRenderer
 
@@ -31,6 +33,27 @@ class WikiRenderer
     localized_text = @translator.localize(text).delete("\r")
     expanded_text = expand_internal_links(localized_text)
     wiki_to_html(expanded_text)
+  end
+  
+  def render_wiki_diff(old_text, new_text)
+    old_result = render_wiki_text(old_text).split    
+    new_result = render_wiki_text(new_text).split
+    diffs = old_result.diff(new_result)
+    insertion_pt = nil
+    removed_text = []
+    inserted_text = []
+    diffs.first.each do |diff|
+      if '-' == diff.action
+        insertion_pt ||= diff.position
+        removed_text << old_result.delete_at(insertion_pt) 
+      else
+        inserted_text << diff.element
+      end
+    end
+    old_result.insert(insertion_pt,
+      "<span class=\"deletion\">#{removed_text.join(' ')}</span>" +
+      "<span class=\"addition\">#{inserted_text.join(' ')}</span>")
+    old_result.join(' ')
   end
   
   def expand_internal_links(text)

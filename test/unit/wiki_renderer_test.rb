@@ -79,6 +79,20 @@ class WikiRendererTest < Test::Unit::TestCase
     assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\" rel=\"nofollow\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
                  renderer.render_wiki_text("[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]")
   end
+  
+  def test_emphasizes_diffs_inside_pure_text_change
+    previous = "There is going to be some change inside this text"
+    current  = "There has been some change inside this text"
+    
+    assert_equal '<p>There <span class="deletion">is going to be</span>' +
+                 '<span class="addition">has been</span> some change inside ' +
+                 'this text</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+  
+  #TODO multiple text changes
+  #TODO first and last words
+  #TODO across multiple lines
 
 private
 
