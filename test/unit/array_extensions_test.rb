@@ -15,23 +15,21 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'mediacloth'
+require File.dirname(__FILE__) + '/../test_helper'
+require 'array_extensions'
 
-class String
+class ArrayExtensionsTest < Test::Unit::TestCase
 
-  def medialize
-    MediaCloth::wiki_to_html self
+  def test_xml_joins_enclosing_elements
+    words = ['<p>', 'This', 'is', 'a', 'paragraph', '</p>']
+    assert_equal '<p>This is a paragraph</p>', words.xml_join
   end
-
-  def xml_split
-    str = self
-    words = []
-    while(md = str.match(/<[^>]+>|[^\s<]+/))
-      words << md[0]
-      str = md.post_match
-    end
-    words
+  
+  def test_xml_joins_inline_elements_with_spaces
+    words = ['<p>', 'A', '<a href="http://www.motiro.org">', 'link', '</a>',
+             'here', '</p>']
+    assert_equal '<p>A <a href="http://www.motiro.org">link</a> here</p>',
+                 words.xml_join
   end
 
 end

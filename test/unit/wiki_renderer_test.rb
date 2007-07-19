@@ -101,9 +101,18 @@ class WikiRendererTest < Test::Unit::TestCase
                  'this text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
+  
+  def test_emphasizes_changes_next_to_html_tags
+    previous = "First version was good"
+    current = "Second version was bad"
+    
+    assert_equal '<p><span class="deletion">First</span>' +
+                 '<span class="addition">Second</span> version was ' +
+                 '<span class="deletion">good</span>' +
+                 '<span class="addition">bad</span></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
 
-  #TODO multiple text changes
-  #TODO first and last words
   #TODO across multiple lines
 
 private

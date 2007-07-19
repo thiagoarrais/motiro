@@ -15,23 +15,16 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'rubygems'
-require 'mediacloth'
-
-class String
-
-  def medialize
-    MediaCloth::wiki_to_html self
-  end
-
-  def xml_split
-    str = self
-    words = []
-    while(md = str.match(/<[^>]+>|[^\s<]+/))
-      words << md[0]
-      str = md.post_match
+class Array
+  
+  def xml_join
+    str = ''
+    each do |s|
+      str << ' ' unless str.empty? || str.match(/<[^\/][^>]*>\Z/) ||
+                        s.match(/\A<\//)
+      str << s
     end
-    words
+    str
   end
-
+  
 end

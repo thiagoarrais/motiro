@@ -20,6 +20,9 @@ require 'mediacloth'
 require 'diff/lcs'
 require 'diff/lcs/array'
 
+require 'string_extensions'
+require 'array_extensions'
+
 class WikiRenderer
 
   include MediaCloth
@@ -36,8 +39,8 @@ class WikiRenderer
   end
   
   def render_wiki_diff(old_text, new_text)
-    old_result = render_wiki_text(old_text).split    
-    new_result = render_wiki_text(new_text).split
+    old_result = render_wiki_text(old_text).xml_split    
+    new_result = render_wiki_text(new_text).xml_split
     diffsets = old_result.diff(new_result)
 
     diffsets.reverse.each do |dset|
@@ -57,7 +60,7 @@ class WikiRenderer
         "<span class=\"addition\">#{inserted_text.join(' ')}</span>")
     end
 
-    old_result.join(' ')
+    old_result.xml_join
   end
   
   def expand_internal_links(text)
