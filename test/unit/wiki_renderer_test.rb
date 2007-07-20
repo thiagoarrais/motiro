@@ -164,8 +164,15 @@ class WikiRendererTest < Test::Unit::TestCase
                  '</p>',
                  renderer.render_wiki_diff(previous, current)
   end
-
-  #TODO across multiple lines
+  
+  def test_emphasizes_line_breaked_changes_as_one
+    previous = "This is a\nmultiline change"
+    current = "This is an\nenvious change"
+    
+    assert_equal '<p>This is <span class="deletion">a multiline</span>' +
+                 '<span class="addition">an envious</span> change</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
 
 private
 
