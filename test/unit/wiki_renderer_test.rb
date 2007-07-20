@@ -189,6 +189,15 @@ class WikiRendererTest < Test::Unit::TestCase
     assert_equal '<p>Here is <span class="addition">the place I added</span> something</p>',
                  renderer.render_wiki_diff(previous, current)
   end
+  
+  def test_emphasizes_addition_and_deletions_inside_tags
+    previous = "Here is some ''text in italics''"
+    current = "Here is some ''very good text''"
+    
+    assert_equal '<p>Here is some <i><span class="addition">very good</span> ' +
+                 'text <span class="deletion">in italics</span></i> </p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
 
 private
 
