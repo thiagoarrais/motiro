@@ -113,6 +113,58 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_diff(previous, current)
   end
 
+  def test_emphasizes_changes_inside_html_tags
+    previous = "Some ''long emphasized'' text"
+    current = "Some ''short emphasized'' text"
+    
+    assert_equal '<p>Some <i><span class="deletion">long</span>' +
+                 '<span class="addition">short</span> emphasized</i>  text</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
+  def test_emphasizes_changes_to_html_tags
+    previous = "Some ''emphasized'' text"
+    current = "Some '''emphasized''' text"
+    
+    assert_equal '<p>Some <span class="deletion"><i>emphasized</i></span>' +
+                 '<span class="addition"><b>emphasized</b></span> text</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
+  def test_emphasizes_changes_inside_partially_changed_html_tags
+    previous = "Here is a [http://www.motiro.org link]"
+    current = "Here is a [http://www.motiro.com link]"
+    
+    assert_equal '<p>Here is a <span class="deletion"><a href="http://www.motiro.org" rel="nofollow">link</a></span>' +
+                 '<span class="addition"><a href="http://www.motiro.com" rel="nofollow">link</a></span></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+  
+  def test_emphasizes_changed_html_tags_after_changed_text
+    previous = "Here is my ''long text''"
+    current = "Here is your ''long article''"
+
+    assert_equal '<p>Here is <span class="deletion">my</span>' +
+                 '<span class="addition">your</span> ' +
+                 '<i>long <span class="deletion">text</span>' +
+                 '<span class="addition">article</span></i> ' +
+                 '</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
+  def test_emphasizes_changed_html_tags_before_changed_text
+    previous = "Here is some ''long text'' that is yours"
+    current = "Here is some ''long article'' that is mine"
+
+    assert_equal '<p>Here is some ' +
+                 '<i>long <span class="deletion">text</span>' +
+                 '<span class="addition">article</span></i>  ' +
+                 'that is <span class="deletion">yours</span>' +
+                 '<span class="addition">mine</span>' +
+                 '</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
   #TODO across multiple lines
 
 private

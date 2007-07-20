@@ -39,9 +39,15 @@ class WikiRenderer
   end
   
   def render_wiki_diff(old_text, new_text)
-    old_result = render_wiki_text(old_text).xml_split    
-    new_result = render_wiki_text(new_text).xml_split
-    diffsets = old_result.diff(new_result)
+    old_result = render_wiki_text(old_text)    
+    new_result = render_wiki_text(new_text)
+
+    render_html_diff(old_result, new_result)
+  end
+  
+  def render_html_diff(old_html, new_html)
+    old_html, new_html = old_html.xml_split, new_html.xml_split
+    diffsets = old_html.diff(new_html)
 
     diffsets.reverse.each do |dset|
       insertion_pt = nil
@@ -50,17 +56,30 @@ class WikiRenderer
       dset.each do |diff|
         if '-' == diff.action
           insertion_pt ||= diff.position
-          removed_text << old_result.delete_at(insertion_pt) 
+          removed_text << old_html.delete_at(insertion_pt) 
         else
           inserted_text << diff.element
         end
       end
-      old_result.insert(insertion_pt,
-        "<span class=\"deletion\">#{removed_text.join(' ')}</span>" +
-        "<span class=\"addition\">#{inserted_text.join(' ')}</span>")
+
+      removed_text, inserted_text = removed_text.xml_join, inserted_text.xml_join
+      match_old = removed_text.match(/<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/)
+      match_new = inserted_text.match(/<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/)
+      if match_old && match_new && match_old[1..2] == match_new[1..2]
+        old_html.insert(insertion_pt,
+                        [render_html_diff(match_old.pre_match, match_new.pre_match),
+                         "<#{match_old[1..2].join}>",
+                         render_html_diff(match_old[3], match_new[3]),
+                         "</#{match_old[1]}>",
+                         render_html_diff(match_old.post_match, match_new.post_match)].xml_join)
+      else
+        old_html.insert(insertion_pt,
+          "<span class=\"deletion\">#{removed_text}</span>" +
+          "<span class=\"addition\">#{inserted_text}</span>")
+      end
     end
 
-    old_result.xml_join
+    old_html.xml_join
   end
   
   def expand_internal_links(text)

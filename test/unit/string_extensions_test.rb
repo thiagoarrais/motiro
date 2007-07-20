@@ -32,8 +32,7 @@ class StringExtensionsTest < Test::Unit::TestCase
   def test_xml_splits_elements_with_attributes
     str = '<p>This is a paragraph with a <a href="http://www.motiro.org/">link</a> inside</p>'
     assert_equal ['<p>', 'This', 'is', 'a', 'paragraph', 'with', 'a',
-                  '<a href="http://www.motiro.org/">', 'link',
-                  '</a>', 'inside', '</p>'], str.xml_split
+                  '<a href="http://www.motiro.org/">link</a>', 'inside', '</p>'], str.xml_split
   end
 
 end
