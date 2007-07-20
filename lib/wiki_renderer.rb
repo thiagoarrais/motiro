@@ -54,8 +54,8 @@ class WikiRenderer
       removed_text = []
       inserted_text = []
       dset.each do |diff|
+        insertion_pt ||= diff.position
         if '-' == diff.action
-          insertion_pt ||= diff.position
           removed_text << old_html.delete_at(insertion_pt) 
         else
           inserted_text << diff.element
@@ -73,9 +73,10 @@ class WikiRenderer
                          "</#{match_old[1]}>",
                          render_html_diff(match_old.post_match, match_new.post_match)].xml_join)
       else
-        old_html.insert(insertion_pt,
-          "<span class=\"deletion\">#{removed_text}</span>" +
-          "<span class=\"addition\">#{inserted_text}</span>")
+        injection = ''
+        injection += "<span class=\"deletion\">#{removed_text}</span>" unless removed_text.empty? 
+        injection += "<span class=\"addition\">#{inserted_text}</span>" unless inserted_text.empty? 
+        old_html.insert(insertion_pt, injection)
       end
     end
 

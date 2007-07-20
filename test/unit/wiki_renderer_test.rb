@@ -164,13 +164,29 @@ class WikiRendererTest < Test::Unit::TestCase
                  '</p>',
                  renderer.render_wiki_diff(previous, current)
   end
-  
+
   def test_emphasizes_line_breaked_changes_as_one
     previous = "This is a\nmultiline change"
     current = "This is an\nenvious change"
     
     assert_equal '<p>This is <span class="deletion">a multiline</span>' +
                  '<span class="addition">an envious</span> change</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
+  def test_emphasizes_text_deletions
+    previous = "Here is something deleted"
+    current = "Here is something"
+
+    assert_equal '<p>Here is something <span class="deletion">deleted</span></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
+  def test_emphasizes_text_additions
+    previous = "Here is something"
+    current = "Here is the place I added something"
+
+    assert_equal '<p>Here is <span class="addition">the place I added</span> something</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
