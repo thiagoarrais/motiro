@@ -19,8 +19,9 @@ class WikiController < ApplicationController
 
   layout :choose_layout
 
-  before_filter :login_required, :except => [:show, :last, :history, :diff]
+  before_filter :login_required, :only => [:new, :edit, :save]
   before_filter :fetch_page, :fetch_revision
+  before_filter :fetch_diff, :only => [:diff, :sourcediff]
   before_filter :check_edit_access, :only => [:edit, :save]
   
   cache_sweeper :wiki_sweeper, :only =>  [:edit, :save]
@@ -65,6 +66,19 @@ class WikiController < ApplicationController
     end
   end
   
+  def fetch_diff
+    redirect_to params.delete_if {|k,v| :btnCompare == k.to_sym} if params[:btnCompare]
+    @old_revision_num = params[:old_revision]
+    @new_revision_num = params[:new_revision]
+    @old_revision = @page.revisions[@old_revision_num.to_i - 1]
+    @new_revision = @page.revisions[@new_revision_num.to_i - 1]
+    unless @old_revision && @new_revision
+      flash[:notice] = '%s has no revision %s' / @page.name /
+        (@old_revision.nil? ? @old_revision_num : @new_revision_num)
+      redirect_to :action => 'show', :page_name => params[:page_name]
+    end
+  end
+
   def check_edit_access
     unless current_user.can_edit?(@page)
       flash[:not_authorized] = true
@@ -97,19 +111,6 @@ class WikiController < ApplicationController
       format.html
       format.xml { render(:action => 'page_feed')
                    cache_page}
-    end
-  end
-  
-  def diff
-    redirect_to params.delete_if {|k,v| :btnCompare == k.to_sym} if params[:btnCompare]
-    @old_revision_num = params[:old_revision]
-    @new_revision_num = params[:new_revision]
-    @old_revision = @page.revisions[@old_revision_num.to_i - 1]
-    new_revision = @page.revisions[@new_revision_num.to_i - 1]
-    unless @old_revision && new_revision
-      flash[:notice] = '%s has no revision %s' / @page.name /
-        (@old_revision.nil? ? @old_revision_num : @new_revision_num)
-      redirect_to :action => 'show', :page_name => params[:page_name]
     end
   end
   

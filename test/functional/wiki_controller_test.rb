@@ -155,11 +155,14 @@ class WikiControllerTest < Test::Unit::TestCase
   end
   
   def test_considers_last_chosen_language_when_displaying_not_found_page
-    get '/en'
-    
+    get :show, :page_name => 'MultiLanguagePage', :locale => 'en'
     get :show, :page_name => 'NotYetCreatedPage'
     assert_tag :content => /nothing to be read here/
-  end
+
+    get :show, :page_name => 'MultiLanguagePage', :locale => 'pt'
+    get :show, :page_name => 'NotYetCreatedPage'
+    assert_tag :content => /agora mesmo, basta clicar/
+end
   
   def test_auto_selects_page_kind
     log_as 'bob'
@@ -402,6 +405,25 @@ class WikiControllerTest < Test::Unit::TestCase
     assert_xml_element "//input[@type='radio' and @name='new_revision' and @value='#{n}' and @checked='checked']"
     assert_no_xml_element "//input[@name='old_revision' and @value!='#{n - 1}' and @checked='checked']"
     assert_no_xml_element "//input[@name='new_revision' and @value!='#{n}' and @checked='checked']"
+  end
+  
+  def test_shows_rendered_diff
+    page = pages('changed_page')
+    get :diff, :page_name => page.name, :old_revision => 1, :new_revision => 2
+    
+    assert_tag :span, :attributes => {:class => 'addition'},
+               :content => 'Eric changed the text that'
+    assert_tag :span, :attributes => {:class => 'deletion'},
+               :content => 'some text here'
+  end
+  
+  def test_shows_source_diff
+    page = pages('changed_page')
+    get :sourcediff, :page_name => page.name,
+        :old_revision => 1, :new_revision => 2
+    
+    assert_tag :td, :content => /John entered some text here/
+    assert_tag :td, :content => /Eric changed the text that John entered/
   end
 
 private
