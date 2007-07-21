@@ -1,0 +1,12 @@
+<div class='toolbar bottombar'>
+  <%= render :partial => 'editor' %>
+  <%= if 'diff' == params[:action] 
+        link_to 'View source diff'.t, params.merge(:action => 'sourcediff')
+      else
+        link_to 'View rendered diff'.t, params.merge(:action => 'diff')
+      end -%> |
+  <%= link_to 'View revision %s' / @new_revision_num,
+              :action => 'show', :page_name => @page.name,
+              :revision => @new_revision_num -%>
+  <%= page_history_link(@page) -%>
+</div>

@@ -122,11 +122,11 @@ div.toolbar {
     font-size: 0.8em;
 }
 
-div.editbar {
+div.bottombar {
     border-top: 1px dotted #9C9C9C;
 }
 
-div.editbar p { margin-top: 0 }
+div.bottombar p { margin-top: 0 }
 
 div.channel_toolbar {
     border-bottom: 1px dotted #9C9C9C;

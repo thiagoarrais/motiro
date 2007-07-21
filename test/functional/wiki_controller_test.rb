@@ -415,6 +415,8 @@ end
                :content => 'Eric changed the text that'
     assert_tag :span, :attributes => {:class => 'deletion'},
                :content => 'some text here'
+    assert_tag :a, :content => 'View source diff'
+    assert_tag :a, :content => 'View revision 2'
   end
   
   def test_shows_source_diff
@@ -424,6 +426,8 @@ end
     
     assert_tag :td, :content => /John entered some text here/
     assert_tag :td, :content => /Eric changed the text that John entered/
+    assert_tag :a, :content => 'View rendered diff'
+    assert_tag :a, :content => 'View revision 2'
   end
 
 private

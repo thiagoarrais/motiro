@@ -1,0 +1,6 @@
+<% unless @page.last_editor.nil? || @page.modified_at.nil? %>
+  <p>
+    <i><%= 'Last update by %s at %s' / @page.last_editor.login /
+           @page.modified_at.to_s(:rfc822) -%></i>
+  </p>
+<% end %>
