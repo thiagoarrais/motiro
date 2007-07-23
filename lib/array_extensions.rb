@@ -20,8 +20,8 @@ class Array
   def xml_join
     str = ''
     each do |s|
-      str << ' ' unless str.empty? || str.match(/<[^\/][^>]*>\Z/) ||
-                        s.match(/\A<\//)
+      str << ' ' unless str.empty? || s.empty? ||
+                        str.match(/<[^\/][^>]*>\Z/) || s.match(/\A<\//)
       str << s
     end
     str

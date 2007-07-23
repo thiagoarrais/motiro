@@ -15,9 +15,6 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require 'diff/lcs'
-require 'diff/lcs/array'
-
 class Revision < ActiveRecord::Base
   belongs_to :page
   belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_id'
@@ -27,32 +24,37 @@ class Revision < ActiveRecord::Base
     define_method(method) { page.send(method) }
   end
   
+  def diff(rev_num)
+    ChunkDiffer.new.diff(text.split($/),
+      #position numbers are 1-based, but we want 0-based when indexing revisions
+                         page.revisions[rev_num - 1].text.split($/))
+  end
+
+end
+
+class ChunkDiffer
+
+  def diff(old_lines, new_lines)
+    @chunks = []
+    Differ.new(self).diff(old_lines, new_lines)
+  end
+
   LCS_ACTION_TO_SYMBOL = {'=' => :unchanged, '!' => :modification,
                           '-' => :deletion, '+' => :addition}
   
-  def diff(rev_num)
-    #position numbers are 1-based, but we want 0-based when indexing revisions
-    sdiffs = text.split($/).sdiff(page.revisions[rev_num - 1].text.split($/))
-    chunks = []
-    last_action = chunk = nil
-    sdiffs.each do |sdiff|
-      if chunk_break_needed(last_action, sdiff.action) 
-        chunk = Chunk.new(LCS_ACTION_TO_SYMBOL[sdiff.action])
-        chunks << chunk
-      end
-      last_action = sdiff.action
-      #lcs's position are 0-based, but we want 1-based when rendering
-      chunk << Line.new(sdiff.old_element, sdiff.old_position + 1,
-                        sdiff.new_element, sdiff.new_position + 1)
-    end
-
-    chunks
+  def start_new_chunk(action)
+    @chunk = Chunk.new(LCS_ACTION_TO_SYMBOL[action])
+    @chunks << @chunk
   end
 
-private
+  def store_diff(sdiff)
+    #lcs's position are 0-based, but we want 1-based when rendering
+    @chunk << Line.new(sdiff.old_element, sdiff.old_position + 1,
+                       sdiff.new_element, sdiff.new_position + 1)
+  end
 
-  def chunk_break_needed(prev, curr)
-    prev.nil? || curr != prev && [prev, curr].include?('=')
+  def get_result
+    @chunks
   end
 
 end

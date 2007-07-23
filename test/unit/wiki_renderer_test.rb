@@ -118,7 +118,7 @@ class WikiRendererTest < Test::Unit::TestCase
     current = "Some ''short emphasized'' text"
     
     assert_equal '<p>Some <i><span class="deletion">long</span>' +
-                 '<span class="addition">short</span> emphasized</i>  text</p>',
+                 '<span class="addition">short</span> emphasized</i> text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -126,8 +126,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Some ''emphasized'' text"
     current = "Some '''emphasized''' text"
     
-    assert_equal '<p>Some <span class="deletion"><i>emphasized</i></span>' +
-                 '<span class="addition"><b>emphasized</b></span> text</p>',
+    assert_equal '<p>Some <i><span class="deletion">emphasized</span></i>' +
+                 '<b><span class="addition">emphasized</span></b> text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -135,8 +135,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is a [http://www.motiro.org link]"
     current = "Here is a [http://www.motiro.com link]"
     
-    assert_equal '<p>Here is a <span class="deletion"><a href="http://www.motiro.org" rel="nofollow">link</a></span>' +
-                 '<span class="addition"><a href="http://www.motiro.com" rel="nofollow">link</a></span></p>',
+    assert_equal '<p>Here is a <a href="http://www.motiro.org" rel="nofollow"><span class="deletion">link</span></a>' +
+                 '<a href="http://www.motiro.com" rel="nofollow"><span class="addition">link</span></a></p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -147,7 +147,7 @@ class WikiRendererTest < Test::Unit::TestCase
     assert_equal '<p>Here is <span class="deletion">my</span>' +
                  '<span class="addition">your</span> ' +
                  '<i>long <span class="deletion">text</span>' +
-                 '<span class="addition">article</span></i> ' +
+                 '<span class="addition">article</span></i>' +
                  '</p>',
                  renderer.render_wiki_diff(previous, current)
   end
@@ -158,7 +158,7 @@ class WikiRendererTest < Test::Unit::TestCase
 
     assert_equal '<p>Here is some ' +
                  '<i>long <span class="deletion">text</span>' +
-                 '<span class="addition">article</span></i>  ' +
+                 '<span class="addition">article</span></i> ' +
                  'that is <span class="deletion">yours</span>' +
                  '<span class="addition">mine</span>' +
                  '</p>',
@@ -195,7 +195,17 @@ class WikiRendererTest < Test::Unit::TestCase
     current = "Here is some ''very good text''"
     
     assert_equal '<p>Here is some <i><span class="addition">very good</span> ' +
-                 'text <span class="deletion">in italics</span></i> </p>',
+                 'text <span class="deletion">in italics</span></i></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+  
+  def test_emphasizes_paragraph_addition_and_deletion
+    previous = "First paragraph\n\nSecond paragraph"
+    current  = "Second paragraph\n\nThird paragraph"
+    
+    assert_equal '<p><span class="deletion">First paragraph</span></p> ' +
+                 '<p>Second paragraph</p> ' +
+                 '<p><span class="addition">Third paragraph</span></p>',
                  renderer.render_wiki_diff(previous, current)
   end
 

@@ -17,8 +17,6 @@
 
 require 'rubygems'
 require 'mediacloth'
-require 'diff/lcs'
-require 'diff/lcs/array'
 
 require 'string_extensions'
 require 'array_extensions'
@@ -44,49 +42,76 @@ class WikiRenderer
 
     render_html_diff(old_result, new_result)
   end
-  
+
   def render_html_diff(old_html, new_html)
-    old_html, new_html = old_html.xml_split, new_html.xml_split
-    diffsets = old_html.diff(new_html)
-
-    diffsets.reverse.each do |dset|
-      insertion_pt = nil
-      removed_text = []
-      inserted_text = []
-      dset.each do |diff|
-        insertion_pt ||= diff.position
-        if '-' == diff.action
-          removed_text << old_html.delete_at(insertion_pt) 
-        else
-          inserted_text << diff.element
-        end
-      end
-
-      removed_text, inserted_text = removed_text.xml_join, inserted_text.xml_join
-      match_old = removed_text.match(/<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/)
-      match_new = inserted_text.match(/<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/)
-      if match_old && match_new && match_old[1..2] == match_new[1..2]
-        old_html.insert(insertion_pt,
-                        [render_html_diff(match_old.pre_match, match_new.pre_match),
-                         "<#{match_old[1..2].join}>",
-                         render_html_diff(match_old[3], match_new[3]),
-                         "</#{match_old[1]}>",
-                         render_html_diff(match_old.post_match, match_new.post_match)].xml_join)
-      else
-        injection = ''
-        injection += "<span class=\"deletion\">#{removed_text}</span>" unless removed_text.empty? 
-        injection += "<span class=\"addition\">#{inserted_text}</span>" unless inserted_text.empty? 
-        old_html.insert(insertion_pt, injection)
-      end
-    end
-
-    old_html.xml_join
+    HtmlDiffRenderer.new.render_html_diff(old_html, new_html)
   end
-  
+
+private
+
   def expand_internal_links(text)
     text.gsub(/\[(\w+)([ \t]+([^\]]+))?\]/) do |substr|
       "[#{@url_generator.generate_url_for($1)} #{$2 ? $2: $1}]"
     end
   end
 
+end
+
+class HtmlDiffRenderer
+
+  def render_html_diff(old_html, new_html)
+    @diff_words = @removed_text = @inserted_text = []
+    Differ.new(self).diff(old_html.xml_split, new_html.xml_split)
+  end
+  
+  def start_new_chunk(action)
+    inject(@diff_words, @removed_text.xml_join, @inserted_text.xml_join)
+    @removed_text = []
+    @inserted_text = []
+  end
+
+  def store_diff(sdiff)
+    if '=' == sdiff.action
+      @diff_words << sdiff.old_element
+    else
+      @removed_text  << sdiff.old_element unless sdiff.old_element.nil?
+      @inserted_text << sdiff.new_element unless sdiff.new_element.nil?
+    end
+  end
+
+  def get_result
+    inject(@diff_words, @removed_text.xml_join, @inserted_text.xml_join)
+    
+    @diff_words.xml_join
+  end
+
+private
+
+  HTML_ELEMENT = /<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/m
+
+  def inject(words, old_text, new_text)
+    match_old = old_text.match(HTML_ELEMENT)
+    match_new = new_text.match(HTML_ELEMENT)
+    if match_old && match_new && match_old[1..2] == match_new[1..2]
+      words << [HtmlDiffRenderer.new.render_html_diff(match_old.pre_match, match_new.pre_match),
+                "<#{match_old[1..2].join}>",
+                HtmlDiffRenderer.new.render_html_diff(match_old[3], match_new[3]),
+                "</#{match_old[1]}>",
+                HtmlDiffRenderer.new.render_html_diff(match_old.post_match, match_new.post_match)].xml_join
+    else
+      injection = ''
+      injection += enclose('deletion', old_text) unless old_text.empty? 
+      injection += enclose('addition', new_text) unless new_text.empty? 
+      words << injection
+    end
+    words
+  end
+  
+  def enclose(klass, text)
+    return "<span class=\"#{klass}\">#{text}</span>" unless ?< == text[0]
+    match = text.match(HTML_ELEMENT)
+    [match.pre_match,
+     "<#{match[1..2].join}><span class=\"#{klass}\">#{match[3]}</span></#{match[1]}>",
+     match.post_match].xml_join
+  end
 end

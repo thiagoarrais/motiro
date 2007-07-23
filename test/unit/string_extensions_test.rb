@@ -25,14 +25,20 @@ class StringExtensionsTest < Test::Unit::TestCase
   end
 
   def test_xml_splits_simple_elements
-    str = "<p>This is a paragraph</p>"
-    assert_equal ['<p>', 'This', 'is', 'a', 'paragraph', '</p>'], str.xml_split
+    str = "<p>This is a paragraph</p><p>And another one</p>"
+    assert_equal ['<p>This is a paragraph</p>', '<p>And another one</p>'],
+                 str.xml_split
   end
 
   def test_xml_splits_elements_with_attributes
-    str = '<p>This is a paragraph with a <a href="http://www.motiro.org/">link</a> inside</p>'
-    assert_equal ['<p>', 'This', 'is', 'a', 'paragraph', 'with', 'a',
-                  '<a href="http://www.motiro.org/">link</a>', 'inside', '</p>'], str.xml_split
+    str = 'This is a paragraph with a <a href="http://www.motiro.org/">link</a> inside'
+    assert_equal ['This', 'is', 'a', 'paragraph', 'with', 'a',
+                  '<a href="http://www.motiro.org/">link</a>', 'inside'], str.xml_split
+  end
+  
+  def test_xml_splits_tag_with_line_break
+    str = "<p>This is a\nmultiline change</p>"
+    assert_equal ["<p>This is a\nmultiline change</p>"], str.xml_split
   end
 
 end

@@ -15,26 +15,32 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require File.dirname(__FILE__) + '/../test_helper'
-require 'array_extensions'
+require 'diff/lcs'
+require 'diff/lcs/array'
 
-class ArrayExtensionsTest < Test::Unit::TestCase
+Differ = Struct.new(:target)
+class Differ
 
-  def test_xml_joins_enclosing_elements
-    words = ['<p>', 'This', 'is', 'a', 'paragraph', '</p>']
-    assert_equal '<p>This is a paragraph</p>', words.xml_join
+  def diff(old_elems, new_elems)
+    sdiffs = old_elems.sdiff(new_elems)
+    
+    last_action = nil
+    sdiffs.each do |sdiff|
+      if chunk_break_needed(last_action, sdiff.action)
+        target.start_new_chunk(sdiff.action)
+      end
+      last_action = sdiff.action
+      
+      target.store_diff(sdiff)
+    end
+
+    target.get_result
   end
   
-  def test_xml_joins_inline_elements_with_spaces
-    words = ['<p>', 'A', '<a href="http://www.motiro.org">', 'link', '</a>',
-             'here', '</p>']
-    assert_equal '<p>A <a href="http://www.motiro.org">link</a> here</p>',
-                 words.xml_join
-  end
-  
-  def test_xml_joins_empty_strings
-    words = ['<p>A paragraph</p>', '']
-    assert_equal '<p>A paragraph</p>', words.xml_join
+private
+
+  def chunk_break_needed(prev, curr)
+    prev.nil? || curr != prev && [prev, curr].include?('=')
   end
 
 end
