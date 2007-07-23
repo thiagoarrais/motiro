@@ -40,5 +40,10 @@ class StringExtensionsTest < Test::Unit::TestCase
     str = "<p>This is a\nmultiline change</p>"
     assert_equal ["<p>This is a\nmultiline change</p>"], str.xml_split
   end
+  
+  def test_xml_splits_multiletter_tags
+    str = '<h2>Level 2 title</h2><p>Paragraph</p>'
+    assert_equal ['<h2>Level 2 title</h2>', '<p>Paragraph</p>'], str.xml_split
+  end
 
 end

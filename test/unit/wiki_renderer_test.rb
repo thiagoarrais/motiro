@@ -208,6 +208,16 @@ class WikiRendererTest < Test::Unit::TestCase
                  '<p><span class="addition">Third paragraph</span></p>',
                  renderer.render_wiki_diff(previous, current)
   end
+  
+  def test_emphasize_change_inside_title_tag
+    previous = "== Sub title ==\n\nParagraph"
+    current  = "== Super title ==\n\nParagraph"
+    
+    assert_equal '<h2><span class="deletion">Sub</span>' +
+                 '<span class="addition">Super</span> title</h2> ' +
+                 '<p>Paragraph</p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
 
 private
 

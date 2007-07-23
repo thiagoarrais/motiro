@@ -40,11 +40,7 @@ class WikiRenderer
     old_result = render_wiki_text(old_text)    
     new_result = render_wiki_text(new_text)
 
-    render_html_diff(old_result, new_result)
-  end
-
-  def render_html_diff(old_html, new_html)
-    HtmlDiffRenderer.new.render_html_diff(old_html, new_html)
+    HtmlDiffRenderer.new.render_html_diff(old_result, new_result)
   end
 
 private
@@ -87,7 +83,7 @@ class HtmlDiffRenderer
 
 private
 
-  HTML_ELEMENT = /<([^>])+(\s+[^>]+)?>(.*?)<\/\1>/m
+  HTML_ELEMENT = /<([^>]+)(\s+[^>]+)?>(.*?)<\/\1>/m
 
   def inject(words, old_text, new_text)
     match_old = old_text.match(HTML_ELEMENT)
