@@ -84,8 +84,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "There is going to be some change inside this text"
     current  = "There has been some change inside this text"
     
-    assert_equal '<p>There <span class="deletion">is going to be</span>' +
-                 '<span class="addition">has been</span> some change inside ' +
+    assert_equal '<p>There <span style="background: #ffb8b8">is going to be</span>' +
+                 '<span style="background: #b8ffb8">has been</span> some change inside ' +
                  'this text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
@@ -94,10 +94,10 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "There is going to be more than one change inside this text"
     current  = "There has been more than one change outside this text"
     
-    assert_equal '<p>There <span class="deletion">is going to be</span>' +
-                 '<span class="addition">has been</span> more than one ' +
-                 'change <span class="deletion">inside</span>' +
-                 '<span class="addition">outside</span> ' +
+    assert_equal '<p>There <span style="background: #ffb8b8">is going to be</span>' +
+                 '<span style="background: #b8ffb8">has been</span> more than one ' +
+                 'change <span style="background: #ffb8b8">inside</span>' +
+                 '<span style="background: #b8ffb8">outside</span> ' +
                  'this text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
@@ -106,10 +106,10 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "First version was good"
     current = "Second version was bad"
     
-    assert_equal '<p><span class="deletion">First</span>' +
-                 '<span class="addition">Second</span> version was ' +
-                 '<span class="deletion">good</span>' +
-                 '<span class="addition">bad</span></p>',
+    assert_equal '<p><span style="background: #ffb8b8">First</span>' +
+                 '<span style="background: #b8ffb8">Second</span> version was ' +
+                 '<span style="background: #ffb8b8">good</span>' +
+                 '<span style="background: #b8ffb8">bad</span></p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -117,8 +117,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Some ''long emphasized'' text"
     current = "Some ''short emphasized'' text"
     
-    assert_equal '<p>Some <i><span class="deletion">long</span>' +
-                 '<span class="addition">short</span> emphasized</i> text</p>',
+    assert_equal '<p>Some <i><span style="background: #ffb8b8">long</span>' +
+                 '<span style="background: #b8ffb8">short</span> emphasized</i> text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -126,8 +126,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Some ''emphasized'' text"
     current = "Some '''emphasized''' text"
     
-    assert_equal '<p>Some <i><span class="deletion">emphasized</span></i>' +
-                 '<b><span class="addition">emphasized</span></b> text</p>',
+    assert_equal '<p>Some <i><span style="background: #ffb8b8">emphasized</span></i>' +
+                 '<b><span style="background: #b8ffb8">emphasized</span></b> text</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -135,8 +135,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is a [http://www.motiro.org link]"
     current = "Here is a [http://www.motiro.com link]"
     
-    assert_equal '<p>Here is a <a href="http://www.motiro.org" rel="nofollow"><span class="deletion">link</span></a>' +
-                 '<a href="http://www.motiro.com" rel="nofollow"><span class="addition">link</span></a></p>',
+    assert_equal '<p>Here is a <a href="http://www.motiro.org" rel="nofollow"><span style="background: #ffb8b8">link</span></a>' +
+                 '<a href="http://www.motiro.com" rel="nofollow"><span style="background: #b8ffb8">link</span></a></p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -144,10 +144,10 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is my ''long text''"
     current = "Here is your ''long article''"
 
-    assert_equal '<p>Here is <span class="deletion">my</span>' +
-                 '<span class="addition">your</span> ' +
-                 '<i>long <span class="deletion">text</span>' +
-                 '<span class="addition">article</span></i>' +
+    assert_equal '<p>Here is <span style="background: #ffb8b8">my</span>' +
+                 '<span style="background: #b8ffb8">your</span> ' +
+                 '<i>long <span style="background: #ffb8b8">text</span>' +
+                 '<span style="background: #b8ffb8">article</span></i>' +
                  '</p>',
                  renderer.render_wiki_diff(previous, current)
   end
@@ -157,10 +157,10 @@ class WikiRendererTest < Test::Unit::TestCase
     current = "Here is some ''long article'' that is mine"
 
     assert_equal '<p>Here is some ' +
-                 '<i>long <span class="deletion">text</span>' +
-                 '<span class="addition">article</span></i> ' +
-                 'that is <span class="deletion">yours</span>' +
-                 '<span class="addition">mine</span>' +
+                 '<i>long <span style="background: #ffb8b8">text</span>' +
+                 '<span style="background: #b8ffb8">article</span></i> ' +
+                 'that is <span style="background: #ffb8b8">yours</span>' +
+                 '<span style="background: #b8ffb8">mine</span>' +
                  '</p>',
                  renderer.render_wiki_diff(previous, current)
   end
@@ -169,8 +169,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "This is a\nmultiline change"
     current = "This is an\nenvious change"
     
-    assert_equal '<p>This is <span class="deletion">a multiline</span>' +
-                 '<span class="addition">an envious</span> change</p>',
+    assert_equal '<p>This is <span style="background: #ffb8b8">a multiline</span>' +
+                 '<span style="background: #b8ffb8">an envious</span> change</p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -178,7 +178,7 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is something deleted"
     current = "Here is something"
 
-    assert_equal '<p>Here is something <span class="deletion">deleted</span></p>',
+    assert_equal '<p>Here is something <span style="background: #ffb8b8">deleted</span></p>',
                  renderer.render_wiki_diff(previous, current)
   end
 
@@ -186,7 +186,7 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is something"
     current = "Here is the place I added something"
 
-    assert_equal '<p>Here is <span class="addition">the place I added</span> something</p>',
+    assert_equal '<p>Here is <span style="background: #b8ffb8">the place I added</span> something</p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -194,8 +194,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is some ''text in italics''"
     current = "Here is some ''very good text''"
     
-    assert_equal '<p>Here is some <i><span class="addition">very good</span> ' +
-                 'text <span class="deletion">in italics</span></i></p>',
+    assert_equal '<p>Here is some <i><span style="background: #b8ffb8">very good</span> ' +
+                 'text <span style="background: #ffb8b8">in italics</span></i></p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -203,9 +203,9 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "First paragraph\n\nSecond paragraph"
     current  = "Second paragraph\n\nThird paragraph"
     
-    assert_equal '<p><span class="deletion">First paragraph</span></p> ' +
+    assert_equal '<p><span style="background: #ffb8b8">First paragraph</span></p> ' +
                  '<p>Second paragraph</p> ' +
-                 '<p><span class="addition">Third paragraph</span></p>',
+                 '<p><span style="background: #b8ffb8">Third paragraph</span></p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -213,8 +213,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "== Sub title ==\n\nParagraph"
     current  = "== Super title ==\n\nParagraph"
     
-    assert_equal '<h2><span class="deletion">Sub</span>' +
-                 '<span class="addition">Super</span> title</h2> ' +
+    assert_equal '<h2><span style="background: #ffb8b8">Sub</span>' +
+                 '<span style="background: #b8ffb8">Super</span> title</h2> ' +
                  '<p>Paragraph</p>',
                  renderer.render_wiki_diff(previous, current)
   end

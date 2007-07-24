@@ -138,6 +138,7 @@ first_multilanguage_revision:
   id: 15
   page_id: 12
   kind: feature
+  position: 1
   modified_at: 2007-06-14 12:03:24
   last_editor_id: 1000004 #john
   editors: ""
@@ -156,6 +157,7 @@ second_multilanguage_revision:
   id: 16
   page_id: 12
   kind: feature
+  position: 2
   modified_at: 2007-06-14 12:06:38
   last_editor_id: 1000004 #john
   editors: ""

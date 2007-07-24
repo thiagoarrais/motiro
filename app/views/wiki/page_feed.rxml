@@ -13,7 +13,12 @@ xml.rss 'version' => '2.0',
       @page.revisions.reverse[0..10].each do |rev|
         xml.item do
           xml.title h(rev.title)
-          xml.description @renderer.render_wiki_text(rev.text)
+          if rev.position > 1
+            xml.description @renderer.render_wiki_diff(
+              @page.revisions[rev.position - 2].text, rev.text)
+          else
+            xml.description @renderer.render_wiki_text(rev.text)
+          end
           xml.pubDate h(rev.modified_at.to_s(:rfc822))
           xml.dc :creator, h(rev.last_editor.login)
           xml.guid server_url_for(:action => 'show', :page_name => @page.name,

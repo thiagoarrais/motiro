@@ -352,11 +352,11 @@ end
 
     assert_xml_element "//item/description[contains(text(), 'This is the first English version')]"
     assert_xml_element "//item/description[contains(text(), 'Here is some &lt;b&gt;bold&lt;/b&gt; text')]"
-    assert_xml_element "//item/description[contains(text(), 'This is the second English version')]"
+    assert_xml_element "//item/description[contains(text(), 'This is the &lt;span style=\"background: #ffb8b8\"&gt;first&lt;/span&gt;&lt;span style=\"background: #b8ffb8\"&gt;second&lt;/span&gt; English version')]"
 
     get :history, :page_name => page_name, :locale => 'pt-br', :format => 'xml'
     assert_xml_element "//item/description[contains(text(), 'Esta &#233; a primeira vers&#227;o em portugu&#234;s')]"
-    assert_xml_element "//item/description[contains(text(), 'Esta &#233; a segunda vers&#227;o em portugu&#234;s')]"
+    assert_xml_element "//item/description[contains(text(), 'Esta &#233; a &lt;span style=\"background: #ffb8b8\"&gt;primeira&lt;/span&gt;&lt;span style=\"background: #b8ffb8\"&gt;segunda&lt;/span&gt; vers&#227;o em portugu&#234;s')]"
   end
   
   def test_history_links_to_page_revision
@@ -411,9 +411,9 @@ end
     page = pages('changed_page')
     get :diff, :page_name => page.name, :old_revision => 1, :new_revision => 2
     
-    assert_tag :span, :attributes => {:class => 'addition'},
+    assert_tag :span, :attributes => {:style => 'background: #b8ffb8'},
                :content => 'Eric changed the text that'
-    assert_tag :span, :attributes => {:class => 'deletion'},
+    assert_tag :span, :attributes => {:style => 'background: #ffb8b8'},
                :content => 'some text here'
     assert_tag :a, :content => 'View source diff'
     assert_tag :a, :content => 'View revision 2'

@@ -146,14 +146,6 @@ div.channel_toolbar {
     background:#FFD;
 }
 
-.addition {
-    background: #b8ffb8;
-}
-
-.deletion {
-    background: #ffb8b8;
-}
-
 table.diff {
     border: solid gray;
     border-width: 1px 0 1px 0;
@@ -204,11 +196,13 @@ tbody.modification {
 }
 
 tbody.addition {
+    background: #b8ffb8;
     border: #606060 solid;
     border-width: 1px 0 1px 0;
 }
 
 tbody.deletion {
+    background: #ffb8b8;
     border: #606060 solid;
     border-width: 1px 0 1px 0;
 }

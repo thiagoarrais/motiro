@@ -96,18 +96,18 @@ private
                 HtmlDiffRenderer.new.render_html_diff(match_old.post_match, match_new.post_match)].xml_join
     else
       injection = ''
-      injection += enclose('deletion', old_text) unless old_text.empty? 
-      injection += enclose('addition', new_text) unless new_text.empty? 
+      injection += enclose('#ffb8b8', old_text) unless old_text.empty? 
+      injection += enclose('#b8ffb8', new_text) unless new_text.empty? 
       words << injection
     end
     words
   end
   
-  def enclose(klass, text)
-    return "<span class=\"#{klass}\">#{text}</span>" unless ?< == text[0]
+  def enclose(color, text)
+    return "<span style=\"background: #{color}\">#{text}</span>" unless ?< == text[0]
     match = text.match(HTML_ELEMENT)
     [match.pre_match,
-     "<#{match[1..2].join}><span class=\"#{klass}\">#{match[3]}</span></#{match[1]}>",
+     "<#{match[1..2].join}><span style=\"background: #{color}\">#{match[3]}</span></#{match[1]}>",
      match.post_match].xml_join
   end
 end
