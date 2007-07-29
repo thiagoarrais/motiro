@@ -17,7 +17,7 @@ class RootControllerTest < Test::Unit::TestCase
   def test_version_number
     get :index, :locale => 'en'
     
-    assert_tag :content => /Motiro version 0.6.8/
+    assert_tag :content => /Motiro version 0.6.9/
   end
   
 
