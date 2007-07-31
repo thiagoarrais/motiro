@@ -219,6 +219,29 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_diff(previous, current)
   end
 
+  def test_emphasize_change_inside_composite_tag
+    previous = "* This is a list\n" +
+               "* With three items\n" +
+               "** One of them is a nested list\n" +
+               "** With two items"
+    current  = "* This is a list\n" +
+               "* With three items\n" +
+               "** One of them is another list\n" +
+               "** With two changed items"
+
+    assert_equal '<ul>' +
+                   "<li>This is a list\n</li> " +
+                   '<li>With three items ' +
+                   '<ul>' +
+                     '<li>One of them is ' +
+                       '<span style="background: #ffb8b8">a nested</span>' +
+                       '<span style="background: #b8ffb8">another</span> list</li> ' +
+                     '<li>With two <span style="background: #b8ffb8">changed</span> items</li>' +
+                   '</ul></li>' +
+                 '</ul>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
 private
 
   def url_generator; TestingUrlGenerator.new; end

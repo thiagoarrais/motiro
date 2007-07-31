@@ -28,8 +28,15 @@ class String
     str = self
     words = []
     while(md = str.match(/<([^>]+)(\s+[^>]+)?>.*?<\/\1>|[^\s<]+/m))
-      words << md[0]
-      str = md.post_match
+      word = md[0]
+      remainder = md.post_match
+      while word.scan(/<#{md[1]}/).size > word.scan(/<\/#{md[1]}/).size
+        m = remainder.match(/<\/#{md[1]}>/)
+        word << m.pre_match << m[0]
+        remainder = m.post_match
+      end
+      words << word
+      str = remainder
     end
     words
   end

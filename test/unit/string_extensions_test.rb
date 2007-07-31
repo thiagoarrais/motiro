@@ -46,4 +46,10 @@ class StringExtensionsTest < Test::Unit::TestCase
     assert_equal ['<h2>Level 2 title</h2>', '<p>Paragraph</p>'], str.xml_split
   end
 
+  def test_xml_splits_nested_identical_tags
+    str = '<ul><li>a b</li><li>c <ul><li>d e f</li><li>g h</li></ul></li></ul>'+
+          '<p>paragraph</p>'
+    assert_equal ['<ul><li>a b</li><li>c <ul><li>d e f</li><li>g h</li></ul></li></ul>',
+                  '<p>paragraph</p>'], str.xml_split
+  end
 end
