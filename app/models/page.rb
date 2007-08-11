@@ -27,7 +27,7 @@ class Page < ActiveRecord::Base
     oldest(:last_editor)
   end
   
-  %w{modified_at last_editor}.each do |attr|
+  %w{modified_at last_editor done?}.each do |attr|
     define_method attr do
       most_recent(attr)
     end
@@ -105,7 +105,7 @@ class Page < ActiveRecord::Base
     self.kind = attrs[:kind] if attrs[:kind]
     self.happens_at = attrs[:happens_at] if attrs[:happens_at]
     rev.kind, rev.happens_at = self.kind, self.happens_at
-    rev.title, rev.text = attrs[:title], attrs[:text]
+    rev.title, rev.text, rev.done = attrs[:title], attrs[:text], attrs[:done]
     self.revisions << rev
     
     save

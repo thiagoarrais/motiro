@@ -243,6 +243,15 @@ class PageTest < Test::Unit::TestCase
     assert_equal old_time, event.revisions.first.happens_at
   end
   
+  def test_stores_feature_status_revisions
+    feature = pages('list_last_modified_features_page')
+    feature.revise(bob, now, :done => 1)
+    
+    assert  feature.done?
+    assert  feature.revisions.last.done?
+    assert !feature.revisions.first.done?
+  end
+  
   def test_rbab
     date = Date.new(2007, 4, 4)
     page = revise_brand_new_page(:kind => 'event',
