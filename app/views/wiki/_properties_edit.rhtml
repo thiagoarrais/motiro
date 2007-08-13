@@ -1,4 +1,7 @@
 <% if 'event' == (params[:kind] || @page.kind) %>
   <%= 'This event is planned for'.t -%>
   <%= date_select 'page', 'happens_at'  %>
+<% elsif 'feature'== (params[:kind] || @page.kind) %>
+  <%= check_box('page', 'done')  -%>
+  <%= 'This feature is done'.t %>
 <% end %>

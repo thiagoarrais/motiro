@@ -27,7 +27,7 @@ class Page < ActiveRecord::Base
     oldest(:last_editor)
   end
   
-  %w{modified_at last_editor done?}.each do |attr|
+  %w{modified_at last_editor done done?}.each do |attr|
     define_method attr do
       most_recent(attr)
     end

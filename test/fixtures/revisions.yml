@@ -71,9 +71,11 @@ non_matching_title_page_creation:
 list_last_modified_features_page_creation:
   id: 9
   page_id: 7
+  position: 1
   kind: feature
   last_editor_id: 1000001
-  modified_at: 2033-12-27 16:47:00
+  modified_at: 2007-08-13 00:02:48
+  done: f
   editors: ""
   title: List last modified features
   text: Motiro should list the last modified feature suggestion pages on the

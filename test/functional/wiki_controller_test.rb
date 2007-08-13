@@ -429,7 +429,31 @@ end
     assert_tag :a, :content => 'View rendered diff'
     assert_tag :a, :content => 'View revision 2'
   end
+  
+  def test_allows_feature_status_update
+    page = pages('list_last_modified_features_page')
+    log_as :bob
 
+    get :show, :page_name => page.name
+    assert_tag :content => /This feature is not done/
+    
+    get :edit, :page_name => page.name
+    assert_tag :content => /This feature is done/
+    assert_tag :input, :attributes => {:type => 'checkbox'}
+    
+    post :save, :page_name => page.name,
+                :btnSave => true, 
+                :page => { :title => 'List last modified features',
+                           :text => 'We should really have this',
+                           :done => '1',
+                           :kind => 'feature', :editors => '' }
+    log_out                       
+    
+    get :show, :page_name => page.name
+    assert_no_tag :content => /This feature is not done/
+    assert_tag :content => /This feature is done/
+  end
+  
 private
 
   def log_as(user_name)
