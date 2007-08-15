@@ -56,6 +56,11 @@
 'This event was planned for' => 'Este evento foi planejado para',
 'The first line on the event text will turn into a summary displayed on the main page' => 'A primeira linha do texto do evento será exibida como resumo na página principal',
 
+# Feature suggestion pages
+'This feature is' => 'Este recurso sugerido',
+'done' => 'está pronto',
+'not done' => 'ainda não está pronto',
+
 # Wiki edition page
 'Insert page title here' => 'Digite o título aqui',
 'Save modifications' => 'Salvar modificações',
@@ -68,7 +73,8 @@
 'This page is a' => 'Esta página é uma',
 'common wiki page' => 'página wiki comum',
 'feature suggestion' => 'sugestão de recurso',
-'event description' => 'descrição de evento', 
+'event description' => 'descrição de evento',
+'This feature is done' => 'Este recurso está pronto',
 'Who should be able to edit this page?' => 'Quem pode editar esta página?',
 '(Usernames separated by spaces. Blank for everyone)' => '(Nomes de usuário separados por espaços. Em branco para todos.)',
 
