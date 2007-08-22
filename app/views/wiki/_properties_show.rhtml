@@ -1,7 +1,4 @@
-<% if 'event' == @page.kind %>
-  <%= image_tag 'calendar.png' -%>
-  <%= 'This event was planned for'.t -%>
-  <%= @page.happens_at.localize('%d %B %Y (%A)') -%>
-<% elsif 'feature' == @page.kind %>
-  <%= 'This feature is'.t + ' ' + (@page.done? ? 'done'.t : 'not done'.t) %>
-<% end %>
+<% begin %>
+  <%= render(:partial => 'show_' + @page.kind) -%>
+<% rescue; end %>
+
