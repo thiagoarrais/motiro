@@ -23,8 +23,6 @@ require 'array_extensions'
 
 class WikiRenderer
 
-  include MediaCloth
-
   def initialize(url_generator, locale_code=nil)
     @url_generator = url_generator
     @translator = Translator.for(locale_code)
@@ -44,6 +42,15 @@ class WikiRenderer
   end
 
 private
+
+  def wiki_to_html(input)
+    parser = MediaWikiParser.new
+    parser.lexer = MediaWikiLexer.new
+    tree = parser.parse(input)
+    gen = MediaWikiHTMLGenerator.new
+    gen.parse(tree)
+    gen.html
+  end
 
   def expand_internal_links(text)
     text.gsub(/\[(\w+)([ \t]+([^\]]+))?\]/) do |substr|
