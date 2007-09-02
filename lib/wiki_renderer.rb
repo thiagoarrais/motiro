@@ -30,8 +30,7 @@ class WikiRenderer
   
   def render_wiki_text(text)
     localized_text = @translator.localize(text).delete("\r")
-    expanded_text = expand_internal_links(localized_text)
-    wiki_to_html(expanded_text)
+    wiki_to_html(localized_text)
   end
   
   def render_wiki_diff(old_text, new_text)
@@ -47,15 +46,9 @@ private
     parser = MediaWikiParser.new
     parser.lexer = MediaWikiLexer.new
     tree = parser.parse(input)
-    gen = MediaWikiHTMLGenerator.new
+    gen = MotiroWikiHTMLGenerator.new(@url_generator)
     gen.parse(tree)
     gen.html
-  end
-
-  def expand_internal_links(text)
-    text.gsub(/\[(\w+)([ \t]+([^\]]+))?\]/) do |substr|
-      "[#{@url_generator.generate_url_for($1)} #{$2 ? $2: $1}]"
-    end
   end
 
 end

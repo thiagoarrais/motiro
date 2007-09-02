@@ -21,6 +21,7 @@ require 'stubs/url_generator'
 
 class WikiRendererTest < Test::Unit::TestCase
 
+  fixtures :pages, :revisions
   attr_reader :renderer
   
   def setup
@@ -55,14 +56,14 @@ class WikiRendererTest < Test::Unit::TestCase
   end
   
   def test_renders_internal_link
-    expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">go somewhere else</a></p>"
-    assert_equal expected, renderer.render_wiki_text('[AnotherPage go somewhere else]')
+    assert_equal "<p><a href=\"http://test.host/wiki/show/AnotherPage\">go somewhere else</a></p>",
+                 renderer.render_wiki_text('[[AnotherPage go somewhere else]]')
   end
   
   def test_renders_multiple_internal_links
-    expected = "<p><a href=\"http://test.host/wiki/show/InternalPage\" rel=\"nofollow\">go there</a> <a href=\"http://test.host/wiki/show/OtherInternalPage\" rel=\"nofollow\">and there</a></p>"
-    assert_equal expected, renderer.render_wiki_text("[InternalPage go there] " +
-                                                     "[OtherInternalPage and there]")
+    assert_equal "<p><a href=\"http://test.host/wiki/show/InternalPage\">go there</a> <a href=\"http://test.host/wiki/show/OtherInternalPage\">and there</a></p>",
+                 renderer.render_wiki_text("[[InternalPage go there]] " +
+                                           "[[OtherInternalPage and there]]")
   end
   
   def test_do_not_expand_links_when_there_is_a_break_inside_the_brackets
@@ -71,13 +72,13 @@ class WikiRendererTest < Test::Unit::TestCase
   end
   
   def test_expands_internal_links_with_address_only
-    expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\" rel=\"nofollow\">AnotherPage</a></p>"
-    assert_equal expected, renderer.render_wiki_text("[AnotherPage]")
+    expected = "<p><a href=\"http://test.host/wiki/show/AnotherPage\">AnotherPage</a></p>"
+    assert_equal expected, renderer.render_wiki_text("[[AnotherPage]]")
   end
   
   def test_recover_from_unmatched_opening_bracket_inside_link_text
-    assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\" rel=\"nofollow\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
-                 renderer.render_wiki_text("[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]")
+    assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
+                 renderer.render_wiki_text("[[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]]")
   end
   
   def test_emphasizes_diffs_inside_pure_text_change
