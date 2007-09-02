@@ -184,3 +184,16 @@ second_page_edition:
   title: This page has been edited since creation
   text: Eric changed the text that John entered. Twice.
   position: 3
+
+finished_feature_creation:
+  id: 18
+  page_id: 13
+  position: 1
+  kind: feature
+  modified_at: 2007-09-02 10:31:16
+  last_editor_id: 1000005
+  editors: ""
+  title: Finished feature
+  text: Do something!
+  done: t
+

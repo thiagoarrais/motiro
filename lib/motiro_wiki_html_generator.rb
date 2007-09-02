@@ -87,8 +87,10 @@ private
             link_name = link if link_name.empty?
             ast.contents = link_name
             if ast.formatting == :InternalLink
+              page = Page.find_by_name(link)
+              klass = page && page.done? ? ' class="done"' : ''
               link = @url_generator.generate_url_for(link)
-              tag = ["a", " href=\"#{link}\""]
+              tag = ["a", " href=\"#{link}\"#{klass}"]
             else
               tag = ["a", " href=\"#{link}\" rel=\"nofollow\""]
             end

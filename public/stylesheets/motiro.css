@@ -288,6 +288,10 @@ div#page_properties div.inner {
     background-color: #e8f2f2; 
 }
 
+a.done {
+    text-decoration: line-through;
+}
+
 #footer {
     padding: 4px 6px 2px 8px;
     font-size: x-small;

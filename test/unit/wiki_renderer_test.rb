@@ -243,6 +243,12 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_diff(previous, current)
   end
 
+  def test_marks_references_to_finished_features
+    name = pages('finished_feature').name
+    assert_equal "<p>Yada yada yada <a href=\"http://test.host/wiki/show/#{name}\" class=\"done\">#{name}</a></p>",
+                 renderer.render_wiki_text('Yada yada yada [[FinishedFeature]]')
+  end
+
 private
 
   def url_generator; TestingUrlGenerator.new; end
