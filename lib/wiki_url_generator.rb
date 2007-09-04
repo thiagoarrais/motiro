@@ -26,4 +26,10 @@ class WikiUrlGenerator
                                       :page_name => page_name
   end
 
+  def page_link_params_for(page_name)
+    params = {:href => generate_url_for(page_name)}
+    page = Page.find_by_name(page_name)
+    params[:class] = 'done' if page && page.done?
+    params
+  end
 end

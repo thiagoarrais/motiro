@@ -245,7 +245,7 @@ class WikiRendererTest < Test::Unit::TestCase
 
   def test_marks_references_to_finished_features
     name = pages('finished_feature').name
-    assert_equal "<p>Yada yada yada <a href=\"http://test.host/wiki/show/#{name}\" class=\"done\">#{name}</a></p>",
+    assert_equal "<p>Yada yada yada <a class=\"done\" href=\"http://test.host/wiki/show/#{name}\">#{name}</a></p>",
                  renderer.render_wiki_text('Yada yada yada [[FinishedFeature]]')
   end
 
