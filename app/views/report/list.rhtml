@@ -16,8 +16,7 @@
   <% end %>
 <% @headlines.each do |headline|%>
     <p>
-      <%= link_to( h(headline.title(Translator.for(@locale))),
-                   @reporter.params_for(headline.rid) )%>
+      <%= headline_link(headline) %>
       <br/>
       <font size="-1">
         <i><%= h(headline.author) %></i>

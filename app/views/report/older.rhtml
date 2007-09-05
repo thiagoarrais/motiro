@@ -17,8 +17,7 @@
         <td class="date"><%= headline.happened_at-%></td>
         <td class="relative"><%= headline.happened_at.relative_to_now %></td>
         <td><%= headline.author %></td>
-        <td><%= link_to( h(headline.title(Translator.for(@locale))),
-                         @reporter.params_for(headline.rid) )%></td>
+        <td><%= headline_link(headline) %></td>
       </tr>
     <% end %>
     </tbody>

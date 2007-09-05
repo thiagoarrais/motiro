@@ -38,4 +38,9 @@ module ReportHelper
   def ref(change)
     "change" + change.summary.hash.to_s
   end
+  
+  def headline_link(headline)
+    link_to( h(headline.title(Translator.for(@locale))),
+             @reporter.params_for(headline.rid) )
+  end
 end
