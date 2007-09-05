@@ -24,7 +24,7 @@ require 'array_extensions'
 class WikiRenderer
 
   def initialize(url_generator, locale_code=nil)
-    @url_generator = url_generator
+    @html_generator = MotiroWikiHTMLGenerator.new(url_generator)
     @translator = Translator.for(locale_code)
   end
   
@@ -46,9 +46,8 @@ private
     parser = MediaWikiParser.new
     parser.lexer = MediaWikiLexer.new
     tree = parser.parse(input)
-    gen = MotiroWikiHTMLGenerator.new(@url_generator)
-    gen.parse(tree)
-    gen.html
+    @html_generator.parse(tree)
+    @html_generator.html
   end
 
 end

@@ -15,7 +15,11 @@ class MotiroWikiHTMLGenerator < MediaWikiWalker
 
     def initialize(url_generator)
       @url_generator = url_generator
+    end
+
+    def parse(ast)
       @html = ""
+      super(ast)
     end
 
 protected
