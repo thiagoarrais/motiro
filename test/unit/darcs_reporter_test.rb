@@ -117,7 +117,7 @@ class DarcsReporterTest  < Test::Unit::TestCase
     
     assert change.diff.match(/\A@@ -56,18 \+56,36 @@$/)
     assert change.diff.match(/^-			public void widgetDefaultSelected\(SelectionEvent e\) \{\}\n\+			public void widgetDefaultSelected\(SelectionEvent e\) \{/)
-    assert change.diff.match(/@Override\n\n\Z/)
+    assert change.diff.match(/@Override\n\n/)
   end
   
   def test_reads_more_resource_names_and_diffs
@@ -135,11 +135,11 @@ class DarcsReporterTest  < Test::Unit::TestCase
 
     assert changes[0].diff.match(/\A@@ -1,3 \+1,14 @@$/)
     assert changes[0].diff.match(/^\+\tpublic void removeOutput\(Writer out\) \{$/)
-    assert changes[0].diff.match(/^\+\n \}\n\Z/)
+    assert changes[0].diff.match(/^\+\n \}\n/)
 
     assert changes[1].diff.match(/@@ -76,6 \+76,17 @@/)
     assert changes[1].diff.match(/^\+\t\tmultiplexer.addOutput\(output\);/)
-    assert changes[1].diff.match(/Writer multiplexer = new MultiplexedWriter\(outputs\);\n\n\Z/)
+    assert changes[1].diff.match(/Writer multiplexer = new MultiplexedWriter\(outputs\);\n\n/)
 
   end
   
