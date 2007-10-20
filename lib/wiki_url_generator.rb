@@ -21,6 +21,8 @@ class WikiUrlGenerator
     @parent_controller = parent_controller
   end
   
+  def url_for(resource); generate_url_for(resource); end
+  
   def generate_url_for(page_name)
     @parent_controller.server_url_for :controller => 'wiki', :action => 'show',
                                       :page_name => page_name

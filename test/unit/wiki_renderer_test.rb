@@ -42,7 +42,7 @@ class WikiRendererTest < Test::Unit::TestCase
   end
   
   def test_render_external_links
-    expected = "<p><a href=\"http://nowhere.com\" rel=\"nofollow\">Nowhere</a></p>"
+    expected = "<p><a href=\"http://nowhere.com\">Nowhere</a></p>"
     assert_equal expected, renderer.render_wiki_text('[http://nowhere.com Nowhere]')
   end
   
@@ -57,13 +57,13 @@ class WikiRendererTest < Test::Unit::TestCase
   
   def test_renders_internal_link
     assert_equal "<p><a href=\"http://test.host/wiki/show/AnotherPage\">go somewhere else</a></p>",
-                 renderer.render_wiki_text('[[AnotherPage go somewhere else]]')
+                 renderer.render_wiki_text('[[AnotherPage|go somewhere else]]')
   end
   
   def test_renders_multiple_internal_links
     assert_equal "<p><a href=\"http://test.host/wiki/show/InternalPage\">go there</a> <a href=\"http://test.host/wiki/show/OtherInternalPage\">and there</a></p>",
-                 renderer.render_wiki_text("[[InternalPage go there]] " +
-                                           "[[OtherInternalPage and there]]")
+                 renderer.render_wiki_text("[[InternalPage|go there]] " +
+                                           "[[OtherInternalPage|and there]]")
   end
   
   def test_do_not_expand_links_when_there_is_a_break_inside_the_brackets
@@ -78,7 +78,7 @@ class WikiRendererTest < Test::Unit::TestCase
   
   def test_recover_from_unmatched_opening_bracket_inside_link_text
     assert_equal "<p><a href=\"http://test.host/wiki/show/SomeoneMistankenly\">placed an opening bracket [ inside the link text, but Motiro managed to recover correctly</a></p>",
-                 renderer.render_wiki_text("[[SomeoneMistankenly placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]]")
+                 renderer.render_wiki_text("[[SomeoneMistankenly|placed an opening bracket [ inside the link text, but Motiro managed to recover correctly]]")
   end
   
   def test_emphasizes_diffs_inside_pure_text_change
@@ -136,8 +136,8 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "Here is a [http://www.motiro.org link]"
     current = "Here is a [http://www.motiro.com link]"
     
-    assert_equal '<p>Here is a <a href="http://www.motiro.org" rel="nofollow"><span style="background: #ffb8b8">link</span></a>' +
-                 '<a href="http://www.motiro.com" rel="nofollow"><span style="background: #b8ffb8">link</span></a></p>',
+    assert_equal '<p>Here is a <a href="http://www.motiro.org"><span style="background: #ffb8b8">link</span></a>' +
+                 '<a href="http://www.motiro.com"><span style="background: #b8ffb8">link</span></a></p>',
                  renderer.render_wiki_diff(previous, current)
   end
   
@@ -243,6 +243,7 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_diff(previous, current)
   end
 
+  # should fail for the time being
   def test_marks_references_to_finished_features
     name = pages('finished_feature').name
     assert_equal "<p>Yada yada yada <a class=\"done\" href=\"http://test.host/wiki/show/#{name}\">#{name}</a></p>",

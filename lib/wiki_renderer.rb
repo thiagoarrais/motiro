@@ -24,8 +24,9 @@ require 'array_extensions'
 class WikiRenderer
 
   def initialize(url_generator, locale_code=nil)
-    @html_generator = MotiroWikiHTMLGenerator.new(url_generator)
+    @html_generator = MediaWikiHTMLGenerator.new
     @translator = Translator.for(locale_code)
+    @html_generator.link_handler = url_generator
   end
   
   def render_wiki_text(text)
