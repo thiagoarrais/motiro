@@ -15,12 +15,15 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class TestingUrlGenerator < WikiUrlGenerator
+class WikiLinkHandler < MediaWikiLinkHandler
 
-  def initialize; super(nil); end
-
-  def generate_url_for(page_name)
-    "http://test.host/wiki/show/#{page_name}"
+  def initialize(parent_controller)
+    @parent_controller = parent_controller
+  end
+  
+  def url_for(page_name)
+    @parent_controller.server_url_for :controller => 'wiki', :action => 'show',
+                                      :page_name => page_name
   end
 
 end

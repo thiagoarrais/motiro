@@ -66,7 +66,7 @@ private
   end
 
   def my_url_generator
-    @url_generator ||= WikiUrlGenerator.new(self)
+    @url_generator ||= WikiLinkHandler.new(self)
   end
   
 end

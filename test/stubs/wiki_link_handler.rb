@@ -15,17 +15,10 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-require File.dirname(__FILE__) + '/../test_helper'
+class TestingWikiLinkHandler < MediaWikiLinkHandler
 
-class WikiUrlGeneratorTest < Test::Unit::TestCase
-
-  def test_delegates_generation_to_controller
-    FlexMock.use do |cont|
-      cont.should_receive(:server_url_for).once.returns('a').
-        with(:controller => 'wiki', :action => 'show', :page_name => 'MyPage')
-      
-      assert_equal 'a', WikiUrlGenerator.new(cont).generate_url_for('MyPage')
-    end
+  def url_for(page_name)
+    "http://test.host/wiki/show/#{page_name}"
   end
 
 end

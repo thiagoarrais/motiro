@@ -15,23 +15,17 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class WikiUrlGenerator
+require File.dirname(__FILE__) + '/../test_helper'
 
-  def initialize(parent_controller)
-    @parent_controller = parent_controller
-  end
-  
-  def url_for(resource); generate_url_for(resource); end
-  
-  def generate_url_for(page_name)
-    @parent_controller.server_url_for :controller => 'wiki', :action => 'show',
-                                      :page_name => page_name
+class WikiLinkHandlerTest < Test::Unit::TestCase
+
+  def test_delegates_generation_to_controller
+    FlexMock.use do |cont|
+      cont.should_receive(:server_url_for).once.returns('a').
+        with(:controller => 'wiki', :action => 'show', :page_name => 'MyPage')
+      
+      assert_equal 'a', WikiLinkHandler.new(cont).url_for('MyPage')
+    end
   end
 
-  def page_link_params_for(page_name)
-    params = {:href => generate_url_for(page_name)}
-    page = Page.find_by_name(page_name)
-    params[:class] = 'done' if page && page.done?
-    params
-  end
 end

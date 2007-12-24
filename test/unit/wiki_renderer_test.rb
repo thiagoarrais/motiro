@@ -17,7 +17,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-require 'stubs/url_generator' 
+require 'stubs/wiki_link_handler' 
 
 class WikiRendererTest < Test::Unit::TestCase
 
@@ -252,6 +252,6 @@ class WikiRendererTest < Test::Unit::TestCase
 
 private
 
-  def url_generator; TestingUrlGenerator.new; end
+  def url_generator; TestingWikiLinkHandler.new; end
   
 end
