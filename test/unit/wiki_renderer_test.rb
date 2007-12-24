@@ -214,9 +214,9 @@ class WikiRendererTest < Test::Unit::TestCase
     previous = "== Sub title ==\n\nParagraph"
     current  = "== Super title ==\n\nParagraph"
     
-    assert_equal '<h2><span style="background: #ffb8b8">Sub</span>' +
-                 '<span style="background: #b8ffb8">Super</span> title</h2> ' +
-                 '<p>Paragraph</p>',
+    assert_equal '<h2><span style="background: #ffb8b8"><a name=\'Sub_title\'/>Sub</span>' +
+                 '<span style="background: #b8ffb8"><a name=\'Super_title\'/>Super</span> title</h2> ' +
+                 "<p>\n\n</p> <p>Paragraph</p>",
                  renderer.render_wiki_diff(previous, current)
   end
 

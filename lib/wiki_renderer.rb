@@ -111,12 +111,15 @@ private
   end
   
   def enclose(color, text)
-    return "<span style=\"background: #{color}\">#{text}</span>" unless ?< == text[0]
-    match = text.match(HTML_ELEMENT)
-    text = match.post_match
-    text = text[0..(text.size - match[1].size - 4)]
+    if (md = text.match(HTML_ELEMENT)) && md[0][-2..-1] != '/>'
+      match = text.match(HTML_ELEMENT)
+      text = match.post_match
+      text = text[0..(text.size - match[1].size - 4)]
 
-    "<#{match[1..2].join}><span style=\"background: #{color}\">#{text}</span></#{match[1]}>"
+      "<#{match[1..2].join}><span style=\"background: #{color}\">#{text}</span></#{match[1]}>"
+    else
+      "<span style=\"background: #{color}\">#{text}</span>"
+    end
   end
   
   def group_words(words)

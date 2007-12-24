@@ -25,18 +25,18 @@ class String
   end
 
   def xml_split
-    str = self
+    remainder = self
     words = []
-    while(md = str.match(/<([^>]+)(\s+[^>]+)?>.*?<\/\1>|[^\s<]+/m))
+    while(md = remainder.match(/<([^>]+)(\s+[^>]+)?(>.*?<\/\1>|\/>)|[^\s<]+/m))
       word = md[0]
       remainder = md.post_match
-      while word.scan(/<#{md[1]}/).size > word.scan(/<\/#{md[1]}/).size
+      while word.match(/<\/#{md[1]}/) &&
+            word.scan(/<#{md[1]}/).size > word.scan(/<\/#{md[1]}/).size
         m = remainder.match(/<\/#{md[1]}>/)
         word << m.pre_match << m[0]
         remainder = m.post_match
       end
       words << word
-      str = remainder
     end
     words
   end

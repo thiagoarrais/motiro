@@ -53,4 +53,9 @@ class StringExtensionsTest < Test::Unit::TestCase
     assert_equal ['<ul><li>a b</li><li>c <ul><li>d e f</li><li>g h</li></ul></li></ul>',
                   '<p>paragraph</p>'], str.xml_split
   end
+
+  def test_xml_splits_empty_element
+   assert_equal ["<a name='Sub_title'/>", 'Sub', 'title'],
+                "<a name='Sub_title'/> Sub title ".xml_split
+  end
 end
