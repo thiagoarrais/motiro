@@ -21,7 +21,8 @@ class StringExtensionsTest < Test::Unit::TestCase
 
   def test_medialize
     str = "= Motiro =\n\nAnother paragraph"
-    assert_equal '<h1>Motiro</h1><p>Another paragraph</p>', str.medialize
+    assert_equal "<h1><a name='Motiro'/> Motiro </h1><p>\n\n</p><p>Another paragraph</p>",
+                 str.medialize
   end
 
   def test_xml_splits_simple_elements
