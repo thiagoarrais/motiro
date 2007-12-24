@@ -47,8 +47,7 @@ private
     parser = MediaWikiParser.new
     parser.lexer = MediaWikiLexer.new
     tree = parser.parse(input)
-    @html_generator.parse(tree)
-    @html_generator.html
+    @html_generator.parse(tree).gsub(/\r?\n?\r?\n<\//, '</').gsub('<p></p>', '')
   end
 
 end
