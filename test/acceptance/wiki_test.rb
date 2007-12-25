@@ -30,7 +30,7 @@ class WikiAcceptanceTest < AcceptanceTestCase
     
     wait_for_page_to_load(1000)
     
-    assert_element_present "//h1[text() = 'Motiro']"
+    assert_element_present "//h1/a[@name = 'Motiro']"
     assert_text_present 'This is project motiro'
   end
   
