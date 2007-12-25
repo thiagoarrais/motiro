@@ -26,4 +26,10 @@ class WikiLinkHandler < MediaWikiLinkHandler
                                       :page_name => page_name
   end
 
+  def link_attributes_for(page_name)
+    atts = super(page_name)
+    atts[:class] = 'done' if (page = Page.find_by_name(page_name)) && page.done?
+    atts
+  end
+
 end

@@ -15,7 +15,11 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-class TestingWikiLinkHandler < MediaWikiLinkHandler
+class TestingWikiLinkHandler < WikiLinkHandler
+
+  def initialize
+    super(nil)
+  end
 
   def url_for(page_name)
     "http://test.host/wiki/show/#{page_name}"
