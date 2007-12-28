@@ -25,7 +25,7 @@ class WikiRendererTest < Test::Unit::TestCase
   attr_reader :renderer
   
   def setup
-    @renderer = WikiRenderer.new(url_generator)
+    @renderer = WikiRenderer.new(handler_class)
   end
 
   def test_renders_title
@@ -52,7 +52,7 @@ class WikiRendererTest < Test::Unit::TestCase
                 "Welcome to Motiro"
     assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_wiki_text(wiki_text)
     assert_equal "<p>Welcome to Motiro</p>",
-                 WikiRenderer.new(url_generator, 'en').render_wiki_text(wiki_text)
+                 WikiRenderer.new(handler_class, 'en').render_wiki_text(wiki_text)
   end
   
   def test_renders_internal_link
@@ -252,6 +252,6 @@ class WikiRendererTest < Test::Unit::TestCase
 
 private
 
-  def url_generator; TestingWikiLinkHandler.new; end
+  def handler_class; TestingWikiLinkHandler; end
   
 end
