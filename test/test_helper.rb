@@ -24,6 +24,8 @@ $:.push File.expand_path(File.dirname(__FILE__) + '/../app')
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
+require 'hash_extensions'
+
 require 'rubygems'
 require 'flexmock'
 
