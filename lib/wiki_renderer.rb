@@ -23,13 +23,18 @@ require 'array_extensions'
 
 class WikiRenderer
 
-  def initialize(link_handler_class, locale_code=nil)
+  def initialize(handler_factory, locale_code=nil)
     @html_generator = MediaWikiHTMLGenerator.new
     @translator = Translator.for(locale_code)
-    @html_generator.link_handler = link_handler_class.new
+    @handler_factory = handler_factory
+  end
+
+  def render(page)
+    render_wiki_text(page.text, @handler_factory.new(page))
   end
   
-  def render_wiki_text(text)
+  def render_wiki_text(text, handler=@handler_factory.new)
+    @html_generator.link_handler = handler
     localized_text = @translator.localize(text).delete("\r")
     wiki_to_html(localized_text)
   end

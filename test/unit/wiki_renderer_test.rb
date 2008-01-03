@@ -21,7 +21,7 @@ require 'stubs/wiki_link_handler'
 
 class WikiRendererTest < Test::Unit::TestCase
 
-  fixtures :pages, :revisions
+  fixtures :pages, :revisions, :users
   attr_reader :renderer
   
   def setup
@@ -247,6 +247,16 @@ class WikiRendererTest < Test::Unit::TestCase
     name = pages('finished_feature').name
     assert_equal "<p>Yada yada yada <a #{{:href => 'http://test.host/wiki/show/' + name, :class => 'done'}.to_att}>#{name}</a></p>",
                  renderer.render_wiki_text('Yada yada yada [[FinishedFeature]]')
+  end
+
+  def test_creates_link_handler_for_each_page
+    FlexMock.use do |handler_factory|
+      page = revise_brand_new_page(:text => 'Here is my wiki text')
+      handler_factory.should_receive(:new).once.with(page)
+
+      assert_equal '<p>Here is my wiki text</p>',
+                   WikiRenderer.new(handler_factory).render(page)
+    end
   end
 
 private
