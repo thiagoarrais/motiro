@@ -21,11 +21,11 @@ require 'stubs/wiki_link_handler'
 
 class WikiRendererTest < Test::Unit::TestCase
 
-  fixtures :pages, :revisions, :users
+  fixtures :pages, :revisions
   attr_reader :renderer
   
   def setup
-    @renderer = WikiRenderer.new(handler_class)
+    @renderer = WikiRenderer.new(url_generator)
   end
 
   def test_renders_title
@@ -52,7 +52,7 @@ class WikiRendererTest < Test::Unit::TestCase
                 "Welcome to Motiro"
     assert_equal "<p>Bem-vindo ao Motiro</p>", renderer.render_wiki_text(wiki_text)
     assert_equal "<p>Welcome to Motiro</p>",
-                 WikiRenderer.new(handler_class, 'en').render_wiki_text(wiki_text)
+                 WikiRenderer.new(url_generator, 'en').render_wiki_text(wiki_text)
   end
   
   def test_renders_internal_link
@@ -249,18 +249,8 @@ class WikiRendererTest < Test::Unit::TestCase
                  renderer.render_wiki_text('Yada yada yada [[FinishedFeature]]')
   end
 
-  def test_creates_link_handler_for_each_page
-    FlexMock.use do |handler_factory|
-      page = revise_brand_new_page(:text => 'Here is my wiki text')
-      handler_factory.should_receive(:new).once.with(page)
-
-      assert_equal '<p>Here is my wiki text</p>',
-                   WikiRenderer.new(handler_factory).render(page)
-    end
-  end
-
 private
 
-  def handler_class; TestingWikiLinkHandler; end
+  def url_generator; TestingWikiLinkHandler.new; end
   
 end

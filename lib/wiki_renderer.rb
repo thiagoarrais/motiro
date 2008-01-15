@@ -23,18 +23,15 @@ require 'array_extensions'
 
 class WikiRenderer
 
-  def initialize(handler_factory, locale_code=nil)
+  def initialize(url_generator, locale_code=nil)
+    @html_generator = MediaWikiHTMLGenerator.new
     @translator = Translator.for(locale_code)
-    @handler_factory = handler_factory
-  end
-
-  def render(page)
-    render_wiki_text(page.text, @handler_factory.new(page))
+    @html_generator.link_handler = url_generator
   end
   
-  def render_wiki_text(text, handler=@handler_factory.new)
+  def render_wiki_text(text)
     localized_text = @translator.localize(text).delete("\r")
-    wiki_to_html(localized_text, handler)
+    wiki_to_html(localized_text)
   end
   
   def render_wiki_diff(old_text, new_text)
@@ -46,13 +43,11 @@ class WikiRenderer
 
 private
 
-  def wiki_to_html(input, handler)
+  def wiki_to_html(input)
     parser = MediaWikiParser.new
     parser.lexer = MediaWikiLexer.new
     tree = parser.parse(input)
-    generator = MediaWikiHTMLGenerator.new
-    generator.link_handler = handler
-    generator.parse(tree).gsub(/\r?\n?\r?\n<\//, '</').gsub('<p></p>', '')
+    @html_generator.parse(tree).gsub(/\r?\n?\r?\n<\//, '</').gsub('<p></p>', '')
   end
 
 end

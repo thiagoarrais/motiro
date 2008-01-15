@@ -62,11 +62,11 @@ class ApplicationController < ActionController::Base
 private
   
   def create_renderer
-    WikiRenderer.new(my_handler_factory, current_locale)
+    WikiRenderer.new(my_url_generator, current_locale)
   end
 
-  def my_handler_factory
-    @handler_factory ||= LinkHandlerFactory.new(self)
+  def my_url_generator
+    @url_generator ||= WikiLinkHandler.new(self)
   end
   
 end
