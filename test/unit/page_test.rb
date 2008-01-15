@@ -80,11 +80,11 @@ class PageTest < Test::Unit::TestCase
   end
 
   def test_resolves_clashing_page_names
-    fst_page = revise_brand_new_page(:title => 'My first Motiro page', :text => '')
+    fst_page = revise_brand_new_page(:title => 'My first Motiro page', :text => 'aaa')
     assert_equal 'MyFirstMotiroPage', fst_page.name
     fst_page.save
     
-    snd_page = revise_brand_new_page(:title => 'My first Motiro page', :text => '')
+    snd_page = revise_brand_new_page(:title => 'My first Motiro page', :text => 'aaa')
     assert_equal 'MyFirstMotiroPage2', snd_page.name
     snd_page.save
     
@@ -331,6 +331,24 @@ class PageTest < Test::Unit::TestCase
     assert_equal DEFAULT_AUTHOR, headline.author
     assert_equal DEFAULT_TIME, headline.happened_at
   end
+
+  def test_records_wiki_references
+    page = revise_brand_new_page(:title => 'Usual page',
+                                 :kind => 'common',
+                                 :text => "This is page has a link to the\n" +
+                                          "[[MainPage|main page]] and to\n" +
+                                          "the [[TestPage|test page]]")
+    assert_equal 2, page.references.size
+    assert_equal 2, page.refered_pages.size
+    assert_equal page, page.references.first.referer
+    assert_equal pages('main_page'), page.references.first.referee
+    assert_equal pages('test_page'), page.refered_pages.last
+  end
+
+  #TODO refactor: repeated code in PageReferenceCollector and WikiRenderer
+  #TODO reach referers from referees
+  #TODO references to empty pages
+  #TODO update references instead of always adding new ones
   
 private
   

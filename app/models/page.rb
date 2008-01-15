@@ -15,6 +15,9 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+require 'rubygems'
+require 'mediacloth'
+
 PLACE_HOLDER_TITLE = 'Insert page title here'
 DEFAULT_AUTHOR = 'someone'
 DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
@@ -22,6 +25,9 @@ DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
 class Page < ActiveRecord::Base
 
   has_many :revisions, :order => 'modified_at, id'
+  has_many :references, :foreign_key => 'referer_id',
+                        :class_name => 'WikiReference'
+  has_many :refered_pages, :through => :references, :source => :referee
   
   def original_author
     oldest(:last_editor)
@@ -106,6 +112,7 @@ class Page < ActiveRecord::Base
     self.happens_at = attrs[:happens_at] if attrs[:happens_at]
     rev.kind, rev.happens_at = self.kind, self.happens_at
     rev.title, rev.text, rev.done = attrs[:title], attrs[:text], attrs[:done]
+    update_references(rev.text) if rev.text
     self.revisions << rev
     
     save
@@ -120,9 +127,23 @@ class Page < ActiveRecord::Base
                  :happened_at => (kind == 'event' ? happens_at.to_t : modified_at) || DEFAULT_TIME,
                  :description => inject_title_into_text)
   end
-  
+
 private
   
+  def update_references(input)
+    self.references = []
+    parser = MediaWikiParser.new
+    parser.lexer = MediaWikiLexer.new
+    tree = parser.parse(input)
+    generator = MediaWikiHTMLGenerator.new
+    generator.link_handler = reference_collector
+    generator.parse(tree)
+  end
+
+  def reference_collector
+    PageReferenceCollector.new(self)
+  end
+
   def inject_title_into_text
     title + "\n\n" +
     text.gsub(/^--- (\S+) ----*[ \t\f]*\r?\n/,
@@ -170,4 +191,17 @@ private
     text.gsub(%r{[^a-zA-Z0-9]}, ' ').gsub(%r{\s+}, ' ')
   end
   
+end
+
+class PageReferenceCollector < MediaWikiLinkHandler
+  def initialize(page)
+    @referer = page
+  end
+
+  def url_for(page_name)
+    page = Page.find_by_name(page_name)
+    @referer.references << WikiReference.new(:referer => @referer,
+                                             :referee => page) if page
+    page_name
+  end
 end
