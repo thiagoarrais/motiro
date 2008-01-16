@@ -340,9 +340,14 @@ class PageTest < Test::Unit::TestCase
                                           "the [[TestPage|test page]]")
     assert_equal 2, page.references.size
     assert_equal 2, page.refered_pages.size
+
+    main_page, test_page = pages('main_page'), pages('test_page')
+
     assert_equal page, page.references.first.referer
-    assert_equal pages('main_page'), page.references.first.referee
-    assert_equal pages('test_page'), page.refered_pages.last
+    assert_equal main_page, page.references.first.referee
+    assert_equal test_page, page.refered_pages.last
+    assert_equal page, main_page.referrals.first.referer
+    assert_equal page, test_page.refering_pages.first
   end
 
   #TODO refactor: repeated code in PageReferenceCollector and WikiRenderer

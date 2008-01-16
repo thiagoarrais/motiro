@@ -27,7 +27,10 @@ class Page < ActiveRecord::Base
   has_many :revisions, :order => 'modified_at, id'
   has_many :references, :foreign_key => 'referer_id',
                         :class_name => 'WikiReference'
+  has_many :referrals, :foreign_key => 'referee_id',
+                       :class_name => 'WikiReference'
   has_many :refered_pages, :through => :references, :source => :referee
+  has_many :refering_pages, :through => :referrals, :source => :referer
   
   def original_author
     oldest(:last_editor)
