@@ -20,6 +20,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 class PageTest < Test::Unit::TestCase
   fixtures :pages, :revisions, :users
   
+  def teardown
+    WikiReference.delete_all
+  end
+
   def test_is_open_to_all
     attrs = { :text => 'Page text' }
     assert !revise_named_page(attrs.merge(:editors => 'john')).is_open_to_all?
@@ -350,8 +354,26 @@ class PageTest < Test::Unit::TestCase
     assert_equal page, test_page.refering_pages.first
   end
 
+  def test_rebuilds_references_with_new_revision
+    main_page, test_page = pages('main_page'), pages('test_page')
+    page = revise_brand_new_page(:title => 'Usual page',
+                                 :kind => 'common',
+                                 :text => "Here is a [[MainPage|reference]]")
+
+    assert_equal 1, page.refered_pages.size
+    assert_equal 1, main_page.refering_pages.size
+
+    page.revise(bob, now, :text => "Here is another [[TestPage|reference]]")
+    main_page = Page.find_by_name('MainPage')
+
+    assert_equal 1, page.refered_pages.size
+    assert_equal 0, main_page.refering_pages.size
+    assert_equal 1, test_page.refering_pages.size
+    assert_equal test_page, page.references.first.referee
+    assert_equal test_page, page.refered_pages.first
+  end
+
   #TODO references to empty pages
-  #TODO update references instead of always adding new ones
   
 private
   

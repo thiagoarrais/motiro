@@ -136,8 +136,9 @@ class Page < ActiveRecord::Base
 private
   
   def update_references(input)
-    self.references = []
+    self.references.clear
     MediaCloth::wiki_render(input, :link_handler => reference_collector)
+    self.refered_pages.reset
   end
 
   def reference_collector
