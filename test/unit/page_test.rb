@@ -350,8 +350,6 @@ class PageTest < Test::Unit::TestCase
     assert_equal page, test_page.refering_pages.first
   end
 
-  #TODO refactor: repeated code in PageReferenceCollector and WikiRenderer
-  #TODO reach referers from referees
   #TODO references to empty pages
   #TODO update references instead of always adding new ones
   

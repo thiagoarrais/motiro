@@ -20,6 +20,7 @@ require 'mediacloth'
 
 require 'string_extensions'
 require 'array_extensions'
+require 'mediacloth_extensions'
 
 class WikiRenderer
 
@@ -44,10 +45,9 @@ class WikiRenderer
 private
 
   def wiki_to_html(input)
-    parser = MediaWikiParser.new
-    parser.lexer = MediaWikiLexer.new
-    tree = parser.parse(input)
-    @html_generator.parse(tree).gsub(/\r?\n?\r?\n<\//, '</').gsub('<p></p>', '')
+    MediaCloth::wiki_render(input, :generator => @html_generator).
+      gsub(/\r?\n?\r?\n<\//, '</').
+      gsub('<p></p>', '')
   end
 
 end

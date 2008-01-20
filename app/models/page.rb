@@ -18,6 +18,8 @@
 require 'rubygems'
 require 'mediacloth'
 
+require 'mediacloth_extensions'
+
 PLACE_HOLDER_TITLE = 'Insert page title here'
 DEFAULT_AUTHOR = 'someone'
 DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
@@ -135,12 +137,7 @@ private
   
   def update_references(input)
     self.references = []
-    parser = MediaWikiParser.new
-    parser.lexer = MediaWikiLexer.new
-    tree = parser.parse(input)
-    generator = MediaWikiHTMLGenerator.new
-    generator.link_handler = reference_collector
-    generator.parse(tree)
+    MediaCloth::wiki_render(input, :link_handler => reference_collector)
   end
 
   def reference_collector
