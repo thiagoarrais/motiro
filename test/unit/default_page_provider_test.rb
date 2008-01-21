@@ -19,19 +19,29 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class DefaultPageProviderTest < Test::Unit::TestCase
 
-  def setup
-    @provider = DefaultPageProvider.new    
-  end
-  
-  def test_provides_congratulations_page_for_main_page
-    page_text = @provider.find_by_name('MainPage').text
-    assert page_text.match(/Congratulations/)
+  def test_delegates_retrieval_to_decorated_provider
+    FlexMock.use('provider') do |provider|
+      provider.should_receive(:find_by_name).
+       with('MainPage').
+       returns(:page).
+       once
+
+      assert_equal :page,
+                   DefaultPageProvider.new(provider).find_by_name('MainPage')
+    end
   end
 
-  def test_provides_you_can_edit_this_page_for_random_pages
-    page_text = @provider.find_by_name('AnyPage').text
-    assert page_text.match(/nothing to be read here/)
-    assert page_text.match(/But you can write something right now/)
+  def test_provides_an_empty_page_when_decorated_provider_cant_find_one
+    FlexMock.use('provider') do |provider|
+      provider.should_receive(:find_by_name).
+        with('RandomPage').
+        returns(nil).
+        once
+
+      page = DefaultPageProvider.new(provider).find_by_name('RandomPage')
+      assert page.text.match(/nothing to be read here/)
+      assert page.text.match(/But you can write something right now/)
+    end
   end
 
 end

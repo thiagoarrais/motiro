@@ -373,8 +373,19 @@ class PageTest < Test::Unit::TestCase
     assert_equal test_page, page.refered_pages.first
   end
 
-  #TODO references to empty pages
-  
+  def test_referencing_an_empty_page_creates_it
+    page = revise_brand_new_page(:title => 'Referencing page',
+                                 :kind => 'common',
+                                 :text => "You should go [[ReferedPage|there]]")
+
+    refered_page = Page.find_by_name('ReferedPage')
+
+    assert_not_nil refered_page
+    assert_equal 1, refered_page.referrals.size
+    assert_equal page, refered_page.refering_pages.first
+    assert_equal WIKI_NOT_FOUND_TEXT, refered_page.text
+  end
+
 private
   
   def create_page_with_one_revision

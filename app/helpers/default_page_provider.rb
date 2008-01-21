@@ -17,8 +17,12 @@
 
 class DefaultPageProvider
 
+  def initialize(real_page_provider)
+    @provider = real_page_provider
+  end
+
   def find_by_name(name)
-    Page.new(:name => name)
+    @provider.find_by_name(name) || Page.new(:name => name)
   end
 
 end

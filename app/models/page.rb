@@ -197,12 +197,13 @@ end
 class PageReferenceCollector < MediaWikiLinkHandler
   def initialize(page)
     @referer = page
+    @page_provider = DefaultPageProvider.new(Page)
   end
 
   def url_for(page_name)
-    page = Page.find_by_name(page_name)
+    page = @page_provider.find_by_name(page_name)
     @referer.references << WikiReference.new(:referer => @referer,
-                                             :referee => page) if page
+                                             :referee => page)
     page_name
   end
 end

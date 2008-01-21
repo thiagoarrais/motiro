@@ -40,8 +40,7 @@ class WikiController < ApplicationController
     
   def initialize(page_provider=Page, renderer=nil)
     @renderer = renderer || create_renderer
-    @real_page_provider = page_provider
-    @default_page_provider = DefaultPageProvider.new
+    @page_provider = DefaultPageProvider.new(page_provider)
   end
   
   def fetch_page
@@ -132,8 +131,7 @@ private
   end
 
   def find_page(name)
-    @real_page_provider.find_by_name(name) ||
-    @default_page_provider.find_by_name(name)
+    @page_provider.find_by_name(name)
   end
     
 end
