@@ -27,7 +27,7 @@ DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
 class Page < ActiveRecord::Base
 
   has_many :revisions, :order => 'modified_at, id'
-  has_many :references, :foreign_key => 'referer_id',
+  has_many :references, :foreign_key => 'referer_id', :dependent => :delete_all,
                         :class_name => 'WikiReference'
   has_many :referrals, :foreign_key => 'referee_id',
                        :class_name => 'WikiReference'
