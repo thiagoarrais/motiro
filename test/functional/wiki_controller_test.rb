@@ -26,7 +26,7 @@ class WikiControllerTest < Test::Unit::TestCase
 
   include TestConfiguration
   
-  fixtures :users, :pages, :revisions
+  fixtures :users, :pages, :revisions, :wiki_references
 
   def setup
     @controller = WikiController.new
@@ -431,6 +431,7 @@ end
   end
   
   def test_allows_feature_status_update
+    ActionController::Base.perform_caching = false
     page = pages('list_last_modified_features_page')
     log_as :bob
 
@@ -452,6 +453,24 @@ end
     get :show, :page_name => page.name
     assert_no_tag :content => /This feature is not done/
     assert_tag :content => /This feature is done/
+  end
+
+  def test_expires_refering_pages_cache_when_finishing_feature
+    ActionController::Base.perform_caching = true
+    log_as :bob
+
+    refering_page = pages('refering_page')
+
+    assert_expire_fragments(:controller=> 'wiki', :action => 'show',
+                            :page => refering_page.name,
+                            :locale_suffix => 'en-us') do
+      post :save, :page_name => pages('list_last_modified_features_page').name,
+                  :btnSave => true, 
+                  :page => { :title => 'List last modified features',
+                             :text => 'We should really have this',
+                             :done => '1',
+                             :kind => 'feature', :editors => '' }
+    end
   end
   
 private

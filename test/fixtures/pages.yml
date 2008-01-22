@@ -28,7 +28,7 @@ list_last_modified_features_page:
   id: 7
   kind: feature
   name: ListLastModifiedFeatures
-  modified_at: 2033-12-27 16:47:00
+  modified_at: 2007-08-13 00:02:48
 
 provide_rss_feed_for_last_modified_pages_page:
   id: 8
@@ -67,3 +67,9 @@ finished_feature:
   name: FinishedFeature
   kind: feature
   modified_at: 2007-09-02 10:31:16
+
+refering_page:
+  id: 14
+  name: ReferingPage
+  kind: common
+  modified_at: 2008-01-22 05:10:24

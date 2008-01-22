@@ -197,3 +197,14 @@ finished_feature_creation:
   text: Do something!
   done: t
 
+refering_page_creation:
+  id: 19
+  page_id: 14
+  kind: common
+  modified_at: 2008-01-22 05:10:24
+  last_editor_id: 1000005 #eric
+  editors: ""
+  title: Refering page
+  text: This pages refers to the [[ListLastModifiedFeatures]] page
+  position: 1
+

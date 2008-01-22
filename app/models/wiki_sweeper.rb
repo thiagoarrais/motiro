@@ -20,9 +20,24 @@ class WikiSweeper < ActionController::Caching::Sweeper
   observe Page
   
   def after_save(page)
-    expire_fragment(/wiki\/show.*?#{page.name}/)
+    expire_referers(page) if page.revisions.size > 1 &&
+                             page.revisions[-1].done != page.revisions[-2].done
+
+    expire_fragment(fragments_for(page))
     cache_dir = ActionController::Base.page_cache_directory
     FileUtils.rm_r(Dir.glob(cache_dir+"/wiki/history/#{page.name}*")) rescue Errno::ENOENT
   end
 
+private
+
+  def expire_referers(page)
+    page.refering_pages.each do |referer|
+      expire_fragment(fragments_for(referer))
+    end
+  end
+
+  def fragments_for(page)
+    /wiki\/show.*?#{page.name}/
+  end
 end
+
