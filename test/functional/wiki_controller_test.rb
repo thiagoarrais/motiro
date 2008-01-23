@@ -473,6 +473,28 @@ end
     end
   end
   
+  def test_does_not_expire_refering_pages_cache_after_editing_page_text_only
+    ActionController::Base.perform_caching = true
+    log_as :bob
+
+    begin
+      assert_expire_fragments(:controller=> 'wiki', :action => 'show',
+                              :page => pages('refering_page').name,
+                              :locale_suffix => 'en-us') do
+        post :save, :page_name => pages('list_last_modified_features_page').name,
+                    :btnSave => true, 
+                    :page => { :title => 'List last modified features',
+                               :text => 'We should really have this and that',
+                               :done => '0',
+                               :kind => 'feature', :editors => '' }
+      end
+    rescue Test::Unit::AssertionFailedError
+      return nil # error expected
+    end
+
+    assert false, "Refering page expired after text-only edition"
+  end
+
 private
 
   def log_as(user_name)
