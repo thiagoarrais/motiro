@@ -29,13 +29,13 @@ class WikiRendererTest < Test::Unit::TestCase
   end
 
   def test_renders_title
-    assert_equal "<h1><a name='Motiro'/> Motiro </h1>", renderer.render_wiki_text('= Motiro =')
+    assert_equal "<h1><a name='Motiro'></a> Motiro </h1>", renderer.render_wiki_text('= Motiro =')
   end
   
   def test_breaks_paragraphs_on_linebreak_and_return_feed
     line_break_only_text = "= Motiro =\n\nThis is project Motiro"
     feed_return_text = "= Motiro =\r\n\r\nThis is project Motiro"
-    expected_text = "<h1><a name='Motiro'/> Motiro </h1><p>This is project Motiro</p>"
+    expected_text = "<h1><a name='Motiro'></a> Motiro </h1><p>This is project Motiro</p>"
 
     assert_equal expected_text, renderer.render_wiki_text(line_break_only_text)
     assert_equal expected_text, renderer.render_wiki_text(feed_return_text)
