@@ -59,7 +59,7 @@ class HtmlDiffRenderer
   end
   
   def start_new_chunk(action)
-    inject(@diff_words, @removed_text.xml_join, @inserted_text.xml_join)
+    inject(@diff_words, @removed_text, @inserted_text)
     @removed_text = []
     @inserted_text = []
   end
@@ -107,12 +107,12 @@ private
     end
     words
   end
-  
+
   def enclose(color, text)
     if (md = text.match(HTML_ELEMENT)) && md[0][-2..-1] != '/>'
       match = text.match(HTML_ELEMENT)
       text = match.post_match
-      text = text[0..(text.size - match[1].size - 4)]
+      text = text.slice(0, text.size - match[1].size - 3) # '</>'.size => 3
 
       "<#{match[1..2].join}><span style=\"background: #{color}\">#{text}</span></#{match[1]}>"
     else
@@ -123,12 +123,20 @@ private
   def group_words(words)
     group = []
     words.each do |w|
-      if group.empty? || ?< == w[0] || ?> == group.last[-1]
+      if group.empty? || inserting_tag?(w) || last_is_tag?(group)
         group << w
       else
         group.last << ' ' << w
       end
     end
     group
+  end
+
+  def inserting_tag?(word)
+    ?< == word[0]
+  end
+
+  def last_is_tag?(words)
+    ?> == words.last[-1]
   end
 end

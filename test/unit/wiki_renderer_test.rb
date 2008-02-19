@@ -140,7 +140,30 @@ class WikiRendererTest < Test::Unit::TestCase
                  '<a href="http://www.motiro.com"><span style="background: #b8ffb8">link</span></a></p>',
                  renderer.render_wiki_diff(previous, current)
   end
+
+  def test_emphasizes_changes_to_text_before_changed_tags
+    previous = "Here is my [http://www.motiro.org link]"
+    current = "Here is another [http://www.motiro.com link]"
+
+    assert_equal '<p>Here is <span style="background: #ffb8b8">my</span>' +
+                 '<span style="background: #b8ffb8">another</span> ' +
+                 '<a href="http://www.motiro.org"><span style="background: #ffb8b8">link</span></a>' +
+                 '<a href="http://www.motiro.com"><span style="background: #b8ffb8">link</span></a></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
   
+  def test_emphasizes_changes_to_text_after_changed_tags
+    previous = "This is a [[SomePage|very good]] page"
+    current =  "This is a [[OtherPage|very good]] text"
+
+    assert_equal '<p>This is a ' +
+                 '<a href="http://test.host/wiki/show/SomePage"><span style="background: #ffb8b8">very good</span></a>' +
+                 '<a href="http://test.host/wiki/show/OtherPage"><span style="background: #b8ffb8">very good</span></a> ' +
+                 '<span style="background: #ffb8b8">page</span>' +
+                 '<span style="background: #b8ffb8">text</span></p>',
+                 renderer.render_wiki_diff(previous, current)
+  end
+
   def test_emphasizes_changed_html_tags_after_changed_text
     previous = "Here is my ''long text''"
     current = "Here is your ''long article''"
@@ -213,9 +236,11 @@ class WikiRendererTest < Test::Unit::TestCase
   def test_emphasize_change_inside_title_tag
     previous = "== Sub title ==\n\nParagraph"
     current  = "== Super title ==\n\nParagraph"
-    
-    assert_equal '<h2><span style="background: #ffb8b8"><a name=\'Sub_title\'/>Sub</span>' +
-                 '<span style="background: #b8ffb8"><a name=\'Super_title\'/>Super</span> title</h2> ' +
+
+    assert_equal '<h2><a name=\'Sub_title\'><span style="background: #ffb8b8"></span></a>' +
+                 '<a name=\'Super_title\'><span style="background: #b8ffb8"></span></a> ' +
+                 '<span style="background: #ffb8b8">Sub</span>' +
+                 '<span style="background: #b8ffb8">Super</span> title</h2> ' +
                  '<p>Paragraph</p>',
                  renderer.render_wiki_diff(previous, current)
   end
