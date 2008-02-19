@@ -20,7 +20,6 @@ require 'mediacloth'
 
 require 'string_extensions'
 require 'array_extensions'
-require 'mediacloth_extensions'
 
 class WikiRenderer
 
@@ -45,7 +44,7 @@ class WikiRenderer
 private
 
   def wiki_to_html(input)
-    MediaCloth::wiki_render(input, :generator => @html_generator).
+    MediaCloth::wiki_to_html(input, :generator => @html_generator).
       gsub(/\r?\n?\r?\n<\//, '</').
       gsub('<p></p>', '')
   end

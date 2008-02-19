@@ -18,8 +18,6 @@
 require 'rubygems'
 require 'mediacloth'
 
-require 'mediacloth_extensions'
-
 PLACE_HOLDER_TITLE = 'Insert page title here'
 DEFAULT_AUTHOR = 'someone'
 DEFAULT_TIME = Time.local(2007, 1, 3, 15, 10)
@@ -137,7 +135,7 @@ private
   
   def update_references(input)
     self.references.clear
-    MediaCloth::wiki_render(input, :link_handler => reference_collector)
+    MediaCloth::wiki_to_html(input, :link_handler => reference_collector)
     self.refered_pages.reset
   end
 
