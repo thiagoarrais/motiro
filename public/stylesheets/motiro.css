@@ -118,6 +118,10 @@ div.inner {
     padding: 4px 4px 12px 4px;
 }
 
+div.inner span.meta {
+    font-size: 0.8em;
+}
+
 div.toolbar {
     font-size: 0.8em;
 }

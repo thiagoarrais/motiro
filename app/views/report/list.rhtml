@@ -11,19 +11,19 @@
   <% buttons = @reporter.buttons
      if ! buttons.empty? then %>
     <div class='toolbar channel_toolbar'>
-      <%= buttons.map { |b| instance_eval(b) }. join(' | ') -%>
+      <%= buttons.map { |b| instance_eval(b) }. join(' | ') %>
     </div> 
   <% end %>
-<% @headlines.each do |headline|%>
+  <% @headlines.each do |headline|%>
     <p>
       <%= headline_link(headline) %>
       <br/>
-      <font size="-1">
+      <span class="meta">
         <i><%= h(headline.author) %></i>
         (<%= headline.happened_at.relative_to_now %>)
-      </font>
+      </span>
     </p>
     <hr/>
-<% end %>
+  <% end %>
   </div>
 </div>
