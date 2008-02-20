@@ -41,6 +41,14 @@ module ReportHelper
   
   def headline_link(headline)
     link_to( h(headline.title(Translator.for(@locale))),
-             @reporter.params_for(headline.rid) )
+             @reporter.params_for(headline.rid),
+             page_link_handler.extra_link_attributes_for(headline.rid) )
   end
+
+private
+
+  def page_link_handler
+    WikiLinkHandler.new(@controller)
+  end
+
 end
