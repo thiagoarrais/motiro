@@ -208,3 +208,16 @@ refering_page_creation:
   text: This pages refers to the [[ListLastModifiedFeatures]] page
   position: 1
 
+dependent_feature_creation:
+  id: 20
+  page_id: 15
+  position: 1
+  kind: feature
+  last_editor_id: 1000001
+  modified_at: 2020-02-22 15:57:37
+  done: f
+  editors: ""
+  title: Dependent feature
+  text: This features requires the completion of [[ListLastModifiedFeatures]]
+        and [[FinishedFeature]]
+

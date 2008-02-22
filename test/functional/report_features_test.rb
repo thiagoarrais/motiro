@@ -35,6 +35,13 @@ class ReportFeaturesTest < Test::Unit::TestCase
     get :list, :reporter => 'features', :locale => 'en', :format => 'xml'
     assert_xml_element "//link[text() = 'http://test.host/wiki/show/ListLastModifiedFeatures']"
   end
+
+  def test_feed_item_text_links_to_other_wiki_pages
+    get :list, :reporter => 'features', :locale => 'en', :format => 'xml'
+    assert_xml_element '//description['+
+                         'contains(text(),' + 
+                           "'&lt;a href=\"http://test.host/wiki/show/ListLastModifiedFeatures\"&gt;ListLastModifiedFeatures&lt;/a&gt;')]"
+  end
   
   def test_shows_title_for_second_language
     get :older, :reporter => 'features', :locale => 'pt-br'
