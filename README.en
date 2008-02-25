@@ -73,7 +73,6 @@ but those with no label need to be installed by everyone.
     repository)
   * Darcs command line client (darcs) (only if you will be using a Darcs
     repository)
-  * (tar) POpen4 0.1.1 (available as Ruby Gem: POpen4)
   * (tar) SQLite3-Ruby 1.2.1 or later (available as Ruby Gem: sqlite3-ruby)
 
 After making sure your system has all those requirements, you may proceed with

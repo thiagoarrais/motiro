@@ -22,7 +22,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../vendor/motiro-installer')
 class AppInstaller < RailsInstaller
   application_name 'motiro'
   support_location 'http://www.motiro.org'
-  rails_version '1.2.2'
+  rails_version '1.2.3'
   
   def create_initial_database
     cp(install_directory + '/db/motirodb.sqlite.initial',

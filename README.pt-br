@@ -76,7 +76,6 @@ manualmente por todos.
     repositório Subversion)
   * Cliente de linha de comando Darcs (darcs) (somente se estiver utilizando
     repositório Darcs)
-  * (tar) POpen4 0.1.1 (disponível como Ruby Gem: POpen4)
   * (tar) SQLite3-Ruby 1.2.1 ou superior (disponível como Ruby Gem:
     sqlite3-ruby)
 

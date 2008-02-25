@@ -39,7 +39,9 @@ unless MOTIRO_VERSION.include? 'dev'
         %r{public/javascript($|/)},
         /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
-    s.files += Dir.glob('vendor/plugins/**/*') <<
+    s.files += Dir.glob('vendor/plugins/**/*') +
+               Dir.glob('vendor/mediacloth-trunk/**/*') <<
+               'vendor/mediacloth.rb' <<
                'log/.keepdir' << 'vendor/motiro-installer.rb'
     s.require_path = '.'
     s.author = "Thiago Arrais"
@@ -50,11 +52,7 @@ unless MOTIRO_VERSION.include? 'dev'
     s.executables = ['motiro']
 
     s.add_dependency("rails", "= 1.2.3")
-    s.add_dependency("mediacloth", ">= 0.0.2")
     s.add_dependency("daemons", ">= 1.0.4")
-    s.add_dependency("Platform", ">= 0.4.0")
-    s.add_dependency("open4", ">= 0.9.1")
-    s.add_dependency("POpen4", ">= 0.1.1")
     s.add_dependency("sqlite3-ruby", ">= 1.2.1")
     s.add_dependency("flexmock", ">= 0.5")
     s.add_dependency("rails-app-installer", "= 0.2.0")
@@ -64,12 +62,12 @@ unless MOTIRO_VERSION.include? 'dev'
   packaging = Rake::GemPackageTask.new(spec) do |p|
     p.gem_spec = spec
   end
-  
+
   task :tarball => packaging.package_dir_path do
     files = Dir.glob('vendor/**/*').reject do |f|
       f =~ %r{^vendor/plugins}
     end
-	
+
     files.each do |fn|
       f = File.join(packaging.package_dir_path, fn)
       fdir = File.dirname(f)
@@ -81,14 +79,14 @@ unless MOTIRO_VERSION.include? 'dev'
         safe_ln(fn, f)
       end
     end
-	
+
     safe_ln(File.join(packaging.package_dir_path, 'db/motirodb.sqlite.initial'),
             File.join(packaging.package_dir_path, 'db/motirodb.sqlite'))
     rm_f(File.join(packaging.package_dir_path, 'db/motirodb.sqlite.initial'))
-    
+
     chdir(packaging.package_dir) do
-	  sh %{tar cvzf #{packaging.package_name}.tar.gz #{packaging.package_name}}
-	end
+	    sh %{tar cvzf #{packaging.package_name}.tar.gz #{packaging.package_name}}
+  	end
   end
 
 end
