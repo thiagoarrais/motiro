@@ -1,7 +1,7 @@
 <% @title = "#{'Revision details'.t} - #{@headline.title(Translator.for(@locale))} (Motiro)" %>
 <% cache(:action => 'show', :suffix => 'summary', :locale => @locale) do %>
   <% pagetext('Revision %s' / truncate(@revision_id)) do %>
-    <%= @renderer.render_wiki_text(@headline.description(Translator.for(@locale))) %>
+    <%= render_wiki(@headline.description(Translator.for(@locale))) %>
     <div id="summary">
       <% @headline.changes.each do |change| %>
         <%= render_summary(change) -%>

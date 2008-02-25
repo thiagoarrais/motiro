@@ -68,6 +68,10 @@ module ApplicationHelper
     concat(xml, block.binding)
   end
   
+  def render_wiki(text)
+    @renderer.render_wiki_text(text)
+  end
+  
   def render_diff_table(chunks)
     Builder::XmlMarkup.new.table :class => 'diff', :cellspacing => '0' do |b|
       b.colgroup do

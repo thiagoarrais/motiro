@@ -24,14 +24,14 @@ require 'string_extensions'
 class ApplicationController < ActionController::Base
   include LoginSystem
   include ApplicationHelper
-  
+
   before_filter :set_locale, :setup_renderer, :check_desired_login_available, :drop_top_crumbs
-  
+
   def set_locale
     default_locale = 'en-US'
     request_language = request.env['HTTP_ACCEPT_LANGUAGE']
     request_language = request_language.nil? ? nil : request_language[/[^,;]+/]
-    
+
     @locale = params[:locale] || session[:locale] ||
               request_language || default_locale
     session[:locale] = @locale
@@ -42,11 +42,11 @@ class ApplicationController < ActionController::Base
       Locale.set @locale
     end
   end
-  
+
   def setup_renderer
     @renderer = create_renderer
   end
-  
+
   def check_desired_login_available
     if current_user.nil?
       desired_login = params[:desired_login] || flash[:desired_login]
@@ -54,13 +54,13 @@ class ApplicationController < ActionController::Base
     end
     true
   end
-  
+
   def drop_top_crumbs
     @crumbs = [{ 'Home'.t => {:controller => 'root', :action => 'index'} }]
   end
-  
+
 private
-  
+
   def create_renderer
     WikiRenderer.new(my_url_generator, current_locale)
   end
@@ -68,5 +68,6 @@ private
   def my_url_generator
     @url_generator ||= WikiLinkHandler.new(self)
   end
-  
+
 end
+

@@ -16,7 +16,7 @@ xml.rss 'version' => '2.0',
     	    	
     	    	xml.title h(headline.title(Translator.for(@locale)))
     	        xml.link permalink
-    	        xml.description @renderer.render_wiki_text(headline.description(Translator.for(@locale)))
+    	        xml.description render_wiki(headline.description(Translator.for(@locale)))
     	        xml.pubDate h(headline.happened_at.to_s(:rfc822))
     	        xml.dc :creator, h(headline.author)
     	        xml.guid(permalink + '.' +

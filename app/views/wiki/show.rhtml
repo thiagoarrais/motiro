@@ -3,7 +3,7 @@
            :page => @page.name, :locale_suffix => @locale,
            :revision => @page_revision_id) do %>
     <%= render :partial => 'properties_show' %>
-    <%= @renderer.render_wiki_text(@page.text) %>
+    <%= render_wiki(@page.text) %>
   <% end %>
   <%= render :partial => 'editbar' %>
 <% end %>
